@@ -10,7 +10,7 @@ interface ModeContextType {
 const ModeContext = createContext<ModeContextType | undefined>(undefined);
 
 export const ModeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [mode, setMode] = useState<Mode>("developer");
+  const [mode, setMode] = useState<Mode>("recruiter");
 
   useEffect(() => {
     // Add appropriate class to body for global CSS targeting
