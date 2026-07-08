@@ -1,196 +1,126 @@
-import { useEffect, useRef, useState } from "react";
-import { Mail, MapPin, Phone, Send, Github, Linkedin, Twitter } from "lucide-react";
+import { motion } from "framer-motion";
+import { Mail, Github, Linkedin, Send } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { useToast } from "../hooks/use-toast";
 
-
-const contactInfo = [
-  { icon: Mail, label: "Email", value: "pranavshende97@gmail.com" },
-  { icon: Phone, label: "Phone", value: "+91 8421358609" },
-  { icon: MapPin, label: "Location", value: "Nagpur, Maharashtra, India" },
-];
-
 const socialLinks = [
-  { icon: Github, label: "GitHub", href: "#" }, // add your real GitHub link
-  { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/prnvvv" },
-  { icon: Twitter, label: "Twitter", href: "#" }, // add if you use X/Twitter
+  { icon: Github, label: "GitHub", href: "https://github.com/pranavshende" },
+  { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/in/pranavshende" },
+  { icon: Mail, label: "Email", href: "mailto:pranav@example.com" },
 ];
 
 const ContactSection = () => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
   const { toast } = useToast();
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     toast({
-      title: "Message sent!",
-      description: "Thank you for reaching out. I'll get back to you soon.",
+      title: "Message sent successfully!",
+      description: "Thanks for reaching out. I'll get back to you soon.",
     });
   };
 
   return (
-    <section id="contact" ref={sectionRef} className="section-padding bg-secondary">
-      <div className="container-narrow">
-        {/* Header */}
-        <div
-          className={`text-center mb-16 transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
-          <span className="text-sm uppercase tracking-widest text-muted-foreground font-medium">
-            Get in Touch
-          </span>
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mt-4">
-            Let&apos;s Build Something
-          </h2>
-        </div>
+    <section id="contact" className="section-padding relative overflow-hidden bg-zinc-950">
+      {/* Background elements */}
+      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/10 to-transparent pointer-events-none" />
+      <div className="absolute -bottom-1/2 -left-1/4 w-[800px] h-[800px] bg-primary/20 rounded-full blur-[120px] pointer-events-none opacity-50" />
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
-          {/* Contact Info */}
-          <div
-            className={`transition-all duration-700 delay-100 ${
-              isVisible
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 -translate-x-12"
-            }`}
+      <div className="container-narrow relative z-10">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+          {/* Left Side */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
           >
-            <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-              Whether it&apos;s a project idea, collaboration, hackathon, or just
-              a tech chat, feel free to reach out. I’m always open to working on
-              meaningful and challenging problems.
+            <h2 className="font-display text-4xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
+              Let's Build Something <br/>
+              <span className="text-primary">Meaningful Together.</span>
+            </h2>
+            <p className="text-lg text-muted-foreground mb-12 max-w-md leading-relaxed">
+              Whether you're a recruiter looking for a passionate engineer, a founder with a vision, or a fellow builder, I'd love to connect.
             </p>
 
-            <div className="space-y-6 mb-12">
-              {contactInfo.map((item) => (
-                <div key={item.label} className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-background rounded-xl flex items-center justify-center">
-                    <item.icon size={20} className="text-foreground" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">{item.label}</p>
-                    <p className="font-medium text-foreground">{item.value}</p>
-                  </div>
-                </div>
+            <div className="flex gap-4">
+              {socialLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(16,185,129,0.2)]"
+                  aria-label={link.label}
+                >
+                  <link.icon size={24} />
+                </a>
               ))}
             </div>
-
-            {/* Social Links */}
-            <div>
-              <p className="text-sm text-muted-foreground mb-4">Find me on</p>
-              <div className="flex gap-4">
-                {socialLinks.map((link) => (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    className="w-12 h-12 bg-background rounded-xl flex items-center justify-center text-foreground hover:bg-foreground hover:text-background transition-all duration-300"
-                    aria-label={link.label}
-                    target={link.href === "#" ? "_self" : "_blank"}
-                    rel={link.href === "#" ? undefined : "noreferrer"}
-                  >
-                    <link.icon size={20} />
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
+          </motion.div>
 
           {/* Contact Form */}
-          <div
-            className={`transition-all duration-700 delay-200 ${
-              isVisible
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 translate-x-12"
-            }`}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
           >
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid sm:grid-cols-2 gap-6">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-foreground mb-2"
-                  >
-                    Name
-                  </label>
+            <div className="p-8 md:p-10 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl shadow-2xl relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-3xl pointer-events-none" />
+              
+              <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+                <div className="grid sm:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label htmlFor="name" className="text-sm font-medium text-foreground">Name</label>
+                    <Input
+                      id="name"
+                      placeholder="Your Name"
+                      className="bg-black/40 border-white/10 focus-visible:ring-primary h-12 rounded-xl"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label htmlFor="email" className="text-sm font-medium text-foreground">Email</label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="you@example.com"
+                      className="bg-black/40 border-white/10 focus-visible:ring-primary h-12 rounded-xl"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="subject" className="text-sm font-medium text-foreground">Subject</label>
                   <Input
-                    id="name"
-                    placeholder="Your Name"
-                    className="bg-background border-border h-12"
+                    id="subject"
+                    placeholder="Project inquiry, job opportunity..."
+                    className="bg-black/40 border-white/10 focus-visible:ring-primary h-12 rounded-xl"
                     required
                   />
                 </div>
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-foreground mb-2"
-                  >
-                    Email
-                  </label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="you@example.com"
-                    className="bg-background border-border h-12"
+
+                <div className="space-y-2">
+                  <label htmlFor="message" className="text-sm font-medium text-foreground">Message</label>
+                  <Textarea
+                    id="message"
+                    placeholder="Tell me about your idea or role..."
+                    className="bg-black/40 border-white/10 focus-visible:ring-primary min-h-[160px] resize-none rounded-xl"
                     required
                   />
                 </div>
-              </div>
 
-              <div>
-                <label
-                  htmlFor="subject"
-                  className="block text-sm font-medium text-foreground mb-2"
-                >
-                  Subject
-                </label>
-                <Input
-                  id="subject"
-                  placeholder="Project inquiry, collaboration..."
-                  className="bg-background border-border h-12"
-                  required
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium text-foreground mb-2"
-                >
-                  Message
-                </label>
-                <Textarea
-                  id="message"
-                  placeholder="Tell me about your idea or project..."
-                  className="bg-background border-border min-h-[160px] resize-none"
-                  required
-                />
-              </div>
-
-              <Button variant="hero" size="lg" className="w-full gap-2">
-                <Send size={18} />
-                Send Message
-              </Button>
-            </form>
-          </div>
+                <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-12 rounded-xl font-medium text-base group">
+                  Send Message
+                  <Send className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </form>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

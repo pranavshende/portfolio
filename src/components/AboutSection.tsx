@@ -1,133 +1,80 @@
-import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { Code, Server, Cpu, Database, Blocks, Zap, BrainCircuit } from "lucide-react";
+
+const focusAreas = [
+  { name: "Full Stack Development", icon: Code },
+  { name: "AI/ML Systems", icon: BrainCircuit },
+  { name: "Agentic AI", icon: Cpu },
+  { name: "Research & Innovation", icon: Blocks },
+  { name: "Scalable Backend", icon: Server },
+  { name: "Real-Time Apps", icon: Zap },
+  { name: "Smart Automation", icon: Database },
+];
 
 const AboutSection = () => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section
-      id="about"
-      ref={sectionRef}
-      className="section-padding bg-secondary"
-    >
-      <div className="container-narrow">
-        <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Image */}
-          <div
-            className={`relative transition-all duration-700 ${
-              isVisible
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 -translate-x-12"
-            }`}
-          >
-            <div className="aspect-[4/5] relative">
-              {/* Main Image Container */}
-              <div className="absolute inset-4 bg-gray-300 rounded-2xl overflow-hidden">
-                <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-400 flex items-center justify-center">
-                  <span className="font-display text-6xl md:text-8xl font-bold text-gray-500/50">
-                    PS
-                  </span>
-                </div>
-              </div>
-              {/* Decorative Frame */}
-              <div className="absolute inset-0 border-2 border-foreground rounded-2xl" />
-            </div>
-          </div>
+    <section id="about" className="section-padding relative overflow-hidden bg-zinc-950/50">
+      <div className="container-narrow relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-16"
+        >
+          <h2 className="font-display text-3xl md:text-5xl font-bold mb-4">
+            About <span className="text-primary">Me</span>
+          </h2>
+          <div className="h-1 w-20 bg-primary mx-auto rounded-full" />
+        </motion.div>
 
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Content */}
-          <div
-            className={`transition-all duration-700 delay-200 ${
-              isVisible
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 translate-x-12"
-            }`}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="space-y-6 text-muted-foreground leading-relaxed text-lg"
           >
-            <span className="text-sm uppercase tracking-widest text-muted-foreground font-medium">
-              About Me
-            </span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mt-4 mb-8">
-              Crafting Practical
-              <br />
-              <span className="text-gray-500">Tech Solutions</span>
-            </h2>
-            <div className="space-y-6 text-muted-foreground leading-relaxed">
-              <p>
-                I'm <span className="font-semibold">Pranav Shende</span>, a
-                3rd-year Information Technology undergraduate at{" "}
-                <span className="font-semibold">
-                  St. Vincent Pallotti College of Engineering & Technology,
-                  Nagpur
-                </span>{" "}
-                and currently the{" "}
-                <span className="font-semibold">Technical Head at CSI-SVPCET</span>.
-                I love turning real-world problems into working products that
-                people actually use.
-              </p>
-              <p>
-                My work revolves around{" "}
-                <span className="font-semibold">
-                  MERN stack, backend systems, API design, authentication, RBAC,
-                  payment integrations, WebSockets, and cloud deployment
-                </span>
-                . I&apos;ve worked on platforms like{" "}
-                <span className="font-semibold">Hoppin (ride-sharing for students)</span>,{" "}
-                a <span className="font-semibold">Railway Management System</span>,{" "}
-                an <span className="font-semibold">
-                  AI-powered driving license trial system
-                </span>{" "}
-                and ML-based{" "}
-                <span className="font-semibold">
-                  Lumpy Skin Disease detection & prediction
-                </span>{" "}
-                using climate data.
-              </p>
-              <p>
-                Beyond code, I’m actively involved in communities and events as a{" "}
-                <span className="font-semibold">
-                  GirlScript Summer of Code Mentor, Technex website backend core
-                  team member, and Student Coordinator for Industry Academia
-                  Conclave 2.0
-                </span>
-                . I enjoy collaborating, mentoring, and building things that
-                actually ship and deliver value.
-              </p>
-            </div>
+            <p>
+              I am <strong className="text-foreground">Pranav Shende</strong>, a 3rd-year B.Tech IT student at SVPCET Nagpur (2023–2027) with a strong passion for building impactful software systems, AI-powered platforms, and scalable digital products.
+            </p>
+            <p>
+              My expertise spans across full-stack development, intelligent systems, MERN stack engineering, AI/ML, and real-world problem-solving. I enjoy transforming complex ideas into practical and scalable software solutions.
+            </p>
+            <p>
+              I actively contribute to technical communities, research work, hackathons, and student leadership initiatives.
+            </p>
+          </motion.div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-4 md:gap-8 mt-12 pt-8 border-t border-border text-center md:text-left">
-              {[
-                { number: "3+", label: "Years Coding" },
-                { number: "20+", label: "Projects & Mini-Projects" },
-                { number: "3+", label: "Hackathons (Wins & Finals)" },
-              ].map((stat, index) => (
-                <div key={index}>
-                  <p className="font-display text-2xl md:text-4xl font-bold text-foreground">
-                    {stat.number}
-                  </p>
-                  <p className="text-xs md:text-sm text-muted-foreground mt-1">
-                    {stat.label}
-                  </p>
-                </div>
+          {/* Focus Areas */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+          >
+            <h3 className="text-xl font-bold text-foreground mb-6 font-display">
+              Current Focus Areas
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              {focusAreas.map((area, idx) => (
+                <motion.div
+                  key={area.name}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: idx * 0.1 }}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  className="flex items-center gap-2 px-4 py-3 rounded-xl bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-primary/10 transition-all cursor-default"
+                >
+                  <area.icon className="w-5 h-5 text-primary" />
+                  <span className="text-sm font-medium text-foreground">{area.name}</span>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

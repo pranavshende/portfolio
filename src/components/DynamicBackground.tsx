@@ -1,48 +1,59 @@
-import { useEffect, useState } from "react";
+import { useCallback } from "react";
+import Particles from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
+import type { Engine } from "@tsparticles/engine";
 
 const DynamicBackground = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth) * 100;
-      const y = (e.clientY / window.innerHeight) * 100;
-      setMousePosition({ x, y });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadSlim(engine);
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden">
-      {/* Dynamic gradient orbs that follow mouse */}
-      <div
-        className="absolute w-[600px] h-[600px] rounded-full blur-[120px] opacity-30 transition-all duration-1000 ease-out"
-        style={{
-          background:
-            "radial-gradient(circle, hsl(var(--gray-300)) 0%, transparent 70%)",
-          left: `${mousePosition.x - 20}%`,
-          top: `${mousePosition.y - 20}%`,
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+      <Particles
+        id="tsparticles"
+        init={particlesInit}
+        options={{
+          fullScreen: { enable: false },
+          background: { color: { value: "transparent" } },
+          fpsLimit: 60,
+          interactivity: {
+            events: {
+              onHover: { enable: true, mode: "repulse" },
+              resize: { enable: true },
+            },
+            modes: {
+              repulse: { distance: 100, duration: 0.4 },
+            },
+          },
+          particles: {
+            color: { value: "#10b981" },
+            links: {
+              color: "#10b981",
+              distance: 150,
+              enable: true,
+              opacity: 0.08,
+              width: 1,
+            },
+            move: {
+              enable: true,
+              speed: 0.6,
+              direction: "none",
+              random: true,
+              outModes: { default: "bounce" },
+            },
+            number: { value: 60, density: { enable: true } },
+            opacity: { value: { min: 0.05, max: 0.2 } },
+            shape: { type: "circle" },
+            size: { value: { min: 1, max: 2 } },
+          },
+          detectRetina: true,
         }}
-      />
-      <div
-        className="absolute w-[400px] h-[400px] rounded-full blur-[100px] opacity-20 transition-all duration-1500 ease-out"
-        style={{
-          background:
-            "radial-gradient(circle, hsl(var(--gray-400)) 0%, transparent 70%)",
-          left: `${100 - mousePosition.x}%`,
-          top: `${100 - mousePosition.y}%`,
-        }}
+        className="absolute inset-0 w-full h-full pointer-events-auto"
       />
 
-      {/* Subtle animated grain texture */}
-      <div
-        className="absolute inset-0 opacity-[0.015]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        }}
-      />
+      {/* Subtle vignette */}
+      <div className="absolute inset-0 bg-radial-[ellipse_at_center] from-transparent via-transparent to-black/40 pointer-events-none" />
     </div>
   );
 };

@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "./ui/button";
+import RecruiterModeToggle from "./RecruiterModeToggle";
 
 const navLinks = [
   { name: "About", href: "#about" },
   { name: "Skills", href: "#skills" },
   { name: "Projects", href: "#projects" },
-  { name: "Experience", href: "#experience" },
+  { name: "GitHub", href: "#github" },
+  { name: "Terminal", href: "#terminal" },
   { name: "Contact", href: "#contact" },
 ];
 
@@ -26,7 +28,7 @@ const Navigation = () => {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled
-          ? "bg-background/90 backdrop-blur-md border-b border-border"
+          ? "bg-zinc-950/80 backdrop-blur-md border-b border-white/10"
           : "bg-transparent"
       }`}
     >
@@ -35,13 +37,13 @@ const Navigation = () => {
           {/* Logo */}
           <a
             href="#"
-            className="font-display font-bold text-xl md:text-2xl text-foreground hover:text-gray-600 transition-colors"
+            className="font-display font-bold text-xl md:text-2xl text-foreground hover:text-primary transition-colors"
           >
-            PS
+            Pranav.
           </a>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
               <a
                 key={link.name}
@@ -51,7 +53,8 @@ const Navigation = () => {
                 {link.name}
               </a>
             ))}
-            <Button variant="hero" size="sm" asChild>
+            <RecruiterModeToggle />
+            <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-6" asChild>
               <a href="#contact">Let&apos;s Talk</a>
             </Button>
           </div>
@@ -67,26 +70,34 @@ const Navigation = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div 
+          className="md:hidden fixed inset-0 top-[64px] bg-black/60 backdrop-blur-sm z-40"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Mobile Menu Panel */}
       <div
-        className={`md:hidden absolute top-full left-0 right-0 bg-background border-b border-border transition-all duration-300 ${
+        className={`md:hidden absolute top-full left-0 right-0 bg-zinc-950/95 backdrop-blur-xl border-b border-white/10 transition-all duration-300 z-50 ${
           isMobileMenuOpen
             ? "opacity-100 translate-y-0"
             : "opacity-0 -translate-y-4 pointer-events-none"
         }`}
       >
-        <div className="px-6 py-6 space-y-4">
+        <div className="px-6 py-8 flex flex-col gap-6">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className="block text-lg font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="block text-2xl font-display font-bold text-muted-foreground hover:text-foreground transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.name}
             </a>
           ))}
-          <Button variant="hero" className="w-full mt-4" asChild>
+          <Button className="w-full mt-6 h-14 text-lg bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl" asChild>
             <a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>
               Let&apos;s Talk
             </a>

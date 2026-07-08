@@ -1,138 +1,78 @@
-import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
-const skills = [
-  { name: "MERN Stack (MongoDB, Express, React, Node)", level: 90 },
-  { name: "JavaScript / TypeScript", level: 88 },
-  { name: "Backend APIs & RBAC", level: 86 },
-  { name: "Databases (MongoDB / MySQL)", level: 84 },
-  { name: "AI / ML (CNNs, Prediction Models)", level: 78 },
-  { name: "IoT & ESP32 Integrations", level: 75 },
-];
-
-const tools = [
-  "VS Code",
-  "Git & GitHub",
-  "Postman",
-  "MongoDB Compass",
-  "MySQL Workbench",
-  "Google Cloud Console",
-  "Figma",
-  "Linux / WSL",
-  "Notion",
-  "Vercel",
-  "npm / pnpm",
-  "Swagger / API Docs",
+const skillCategories = [
+  {
+    title: "Languages",
+    skills: ["Java", "JavaScript", "Python", "C++", "SQL"],
+  },
+  {
+    title: "Frontend",
+    skills: ["HTML", "CSS", "React", "React Native", "Tailwind CSS"],
+  },
+  {
+    title: "Backend",
+    skills: ["Node.js", "Express.js", "REST APIs", "Authentication", "JWT", "RBAC", "WebSockets"],
+  },
+  {
+    title: "Databases",
+    skills: ["MongoDB", "MySQL", "PostgreSQL"],
+  },
+  {
+    title: "AI / ML",
+    skills: ["CNN", "Machine Learning", "Predictive Analytics", "Feature Engineering", "Model Evaluation"],
+  },
+  {
+    title: "Tools",
+    skills: ["Git", "GitHub", "Postman", "Firebase", "Google Cloud", "VS Code", "Socket.IO"],
+  },
+  {
+    title: "CS Fundamentals",
+    skills: ["DSA", "OOP", "DBMS", "Operating Systems", "Computer Networks", "System Design"],
+  },
 ];
 
 const SkillsSection = () => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section id="skills" ref={sectionRef} className="section-padding">
+    <section id="skills" className="section-padding bg-zinc-950/50 relative">
       <div className="container-narrow">
-        {/* Header */}
-        <div
-          className={`text-center mb-16 transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-16"
         >
-          <span className="text-sm uppercase tracking-widest text-muted-foreground font-medium">
-            Expertise
-          </span>
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mt-4">
-            Skills &amp; Technologies
+          <h2 className="font-display text-3xl md:text-5xl font-bold mb-4">
+            Technical <span className="text-primary">Skills</span>
           </h2>
-        </div>
+          <div className="h-1 w-20 bg-primary mx-auto rounded-full" />
+        </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-16">
-          {/* Skill Bars */}
-          <div className="space-y-8">
-            <h3
-              className={`font-display text-xl font-semibold text-foreground mb-8 transition-all duration-700 delay-100 ${
-                isVisible
-                  ? "opacity-100 translate-x-0"
-                  : "opacity-0 -translate-x-8"
-              }`}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {skillCategories.map((category, idx) => (
+            <motion.div
+              key={category.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/50 transition-all duration-300 group hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)]"
             >
-              Core Skills
-            </h3>
-            {skills.map((skill, index) => (
-              <div
-                key={skill.name}
-                className={`transition-all duration-700 ${
-                  isVisible
-                    ? "opacity-100 translate-x-0"
-                    : "opacity-0 -translate-x-8"
-                }`}
-                style={{ transitionDelay: `${(index + 2) * 100}ms` }}
-              >
-                <div className="flex justify-between mb-2">
-                  <span className="font-medium text-foreground">
-                    {skill.name}
+              <h3 className="text-xl font-bold text-foreground mb-4 font-display group-hover:text-primary transition-colors">
+                {category.title}
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {category.skills.map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-3 py-1.5 text-sm font-medium rounded-lg bg-black/40 border border-white/5 text-muted-foreground group-hover:text-foreground transition-colors"
+                  >
+                    {skill}
                   </span>
-                  <span className="text-muted-foreground">{skill.level}%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-foreground rounded-full transition-all duration-1000 ease-out"
-                    style={{
-                      width: isVisible ? `${skill.level}%` : "0%",
-                      transitionDelay: `${(index + 2) * 100}ms`,
-                    }}
-                  />
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
-
-          {/* Tools Grid */}
-          <div>
-            <h3
-              className={`font-display text-xl font-semibold text-foreground mb-8 transition-all duration-700 delay-100 ${
-                isVisible
-                  ? "opacity-100 translate-x-0"
-                  : "opacity-0 translate-x-8"
-              }`}
-            >
-              Tools &amp; Technologies
-            </h3>
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-4">
-              {tools.map((tool, index) => (
-                <div
-                  key={tool}
-                  className={`p-4 bg-secondary rounded-xl text-center hover:bg-gray-200 transition-all duration-300 hover:scale-105 cursor-default ${
-                    isVisible ? "opacity-100 scale-100" : "opacity-0 scale-90"
-                  }`}
-                  style={{
-                    transitionDelay: `${(index + 4) * 50}ms`,
-                    transitionDuration: "500ms",
-                  }}
-                >
-                  <span className="text-sm font-medium text-foreground">
-                    {tool}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
