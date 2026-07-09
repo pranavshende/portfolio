@@ -2,7 +2,6 @@ import { ArrowDown, Github, Linkedin, Mail, FileText, Code2, Hammer } from "luci
 import { Button } from "./ui/button";
 import { TypeAnimation } from "react-type-animation";
 import { motion } from "framer-motion";
-import HeroTerminal from "./HeroTerminal";
 
 const floatingBadges = [
   "MERN",
@@ -155,16 +154,56 @@ const HeroSection = () => {
           </motion.div>
         </div>
 
-        {/* Right Content — Terminal */}
+        {/* Right Content — Profile Photo + Terminal */}
         <motion.div
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="hidden lg:block w-full"
+          className="hidden lg:flex flex-col items-center gap-6 w-full"
         >
-          <HeroTerminal />
-          {/* Floating Badges below terminal */}
-          <div className="flex flex-wrap gap-2 mt-4 justify-center">
+          {/* Profile Photo */}
+          <div className="relative flex items-center justify-center">
+            {/* Outer animated glow ring */}
+            <div className="absolute w-[280px] h-[280px] rounded-full bg-gradient-to-r from-primary via-emerald-400 to-primary animate-spin-slow opacity-80 blur-[2px]" />
+            {/* Inner ring spacer */}
+            <div className="absolute w-[268px] h-[268px] rounded-full bg-background" />
+            {/* Photo container */}
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.5, type: "spring", stiffness: 120 }}
+              whileHover={{ scale: 1.03 }}
+              className="relative w-[256px] h-[256px] rounded-full overflow-hidden border-2 border-primary/30 shadow-[0_0_40px_rgba(16,185,129,0.3)] z-10"
+            >
+              <img
+                src="/photo/1000170373_optimized_1000.jpg.jpeg"
+                alt="Pranav Shende"
+                className="w-full h-full object-cover object-top"
+              />
+              {/* Subtle overlay sheen */}
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20 pointer-events-none" />
+            </motion.div>
+
+            {/* Floating accent dots */}
+            <motion.div
+              animate={{ y: [-6, 6, -6] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -top-2 -right-2 w-4 h-4 rounded-full bg-primary shadow-[0_0_12px_rgba(16,185,129,0.8)]"
+            />
+            <motion.div
+              animate={{ y: [6, -6, 6] }}
+              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -bottom-2 -left-3 w-3 h-3 rounded-full bg-emerald-400/70 shadow-[0_0_10px_rgba(52,211,153,0.6)]"
+            />
+            <motion.div
+              animate={{ y: [-4, 4, -4] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-1/2 -right-6 w-2 h-2 rounded-full bg-primary/50"
+            />
+          </div>
+
+          {/* Floating Badges */}
+          <div className="flex flex-wrap gap-2 justify-center">
             {floatingBadges.map((badge, i) => (
               <motion.div
                 key={badge}
