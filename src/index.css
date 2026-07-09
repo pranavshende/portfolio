@@ -5,33 +5,34 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Dark theme overrides - these make shadcn components dark by default */
+    --background: 0 0% 0%;
+    --foreground: 0 0% 93%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 0 0% 4%;
+    --card-foreground: 0 0% 93%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 93%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 0 0% 93%;
+    --primary-foreground: 0 0% 4%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 93%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 60%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 0 0% 10%;
+    --accent-foreground: 0 0% 93%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 0 0% 12%;
+    --input: 0 0% 12%;
+    --ring: 0 0% 30%;
 
     --radius: 0.5rem;
 
@@ -46,12 +47,12 @@
     --rec-bg-gradient-1: rgba(55, 48, 163, 0.03);
     --rec-bg-gradient-2: rgba(255, 255, 255, 0.0);
 
-    /* Custom tokens */
-    --bg-main: #0D1117;
-    --bg-surface: #161B22;
-    --border-main: #30363D;
-    --text-main: #C9D1D9;
-    --text-muted: #8B949E;
+  /* Custom tokens */
+    --bg-main: #000000;
+    --bg-surface: #0a0a0a;
+    --border-main: #1f1f22;
+    --text-main: #ededed;
+    --text-muted: #a1a1aa;
     --accent-blue: #58A6FF;
     --accent-green: #3FB950;
     --accent-purple: #D2A8FF;
@@ -65,20 +66,18 @@
   }
 
   body.developer-mode {
-    --bg-main: var(--dev-bg-main);
-    --bg-surface: var(--dev-bg-surface);
-    --border-main: var(--dev-border-main);
-    --accent-blue: var(--dev-accent-blue);
+    --bg-main: #000000;
+    --bg-surface: #0a0a0a;
+    --border-main: #1f1f22;
     background-color: var(--bg-main);
-    color: #C9D1D9;
+    color: var(--text-main);
   }
 
   body.recruiter-mode {
-    --bg-main: var(--rec-bg-main);
-    --border-main: #E8E6E1;
-    background: radial-gradient(ellipse at 20% 50%, var(--rec-bg-gradient-1) 0%, transparent 60%),
-                var(--rec-bg-main);
-    color: #18181B; /* zinc-900 */
+    --bg-main: #000000;
+    --bg-surface: #0a0a0a;
+    background-color: var(--bg-main);
+    color: var(--text-main);
   }
 }
 
@@ -93,15 +92,17 @@
 
   html {
     scroll-behavior: smooth;
-    overflow: hidden;
+    overflow-x: hidden;
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
     font-family: 'Inter', system-ui, sans-serif;
-    background: var(--bg-main);
-    color: var(--text-main);
-    overflow: hidden;
+    background-color: #000000;
+    background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+    color: #ededed;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -145,31 +146,34 @@
     flex-direction: column;
   }
 
-  /* ── Terminal Cards ── */
+  /* ── Terminal Cards & Glassmorphism ── */
   .glass-card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-main);
-    border-radius: 8px;
-    box-shadow: none;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   }
 
   .glass-card-violet {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-main);
-    border-radius: 8px;
-    box-shadow: none;
+    background: linear-gradient(135deg, rgba(210, 168, 255, 0.05) 0%, rgba(210, 168, 255, 0.01) 100%);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(210, 168, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   }
 
   /* ── Gradient Text ── */
   .gradient-text {
-    background: linear-gradient(135deg, #171717 0%, #737373 100%);
+    background: linear-gradient(135deg, #58A6FF 0%, #D2A8FF 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .gradient-text-reverse {
-    background: linear-gradient(135deg, #737373 0%, #171717 100%);
+    background: linear-gradient(135deg, #D2A8FF 0%, #58A6FF 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -201,8 +205,9 @@
   /* ── Bottom Dock ── */
   .bottom-dock {
     height: var(--dock-height);
-    background: var(--bg-main);
-    border-top: 1px solid var(--border-main);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -228,7 +233,7 @@
   }
 
   .dock-item.active .dock-icon-wrap {
-    background: linear-gradient(135deg, #e5e5e5 0%, #d4d4d4 100%);
+    background: rgba(255, 255, 255, 0.1);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   }
 
@@ -257,17 +262,8 @@
 
   /* ── Screen ── */
   .app-screen {
-    flex: 1;
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    width: 100%;
     position: relative;
-  }
-
-  .app-screen::-webkit-scrollbar {
-    display: none;
   }
 
   /* ── Chip / Badge ── */
@@ -284,21 +280,21 @@
   }
 
   .chip-violet {
-    background: rgba(0, 0, 0, 0.04);
-    border-color: rgba(0, 0, 0, 0.08);
-    color: #404040;
+    background: rgba(210, 168, 255, 0.1);
+    border-color: rgba(210, 168, 255, 0.2);
+    color: #D2A8FF;
   }
 
   .chip-cyan {
-    background: rgba(0, 0, 0, 0.03);
-    border-color: rgba(0, 0, 0, 0.06);
-    color: #525252;
+    background: rgba(88, 166, 255, 0.1);
+    border-color: rgba(88, 166, 255, 0.2);
+    color: #58A6FF;
   }
 
   .chip-emerald {
-    background: rgba(0, 0, 0, 0.05);
-    border-color: rgba(0, 0, 0, 0.1);
-    color: #262626;
+    background: rgba(63, 185, 80, 0.1);
+    border-color: rgba(63, 185, 80, 0.2);
+    color: #3FB950;
   }
 
   /* ── Timeline ── */
@@ -306,8 +302,8 @@
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #a3a3a3, #525252);
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #58A6FF, #3FB950);
+    box-shadow: 0 0 12px rgba(88, 166, 255, 0.3);
     flex-shrink: 0;
   }
 
@@ -316,7 +312,7 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #404040;
+    background: #3FB950;
     position: relative;
     display: inline-block;
   }
@@ -326,27 +322,20 @@
     position: absolute;
     inset: -3px;
     border-radius: 50%;
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(63, 185, 80, 0.3);
     animation: pulse-ring 2s ease-out infinite;
   }
 
   /* ── Notch ── */
   .phone-notch {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 120px;
-    height: 34px;
-    background: #000;
-    border-radius: 0 0 20px 20px;
-    z-index: 20;
+    display: none;
   }
 
   /* ── Scrollable content area ── */
   .screen-content {
     padding: 16px;
     padding-bottom: 24px;
+    max-width: 100%;
   }
 
   /* ── Section header in screen ── */
@@ -359,28 +348,36 @@
 
   /* ── Card variants ── */
   .exp-card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-main);
-    border-radius: 8px;
-    padding: 16px;
-    transition: all 0.15s ease;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 20px;
+    transition: all 0.2s ease;
   }
 
   .exp-card:hover {
-    border-color: var(--accent-blue);
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
   }
 
   .project-card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-main);
-    border-radius: 8px;
-    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 20px;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: all 0.2s ease;
   }
 
   .project-card:hover, .project-card:active {
-    border-color: var(--accent-blue);
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
   }
 }
 
@@ -437,6 +434,20 @@
   100% { transform: scale(2.2); opacity: 0; }
 }
 
+@keyframes marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-marquee-left {
+  animation: marquee-left 25s linear infinite;
+}
+
+.marquee-mask {
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-8px); }
@@ -472,166 +483,7 @@
 }
 
 /* ── Responsive App Layout ── */
-
-/* Desktop: left sidebar + content */
-@media (min-width: 768px) {
-  #root {
-    overflow: hidden;
-  }
-
-  .app-layout {
-    display: flex;
-    flex-direction: row;
-    height: 100%;
-    width: 100%;
-    background: var(--bg-main);
-    overflow: hidden;
-  }
-
-  /* Left sidebar */
-  .desktop-sidebar {
-    width: 260px;
-    min-width: 260px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    background: var(--bg-main);
-    border-right: 1px solid var(--border-main);
-    padding: 24px 0 24px;
-    gap: 4px;
-    overflow: hidden;
-    flex-shrink: 0;
-  }
-
-  .sidebar-logo {
-    padding: 0 20px;
-    margin-bottom: 24px;
-  }
-
-  .sidebar-nav-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 6px 20px;
-    cursor: pointer;
-    position: relative;
-  }
-
-  .sidebar-nav-item:hover {
-    background: rgba(255,255,255,0.05);
-  }
-
-  .sidebar-nav-item.active {
-    background: rgba(88,166,255,0.1);
-  }
-
-  .sidebar-nav-item.active::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: var(--accent-blue);
-  }
-
-  .sidebar-icon-wrap {
-    width: 34px;
-    height: 34px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    background: transparent;
-    transition: all 0.2s ease;
-  }
-
-  .sidebar-nav-item.active .sidebar-icon-wrap {
-    background: #3730A3;
-    box-shadow: 0 4px 12px rgba(55,48,163,0.15);
-  }
-
-  /* Desktop content area */
-  .desktop-content {
-    flex: 1;
-    height: 100%;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    background: transparent;
-  }
-
-  /* Desktop screens get more breathing room */
-  .app-screen .screen-content {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 32px 40px 40px;
-  }
-
-  .screen-header {
-    font-size: 32px;
-  }
-
-  /* Desktop status bar hidden */
-  .status-bar {
-    display: none;
-  }
-
-  /* Bottom dock hidden on desktop */
-  .bottom-dock {
-    display: none;
-  }
-
-  /* Desktop top bar */
-  .desktop-topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 40px;
-    border-bottom: 1px solid var(--border-main);
-    flex-shrink: 0;
-    background: transparent;
-  }
-}
-
-/* Mobile: full-screen + bottom dock */
-@media (max-width: 767px) {
-  #root {
-    overflow: hidden;
-  }
-
-  .app-layout {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-    background: var(--bg-main);
-    overflow: hidden;
-  }
-
-  .desktop-sidebar {
-    display: none;
-  }
-
-  .desktop-topbar {
-    display: none;
-  }
-
-  .desktop-content {
-    flex: 1;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-  }
-
-  .app-screen .screen-content {
-    padding: 16px;
-    padding-bottom: 24px;
-  }
-}
+/* Legacy layout removed to enable full-screen vertical scrolling */
 
 /* ── Recruiter Mode Specific Styles ── */
 body.recruiter-mode .glass-card {
