@@ -20,7 +20,7 @@ const VoiceActivation = () => {
   const [transcript, setTranscript] = useState("");
   const [feedback, setFeedback] = useState("");
   const [supported, setSupported] = useState(false);
-  const recognitionRef = useState<SpeechRecognition | null>(null);
+  const recognitionRef = useState<any>(null);
 
   useEffect(() => {
     setSupported("SpeechRecognition" in window || "webkitSpeechRecognition" in window);
@@ -38,7 +38,7 @@ const VoiceActivation = () => {
     recognition.onend = () => setListening(false);
     recognition.onerror = () => { setListening(false); setFeedback("Could not hear you. Try again."); };
 
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
+    recognition.onresult = (event: any) => {
       const spoken = event.results[0][0].transcript.toLowerCase().trim();
       setTranscript(spoken);
 
