@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Sun, Moon, Cloud, CloudRain, Zap, CloudSnow, Wind } from 'lucide-react';
+import { useMode } from '../contexts/ModeContext';
 
 // Nagpur coordinates
 const NAGPUR_LAT = 21.1458;
@@ -60,39 +61,11 @@ function useWeather() {
   return { temp, code, loading };
 }
 
-// Global theme — reads/writes on document.documentElement and localStorage
-function useTheme() {
-  const [isDark, setIsDark] = useState(() => {
-    const stored = localStorage.getItem('theme');
-    if (stored) return stored === 'dark';
-    return true; // default dark
-  });
-
-  useEffect(() => {
-    const root = document.documentElement;
-    const body = document.body;
-
-    if (isDark) {
-      root.classList.remove('light-mode');
-      body.style.backgroundColor = '#000000';
-      body.style.color = '#ededed';
-      localStorage.setItem('theme', 'dark');
-    } else {
-      root.classList.add('light-mode');
-      body.style.backgroundColor = '#f9f9f9';
-      body.style.color = '#111111';
-      localStorage.setItem('theme', 'light');
-    }
-  }, [isDark]);
-
-  const toggle = useCallback(() => setIsDark(d => !d), []);
-  return { isDark, toggle };
-}
-
 const FloatingHeader = () => {
   const time = useTime();
   const { temp, code, loading } = useWeather();
-  const { isDark, toggle } = useTheme();
+  const { mode, toggleMode } = useMode();
+  const isDark = mode === 'developer';
   const weather = getWeatherInfo(code);
 
   return (
@@ -121,7 +94,7 @@ const FloatingHeader = () => {
 
       {/* Dark / Light mode toggle */}
       <button
-        onClick={toggle}
+        onClick={toggleMode}
         aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
         title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
         className={`

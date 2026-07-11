@@ -10,22 +10,35 @@ interface ModeContextType {
 const ModeContext = createContext<ModeContextType | undefined>(undefined);
 
 export const ModeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [mode, setMode] = useState<Mode>("recruiter");
+  // Initialise from localStorage — default dark (developer)
+  const [mode, setMode] = useState<Mode>(() => {
+    try {
+      const stored = localStorage.getItem("portfolio-theme") as Mode | null;
+      return stored === "recruiter" ? "recruiter" : "developer";
+    } catch {
+      return "developer";
+    }
+  });
 
   useEffect(() => {
-    // Add appropriate class to body for global CSS targeting
+    const body = document.body;
+    // Clear any inline styles set by old useTheme hook
+    body.style.backgroundColor = "";
+    body.style.color = "";
+
     if (mode === "developer") {
-      document.body.classList.add("developer-mode");
-      document.body.classList.remove("recruiter-mode");
+      body.classList.add("developer-mode");
+      body.classList.remove("recruiter-mode");
     } else {
-      document.body.classList.add("recruiter-mode");
-      document.body.classList.remove("developer-mode");
+      body.classList.add("recruiter-mode");
+      body.classList.remove("developer-mode");
     }
+
+    try { localStorage.setItem("portfolio-theme", mode); } catch {}
   }, [mode]);
 
-  const toggleMode = () => {
-    setMode((prev) => (prev === "developer" ? "recruiter" : "developer"));
-  };
+  const toggleMode = () =>
+    setMode(prev => (prev === "developer" ? "recruiter" : "developer"));
 
   return (
     <ModeContext.Provider value={{ mode, toggleMode }}>
@@ -36,8 +49,6 @@ export const ModeProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 export const useMode = () => {
   const context = useContext(ModeContext);
-  if (!context) {
-    throw new Error("useMode must be used within a ModeProvider");
-  }
+  if (!context) throw new Error("useMode must be used within a ModeProvider");
   return context;
 };

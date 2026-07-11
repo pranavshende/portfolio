@@ -1,10 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import profilePhoto from '../photo/1000170373_optimized_1000.jpg.jpeg';
 import SkillsMarquee from './SkillsMarquee';
-import { Github, Twitter, Linkedin, Mail, ArrowUpRight, X } from 'lucide-react';
+import { Github, Twitter, Linkedin, Mail, ArrowUpRight, X, Play, Pause } from 'lucide-react';
 
 export const HomeScreen = () => {
   const [photoOpen, setPhotoOpen] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const togglePlay = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
 
   // Lock body scroll when lightbox is open
   useEffect(() => {
@@ -199,61 +213,50 @@ export const HomeScreen = () => {
           </p>
         </div>
 
-        {/* Problem Solving & Listening */}
+        {/* Recently Listening & Key Stats */}
         <div className="space-y-6 pt-4">
           <div className="space-y-3">
-            <h3 className="text-xs font-medium text-zinc-500">Find my <span className="text-white">problem solving</span></h3>
-            <div className="flex flex-wrap items-center gap-2">
-              <a 
-                href="https://leetcode.com/u/PranavShende/" 
-                target="_blank" 
-                rel="noreferrer" 
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-zinc-900/50 border border-zinc-800/50 hover:bg-zinc-800 hover:border-amber-500/30 transition-colors text-xs font-medium text-zinc-300"
-              >
-                <span className="text-amber-400 font-bold text-sm leading-none">L</span> LeetCode
-              </a>
-              <a 
-                href="https://codeforces.com/profile/PranavShende" 
-                target="_blank" 
-                rel="noreferrer" 
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-zinc-900/50 border border-zinc-800/50 hover:bg-zinc-800 hover:border-blue-500/30 transition-colors text-xs font-medium text-zinc-300"
-              >
-                <span className="text-blue-400 font-bold text-xs">CF</span> Codeforces
-              </a>
-              <a 
-                href="https://www.codechef.com/users/pranavshende" 
-                target="_blank" 
-                rel="noreferrer" 
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-zinc-900/50 border border-zinc-800/50 hover:bg-zinc-800 hover:border-orange-500/30 transition-colors text-xs font-medium text-zinc-300"
-              >
-                <span className="text-orange-400 font-bold text-xs">CC</span> CodeChef
-              </a>
-            </div>
-          </div>
-
-          <div className="space-y-3">
             <h3 className="text-xs font-medium text-zinc-500">Recently <span className="text-white">listening</span></h3>
-            <a 
-              href="https://open.spotify.com/" 
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center justify-between p-3 rounded-xl bg-zinc-900/30 border border-zinc-800/50 max-w-sm hover:bg-zinc-900/50 hover:border-zinc-700/50 transition-colors group cursor-pointer"
-            >
+            <div className="flex items-center justify-between p-3 rounded-xl bg-zinc-900/30 border border-zinc-800/50 max-w-sm hover:bg-zinc-900/50 hover:border-zinc-700/50 transition-colors group">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-md bg-zinc-800 overflow-hidden relative flex-shrink-0">
+                <div className="w-10 h-10 rounded-md bg-zinc-800 overflow-hidden relative flex-shrink-0 group-hover:shadow-md transition-shadow">
                   <img 
                     src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=200&auto=format&fit=crop" 
                     alt="Album art" 
-                    className="w-full h-full object-cover" 
+                    className={`w-full h-full object-cover transition-transform duration-700 ${isPlaying ? 'scale-110' : 'scale-100'}`} 
                   />
                 </div>
                 <div className="flex flex-col min-w-0">
-                  <span className="text-xs font-medium text-white truncate">The Nights</span>
+                  <a href="https://open.spotify.com/track/0ct6r3EZaNONV2eHwL0b6p" target="_blank" rel="noreferrer" className="text-xs font-medium text-white truncate hover:text-emerald-400 transition-colors">The Nights</a>
                   <span className="text-[10px] text-zinc-500 truncate">by Avicii</span>
                 </div>
               </div>
-              <ArrowUpRight className="w-4 h-4 text-zinc-600 group-hover:text-zinc-400 transition-colors" />
-            </a>
+              <audio 
+                ref={audioRef} 
+                src="https://p.scdn.co/mp3-preview/a3449679234dae1ba235eebdfcd2a26569614442?cid=774b29d4f13844c495f206cafdad9c86" 
+                onEnded={() => setIsPlaying(false)}
+                className="hidden" 
+              />
+              <div className="flex items-center gap-3">
+                {isPlaying && (
+                  <div className="flex items-end gap-[2px] h-3 mr-1">
+                    <span className="w-0.5 h-[60%] bg-emerald-500 animate-[bounce_1s_infinite] origin-bottom"></span>
+                    <span className="w-0.5 h-[100%] bg-emerald-500 animate-[bounce_1s_infinite_0.2s] origin-bottom"></span>
+                    <span className="w-0.5 h-[40%] bg-emerald-500 animate-[bounce_1s_infinite_0.4s] origin-bottom"></span>
+                  </div>
+                )}
+                <button
+                  onClick={togglePlay}
+                  className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center hover:bg-emerald-400 hover:scale-105 transition-all shadow-md"
+                  aria-label={isPlaying ? "Pause" : "Play"}
+                >
+                  {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
+                </button>
+                <a href="https://open.spotify.com/track/0ct6r3EZaNONV2eHwL0b6p" target="_blank" rel="noreferrer" aria-label="Open in Spotify">
+                  <ArrowUpRight className="w-4 h-4 text-zinc-600 hover:text-zinc-400 transition-colors" />
+                </a>
+              </div>
+            </div>
           </div>
 
           {/* Key Stats */}

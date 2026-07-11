@@ -74,10 +74,11 @@
   }
 
   body.recruiter-mode {
-    --bg-main: #000000;
-    --bg-surface: #0a0a0a;
+    --bg-main: #f4f4f5;
+    --bg-surface: #ffffff;
+    --border-main: rgba(0,0,0,0.10);
     background-color: var(--bg-main);
-    color: var(--text-main);
+    color: #111111;
   }
 }
 
@@ -119,55 +120,6 @@
     font-family: 'JetBrains Mono', monospace;
   }
 }
-
-/* ── Light Mode Overrides ── */
-html.light-mode body {
-  background-color: #f5f5f5 !important;
-  background-image: radial-gradient(rgba(0,0,0,0.07) 1px, transparent 1px) !important;
-  color: #111111 !important;
-}
-
-/* Card backgrounds */
-html.light-mode .bg-zinc-900\/30,
-html.light-mode .bg-zinc-900\/50 {
-  background-color: rgba(255, 255, 255, 0.7) !important;
-  border-color: rgba(0, 0, 0, 0.1) !important;
-}
-
-/* Text colors */
-html.light-mode .text-zinc-400 { color: #555555 !important; }
-html.light-mode .text-zinc-500 { color: #777777 !important; }
-html.light-mode .text-zinc-600 { color: #888888 !important; }
-html.light-mode .text-white    { color: #111111 !important; }
-html.light-mode .text-zinc-300 { color: #333333 !important; }
-
-/* Borders */
-html.light-mode .border-zinc-800\/50 { border-color: rgba(0, 0, 0, 0.1) !important; }
-html.light-mode .border-zinc-800    { border-color: rgba(0, 0, 0, 0.15) !important; }
-
-/* Pill/badge backgrounds */
-html.light-mode .bg-zinc-900 { background-color: #e8e8e8 !important; }
-html.light-mode .bg-zinc-800 { background-color: #d4d4d4 !important; }
-
-/* Header */
-html.light-mode header.fixed {
-  background-color: rgba(245, 245, 245, 0.85) !important;
-  border-color: rgba(0, 0, 0, 0.1) !important;
-}
-html.light-mode header .text-zinc-500 { color: #888888 !important; }
-html.light-mode header .text-white    { color: #111111 !important; }
-
-/* Dock */
-html.light-mode .bg-zinc-950\/80 {
-  background-color: rgba(240, 240, 240, 0.9) !important;
-}
-html.light-mode .bg-zinc-900 {
-  background-color: #e5e5e5 !important;
-}
-html.light-mode .text-zinc-400 { color: #555555 !important; }
-
-/* Page wrapper */
-html.light-mode .bg-black { background-color: #f5f5f5 !important; }
 
 
 @layer components {

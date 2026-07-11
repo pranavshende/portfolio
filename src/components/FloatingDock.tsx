@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, Github, Linkedin, Mail, Twitter, Briefcase, FolderGit2, Code2 } from 'lucide-react';
+import { Home, Github, Linkedin, Mail, Briefcase, FolderGit2, Code2 } from 'lucide-react';
 
 interface DockItem {
   icon: React.ReactNode;
@@ -61,13 +61,7 @@ const FloatingDock = () => {
       action: () => { window.location.href = 'mailto:pranavshende97@gmail.com'; },
       type: 'email',
     },
-    {
-      icon: <Twitter className="w-[18px] h-[18px]" />,
-      label: 'Twitter',
-      action: () => window.open('https://x.com/pranavshende', '_blank'),
-      type: 'link',
-      href: 'https://x.com/pranavshende',
-    },
+
   ];
 
   return (
