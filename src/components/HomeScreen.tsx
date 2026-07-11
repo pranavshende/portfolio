@@ -1,10 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import profilePhoto from '../photo/1000170373_optimized_1000.jpg.jpeg';
 import SkillsMarquee from './SkillsMarquee';
 import { Github, Twitter, Linkedin, Mail, ArrowUpRight, X } from 'lucide-react';
 
 export const HomeScreen = () => {
   const [photoOpen, setPhotoOpen] = useState(false);
+  const spotifyContainerRef = useRef<HTMLDivElement>(null);
+  const spotifyControllerRef = useRef<any>(null);
+
+  // Initialize Spotify IFrame API for programmatic control
+  useEffect(() => {
+    // Define the global callback
+    (window as any).onSpotifyIframeApiReady = (IFrameAPI: any) => {
+      const element = spotifyContainerRef.current;
+      if (!element) return;
+
+      const options = {
+        uri: 'spotify:track:5y2ijHECwFYWqcAHKTZgzD',
+        width: '100%',
+        height: '152',
+        theme: '0'
+      };
+
+      IFrameAPI.createController(element, options, (EmbedController: any) => {
+        spotifyControllerRef.current = EmbedController;
+      });
+    };
+
+    // Inject the Spotify script if it doesn't exist
+    if (!document.querySelector('script[src="https://open.spotify.com/embed/iframe-api/v1"]')) {
+      const script = document.createElement('script');
+      script.src = "https://open.spotify.com/embed/iframe-api/v1";
+      script.async = true;
+      document.body.appendChild(script);
+    }
+
+    // Cleanup
+    return () => {
+      (window as any).onSpotifyIframeApiReady = null;
+    };
+  }, []);
+
+  // Pause music automatically when app goes to background / tab is switched
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden && spotifyControllerRef.current) {
+        spotifyControllerRef.current.pause();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, []);
 
   // Lock body scroll when lightbox is open
   useEffect(() => {
@@ -204,17 +251,8 @@ export const HomeScreen = () => {
           <div className="space-y-3">
             <h3 className="text-xs font-medium text-zinc-500">Recently <span className="text-white">listening</span></h3>
             <div className="overflow-hidden rounded-xl border border-zinc-800/50 bg-zinc-900/30">
-              <iframe 
-                style={{ borderRadius: '12px', background: 'transparent' }} 
-                src="https://open.spotify.com/embed/track/5y2ijHECwFYWqcAHKTZgzD?utm_source=generator&theme=0" 
-                width="100%" 
-                height="152" 
-                frameBorder="0" 
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-                loading="lazy"
-                title="Spotify Embed: Risk It All"
-                className="w-full"
-              ></iframe>
+              {/* This div is replaced by the Spotify IFrame API */}
+              <div ref={spotifyContainerRef}></div>
             </div>
           </div>
 
