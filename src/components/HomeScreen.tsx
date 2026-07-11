@@ -21,7 +21,7 @@ export const HomeScreen = () => {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto flex flex-col pt-8 sm:pt-12 px-4 sm:px-6">
+    <div className="relative z-10 w-full max-w-3xl mx-auto flex flex-col pt-8 sm:pt-12 px-4 sm:px-6">
       
       {/* Hero Banner + Profile Picture wrapper */}
       <div className="relative w-full mb-12 sm:mb-14">
@@ -115,8 +115,8 @@ export const HomeScreen = () => {
         </div>
       )}
 
-      {/* Profile Info */}
-      <div className="space-y-6">
+      {/* Profile Info — frosted glass panel for readability over the animated background */}
+      <div className="relative rounded-2xl bg-zinc-950 border border-white/[0.06] px-5 py-6 sm:px-7 sm:py-7 space-y-6">
         <div className="space-y-1.5">
           <h1 
             className="font-bold text-2xl sm:text-3xl tracking-tight text-white"

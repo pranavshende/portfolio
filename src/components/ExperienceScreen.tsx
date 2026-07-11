@@ -49,14 +49,15 @@ export const ExperienceScreen = () => {
   const [expanded, setExpanded] = React.useState<number | null>(null);
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-4 sm:px-6">
+    <div className="relative z-10 w-full max-w-3xl mx-auto px-4 sm:px-6">
+      <div className="rounded-2xl bg-zinc-950 border border-white/[0.06] px-5 py-6 sm:px-7 sm:py-7">
       <SectionHeader title="Where I've worked" />
       
       <div className="space-y-3">
         {experiences.map((exp, i) => (
           <div 
             key={i} 
-            className="group flex flex-col p-4 rounded-xl bg-zinc-900/30 border border-zinc-800/50 hover:bg-zinc-900/50 hover:border-zinc-700/50 transition-all cursor-pointer"
+            className="group flex flex-col p-4 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 hover:border-zinc-700 transition-all cursor-pointer"
             onClick={() => setExpanded(expanded === i ? null : i)}
           >
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
@@ -96,6 +97,7 @@ export const ExperienceScreen = () => {
             </div>
           </div>
         ))}
+      </div>
       </div>
     </div>
   );

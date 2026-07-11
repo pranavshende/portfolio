@@ -632,6 +632,74 @@ body.recruiter-mode .exp-card:hover {
   box-shadow: 0 8px 30px rgba(0,0,0,0.04);
 }
 
+/* ── Recruiter Mode: opaque section panels ── */
+
+/* Root page background */
+body.recruiter-mode {
+  background-color: #f4f4f5 !important;
+  background-image: radial-gradient(rgba(0,0,0,0.06) 1px, transparent 1px) !important;
+  color: #111111 !important;
+}
+
+/* Main page wrapper */
+body.recruiter-mode .bg-black { background-color: #f4f4f5 !important; }
+
+/* Section outer panels (bg-zinc-950) → white card */
+body.recruiter-mode .bg-zinc-950 {
+  background-color: #ffffff !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06) !important;
+}
+
+/* Inner cards (bg-zinc-900) → light grey */
+body.recruiter-mode .bg-zinc-900 {
+  background-color: #f0f0f0 !important;
+  border-color: rgba(0,0,0,0.08) !important;
+}
+body.recruiter-mode .bg-zinc-900:hover,
+body.recruiter-mode .hover\:bg-zinc-800:hover {
+  background-color: #e4e4e7 !important;
+  border-color: rgba(0,0,0,0.12) !important;
+}
+body.recruiter-mode .bg-zinc-800 { background-color: #e4e4e7 !important; }
+
+/* Text colours */
+body.recruiter-mode .text-white      { color: #111111 !important; }
+body.recruiter-mode .text-zinc-300   { color: #333333 !important; }
+body.recruiter-mode .text-zinc-400   { color: #555555 !important; }
+body.recruiter-mode .text-zinc-500   { color: #777777 !important; }
+body.recruiter-mode .text-zinc-600   { color: #888888 !important; }
+
+/* Borders */
+body.recruiter-mode .border-white\/\[0\.06\] { border-color: rgba(0,0,0,0.08) !important; }
+body.recruiter-mode .border-zinc-800         { border-color: rgba(0,0,0,0.10) !important; }
+body.recruiter-mode .border-zinc-700         { border-color: rgba(0,0,0,0.15) !important; }
+
+/* Section divider lines */
+body.recruiter-mode .bg-zinc-800 { background-color: rgba(0,0,0,0.12) !important; }
+
+/* Badge / pill chips (inline code-style spans) */
+body.recruiter-mode .bg-zinc-900.border.border-zinc-800 {
+  background-color: #e8e8e8 !important;
+  border-color: rgba(0,0,0,0.10) !important;
+  color: #333333 !important;
+}
+
+/* Italic username line divider */
+body.recruiter-mode .h-\[1px\] { background-color: rgba(0,0,0,0.12) !important; }
+
+/* Floating header */
+body.recruiter-mode header {
+  background-color: rgba(255,255,255,0.85) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+}
+
+/* Floating dock */
+body.recruiter-mode .bg-zinc-950\/80 {
+  background-color: rgba(255,255,255,0.90) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+}
+
 /* Profile photo ring spin */
 @keyframes spin-slow {
   from { transform: rotate(0deg); }

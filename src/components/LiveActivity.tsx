@@ -4,12 +4,13 @@ import SectionHeader from './SectionHeader';
 
 export const LiveActivity = () => {
   return (
-    <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 mb-24">
+    <div className="relative z-10 w-full max-w-3xl mx-auto px-4 sm:px-6 mb-24">
+      <div className="rounded-2xl bg-zinc-950 border border-white/[0.06] px-5 py-6 sm:px-7 sm:py-7">
 
       {/* Achievements */}
       <SectionHeader title="Achievements" />
       <div className="space-y-3 mb-16">
-        <div className="flex items-start gap-4 p-4 rounded-xl bg-zinc-900/30 border border-zinc-800/50 hover:bg-zinc-900/50 transition-colors">
+        <div className="flex items-start gap-4 p-4 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 transition-colors">
           <div className="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center flex-shrink-0">
             <Award className="w-5 h-5 text-amber-400" />
           </div>
@@ -19,7 +20,7 @@ export const LiveActivity = () => {
           </div>
         </div>
 
-        <div className="flex items-start gap-4 p-4 rounded-xl bg-zinc-900/30 border border-zinc-800/50 hover:bg-zinc-900/50 transition-colors">
+        <div className="flex items-start gap-4 p-4 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 transition-colors">
           <div className="w-10 h-10 rounded-lg bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center flex-shrink-0">
             <Trophy className="w-5 h-5 text-yellow-400" />
           </div>
@@ -33,7 +34,7 @@ export const LiveActivity = () => {
       {/* Certifications */}
       <SectionHeader title="Certifications" />
       <div className="space-y-3 mb-16">
-        <div className="flex items-start gap-4 p-4 rounded-xl bg-zinc-900/30 border border-zinc-800/50 hover:bg-zinc-900/50 transition-colors">
+        <div className="flex items-start gap-4 p-4 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 transition-colors">
           <div className="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center flex-shrink-0">
             <BookOpen className="w-5 h-5 text-blue-400" />
           </div>
@@ -43,7 +44,7 @@ export const LiveActivity = () => {
           </div>
         </div>
 
-        <div className="flex items-start gap-4 p-4 rounded-xl bg-zinc-900/30 border border-zinc-800/50 hover:bg-zinc-900/50 transition-colors">
+        <div className="flex items-start gap-4 p-4 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 transition-colors">
           <div className="w-10 h-10 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center flex-shrink-0">
             <BookOpen className="w-5 h-5 text-orange-400" />
           </div>
@@ -56,7 +57,7 @@ export const LiveActivity = () => {
 
       {/* Education */}
       <SectionHeader title="Education" />
-      <div className="p-5 rounded-xl bg-zinc-900/30 border border-zinc-800/50 hover:bg-zinc-900/50 transition-colors mb-16">
+      <div className="p-5 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 transition-colors mb-16">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
           <div>
             <p className="text-sm font-semibold text-white">St. Vincent Pallotti College of Engineering & Technology</p>
@@ -71,7 +72,7 @@ export const LiveActivity = () => {
       <SectionHeader title="Live Activity" />
       <p className="text-sm text-zinc-500 mb-6">No recent public contributions.</p>
       
-      <div className="w-full rounded-xl bg-zinc-900/30 border border-zinc-800/50 p-6 hover:bg-zinc-900/50 transition-colors">
+      <div className="w-full rounded-xl bg-zinc-900 border border-zinc-800 p-6 hover:bg-zinc-800 transition-colors">
         <div className="flex items-center justify-between mb-8">
           <div>
             <h3 className="text-sm font-medium text-white">My GitHub Activity</h3>
@@ -127,6 +128,7 @@ export const LiveActivity = () => {
       </div>
       
       <p className="mt-8 text-sm text-zinc-500 italic">I code daily, share openly, and ship relentlessly — turning ideas into reality.</p>
+      </div>
     </div>
   );
 };

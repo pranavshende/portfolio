@@ -55,7 +55,8 @@ const projects: Project[] = [
 
 export const ProjectsScreen = () => {
   return (
-    <div className="w-full max-w-3xl mx-auto px-4 sm:px-6">
+    <div className="relative z-10 w-full max-w-3xl mx-auto px-4 sm:px-6">
+      <div className="rounded-2xl bg-zinc-950 border border-white/[0.06] px-5 py-6 sm:px-7 sm:py-7">
       <SectionHeader title="Featured Projects" />
       
       <div className="space-y-4">
@@ -65,7 +66,7 @@ export const ProjectsScreen = () => {
             href={project.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex flex-col p-5 rounded-xl bg-zinc-900/30 border border-zinc-800/50 hover:bg-zinc-900/50 hover:border-zinc-700/50 transition-all"
+            className="group flex flex-col p-5 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 hover:border-zinc-700 transition-all"
           >
             <div className="flex items-start justify-between">
               <div className="flex-1 pr-4">
@@ -104,6 +105,7 @@ export const ProjectsScreen = () => {
             </div>
           </a>
         ))}
+      </div>
       </div>
     </div>
   );
