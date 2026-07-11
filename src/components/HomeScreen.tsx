@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import profilePhoto from '../photo/1000170373_optimized_1000.jpg.jpeg';
+import riskItAllAudio from '../audio/Bruno Mars - Risk It All.mp3';
 import SkillsMarquee from './SkillsMarquee';
 import { Github, Twitter, Linkedin, Mail, ArrowUpRight, X, Play, Pause } from 'lucide-react';
 
@@ -238,7 +239,7 @@ export const HomeScreen = () => {
               </div>
               <audio 
                 ref={audioRef} 
-                src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" 
+                src={riskItAllAudio} 
                 onEnded={() => setIsPlaying(false)}
                 className="hidden" 
                 preload="none"
