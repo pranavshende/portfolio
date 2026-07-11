@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import profilePhoto from '../photo/1000170373_optimized_1000.jpg.jpeg';
 import SkillsMarquee from './SkillsMarquee';
-import { Github, Twitter, Linkedin, Mail, ArrowUpRight, Pause } from 'lucide-react';
+import { Github, Twitter, Linkedin, Mail, ArrowUpRight, X } from 'lucide-react';
 
 export const HomeScreen = () => {
+  const [photoOpen, setPhotoOpen] = useState(false);
+
+  // Lock body scroll when lightbox is open
+  useEffect(() => {
+    if (photoOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [photoOpen]);
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -11,35 +23,97 @@ export const HomeScreen = () => {
   return (
     <div className="w-full max-w-3xl mx-auto flex flex-col pt-8 sm:pt-12 px-4 sm:px-6">
       
-      {/* Hero Banner */}
-      <div className="relative w-full h-32 sm:h-48 rounded-2xl overflow-hidden mb-12 sm:mb-16">
-        <img 
-          src="https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=3540&auto=format&fit=crop" 
-          alt="Banner" 
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
-        
-        {/* Profile Picture */}
-        <div className="absolute -bottom-8 left-6 sm:left-8 z-10">
-          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden border-4 border-black bg-zinc-900 shadow-xl flex items-center justify-center">
-            <span className="text-3xl font-bold text-zinc-400">PS</span>
+      {/* Hero Banner + Profile Picture wrapper */}
+      <div className="relative w-full mb-12 sm:mb-14">
+        {/* Banner */}
+        <div className="relative w-full h-32 sm:h-48 rounded-2xl overflow-hidden">
+          <img 
+            src="https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=3540&auto=format&fit=crop" 
+            alt="Banner" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
+
+          {/* Resume button */}
+          <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6">
+            <a 
+              href="https://drive.google.com/drive/folders/1vgcE2naPfhC52fyWzBFe9Brv_SwjK8df?usp=sharing"
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-white text-black hover:bg-zinc-100 active:scale-95 transition-all border border-white/20 shadow-md backdrop-blur-md"
+            >
+              <ArrowUpRight className="w-3.5 h-3.5" />
+              Resume
+            </a>
           </div>
         </div>
 
-        {/* Resume button — links to LinkedIn since no PDF is uploaded */}
-        <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6">
-          <a 
-            href="https://linkedin.com/in/pranavshende"
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-black/50 text-white hover:bg-black/80 transition-colors border border-white/10 backdrop-blur-md"
+        {/* Profile Picture — sits below banner, not inside overflow-hidden */}
+        <div className="absolute -bottom-10 left-6 sm:left-8 z-10">
+          <button
+            onClick={() => setPhotoOpen(true)}
+            aria-label="View profile photo"
+            className="group block w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden border-4 border-black shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 cursor-zoom-in transition-transform duration-200 hover:scale-105"
           >
-            <ArrowUpRight className="w-3.5 h-3.5" />
-            Resume
-          </a>
+            <img
+              src={profilePhoto}
+              alt="Pranav Shende"
+              className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-110"
+            />
+          </button>
         </div>
       </div>
+
+      {/* ── Profile Photo Lightbox ── */}
+      {photoOpen && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-8"
+          style={{ animation: 'fcb-lb-bg 0.25s ease forwards' }}
+          onClick={() => setPhotoOpen(false)}
+        >
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-md" />
+
+          {/* Frame */}
+          <div
+            className="relative z-10 flex flex-col items-center gap-4"
+            style={{ animation: 'fcb-lb-pop 0.3s cubic-bezier(0.34,1.56,0.64,1) forwards' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Glowing ring */}
+            <div className="relative rounded-2xl p-[3px] bg-gradient-to-br from-emerald-400 via-teal-400 to-cyan-500 shadow-2xl shadow-emerald-500/30">
+              <div className="rounded-[14px] overflow-hidden w-64 h-64 sm:w-80 sm:h-80">
+                <img
+                  src={profilePhoto}
+                  alt="Pranav Shende"
+                  className="w-full h-full object-cover object-top"
+                  draggable={false}
+                />
+              </div>
+            </div>
+
+            {/* Name tag */}
+            <div className="flex flex-col items-center gap-0.5">
+              <span className="text-white font-bold text-lg tracking-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>Pranav Shende</span>
+              <span className="text-emerald-400 text-xs font-mono">@pranavshende</span>
+            </div>
+
+            {/* Close button */}
+            <button
+              onClick={() => setPhotoOpen(false)}
+              aria-label="Close"
+              className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-zinc-900 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-white hover:border-zinc-500 transition-colors shadow-lg"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          <style>{`
+            @keyframes fcb-lb-bg  { from { opacity: 0 } to { opacity: 1 } }
+            @keyframes fcb-lb-pop { from { opacity: 0; transform: scale(0.7) } to { opacity: 1; transform: scale(1) } }
+          `}</style>
+        </div>
+      )}
 
       {/* Profile Info */}
       <div className="space-y-6">
