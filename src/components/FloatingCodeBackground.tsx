@@ -1,78 +1,89 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 
 const CODE_TOKENS = [
-  // Keywords
   "const", "let", "async", "await", "return", "import", "export",
   "function", "class", "extends", "interface", "type", "enum",
   "if", "else", "for", "while", "try", "catch", "new", "void",
-  // Symbols / operators
-  "=>", "===", "!==", "&&", "||", "??", "?.","...", "::", "->",
-  // Brackets / punctuation
-  "{}", "[]", "()", "</>", "</>" , "<div>", "</>",
-  // Common values
-  "true", "false", "null", "undefined", "NaN",
-  // Snippets
-  "npm run", "git push", "docker run", "useState()", "useEffect()",
-  "fetch()", ".then()", ".catch()", "async/await", "REST API",
-  "console.log", "Object.keys", "Array.map", "Promise.all",
-  // Generic code
-  "0x1A3F", "#10b981", "PORT=3000", "200 OK", "404", "500",
-  "SELECT *", "FROM db", "WHERE id", "ORDER BY",
-  "{ ... }", "// TODO", "/* fix */", "@decorator",
+  "=>", "===", "!==", "&&", "||", "??", "?.", "...", "::",
+  "{}", "[]", "()", "</>", "<div>", "<App />",
+  "true", "false", "null", "undefined",
+  "useState()", "useEffect()", "fetch()", ".then()", ".catch()",
+  "console.log", "Array.map", "Promise.all", "Object.keys",
+  "npm run dev", "git push", "docker run",
+  "0x1A3F", "PORT=3000", "200 OK", "404", "500",
+  "SELECT *", "WHERE id=", "ORDER BY",
+  "// TODO", "/* fix */", "@decorator", "{ ...props }",
 ];
 
 interface Token {
   id: number;
   text: string;
-  x: number;       // vw
-  startY: number;  // vh (start below viewport)
-  size: number;    // px
-  duration: number;// s
-  delay: number;   // s
+  x: number;
+  startPct: number;
+  size: number;
+  duration: number;
   opacity: number;
-  drift: number;   // horizontal drift in vw
+  drift: number;
+  color: string;
+  glow: string;
 }
 
-function generateTokens(count: number): Token[] {
-  return Array.from({ length: count }, (_, i) => ({
-    id: i,
-    text: CODE_TOKENS[Math.floor(Math.random() * CODE_TOKENS.length)],
-    x: Math.random() * 98,
-    startY: Math.random() * 120 + 100, // start well below viewport
-    size: Math.random() * 6 + 9,       // 9–15 px
-    duration: Math.random() * 40 + 30, // 30–70 s
-    delay: -(Math.random() * 70),      // already mid-flight at mount
-    opacity: Math.random() * 0.045 + 0.015, // 0.015–0.06 — very subtle
-    drift: (Math.random() - 0.5) * 6,  // gentle side drift
-  }));
+const COLOR_PALETTE = [
+  { color: "#34d399", glow: "rgba(52,211,153,0.65)"  }, // emerald green
+  { color: "#fb923c", glow: "rgba(251,146,60,0.65)"  }, // orange
+  { color: "#f87171", glow: "rgba(248,113,113,0.65)" }, // red
+  { color: "#fbbf24", glow: "rgba(251,191,36,0.65)"  }, // yellow
+  { color: "#f1f5f9", glow: "rgba(241,245,249,0.50)" }, // white
+  { color: "#60a5fa", glow: "rgba(96,165,250,0.65)"  }, // blue (bonus)
+];
+
+function makeTokens(count: number): Token[] {
+  return Array.from({ length: count }, (_, i) => {
+    const palette = COLOR_PALETTE[Math.floor(Math.random() * COLOR_PALETTE.length)];
+    return {
+      id: i,
+      text: CODE_TOKENS[i % CODE_TOKENS.length],
+      x: Math.random() * 95,
+      startPct: Math.random(),
+      size: Math.random() * 5 + 10,
+      duration: Math.random() * 25 + 20,
+      opacity: Math.random() * 0.25 + 0.40,
+      drift: (Math.random() - 0.5) * 8,
+      color: palette.color,
+      glow: palette.glow,
+    };
+  });
 }
 
-const TOKENS = generateTokens(55);
+// Generated once at module level — stable across re-renders
+const TOKENS = makeTokens(60);
 
 const FloatingCodeBackground = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const styleRef = useRef<HTMLStyleElement | null>(null);
 
-  // Inject keyframes once into <head>
+  // Build all keyframe CSS once
+  const keyframeCSS = useMemo(() =>
+    TOKENS.map((t) =>
+      `@keyframes fcb${t.id}{
+        0%   { transform: translateY(110vh) translateX(0)            ; opacity: 0;          }
+        8%   { opacity: ${t.opacity};                                                        }
+        92%  { opacity: ${t.opacity};                                                        }
+        100% { transform: translateY(-10vh)  translateX(${t.drift}vw); opacity: 0;          }
+      }`
+    ).join("\n"),
+  []);
+
   useEffect(() => {
-    const id = "fcb-keyframes";
-    if (document.getElementById(id)) return;
-    const style = document.createElement("style");
-    style.id = id;
-    style.textContent = TOKENS.map((t) => `
-      @keyframes fcb-float-${t.id} {
-        0%   { transform: translateY(0)      translateX(0)          rotate(0deg); opacity: 0; }
-        5%   { opacity: ${t.opacity}; }
-        95%  { opacity: ${t.opacity}; }
-        100% { transform: translateY(-${t.startY}vh) translateX(${t.drift}vw) rotate(${(Math.random()-0.5)*6}deg); opacity: 0; }
-      }
-    `).join("\n");
-    document.head.appendChild(style);
-    return () => { style.remove(); };
-  }, []);
+    const el = document.createElement("style");
+    el.id = "fcb-styles";
+    el.textContent = keyframeCSS;
+    document.head.appendChild(el);
+    styleRef.current = el;
+    return () => el.remove();
+  }, [keyframeCSS]);
 
   return (
     <div
-      ref={containerRef}
       aria-hidden="true"
       className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none"
     >
@@ -82,18 +93,27 @@ const FloatingCodeBackground = () => {
           style={{
             position: "absolute",
             left: `${t.x}vw`,
-            top: `${t.startY}vh`,
+            // Offset the starting position so each token is at a different
+            // point in its loop at mount time (simulates negative delay without
+            // starting them all below the viewport).
+            bottom: `${t.startPct * 110 - 10}vh`,
             fontSize: `${t.size}px`,
-            fontFamily: "'JetBrains Mono', 'Fira Mono', monospace",
-            color: "#10b981",
+            fontFamily: "'JetBrains Mono', 'Fira Mono', 'Courier New', monospace",
+            fontWeight: 500,
             whiteSpace: "nowrap",
-            animation: `fcb-float-${t.id} ${t.duration}s ${t.delay}s linear infinite`,
+            lineHeight: 1,
+            // Readable on both dark and light backgrounds
+            color: t.color,
+            textShadow: `0 0 16px ${t.glow}`,
+            animation: `fcb${t.id} ${t.duration}s ${-(t.startPct * t.duration)}s linear infinite`,
             willChange: "transform, opacity",
           }}
         >
           {t.text}
         </span>
       ))}
+
+
     </div>
   );
 };
