@@ -226,14 +226,14 @@ export const HomeScreen = () => {
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-md bg-zinc-800 overflow-hidden relative flex-shrink-0 group-hover:shadow-md transition-shadow">
                   <img 
-                    src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=200&auto=format&fit=crop" 
+                    src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=200&auto=format&fit=crop" 
                     alt="Album art" 
                     className={`w-full h-full object-cover transition-transform duration-700 ${isPlaying ? 'scale-110' : 'scale-100'}`} 
                   />
                 </div>
                 <div className="flex flex-col min-w-0">
-                  <a href="https://open.spotify.com/track/0ct6r3EZaNONV2eHwL0b6p" target="_blank" rel="noreferrer" className="text-xs font-medium text-white truncate hover:text-emerald-400 transition-colors">The Nights</a>
-                  <span className="text-[10px] text-zinc-500 truncate">by Avicii</span>
+                  <a href="https://open.spotify.com/search/Risk%20It%20All%20Bruno%20Mars" target="_blank" rel="noreferrer" className="text-xs font-medium text-white truncate hover:text-emerald-400 transition-colors">Risk It All</a>
+                  <span className="text-[10px] text-zinc-500 truncate">by Bruno Mars</span>
                 </div>
               </div>
               <audio 
@@ -258,7 +258,7 @@ export const HomeScreen = () => {
                 >
                   {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
                 </button>
-                <a href="https://open.spotify.com/track/0ct6r3EZaNONV2eHwL0b6p" target="_blank" rel="noreferrer" aria-label="Open in Spotify">
+                <a href="https://open.spotify.com/search/Risk%20It%20All%20Bruno%20Mars" target="_blank" rel="noreferrer" aria-label="Open in Spotify">
                   <ArrowUpRight className="w-4 h-4 text-zinc-600 hover:text-zinc-400 transition-colors" />
                 </a>
               </div>
