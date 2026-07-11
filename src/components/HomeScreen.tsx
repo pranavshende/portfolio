@@ -1,30 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import profilePhoto from '../photo/1000170373_optimized_1000.jpg.jpeg';
-import riskItAllAudio from '../audio/Bruno Mars - Risk It All.mp3';
 import SkillsMarquee from './SkillsMarquee';
-import { Github, Twitter, Linkedin, Mail, ArrowUpRight, X, Play, Pause } from 'lucide-react';
+import { Github, Twitter, Linkedin, Mail, ArrowUpRight, X } from 'lucide-react';
 
 export const HomeScreen = () => {
   const [photoOpen, setPhotoOpen] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
-
-  const togglePlay = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-        setIsPlaying(false);
-      } else {
-        setIsPlaying(true);
-        // Play returns a promise which can reject if the audio source is invalid or blocked
-        audioRef.current.play().catch((err) => {
-          console.error("Audio playback failed:", err);
-          setIsPlaying(false);
-        });
-      }
-    }
-  };
 
   // Lock body scroll when lightbox is open
   useEffect(() => {
@@ -223,46 +203,18 @@ export const HomeScreen = () => {
         <div className="space-y-6 pt-4">
           <div className="space-y-3">
             <h3 className="text-xs font-medium text-zinc-500">Recently <span className="text-white">listening</span></h3>
-            <div className="flex items-center justify-between p-3 rounded-xl bg-zinc-900/30 border border-zinc-800/50 max-w-sm hover:bg-zinc-900/50 hover:border-zinc-700/50 transition-colors group">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-md bg-zinc-800 overflow-hidden relative flex-shrink-0 group-hover:shadow-md transition-shadow">
-                  <img 
-                    src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=200&auto=format&fit=crop" 
-                    alt="Album art" 
-                    className={`w-full h-full object-cover transition-transform duration-700 ${isPlaying ? 'scale-110' : 'scale-100'}`} 
-                  />
-                </div>
-                <div className="flex flex-col min-w-0">
-                  <a href="https://open.spotify.com/search/Risk%20It%20All%20Bruno%20Mars" target="_blank" rel="noreferrer" className="text-xs font-medium text-white truncate hover:text-emerald-400 transition-colors">Risk It All</a>
-                  <span className="text-[10px] text-zinc-500 truncate">by Bruno Mars</span>
-                </div>
-              </div>
-              <audio 
-                ref={audioRef} 
-                src={riskItAllAudio} 
-                onEnded={() => setIsPlaying(false)}
-                className="hidden" 
-                preload="none"
-              />
-              <div className="flex items-center gap-3">
-                {isPlaying && (
-                  <div className="flex items-end gap-[2px] h-3 mr-1">
-                    <span className="w-0.5 h-[60%] bg-emerald-500 animate-[bounce_1s_infinite] origin-bottom"></span>
-                    <span className="w-0.5 h-[100%] bg-emerald-500 animate-[bounce_1s_infinite_0.2s] origin-bottom"></span>
-                    <span className="w-0.5 h-[40%] bg-emerald-500 animate-[bounce_1s_infinite_0.4s] origin-bottom"></span>
-                  </div>
-                )}
-                <button
-                  onClick={togglePlay}
-                  className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center hover:bg-emerald-400 hover:scale-105 transition-all shadow-md"
-                  aria-label={isPlaying ? "Pause" : "Play"}
-                >
-                  {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
-                </button>
-                <a href="https://open.spotify.com/search/Risk%20It%20All%20Bruno%20Mars" target="_blank" rel="noreferrer" aria-label="Open in Spotify">
-                  <ArrowUpRight className="w-4 h-4 text-zinc-600 hover:text-zinc-400 transition-colors" />
-                </a>
-              </div>
+            <div className="overflow-hidden rounded-xl border border-zinc-800/50 bg-zinc-900/30">
+              <iframe 
+                style={{ borderRadius: '12px', background: 'transparent' }} 
+                src="https://open.spotify.com/embed/track/5y2ijHECwFYWqcAHKTZgzD?utm_source=generator&theme=0" 
+                width="100%" 
+                height="152" 
+                frameBorder="0" 
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                loading="lazy"
+                title="Spotify Embed: Risk It All"
+                className="w-full"
+              ></iframe>
             </div>
           </div>
 
