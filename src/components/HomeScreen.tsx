@@ -13,10 +13,15 @@ export const HomeScreen = () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
+        setIsPlaying(false);
       } else {
-        audioRef.current.play();
+        setIsPlaying(true);
+        // Play returns a promise which can reject if the audio source is invalid or blocked
+        audioRef.current.play().catch((err) => {
+          console.error("Audio playback failed:", err);
+          setIsPlaying(false);
+        });
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
@@ -233,9 +238,10 @@ export const HomeScreen = () => {
               </div>
               <audio 
                 ref={audioRef} 
-                src="https://p.scdn.co/mp3-preview/a3449679234dae1ba235eebdfcd2a26569614442?cid=774b29d4f13844c495f206cafdad9c86" 
+                src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" 
                 onEnded={() => setIsPlaying(false)}
                 className="hidden" 
+                preload="none"
               />
               <div className="flex items-center gap-3">
                 {isPlaying && (
