@@ -140,7 +140,7 @@ const PlayGames = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute inset-0 bg-black"
+                className="absolute top-0 left-0 right-0 bottom-10 bg-black"
               >
                 <iframe 
                   src="https://cyberzhg.github.io/2048/" 
@@ -158,7 +158,7 @@ const PlayGames = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute inset-0 bg-black"
+                className="absolute top-0 left-0 right-0 bottom-10 bg-black"
               >
                 <iframe 
                   src="https://hextris.github.io/hextris/" 
@@ -176,7 +176,7 @@ const PlayGames = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute inset-0 bg-black"
+                className="absolute top-0 left-0 right-0 bottom-10 bg-black"
               >
                 <iframe 
                   src="https://wayou.github.io/t-rex-runner/" 
@@ -194,7 +194,7 @@ const PlayGames = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute inset-0 bg-black"
+                className="absolute top-0 left-0 right-0 bottom-10 bg-black"
               >
                 <iframe 
                   src="https://chvin.github.io/react-tetris/" 
@@ -212,7 +212,7 @@ const PlayGames = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute inset-0 bg-black"
+                className="absolute top-0 left-0 right-0 bottom-10 bg-black"
               >
                 <iframe 
                   src="https://subwaysurfers76.github.io/" 
@@ -231,7 +231,7 @@ const PlayGames = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute inset-0 bg-black"
+                className="absolute top-0 left-0 right-0 bottom-10 bg-black"
               >
                 <iframe 
                   src="https://flappybird.io/" 
@@ -250,7 +250,7 @@ const PlayGames = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute inset-0 bg-black"
+                className="absolute top-0 left-0 right-0 bottom-10 bg-black"
               >
                 <iframe 
                   src="https://projectjansampark.pranavshende.online/" 
@@ -269,7 +269,7 @@ const PlayGames = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute inset-0 bg-black"
+                className="absolute top-0 left-0 right-0 bottom-10 bg-black"
               >
                 <iframe 
                   src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M?utm_source=generator&theme=0" 
