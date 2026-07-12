@@ -156,9 +156,9 @@ const PlayGames = () => {
       {/* Mobile Absolute Back Button */}
       <Link 
         to="/" 
-        className="sm:hidden absolute top-4 left-4 text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white flex items-center gap-2 transition-colors z-[60] bg-black/5 dark:bg-black/40 backdrop-blur-md p-2 rounded-full border border-black/10 dark:border-transparent"
+        className="sm:hidden absolute top-6 left-6 text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white flex items-center gap-2 transition-colors z-[60] bg-black/10 dark:bg-black/40 backdrop-blur-xl p-3 rounded-full border border-black/10 dark:border-white/10 shadow-lg"
       >
-        <ChevronLeft size={20} />
+        <ChevronLeft size={22} className="drop-shadow-sm" />
       </Link>
 
       {/* Main Content Area */}
@@ -206,17 +206,17 @@ const PlayGames = () => {
                 
                 <div className="relative z-10 flex flex-col h-full pt-16 px-6 pb-8">
                   {/* Aesthetic Clock Widget */}
-                  <div className="w-full flex flex-col items-center justify-center mb-12 mt-4 pointer-events-none drop-shadow-lg">
-                    <span className="text-[#ffffff] text-6xl font-light tracking-tight">
+                  <div className="w-full flex flex-col items-center justify-center mb-10 mt-2 sm:mb-12 sm:mt-4 pointer-events-none drop-shadow-lg">
+                    <span className="text-[#ffffff] text-5xl sm:text-7xl font-light tracking-tight">
                       {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }).replace(' AM', '').replace(' PM', '')}
                     </span>
-                    <span className="text-[#ffffff]/80 text-sm font-medium tracking-widest uppercase mt-2">
+                    <span className="text-[#ffffff]/80 text-[11px] sm:text-sm font-medium tracking-widest uppercase mt-2">
                       {time.toLocaleDateString([], { weekday: 'long', month: 'short', day: 'numeric' })}
                     </span>
                   </div>
 
                   {/* Apps Grid */}
-                  <div className={`grid gap-x-4 gap-y-8 mx-auto mt-auto mb-10 w-full ${
+                  <div className={`grid gap-x-4 sm:gap-x-6 gap-y-6 sm:gap-y-8 mx-auto mt-auto mb-6 sm:mb-10 w-full px-2 sm:px-0 ${
                     deviceType === 'desktop' 
                       ? 'grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 max-w-4xl' 
                       : 'grid-cols-4 max-w-sm'
@@ -329,7 +329,7 @@ const PlayGames = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute top-0 left-0 right-0 bottom-10 bg-black"
+                className="absolute top-0 left-0 right-0 bottom-16 sm:bottom-12 bg-black"
               >
                 <iframe 
                   src="https://projectjansampark.pranavshende.online/" 
@@ -346,7 +346,7 @@ const PlayGames = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute top-0 left-0 right-0 bottom-10 bg-black"
+                className="absolute top-0 left-0 right-0 bottom-16 sm:bottom-12 bg-black"
               >
                 <iframe 
                   src="https://projectsolarsalesanalysis.pranavshende.online/" 
@@ -363,7 +363,7 @@ const PlayGames = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute top-0 left-0 right-0 bottom-10 bg-black"
+                className="absolute top-0 left-0 right-0 bottom-16 sm:bottom-12 bg-black"
               >
                 <iframe 
                   src="https://cyberzhg.github.io/2048/" 
@@ -381,7 +381,7 @@ const PlayGames = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute top-0 left-0 right-0 bottom-10 bg-black"
+                className="absolute top-0 left-0 right-0 bottom-16 sm:bottom-12 bg-black"
               >
                 <iframe 
                   src="https://hextris.github.io/hextris/" 
@@ -399,7 +399,7 @@ const PlayGames = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute top-0 left-0 right-0 bottom-10 bg-black"
+                className="absolute top-0 left-0 right-0 bottom-16 sm:bottom-12 bg-black"
               >
                 <iframe 
                   src="https://wayou.github.io/t-rex-runner/" 
@@ -417,7 +417,7 @@ const PlayGames = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute top-0 left-0 right-0 bottom-10 bg-black"
+                className="absolute top-0 left-0 right-0 bottom-16 sm:bottom-12 bg-black"
               >
                 <iframe 
                   src="https://chvin.github.io/react-tetris/" 
@@ -435,7 +435,7 @@ const PlayGames = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute top-0 left-0 right-0 bottom-10 bg-black"
+                className="absolute top-0 left-0 right-0 bottom-16 sm:bottom-12 bg-black"
               >
                 <iframe 
                   src="https://subwaysurfers76.github.io/" 
@@ -454,7 +454,7 @@ const PlayGames = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute top-0 left-0 right-0 bottom-10 bg-black"
+                className="absolute top-0 left-0 right-0 bottom-16 sm:bottom-12 bg-black"
               >
                 <iframe 
                   src="https://flappybird.io/" 
@@ -475,7 +475,7 @@ const PlayGames = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute top-0 left-0 right-0 bottom-10 bg-black"
+                className="absolute top-0 left-0 right-0 bottom-16 sm:bottom-12 bg-black"
               >
                 <iframe 
                   src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M?utm_source=generator&theme=0" 
@@ -492,29 +492,29 @@ const PlayGames = () => {
         </div>
 
         {/* Navigation Bar */}
-        <div className="absolute bottom-0 left-0 right-0 h-10 bg-black/80 backdrop-blur-md flex items-center justify-around z-50 border-t border-white/10">
+        <div className="absolute bottom-0 left-0 right-0 h-16 sm:h-12 bg-black/90 backdrop-blur-xl flex items-center justify-around z-50 border-t border-white/10 pb-2 sm:pb-0 px-2 sm:px-0">
           <button 
             onClick={() => setActiveApp('home')}
-            className="w-10 h-10 flex items-center justify-center text-[#ffffff]/70 hover:text-[#ffffff] hover:bg-white/10 rounded-full transition-all active:scale-90"
+            className="w-14 h-14 sm:w-12 sm:h-12 flex items-center justify-center text-[#ffffff]/70 hover:text-[#ffffff] hover:bg-white/10 rounded-full transition-all active:scale-90"
             aria-label="Back"
           >
-            <ChevronLeft size={20} />
+            <ChevronLeft size={24} className="sm:w-5 sm:h-5" />
           </button>
           
           <button 
             onClick={() => setActiveApp('home')}
-            className="w-10 h-10 flex items-center justify-center text-[#ffffff]/70 hover:text-[#ffffff] hover:bg-white/10 rounded-full transition-all active:scale-90"
+            className="w-14 h-14 sm:w-12 sm:h-12 flex items-center justify-center text-[#ffffff]/70 hover:text-[#ffffff] hover:bg-white/10 rounded-full transition-all active:scale-90"
             aria-label="Home"
           >
-            <Circle size={16} className="fill-transparent stroke-2" />
+            <Circle size={18} className="fill-transparent stroke-2 sm:w-4 sm:h-4" />
           </button>
 
           <Link 
             to="/"
-            className="w-10 h-10 flex items-center justify-center text-[#ffffff]/70 hover:text-[#ffffff] hover:bg-white/10 rounded-full transition-all active:scale-90"
+            className="w-14 h-14 sm:w-12 sm:h-12 flex items-center justify-center text-[#ffffff]/70 hover:text-[#ffffff] hover:bg-white/10 rounded-full transition-all active:scale-90"
             aria-label="Portfolio"
           >
-            <Square size={14} className="fill-transparent stroke-2" />
+            <Square size={16} className="fill-transparent stroke-2 sm:w-3.5 sm:h-3.5" />
           </Link>
         </div>
       </motion.div>
