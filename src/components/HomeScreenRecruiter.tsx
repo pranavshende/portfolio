@@ -24,7 +24,7 @@ const quickStats = [
 
 const AnimatedCounter = ({ value, isFloat }: { value: number; isFloat: boolean }) => {
   const count = useMotionValue(0);
-  const rounded = useTransform(count, (latest) => isFloat ? latest.toFixed(1) : Math.round(latest));
+  const rounded = useTransform(count, (latest) => isFloat ? latest.toFixed(1) : Math.round(latest).toString());
 
   useEffect(() => {
     const controls = animate(count, value, { duration: 1.5, delay: 0.3, ease: "easeOut" });

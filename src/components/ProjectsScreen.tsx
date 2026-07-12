@@ -53,7 +53,7 @@ const projects: Project[] = [
       "81.8+ GW of installed capacity evaluated",
       "36+ states/UTs analyzed across 500+ records",
     ],
-    github: "#",
+    github: "https://github.com/pranavshende/SolarSalesAnalysis",
     demo: "/playgames?folder=projects_folder"
   }
 ];
