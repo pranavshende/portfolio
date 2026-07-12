@@ -56,7 +56,7 @@ const PlayGames = () => {
     { id: 'tetris', name: 'Tetris', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={Gamepad2} gradient="from-violet-500 to-fuchsia-600" alt="Tetris" /> },
     { id: 'subway', name: 'Surfers', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={TrainFront} gradient="from-amber-400 to-yellow-600" alt="Subway Surfers" /> },
     { id: 'flappy', name: 'Flappy', icon: <SquircleIcon imgUrl="https://upload.wikimedia.org/wikipedia/en/0/0a/Flappy_Bird_icon.png" FallbackIcon={Bird} gradient="from-sky-300 to-blue-500" alt="Flappy Bird" /> },
-    { id: 'jansampark', name: 'JanSampark', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={Globe} gradient="from-blue-500 to-indigo-600" alt="JanSampark" /> },
+    { id: 'jansampark', name: 'JanSampark', icon: <SquircleIcon imgUrl="https://projectjansampark.pranavshende.online/favicon.ico" FallbackIcon={Globe} gradient="from-blue-500 to-indigo-600" alt="JanSampark" /> },
     { id: 'spotify', name: 'Spotify', icon: <SquircleIcon imgUrl="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" FallbackIcon={Music} gradient="from-[#1ED760] to-[#1DB954]" alt="Spotify" /> },
   ];
 
@@ -253,7 +253,7 @@ const PlayGames = () => {
                 className="absolute inset-0 bg-black"
               >
                 <iframe 
-                  src="https://jan-sampark-deployable-6sleg73ch-raprax.vercel.app/" 
+                  src="https://projectjansampark.pranavshende.online/" 
                   className="w-full h-full border-none pointer-events-auto bg-white"
                   title="JanSampark"
                   allow="geolocation; microphone; camera; display-capture"
