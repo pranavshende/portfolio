@@ -11,6 +11,7 @@ const achievements = [
     bg: "rgba(0,0,0,0.03)",
     border: "rgba(0,0,0,0.06)",
     emoji: "🥇",
+    link: "https://drive.google.com/file/d/1abiQVWd72J9scEi2OrO6oI5UyBcKa9fX/view?usp=sharing",
   },
   {
     icon: Trophy,
@@ -21,6 +22,7 @@ const achievements = [
     bg: "rgba(0,0,0,0.03)",
     border: "rgba(0,0,0,0.06)",
     emoji: "🏆",
+    link: "https://drive.google.com/file/d/16YkeHOFIaYoUiic2LQWVwMAHAMjkR_SN/view?usp=sharing",
   },
 ];
 
@@ -88,9 +90,9 @@ const AboutScreen = () => {
             href="https://www.stvincentngp.edu.in/"
             target="_blank"
             rel="noreferrer"
-            className="block p-4 rounded-[12px] hover:bg-black/5 transition-colors group cursor-pointer"
+            className="block p-4 rounded-[12px] hover:bg-gradient-to-r hover:from-black/5 hover:to-black/10 transition-all group cursor-pointer"
             style={{
-              background: "rgba(0,0,0,0.02)",
+              backgroundColor: "rgba(0,0,0,0.02)",
               border: "1px solid rgba(0,0,0,0.05)",
             }}
           >
@@ -144,17 +146,17 @@ const AboutScreen = () => {
                 </>
               );
 
-              return a.title === "Best Research Paper Award" ? (
+              return a.link ? (
                 <motion.a
-                  href="https://drive.google.com/file/d/1abiQVWd72J9scEi2OrO6oI5UyBcKa9fX/view?usp=sharing"
+                  href={a.link}
                   target="_blank"
                   rel="noreferrer"
                   key={a.title}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.35 + i * 0.08 }}
-                  className="flex items-start gap-3 p-3 rounded-[12px] hover:opacity-80 transition-opacity cursor-pointer block"
-                  style={{ background: a.bg, border: `1px solid ${a.border}` }}
+                  className="flex items-start gap-3 p-3 rounded-[12px] hover:bg-gradient-to-r hover:from-black/5 hover:to-black/10 transition-all cursor-pointer block"
+                  style={{ backgroundColor: a.bg, border: `1px solid ${a.border}` }}
                 >
                   {content}
                 </motion.a>
@@ -165,7 +167,7 @@ const AboutScreen = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.35 + i * 0.08 }}
                   className="flex items-start gap-3 p-3 rounded-[12px]"
-                  style={{ background: a.bg, border: `1px solid ${a.border}` }}
+                  style={{ backgroundColor: a.bg, border: `1px solid ${a.border}` }}
                 >
                   {content}
                 </motion.div>

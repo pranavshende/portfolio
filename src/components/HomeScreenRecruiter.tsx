@@ -243,7 +243,7 @@ const HomeScreen = ({ onNavigate }: HomeScreenProps) => {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.55 }}
-          className="block p-4 rounded-2xl overflow-hidden relative glass-card hover:bg-black/5 transition-colors group cursor-pointer"
+          className="block p-4 rounded-2xl overflow-hidden relative glass-card hover:bg-gradient-to-r hover:from-black/5 hover:to-black/10 transition-all group cursor-pointer"
         >
           <div className="absolute top-0 right-0 w-20 h-20 bg-black/5 rounded-full blur-2xl" />
           <div className="flex items-center gap-3 relative z-10">

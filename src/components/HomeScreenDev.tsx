@@ -165,7 +165,7 @@ const HomeScreen = ({ onNavigate }: HomeScreenProps) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.2, delay: 0.25 }}
-          className="block p-4 rounded-md glass-card hover:bg-[#161B22] transition-colors group cursor-pointer"
+          className="block p-4 rounded-md glass-card hover:bg-gradient-to-r hover:from-[#161B22] hover:to-[#0D1117] transition-all group cursor-pointer"
         >
           <div className="flex items-center gap-3">
             <Trophy size={20} className="text-[#D2A8FF]" />
