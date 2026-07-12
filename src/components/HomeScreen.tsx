@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import profilePhoto from '../photo/1000170373_optimized_1000.jpg.jpeg';
 import SkillsMarquee from './SkillsMarquee';
-import { Github, Twitter, Linkedin, Mail, ArrowUpRight, X } from 'lucide-react';
+import { Github, Twitter, Linkedin, Mail, ArrowUpRight, X, Gamepad2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export const HomeScreen = () => {
   const [photoOpen, setPhotoOpen] = useState(false);
@@ -81,8 +82,15 @@ export const HomeScreen = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
 
-          {/* Resume button */}
-          <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6">
+          {/* Buttons */}
+          <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 flex items-center gap-2">
+            <Link 
+              to="/playgames"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-500 text-black hover:bg-emerald-400 active:scale-95 transition-all shadow-md shadow-emerald-500/20 backdrop-blur-md"
+            >
+              <Gamepad2 className="w-3.5 h-3.5" />
+              Arcade
+            </Link>
             <a 
               href="https://drive.google.com/drive/folders/1vgcE2naPfhC52fyWzBFe9Brv_SwjK8df?usp=sharing"
               target="_blank" 
