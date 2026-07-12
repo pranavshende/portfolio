@@ -96,7 +96,9 @@ const PlayGames = () => {
   return (
     <div className="h-[100dvh] sm:h-screen bg-zinc-50 dark:bg-black flex flex-col p-0 sm:p-6 md:p-8 font-sans overflow-hidden">
       
-      <FloatingHeader />
+      <div className="hidden lg:block">
+        <FloatingHeader />
+      </div>
 
       {/* Desktop Header */}
       <div className="hidden sm:flex w-full justify-between items-center z-[60] mb-4 shrink-0 pointer-events-none">
