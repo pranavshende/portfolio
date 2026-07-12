@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ChevronLeft, Circle, Square,
-  Grid, Hexagon, Activity, Gamepad2, TrainFront, Bird, Globe, Music, Folder
+  Grid, Hexagon, Activity, Gamepad2, TrainFront, Bird, Globe, Music, Folder,
+  Smartphone, Tablet
 } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
@@ -43,6 +44,7 @@ const SquircleIcon = ({
 const PlayGames = () => {
   const [activeApp, setActiveApp] = useState<AppType>('home');
   const [time, setTime] = useState(new Date());
+  const [deviceType, setDeviceType] = useState<'mobile' | 'tablet'>('tablet');
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -80,7 +82,7 @@ const PlayGames = () => {
     { id: 'projects_folder', name: 'Projects', isFolder: true, folderApps: [
       { id: 'jansampark', name: 'JanSampark', icon: <SquircleIcon imgUrl="https://projectjansampark.pranavshende.online/favicon.ico" FallbackIcon={Globe} gradient="from-blue-500 to-indigo-600" alt="JanSampark" />, appId: 'jansampark' },
       { id: 'pashurakshak', name: 'PashuRakshak', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={Activity} gradient="from-emerald-400 to-teal-600" alt="PashuRakshak" />, appId: 'pashurakshak' },
-      { id: 'solar', name: 'Solar Analytics', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={Hexagon} gradient="from-amber-400 to-orange-600" alt="Solar Analytics" />, appId: 'solar' },
+      { id: 'solar', name: 'Solar Analytics', icon: <SquircleIcon imgUrl="https://projectsolarsalesanalysis.pranavshende.online/favicon.ico" FallbackIcon={Hexagon} gradient="from-amber-400 to-orange-600" alt="Solar Analytics" />, appId: 'solar' },
       { id: 'agriscore', name: 'AgriScore', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={Circle} gradient="from-green-400 to-emerald-600" alt="AgriScore" />, appId: 'agriscore' }
     ], icon: (
       <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/20 backdrop-blur-sm shadow-sm flex items-center justify-center border border-white/30 group-hover:scale-95 transition-transform duration-200">
@@ -102,15 +104,37 @@ const PlayGames = () => {
         <span className="font-medium hidden sm:inline">Back to Portfolio</span>
       </Link>
 
+      {/* Device Toggle (Desktop only) */}
+      <div className="hidden sm:flex absolute top-4 right-4 sm:top-6 sm:right-6 bg-black/40 backdrop-blur-md rounded-full p-1 z-[60] border border-white/10">
+        <button
+          onClick={() => setDeviceType('mobile')}
+          className={`p-2 rounded-full transition-colors ${deviceType === 'mobile' ? 'bg-white/20 text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
+          title="Mobile View"
+        >
+          <Smartphone size={20} />
+        </button>
+        <button
+          onClick={() => setDeviceType('tablet')}
+          className={`p-2 rounded-full transition-colors ${deviceType === 'tablet' ? 'bg-white/20 text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
+          title="Tablet View"
+        >
+          <Tablet size={20} />
+        </button>
+      </div>
+
       {/* Background ambient glow */}
       <div className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none" />
 
-      {/* Phone Frame */}
+      {/* Device Frame */}
       <motion.div 
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: "spring", damping: 20, stiffness: 100 }}
-        className="relative w-full h-full sm:w-[340px] sm:h-[720px] sm:rounded-[3rem] bg-zinc-950 sm:border-[10px] sm:border-zinc-800 shadow-2xl overflow-hidden sm:shadow-purple-900/20"
+        className={`relative w-full h-full sm:w-auto sm:max-h-[85vh] bg-zinc-950 sm:border-[10px] sm:border-zinc-800 shadow-2xl overflow-hidden sm:shadow-purple-900/20 transition-all duration-500 ${
+          deviceType === 'mobile' 
+            ? 'sm:h-[812px] sm:aspect-[375/812] sm:rounded-[3rem]' 
+            : 'sm:h-[820px] sm:aspect-[1180/820] sm:rounded-[2rem]'
+        }`}
       >
         {/* Hardware Buttons */}
         <div className="hidden sm:block absolute -left-[14px] top-32 w-1 h-12 bg-zinc-700 rounded-l-md" />
@@ -216,7 +240,7 @@ const PlayGames = () => {
             )}
 
             {/* COMING SOON SCREENS FOR UNDEPLOYED PROJECTS */}
-            {(activeApp === 'pashurakshak' || activeApp === 'solar' || activeApp === 'agriscore') && (
+            {(activeApp === 'pashurakshak' || activeApp === 'agriscore') && (
               <motion.div 
                 key={activeApp}
                 initial={{ opacity: 0, y: 50 }}
@@ -227,12 +251,10 @@ const PlayGames = () => {
               >
                 <div className="w-20 h-20 bg-zinc-800 rounded-full flex items-center justify-center mb-6">
                   {activeApp === 'pashurakshak' && <Activity size={32} className="text-emerald-500" />}
-                  {activeApp === 'solar' && <Hexagon size={32} className="text-amber-500" />}
                   {activeApp === 'agriscore' && <Circle size={32} className="text-green-500" />}
                 </div>
                 <h3 className="text-white font-bold text-xl mb-2">
                   {activeApp === 'pashurakshak' && 'PashuRakshak'}
-                  {activeApp === 'solar' && 'Solar Intelligence'}
                   {activeApp === 'agriscore' && 'AgriScore'}
                 </h3>
                 <p className="text-zinc-400 text-sm mb-8">
@@ -261,6 +283,23 @@ const PlayGames = () => {
                   src="https://projectjansampark.pranavshende.online/" 
                   className="w-full h-full border-none pointer-events-auto bg-white"
                   title="JanSampark"
+                  sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                />
+              </motion.div>
+            )}
+            {activeApp === 'solar' && (
+              <motion.div 
+                key="solar"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 50 }}
+                transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                className="absolute top-0 left-0 right-0 bottom-10 bg-black"
+              >
+                <iframe 
+                  src="https://projectsolarsalesanalysis.pranavshende.online/" 
+                  className="w-full h-full border-none pointer-events-auto bg-white"
+                  title="Solar Analysis"
                   sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
                 />
               </motion.div>
