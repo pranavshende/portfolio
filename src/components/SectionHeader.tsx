@@ -2,13 +2,14 @@ import React from 'react';
 
 interface SectionHeaderProps {
   title: string;
+  className?: string;
 }
 
-export const SectionHeader = ({ title }: SectionHeaderProps) => {
+export const SectionHeader = ({ title, className = "" }: SectionHeaderProps) => {
   return (
-    <div className="flex items-center gap-3 mb-6 mt-12 w-full">
+    <div className={`flex items-center gap-3 mb-6 w-full ${className || 'mt-12'}`}>
       <div className="w-[3px] h-5 bg-emerald-500 rounded-full"></div>
-      <h2 className="font-serif italic text-lg sm:text-xl text-white tracking-wide">{title}</h2>
+      <h2 className="font-serif italic text-lg sm:text-xl text-zinc-900 dark:text-white tracking-wide">{title}</h2>
     </div>
   );
 };

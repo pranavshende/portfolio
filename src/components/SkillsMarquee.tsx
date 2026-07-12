@@ -45,8 +45,8 @@ const renderMarqueeRow = (items: typeof row1, reverse = false) => {
   return (
     <div className="relative flex overflow-hidden group">
       {/* Fading edges */}
-      <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-r from-zinc-950 to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-l from-zinc-950 to-transparent z-10 pointer-events-none" />
+      <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-r from-white dark:from-zinc-950 to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-l from-white dark:from-zinc-950 to-transparent z-10 pointer-events-none" />
       
       <div className={`flex shrink-0 ${animationClass} gap-3 pr-3 group-hover:[animation-play-state:paused]`}>
         {duplicatedItems.map((item, j) => {
@@ -54,7 +54,7 @@ const renderMarqueeRow = (items: typeof row1, reverse = false) => {
           return (
             <span 
               key={j} 
-              className="flex shrink-0 items-center gap-2 px-4 py-2 rounded-full bg-zinc-900/50 border border-zinc-800/50 text-sm font-medium text-zinc-300 hover:bg-zinc-800 hover:text-white hover:border-zinc-700 transition-all cursor-default shadow-sm backdrop-blur-sm"
+              className="flex shrink-0 items-center gap-2 px-4 py-2 rounded-full bg-zinc-100 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white hover:border-zinc-300 dark:hover:border-zinc-700 transition-all cursor-default shadow-sm backdrop-blur-sm"
             >
               <Icon className="w-4 h-4" style={{ color: item.color }} />
               {item.name}
@@ -69,7 +69,7 @@ const renderMarqueeRow = (items: typeof row1, reverse = false) => {
           return (
             <span 
               key={`dup-${j}`} 
-              className="flex shrink-0 items-center gap-2 px-4 py-2 rounded-full bg-zinc-900/50 border border-zinc-800/50 text-sm font-medium text-zinc-300 hover:bg-zinc-800 hover:text-white hover:border-zinc-700 transition-all cursor-default shadow-sm backdrop-blur-sm"
+              className="flex shrink-0 items-center gap-2 px-4 py-2 rounded-full bg-zinc-100 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white hover:border-zinc-300 dark:hover:border-zinc-700 transition-all cursor-default shadow-sm backdrop-blur-sm"
             >
               <Icon className="w-4 h-4" style={{ color: item.color }} />
               {item.name}
@@ -84,8 +84,8 @@ const renderMarqueeRow = (items: typeof row1, reverse = false) => {
 const SkillsMarquee = () => {
   return (
     <div className="relative z-10 w-full max-w-3xl mx-auto px-4 sm:px-6">
-      <div className="rounded-2xl bg-zinc-950 border border-white/[0.06] px-5 py-6 sm:px-7 sm:py-7">
-        <SectionHeader title="Tools that I have used" />
+      <div className="rounded-2xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-white/[0.06] px-5 py-6 sm:px-7 sm:py-7">
+        <SectionHeader title="Tools that I have used" className="mt-0" />
         <div className="flex flex-col gap-4">
           {renderMarqueeRow(row1, false)}
           {renderMarqueeRow(row2, true)}

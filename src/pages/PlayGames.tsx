@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ChevronLeft, Circle, Square,
-  Grid, Hexagon, Activity, Gamepad2, TrainFront, Bird, Globe, Music
+  Grid, Hexagon, Activity, Gamepad2, TrainFront, Bird, Globe, Music, Folder
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
-type AppType = 'home' | 'game2048' | 'hextris' | 'dino' | 'tetris' | 'subway' | 'flappy' | 'jansampark' | 'spotify';
+type AppType = 'home' | 'game2048' | 'hextris' | 'dino' | 'tetris' | 'subway' | 'flappy' | 'spotify' | 'jansampark' | 'pashurakshak' | 'solar' | 'agriscore';
 
 const SquircleIcon = ({ 
   imgUrl, 
@@ -49,6 +49,13 @@ const PlayGames = () => {
     return () => clearInterval(timer);
   }, []);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [openFolder, setOpenFolder] = useState<string | null>(() => {
+    const params = new URLSearchParams(location.search);
+    return params.get('folder');
+  });
+
   const apps = [
     { id: 'game2048', name: '2048', icon: <SquircleIcon imgUrl="https://upload.wikimedia.org/wikipedia/commons/1/18/2048_logo.svg" FallbackIcon={Grid} gradient="from-yellow-400 to-orange-500" alt="2048" /> },
     { id: 'hextris', name: 'Hextris', icon: <SquircleIcon imgUrl="https://raw.githubusercontent.com/hextris/hextris/master/favicon.ico" FallbackIcon={Hexagon} gradient="from-slate-700 to-slate-900" alt="Hextris" /> },
@@ -56,7 +63,16 @@ const PlayGames = () => {
     { id: 'tetris', name: 'Tetris', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={Gamepad2} gradient="from-violet-500 to-fuchsia-600" alt="Tetris" /> },
     { id: 'subway', name: 'Surfers', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={TrainFront} gradient="from-amber-400 to-yellow-600" alt="Subway Surfers" /> },
     { id: 'flappy', name: 'Flappy', icon: <SquircleIcon imgUrl="https://upload.wikimedia.org/wikipedia/en/0/0a/Flappy_Bird_icon.png" FallbackIcon={Bird} gradient="from-sky-300 to-blue-500" alt="Flappy Bird" /> },
-    { id: 'jansampark', name: 'JanSampark', icon: <SquircleIcon imgUrl="https://projectjansampark.pranavshende.online/favicon.ico" FallbackIcon={Globe} gradient="from-blue-500 to-indigo-600" alt="JanSampark" /> },
+    { id: 'projects_folder', name: 'Projects', isFolder: true, folderApps: [
+      { id: 'jansampark', name: 'JanSampark', icon: <SquircleIcon imgUrl="https://projectjansampark.pranavshende.online/favicon.ico" FallbackIcon={Globe} gradient="from-blue-500 to-indigo-600" alt="JanSampark" />, appId: 'jansampark' },
+      { id: 'pashurakshak', name: 'PashuRakshak', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={Activity} gradient="from-emerald-400 to-teal-600" alt="PashuRakshak" />, appId: 'pashurakshak' },
+      { id: 'solar', name: 'Solar Analytics', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={Hexagon} gradient="from-amber-400 to-orange-600" alt="Solar Analytics" />, appId: 'solar' },
+      { id: 'agriscore', name: 'AgriScore', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={Circle} gradient="from-green-400 to-emerald-600" alt="AgriScore" />, appId: 'agriscore' }
+    ], icon: (
+      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/20 backdrop-blur-sm shadow-sm flex items-center justify-center border border-white/30 group-hover:scale-95 transition-transform duration-200">
+        <Folder size={22} className="text-white drop-shadow-md" fill="currentColor" opacity={0.8} />
+      </div>
+    )},
     { id: 'spotify', name: 'Spotify', icon: <SquircleIcon imgUrl="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" FallbackIcon={Music} gradient="from-[#1ED760] to-[#1DB954]" alt="Spotify" /> },
   ];
 
@@ -119,7 +135,13 @@ const PlayGames = () => {
                       <div 
                         key={app.id} 
                         className="flex flex-col items-center gap-1.5 cursor-pointer group"
-                        onClick={() => setActiveApp(app.id as AppType)}
+                        onClick={() => {
+                          if (app.isFolder) {
+                            setOpenFolder(app.id);
+                          } else {
+                            setActiveApp(app.id as AppType);
+                          }
+                        }}
                       >
                         {app.icon}
                         <span className="text-white text-[11px] font-medium drop-shadow-md tracking-wide w-full text-center truncate px-1">
@@ -129,10 +151,106 @@ const PlayGames = () => {
                     ))}
                   </div>
                 </div>
+
+                {/* Folder Overlay */}
+                <AnimatePresence>
+                  {openFolder && (
+                    <motion.div 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="absolute inset-0 z-40 bg-black/50 backdrop-blur-xl flex flex-col items-center justify-center p-6"
+                      onClick={() => setOpenFolder(null)}
+                    >
+                      <motion.div 
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0.9, opacity: 0 }}
+                        className="w-full max-w-[280px] bg-white/20 backdrop-blur-md rounded-[32px] p-6 border border-white/20 shadow-2xl"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <h3 className="text-white font-medium text-center mb-6 text-sm tracking-wide">
+                          {apps.find(a => a.id === openFolder)?.name}
+                        </h3>
+                        <div className="grid grid-cols-3 gap-x-4 gap-y-6">
+                          {apps.find(a => a.id === openFolder)?.folderApps?.map((fApp) => (
+                            <div 
+                              key={fApp.id} 
+                              onClick={() => {
+                                if (fApp.appId) {
+                                  setActiveApp(fApp.appId as AppType);
+                                  setOpenFolder(null);
+                                } else if (fApp.link) {
+                                  window.open(fApp.link, '_blank');
+                                }
+                              }}
+                              className="flex flex-col items-center gap-1.5 cursor-pointer group"
+                            >
+                              {fApp.icon}
+                              <span className="text-white text-[10px] font-medium drop-shadow-md tracking-wide w-full text-center truncate px-1">
+                                {fApp.name}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+              </motion.div>
+            )}
+
+            {/* COMING SOON SCREENS FOR UNDEPLOYED PROJECTS */}
+            {(activeApp === 'pashurakshak' || activeApp === 'solar' || activeApp === 'agriscore') && (
+              <motion.div 
+                key={activeApp}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 50 }}
+                transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                className="absolute top-0 left-0 right-0 bottom-10 bg-zinc-900 flex flex-col items-center justify-center p-6 text-center"
+              >
+                <div className="w-20 h-20 bg-zinc-800 rounded-full flex items-center justify-center mb-6">
+                  {activeApp === 'pashurakshak' && <Activity size={32} className="text-emerald-500" />}
+                  {activeApp === 'solar' && <Hexagon size={32} className="text-amber-500" />}
+                  {activeApp === 'agriscore' && <Circle size={32} className="text-green-500" />}
+                </div>
+                <h3 className="text-white font-bold text-xl mb-2">
+                  {activeApp === 'pashurakshak' && 'PashuRakshak'}
+                  {activeApp === 'solar' && 'Solar Intelligence'}
+                  {activeApp === 'agriscore' && 'AgriScore'}
+                </h3>
+                <p className="text-zinc-400 text-sm mb-8">
+                  This project is currently not deployed on a public URL. You can check out the source code on GitHub!
+                </p>
+                <button 
+                  onClick={() => setActiveApp('home')}
+                  className="px-6 py-2 bg-white text-black text-sm font-medium rounded-full hover:bg-zinc-200 transition-colors"
+                >
+                  Go Back
+                </button>
               </motion.div>
             )}
 
             {/* ARCADE / GAME SCREENS */}
+            {activeApp === 'jansampark' && (
+              <motion.div 
+                key="jansampark"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 50 }}
+                transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                className="absolute top-0 left-0 right-0 bottom-10 bg-black"
+              >
+                <iframe 
+                  src="https://projectjansampark.pranavshende.online/" 
+                  className="w-full h-full border-none pointer-events-auto bg-white"
+                  title="JanSampark"
+                  sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                />
+              </motion.div>
+            )}
             {activeApp === 'game2048' && (
               <motion.div 
                 key="game2048"
@@ -243,24 +361,7 @@ const PlayGames = () => {
               </motion.div>
             )}
 
-            {activeApp === 'jansampark' && (
-              <motion.div 
-                key="jansampark"
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 50 }}
-                transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute top-0 left-0 right-0 bottom-10 bg-black"
-              >
-                <iframe 
-                  src="https://projectjansampark.pranavshende.online/" 
-                  className="w-full h-full border-none pointer-events-auto bg-white"
-                  title="JanSampark"
-                  allow="geolocation; microphone; camera; display-capture"
-                  sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-                />
-              </motion.div>
-            )}
+
 
             {activeApp === 'spotify' && (
               <motion.div 

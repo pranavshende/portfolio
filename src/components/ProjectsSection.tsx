@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Github, ExternalLink, CheckCircle2 } from "lucide-react";
 import { Button } from "./ui/button";
 
@@ -19,7 +20,7 @@ const projects = [
     ],
     tech: ["React Native", "Node.js", "PostgreSQL", "FastAPI", "TensorFlow Lite", "CNN", "ML Models"],
     github: "#",
-    demo: "#",
+    demo: "/playgames?folder=projects_folder",
     color: "from-emerald-500/20 to-teal-500/20"
   },
   {
@@ -37,7 +38,7 @@ const projects = [
     ],
     tech: ["MERN Stack", "APIs", "Authentication", "Database Systems"],
     github: "#",
-    demo: "#",
+    demo: "/playgames?folder=projects_folder",
     color: "from-blue-500/20 to-indigo-500/20"
   },
   {
@@ -55,7 +56,7 @@ const projects = [
     ],
     tech: ["Python", "Machine Learning", "Analytics", "Data Visualization"],
     github: "#",
-    demo: "#",
+    demo: "/playgames?folder=projects_folder",
     color: "from-amber-500/20 to-orange-500/20"
   },
   {
@@ -73,7 +74,7 @@ const projects = [
     ],
     tech: ["React Native", "Node.js", "PostgreSQL", "FastAPI", "AI/ML"],
     github: "#",
-    demo: "#",
+    demo: "/playgames?folder=projects_folder",
     color: "from-green-500/20 to-emerald-500/20"
   }
 ];
@@ -162,12 +163,16 @@ const ProjectsSection = () => {
                 </div>
 
                 <div className="flex flex-wrap gap-4 pt-4">
-                  <Button variant="default" className="bg-foreground text-background hover:bg-foreground/90 gap-2">
-                    <Github className="w-4 h-4" /> View Source
-                  </Button>
-                  <Button variant="outline" className="border-border hover:bg-secondary gap-2">
-                    <ExternalLink className="w-4 h-4" /> Live Demo
-                  </Button>
+                  <a href={project.github} target="_blank" rel="noopener noreferrer">
+                    <Button variant="default" className="bg-foreground text-background hover:bg-foreground/90 gap-2">
+                      <Github className="w-4 h-4" /> View Source
+                    </Button>
+                  </a>
+                  <Link to={project.demo}>
+                    <Button variant="outline" className="border-border hover:bg-secondary gap-2">
+                      <ExternalLink className="w-4 h-4" /> Live Demo
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </motion.div>

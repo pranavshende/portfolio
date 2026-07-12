@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, FileCode } from "lucide-react";
 
@@ -37,7 +38,7 @@ const projects: Project[] = [
     badgeColor: "chip-violet",
     emoji: "🐄",
     githubLink: "#",
-    demoLink: "#",
+    demoLink: "/playgames?folder=projects_folder",
   },
   {
     title: "JanSampark",
@@ -56,7 +57,7 @@ const projects: Project[] = [
     glow: "rgba(255,255,255,0.1)",
     emoji: "🏛️",
     githubLink: "#",
-    demoLink: "#",
+    demoLink: "/playgames?folder=projects_folder",
   },
   {
     title: "Solar Intelligence",
@@ -75,7 +76,7 @@ const projects: Project[] = [
     glow: "rgba(255,255,255,0.1)",
     emoji: "☀️",
     githubLink: "#",
-    demoLink: "#",
+    demoLink: "/playgames?folder=projects_folder",
   },
 ];
 
@@ -144,11 +145,11 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
             </a>
           )}
           {project.demoLink && (
-            <a href={project.demoLink} target="_blank" rel="noopener noreferrer" className="block p-3 rounded bg-[#0D1117] border border-[#30363D] hover:border-[#58A6FF] transition-colors">
+            <Link to={project.demoLink} className="block p-3 rounded bg-[#0D1117] border border-[#30363D] hover:border-[#58A6FF] transition-colors">
               <span className="text-[#3FB950] mr-2">➜</span>
               <span className="text-[#58A6FF]">~</span>
               <span className="text-[#C9D1D9] ml-2">$ npm run demo</span>
-            </a>
+            </Link>
           )}
         </div>
       </div>

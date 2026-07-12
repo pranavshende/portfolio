@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Award, Github, ExternalLink } from "lucide-react";
 
@@ -37,7 +38,7 @@ const projects: Project[] = [
     badgeColor: "chip-violet",
     emoji: "🐄",
     githubLink: "#",
-    demoLink: "#",
+    demoLink: "/playgames?folder=projects_folder",
   },
   {
     title: "JanSampark",
@@ -56,7 +57,7 @@ const projects: Project[] = [
     glow: "rgba(255,255,255,0.1)",
     emoji: "🏛️",
     githubLink: "#",
-    demoLink: "#",
+    demoLink: "/playgames?folder=projects_folder",
   },
   {
     title: "Solar Intelligence",
@@ -75,7 +76,7 @@ const projects: Project[] = [
     glow: "rgba(255,255,255,0.1)",
     emoji: "☀️",
     githubLink: "#",
-    demoLink: "#",
+    demoLink: "/playgames?folder=projects_folder",
   },
 ];
 
@@ -173,16 +174,14 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
             </a>
           )}
           {project.demoLink && (
-            <a
-              href={project.demoLink}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to={project.demoLink}
               className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-semibold text-white transition-all hover:scale-95"
               style={{ background: "linear-gradient(135deg, #27272a 0%, #000000 100%)" }}
             >
               <ExternalLink size={14} />
               Live Demo
-            </a>
+            </Link>
           )}
         </div>
       </div>

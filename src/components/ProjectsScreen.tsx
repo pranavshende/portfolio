@@ -1,5 +1,6 @@
 import React from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowUpRight, Github, Smartphone } from 'lucide-react';
 import SectionHeader from './SectionHeader';
 
 interface Project {
@@ -8,7 +9,8 @@ interface Project {
   description: string;
   tech: string[];
   highlights: string[];
-  link?: string;
+  github?: string;
+  demo?: string;
   badge?: string;
 }
 
@@ -25,7 +27,8 @@ const projects: Project[] = [
       "IEEE Conference presentation & publication",
     ],
     badge: "IEEE Published",
-    link: "#"
+    github: "#",
+    demo: "/playgames?folder=projects_folder"
   },
   {
     title: "JanSampark",
@@ -37,7 +40,8 @@ const projects: Project[] = [
       "JWT + RBAC for 4 user roles",
       "40+ RESTful APIs with PostgreSQL",
     ],
-    link: "#"
+    github: "#",
+    demo: "/playgames?folder=projects_folder"
   },
   {
     title: "Solar Intelligence",
@@ -49,7 +53,8 @@ const projects: Project[] = [
       "81.8+ GW of installed capacity evaluated",
       "36+ states/UTs analyzed across 500+ records",
     ],
-    link: "#"
+    github: "#",
+    demo: "/playgames?folder=projects_folder"
   }
 ];
 
@@ -61,12 +66,9 @@ export const ProjectsScreen = () => {
       
       <div className="space-y-4">
         {projects.map((project, i) => (
-          <a 
+          <div 
             key={i} 
-            href={project.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex flex-col p-5 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 hover:border-zinc-700 transition-all"
+            className="group flex flex-col p-5 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-all"
           >
             <div className="flex items-start justify-between">
               <div className="flex-1 pr-4">
@@ -80,7 +82,6 @@ export const ProjectsScreen = () => {
                 </div>
                 <p className="text-xs text-zinc-500 mt-0.5">{project.subtitle}</p>
               </div>
-              <ArrowUpRight className="w-4 h-4 text-zinc-600 group-hover:text-zinc-400 transition-colors flex-shrink-0 mt-0.5" />
             </div>
             
             <p className="mt-3 text-xs text-zinc-400 leading-relaxed">
@@ -98,12 +99,36 @@ export const ProjectsScreen = () => {
             
             <div className="mt-4 flex flex-wrap gap-2">
               {project.tech.map((t, idx) => (
-                <span key={idx} className="px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-[10px] font-medium text-zinc-400">
+                <span key={idx} className="px-2 py-0.5 rounded-full bg-zinc-950 border border-zinc-800 text-[10px] font-medium text-zinc-400">
                   {t}
                 </span>
               ))}
             </div>
-          </a>
+
+            <div className="mt-5 flex gap-3">
+              {project.github && (
+                <a 
+                  href={project.github} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white text-[11px] font-medium transition-colors border border-zinc-700"
+                >
+                  <Github className="w-3.5 h-3.5" />
+                  GitHub Source
+                </a>
+              )}
+              {project.demo && (
+                <Link 
+                  to={project.demo} 
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-[11px] font-medium transition-colors border border-emerald-500/30"
+                >
+                  <Smartphone className="w-3.5 h-3.5" />
+                  View in Arcade
+                  <ArrowUpRight className="w-3 h-3 ml-0.5 opacity-70" />
+                </Link>
+              )}
+            </div>
+          </div>
         ))}
       </div>
       </div>

@@ -28,10 +28,12 @@ export const ModeProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     if (mode === "developer") {
       body.classList.add("developer-mode");
+      body.classList.add("dark");
       body.classList.remove("recruiter-mode");
     } else {
       body.classList.add("recruiter-mode");
       body.classList.remove("developer-mode");
+      body.classList.remove("dark");
     }
 
     try { localStorage.setItem("portfolio-theme", mode); } catch {}
