@@ -52,12 +52,42 @@ const darkTheme  = { light: ['#161b22','#0e4429','#006d32','#26a641','#39d353'],
 // GitHub-official light theme (matches github.com light) — high contrast
 const lightTheme = { light: ['#ebedf0','#9be9a8','#40c463','#30a14e','#216e39'], dark: ['#ebedf0','#9be9a8','#40c463','#30a14e','#216e39'] };
 
+const PINNED_REPOS = [
+  {
+    name: 'DSAQUESTIONS',
+    description: 'Curated collection of Data Structures and Algorithms problems with solutions in multiple languages.',
+    html_url: 'https://github.com/PranavShende/DSAQUESTIONS',
+    language: 'C++',
+    stargazers_count: 0,
+    forks_count: 0,
+    topics: ['DSA', 'C++'],
+  },
+  {
+    name: 'Topic_Wise_Java',
+    description: 'Topic-wise Java programming questions and solutions organized by concept for structured learning.',
+    html_url: 'https://github.com/PranavShende/Topic_Wise_Java',
+    language: 'Java',
+    stargazers_count: 0,
+    forks_count: 0,
+    topics: ['Java', 'DSA'],
+  },
+  {
+    name: 'Topic_Wise_Python',
+    description: 'Topic-wise Python programming questions and solutions organized by concept for structured learning.',
+    html_url: 'https://github.com/PranavShende/Topic_Wise_Python',
+    language: 'Python',
+    stargazers_count: 0,
+    forks_count: 0,
+    topics: ['Python', 'DSA'],
+  },
+];
+
 export const LiveActivity = () => {
   const [repos, setRepos]       = useState<Repo[]>([]);
   const [profile, setProfile]   = useState<Profile | null>(null);
   const [events, setEvents]     = useState<GHEvent[]>([]);
   const [loading, setLoading]   = useState(true);
-  const [activeTab, setTab]     = useState<'calendar' | 'repos' | 'events'>('calendar');
+  const [activeTab, setTab]     = useState<'calendar' | 'pinned' | 'repos' | 'events'>('calendar');
   const { mode } = useMode();
   const isLight = mode === 'recruiter';
 
@@ -155,7 +185,7 @@ export const LiveActivity = () => {
         )}
 
         {/* Tab switcher */}
-        <div className="flex gap-1 p-1 rounded-lg bg-zinc-900 border border-zinc-800 mb-5 w-fit">
+        <div className="flex gap-1 p-1 rounded-lg bg-zinc-900 border border-zinc-800 mb-5 flex-wrap">
           {(['calendar','repos','events'] as const).map(tab => (
             <button
               key={tab}
@@ -173,35 +203,68 @@ export const LiveActivity = () => {
 
         {/* ── Calendar tab ── */}
         {activeTab === 'calendar' && (
-          <div className="w-full rounded-xl bg-zinc-900 border border-zinc-800 p-5">
-            <div className="flex items-center justify-between mb-5">
-              <div>
-                <h3 className="text-sm font-medium text-white">Contribution Calendar</h3>
-                <p className="text-xs text-zinc-500 mt-0.5">Last 12 months — live from GitHub</p>
+          <div className="space-y-4">
+            {/* Contribution Calendar */}
+            <div className="w-full rounded-xl bg-zinc-900 border border-zinc-800 p-5">
+              <div className="flex items-center justify-between mb-5">
+                <div>
+                  <h3 className="text-sm font-medium text-white">Contribution Calendar</h3>
+                  <p className="text-xs text-zinc-500 mt-0.5">Last 12 months — live from GitHub</p>
+                </div>
+                <a href={`https://github.com/${GH_USER}`} target="_blank" rel="noreferrer"
+                  className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white transition-colors">
+                  <Github className="w-4 h-4" />
+                  <span className="hidden sm:inline">{GH_USER}</span>
+                </a>
               </div>
-              <a href={`https://github.com/${GH_USER}`} target="_blank" rel="noreferrer"
-                className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white transition-colors">
-                <Github className="w-4 h-4" />
-                <span className="hidden sm:inline">{GH_USER}</span>
-              </a>
+              <div
+                className="w-full overflow-x-auto pb-1 rounded-lg p-3"
+                style={{
+                  background: isLight ? '#ffffff' : '#0d1117',
+                  border: `1px solid ${isLight ? '#d0d7de' : '#30363d'}`,
+                }}
+              >
+                <GitHubCalendar
+                  username={GH_USER}
+                  theme={isLight ? lightTheme : darkTheme}
+                  colorScheme={isLight ? 'light' : 'dark'}
+                  fontSize={11}
+                  blockSize={11}
+                  blockMargin={3}
+                  style={{ color: isLight ? '#24292f' : '#c9d1d9' }}
+                  labels={{ totalCount: '{{count}} contributions in the last year' }}
+                />
+              </div>
             </div>
-            <div
-              className="w-full overflow-x-auto pb-1 rounded-lg p-3"
-              style={{
-                background: isLight ? '#ffffff' : '#0d1117',
-                border: `1px solid ${isLight ? '#d0d7de' : '#30363d'}`,
-              }}
-            >
-              <GitHubCalendar
-                username={GH_USER}
-                theme={isLight ? lightTheme : darkTheme}
-                colorScheme={isLight ? 'light' : 'dark'}
-                fontSize={11}
-                blockSize={11}
-                blockMargin={3}
-                style={{ color: isLight ? '#24292f' : '#c9d1d9' }}
-                labels={{ totalCount: '{{count}} contributions in the last year' }}
-              />
+
+            {/* Pinned Repos — displayed below calendar side by side */}
+            <div>
+              <p className="text-xs text-zinc-500 mb-3 flex items-center gap-1.5"><span>📌</span> Pinned repositories</p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {PINNED_REPOS.map(repo => (
+                  <a key={repo.name} href={repo.html_url} target="_blank" rel="noreferrer"
+                    className="group flex flex-col p-3.5 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 hover:border-zinc-700 transition-all">
+                    <div className="flex items-start justify-between mb-2">
+                      <span className="text-xs font-semibold text-white group-hover:text-emerald-400 transition-colors truncate pr-2">{repo.name}</span>
+                      <ExternalLink className="w-3 h-3 text-zinc-600 group-hover:text-zinc-400 transition-colors flex-shrink-0" />
+                    </div>
+                    {repo.description && (
+                      <p className="text-[11px] text-zinc-500 leading-relaxed line-clamp-2 mb-3">{repo.description}</p>
+                    )}
+                    <div className="flex items-center gap-3 mt-auto">
+                      {repo.language && (
+                        <span className="flex items-center gap-1 text-[10px] text-zinc-400">
+                          <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: LANG_COLORS[repo.language] ?? LANG_COLORS.default }} />
+                          {repo.language}
+                        </span>
+                      )}
+                      <span className="flex items-center gap-1 text-[10px] text-zinc-500">
+                        <Star className="w-2.5 h-2.5" />{repo.stargazers_count}
+                      </span>
+                    </div>
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         )}
