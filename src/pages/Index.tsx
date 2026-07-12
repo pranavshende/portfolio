@@ -14,7 +14,7 @@ const Index = () => {
       <FloatingCodeBackground />
       <FloatingHeader />
       
-      <main className="flex flex-col items-center w-full overflow-x-hidden pt-24 pb-24 space-y-16">
+      <main className="flex flex-col items-center w-full overflow-x-hidden pt-24 pb-24 space-y-6">
         <section id="home" className="w-full flex justify-center">
           <HomeScreen />
         </section>

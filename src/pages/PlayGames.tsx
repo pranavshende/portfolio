@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ChevronLeft, Circle, Square,
   Grid, Hexagon, Activity, Gamepad2, TrainFront, Bird, Globe, Music, Folder,
-  Smartphone, Tablet
+  Smartphone, Tablet, Monitor
 } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
@@ -44,7 +44,7 @@ const SquircleIcon = ({
 const PlayGames = () => {
   const [activeApp, setActiveApp] = useState<AppType>('home');
   const [time, setTime] = useState(new Date());
-  const [deviceType, setDeviceType] = useState<'mobile' | 'tablet'>('tablet');
+  const [deviceType, setDeviceType] = useState<'mobile' | 'tablet' | 'desktop'>('tablet');
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -93,53 +93,96 @@ const PlayGames = () => {
   ];
 
   return (
-    <div className="h-[100dvh] sm:min-h-screen bg-black flex flex-col items-center justify-center p-0 sm:p-8 font-sans overflow-hidden">
+    <div className="h-[100dvh] sm:h-screen bg-black flex flex-col p-0 sm:p-6 md:p-8 font-sans overflow-hidden">
       
-      {/* Back to Portfolio Link */}
-      <Link 
-        to="/" 
-        className="absolute top-4 left-4 sm:top-6 sm:left-6 text-zinc-300 hover:text-white flex items-center gap-2 transition-colors z-[60] bg-black/40 backdrop-blur-md p-2 sm:px-0 sm:py-0 sm:bg-transparent rounded-full"
-      >
-        <ChevronLeft size={20} />
-        <span className="font-medium hidden sm:inline">Back to Portfolio</span>
-      </Link>
+      {/* Desktop Header */}
+      <div className="hidden sm:flex w-full justify-between items-center z-[60] mb-4 shrink-0">
+        <Link 
+          to="/" 
+          className="text-zinc-300 hover:text-white flex items-center gap-2 transition-colors bg-black/40 hover:bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10"
+        >
+          <ChevronLeft size={20} />
+          <span className="font-medium">Back to Portfolio</span>
+        </Link>
 
-      {/* Device Toggle (Desktop only) */}
-      <div className="hidden sm:flex absolute top-4 right-4 sm:top-6 sm:right-6 bg-black/40 backdrop-blur-md rounded-full p-1 z-[60] border border-white/10">
-        <button
-          onClick={() => setDeviceType('mobile')}
-          className={`p-2 rounded-full transition-colors ${deviceType === 'mobile' ? 'bg-white/20 text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
-          title="Mobile View"
-        >
-          <Smartphone size={20} />
-        </button>
-        <button
-          onClick={() => setDeviceType('tablet')}
-          className={`p-2 rounded-full transition-colors ${deviceType === 'tablet' ? 'bg-white/20 text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
-          title="Tablet View"
-        >
-          <Tablet size={20} />
-        </button>
+        <div className="flex bg-black/40 backdrop-blur-md rounded-full p-1 border border-white/10 relative">
+          {(['mobile', 'tablet', 'desktop'] as const).map((type) => {
+            const icons = {
+              mobile: Smartphone,
+              tablet: Tablet,
+              desktop: Monitor
+            };
+            const Icon = icons[type];
+            const isActive = deviceType === type;
+            
+            return (
+              <button
+                key={type}
+                onClick={() => setDeviceType(type)}
+                className={`relative p-2 rounded-full transition-colors z-10 ${isActive ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
+                title={`${type.charAt(0).toUpperCase() + type.slice(1)} View`}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="active-device-mode"
+                    className="absolute inset-0 bg-gradient-to-r from-purple-500/30 via-fuchsia-500/40 to-purple-500/30 rounded-full z-0 overflow-hidden border border-white/20 shadow-[0_0_15px_rgba(168,85,247,0.4)]"
+                    initial={false}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  >
+                    <motion.div 
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent w-[200%]"
+                      animate={{ x: ['-100%', '100%'] }}
+                      transition={{ 
+                        repeat: Infinity, 
+                        duration: 2.5, 
+                        ease: "linear",
+                        repeatDelay: 0.5 
+                      }}
+                    />
+                  </motion.div>
+                )}
+                <Icon size={20} className="relative z-10 drop-shadow-sm" />
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Background ambient glow */}
-      <div className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none" />
+      {/* Mobile Absolute Back Button */}
+      <Link 
+        to="/" 
+        className="sm:hidden absolute top-4 left-4 text-zinc-300 hover:text-white flex items-center gap-2 transition-colors z-[60] bg-black/40 backdrop-blur-md p-2 rounded-full"
+      >
+        <ChevronLeft size={20} />
+      </Link>
 
-      {/* Device Frame */}
+      {/* Main Content Area */}
+      <div className="flex-1 w-full flex flex-col items-center justify-center min-h-0 relative">
+        {/* Background ambient glow */}
+        <div className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none" />
+
+        {/* Device Frame */}
       <motion.div 
+        layout
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ type: "spring", damping: 20, stiffness: 100 }}
-        className={`relative w-full h-full sm:w-auto sm:max-h-[85vh] bg-zinc-950 sm:border-[10px] sm:border-zinc-800 shadow-2xl overflow-hidden sm:shadow-purple-900/20 transition-all duration-500 ${
+        transition={{ type: "spring", damping: 25, stiffness: 120 }}
+        className={`relative w-full h-full sm:max-h-full bg-zinc-950 sm:border-[10px] sm:border-zinc-800 shadow-2xl overflow-hidden sm:shadow-purple-900/20 transition-all duration-500 ${
           deviceType === 'mobile' 
-            ? 'sm:h-[812px] sm:aspect-[375/812] sm:rounded-[3rem]' 
-            : 'sm:h-[820px] sm:aspect-[1180/820] sm:rounded-[2rem]'
+            ? 'sm:h-[812px] sm:w-auto sm:aspect-[375/812] sm:rounded-[3rem]' 
+            : deviceType === 'tablet'
+              ? 'sm:h-[820px] sm:w-auto sm:aspect-[1180/820] sm:rounded-[2rem]'
+              : 'sm:w-full sm:h-auto sm:max-w-[1200px] sm:aspect-[16/9] sm:rounded-[1rem]'
         }`}
       >
         {/* Hardware Buttons */}
-        <div className="hidden sm:block absolute -left-[14px] top-32 w-1 h-12 bg-zinc-700 rounded-l-md" />
-        <div className="hidden sm:block absolute -left-[14px] top-48 w-1 h-12 bg-zinc-700 rounded-l-md" />
-        <div className="hidden sm:block absolute -right-[14px] top-40 w-1 h-16 bg-zinc-700 rounded-r-md" />
+        {deviceType !== 'desktop' && (
+          <>
+            <div className="hidden sm:block absolute -left-[14px] top-32 w-1 h-12 bg-zinc-700 rounded-l-md" />
+            <div className="hidden sm:block absolute -left-[14px] top-48 w-1 h-12 bg-zinc-700 rounded-l-md" />
+            <div className="hidden sm:block absolute -right-[14px] top-40 w-1 h-16 bg-zinc-700 rounded-r-md" />
+          </>
+        )}
 
         {/* Screen Content */}
         <div className="relative w-full h-full bg-zinc-900 overflow-hidden">
@@ -168,7 +211,11 @@ const PlayGames = () => {
                   </div>
 
                   {/* Apps Grid */}
-                  <div className="grid grid-cols-4 gap-x-4 gap-y-8 max-w-sm mx-auto mt-auto mb-10 w-full">
+                  <div className={`grid gap-x-4 gap-y-8 mx-auto mt-auto mb-10 w-full ${
+                    deviceType === 'desktop' 
+                      ? 'grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 max-w-4xl' 
+                      : 'grid-cols-4 max-w-sm'
+                  }`}>
                     {apps.map((app) => (
                       <div 
                         key={app.id} 
@@ -467,9 +514,7 @@ const PlayGames = () => {
         </div>
       </motion.div>
       
-      <p className="hidden sm:flex mt-8 text-zinc-500 text-sm font-medium flex-col items-center">
-        <span>Click the navigation buttons at the bottom to return to the Arcade launcher</span>
-      </p>
+      </div>
     </div>
   );
 };

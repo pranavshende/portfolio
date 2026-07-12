@@ -69,7 +69,7 @@ export const HomeScreen = () => {
   };
 
   return (
-    <div className="relative z-10 w-full max-w-3xl mx-auto flex flex-col pt-8 sm:pt-12 px-4 sm:px-6">
+    <div className="relative z-10 w-full max-w-3xl mx-auto flex flex-col px-4 sm:px-6">
       
       {/* Hero Banner + Profile Picture wrapper */}
       <div className="relative w-full mb-12 sm:mb-14">
