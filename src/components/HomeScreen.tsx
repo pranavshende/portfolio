@@ -290,6 +290,31 @@ export const HomeScreen = () => {
               <span className="text-[10px] text-zinc-500 leading-tight">Published</span>
             </a>
           </div>
+          
+          {/* Research Publications */}
+          <div className="space-y-3 pt-4 border-t border-white/[0.06]">
+            <h3 className="text-xs font-medium text-zinc-500">Research <span className="text-white">Publications</span></h3>
+            
+            <div className="space-y-4">
+              <div className="group relative border-l-2 border-emerald-500/30 pl-4 py-1 hover:border-emerald-500 transition-colors">
+                <p className="text-sm text-zinc-300 leading-relaxed">
+                  <span className="text-white font-semibold">CNN Based Classification of Lumpy Skin Disease</span> presented at the 2025 4th OPJU International Conference (IEEE)
+                </p>
+                <a href="https://doi.org/10.1109/OTCON65728.2025.11070341" target="_blank" rel="noopener noreferrer" className="text-xs text-emerald-400 hover:text-emerald-300 hover:underline mt-1 inline-block">
+                  doi: 10.1109/OTCON65728.2025.11070341
+                </a>
+              </div>
+
+              <div className="group relative border-l-2 border-teal-500/30 pl-4 py-1 hover:border-teal-500 transition-colors">
+                <p className="text-sm text-zinc-300 leading-relaxed">
+                  <span className="text-white font-semibold">Intelligent Platform to Interconnect Alumni and Student for Educational Institutes</span> published in the <span className="italic">International Journal on Advanced Computer Theory and Engineering</span>, 14(1): 193–197, May 2025
+                </p>
+                <a href="https://doi.org/10.65521/ijacte.v14i1.388" target="_blank" rel="noopener noreferrer" className="text-xs text-teal-400 hover:text-teal-300 hover:underline mt-1 inline-block">
+                  doi: 10.65521/ijacte.v14i1.388
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

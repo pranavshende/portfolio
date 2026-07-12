@@ -200,6 +200,41 @@ const HomeScreen = ({ onNavigate }: HomeScreenProps) => {
           </div>
         </motion.div>
 
+        {/* Research Publications Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="glass-card p-4 space-y-3"
+        >
+          <div className="flex items-center justify-between">
+            <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-widest">Research Publications</h3>
+            <BookOpen size={12} className="text-zinc-400" />
+          </div>
+
+          <div className="space-y-3">
+            <div className="relative pl-3 border-l-2 border-indigo-200">
+              <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-indigo-400 ring-2 ring-white" />
+              <p className="text-xs text-zinc-800 leading-relaxed">
+                <span className="font-semibold text-zinc-900">CNN Based Classification of Lumpy Skin Disease</span> presented at the 2025 4th OPJU International Conference (IEEE)
+              </p>
+              <a href="https://doi.org/10.1109/OTCON65728.2025.11070341" target="_blank" rel="noopener noreferrer" className="text-[10px] text-indigo-600 font-medium hover:underline mt-0.5 flex items-center gap-1">
+                doi: 10.1109/OTCON65728.2025.11070341
+              </a>
+            </div>
+
+            <div className="relative pl-3 border-l-2 border-teal-200">
+              <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-teal-400 ring-2 ring-white" />
+              <p className="text-xs text-zinc-800 leading-relaxed">
+                <span className="font-semibold text-zinc-900">Intelligent Platform to Interconnect Alumni and Student for Educational Institutes</span> published in the <span className="italic">International Journal on Advanced Computer Theory and Engineering</span>, 14(1): 193–197, May 2025
+              </p>
+              <a href="https://doi.org/10.65521/ijacte.v14i1.388" target="_blank" rel="noopener noreferrer" className="text-[10px] text-teal-600 font-medium hover:underline mt-0.5 flex items-center gap-1">
+                doi: 10.65521/ijacte.v14i1.388
+              </a>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Achievement highlight */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
