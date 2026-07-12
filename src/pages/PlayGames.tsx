@@ -56,7 +56,21 @@ const PlayGames = () => {
     return params.get('folder');
   });
 
-  const apps = [
+  type AppItem = {
+    id: string;
+    name: string;
+    icon: JSX.Element;
+    isFolder?: boolean;
+    folderApps?: {
+      id: string;
+      name: string;
+      icon: JSX.Element;
+      appId?: string;
+      link?: string;
+    }[];
+  };
+
+  const apps: AppItem[] = [
     { id: 'game2048', name: '2048', icon: <SquircleIcon imgUrl="https://upload.wikimedia.org/wikipedia/commons/1/18/2048_logo.svg" FallbackIcon={Grid} gradient="from-yellow-400 to-orange-500" alt="2048" /> },
     { id: 'hextris', name: 'Hextris', icon: <SquircleIcon imgUrl="https://raw.githubusercontent.com/hextris/hextris/master/favicon.ico" FallbackIcon={Hexagon} gradient="from-slate-700 to-slate-900" alt="Hextris" /> },
     { id: 'dino', name: 'Dino Run', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={Activity} gradient="from-zinc-400 to-zinc-600" alt="Dino" /> },
