@@ -84,22 +84,25 @@ const AboutScreen = () => {
           <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-widest flex items-center gap-1.5">
             <GraduationCap size={11} /> Education
           </h3>
-          <div
-            className="p-4 rounded-[12px]"
+          <a
+            href="https://www.stvincentngp.edu.in/"
+            target="_blank"
+            rel="noreferrer"
+            className="block p-4 rounded-[12px] hover:bg-black/5 transition-colors group cursor-pointer"
             style={{
               background: "rgba(0,0,0,0.02)",
               border: "1px solid rgba(0,0,0,0.05)",
             }}
           >
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-lg bg-black/5 flex items-center justify-center text-base flex-shrink-0">
+              <div className="w-10 h-10 rounded-lg bg-black/5 group-hover:bg-black/10 transition-colors flex items-center justify-center text-base flex-shrink-0">
                 🎓
               </div>
               <div className="flex-1">
-                <h4 className="text-xs font-bold text-zinc-900 leading-tight">
+                <h4 className="text-xs font-bold text-zinc-900 leading-tight group-hover:text-blue-600 transition-colors">
                   B.Tech in Information Technology
                 </h4>
-                <p className="text-[11px] font-semibold text-zinc-600 mt-0.5">SVPCET, Nagpur</p>
+                <p className="text-[11px] font-semibold text-zinc-600 mt-0.5 group-hover:text-zinc-800 transition-colors">SVPCET, Nagpur</p>
                 <div className="flex items-center justify-between mt-1.5">
                   <span className="text-[10px] text-zinc-500">2023 – 2027</span>
                   <span
@@ -115,7 +118,7 @@ const AboutScreen = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </a>
         </motion.div>
 
         {/* Achievements */}
@@ -129,23 +132,45 @@ const AboutScreen = () => {
             <Trophy size={11} /> Achievements
           </h3>
           <div className="space-y-2">
-            {achievements.map((a, i) => (
-              <motion.div
-                key={a.title}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.35 + i * 0.08 }}
-                className="flex items-start gap-3 p-3 rounded-[12px]"
-                style={{ background: a.bg, border: `1px solid ${a.border}` }}
-              >
-                <span className="text-xl">{a.emoji}</span>
-                <div>
-                  <p className="text-xs font-bold" style={{ color: a.color }}>{a.title}</p>
-                  <p className="text-[11px] text-zinc-600 mt-0.5">{a.org}</p>
-                  <p className="text-[10px] text-zinc-400 mt-0.5">{a.sub}</p>
-                </div>
-              </motion.div>
-            ))}
+            {achievements.map((a, i) => {
+              const content = (
+                <>
+                  <span className="text-xl">{a.emoji}</span>
+                  <div className="flex-1">
+                    <p className="text-xs font-bold transition-colors" style={{ color: a.color }}>{a.title}</p>
+                    <p className="text-[11px] text-zinc-600 mt-0.5">{a.org}</p>
+                    <p className="text-[10px] text-zinc-400 mt-0.5">{a.sub}</p>
+                  </div>
+                </>
+              );
+
+              return a.title === "Best Research Paper Award" ? (
+                <motion.a
+                  href="https://drive.google.com/file/d/1abiQVWd72J9scEi2OrO6oI5UyBcKa9fX/view?usp=sharing"
+                  target="_blank"
+                  rel="noreferrer"
+                  key={a.title}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.35 + i * 0.08 }}
+                  className="flex items-start gap-3 p-3 rounded-[12px] hover:opacity-80 transition-opacity cursor-pointer block"
+                  style={{ background: a.bg, border: `1px solid ${a.border}` }}
+                >
+                  {content}
+                </motion.a>
+              ) : (
+                <motion.div
+                  key={a.title}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.35 + i * 0.08 }}
+                  className="flex items-start gap-3 p-3 rounded-[12px]"
+                  style={{ background: a.bg, border: `1px solid ${a.border}` }}
+                >
+                  {content}
+                </motion.div>
+              );
+            })}
           </div>
         </motion.div>
 

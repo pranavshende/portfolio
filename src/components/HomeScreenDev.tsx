@@ -158,20 +158,23 @@ const HomeScreen = ({ onNavigate }: HomeScreenProps) => {
         </motion.div>
 
         {/* Achievement */}
-        <motion.div
+        <motion.a
+          href="https://drive.google.com/file/d/1abiQVWd72J9scEi2OrO6oI5UyBcKa9fX/view?usp=sharing"
+          target="_blank"
+          rel="noreferrer"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.2, delay: 0.25 }}
-          className="p-4 rounded-md glass-card"
+          className="block p-4 rounded-md glass-card hover:bg-[#161B22] transition-colors group cursor-pointer"
         >
           <div className="flex items-center gap-3">
             <Trophy size={20} className="text-[#D2A8FF]" />
             <div>
-              <p className="text-xs font-mono text-[#C9D1D9]">IEEE Published Researcher</p>
+              <p className="text-xs font-mono text-[#C9D1D9] group-hover:text-[#58A6FF] transition-colors">IEEE Published Researcher</p>
               <p className="text-[10px] font-mono text-[#8B949E] mt-1">Best Research Paper Award — ICTT</p>
             </div>
           </div>
-        </motion.div>
+        </motion.a>
 
         {/* Bottom padding */}
         <div className="h-4" />

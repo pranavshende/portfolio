@@ -11,16 +11,18 @@ const achievements = [
     bg: "rgba(0,0,0,0.03)",
     border: "rgba(0,0,0,0.06)",
     emoji: "🥇",
+    link: "https://drive.google.com/file/d/1abiQVWd72J9scEi2OrO6oI5UyBcKa9fX/view?usp=sharing",
   },
   {
     icon: Trophy,
-    title: "3rd Prize — Hackathon",
-    org: "Technex 2025 National Hackathon",
-    sub: "Inter-college national level competition",
-    color: "#404040",
+    title: "Technex 2025 — National Hackathon 3rd Prize",
+    org: "Inter-college national-level hackathon",
+    sub: "Nagpur, India",
+    color: "#171717",
     bg: "rgba(0,0,0,0.03)",
     border: "rgba(0,0,0,0.06)",
     emoji: "🏆",
+    link: "https://drive.google.com/file/d/16YkeHOFIaYoUiic2LQWVwMAHAMjkR_SN/view?usp=sharing",
   },
 ];
 
@@ -78,7 +80,7 @@ const AboutScreen = () => {
             <div>
               <span className="text-[#58A6FF] font-bold">## Education</span><br/>
               <span className="text-[#3FB950]">- B.Tech in Information Technology</span><br/>
-              <span className="text-[#8B949E]">  SVPCET, Nagpur (2023 – 2027)</span><br/>
+              <a href="https://www.stvincentngp.edu.in/" target="_blank" rel="noreferrer" className="text-[#8B949E] hover:text-[#58A6FF] hover:underline cursor-pointer transition-colors whitespace-pre">  SVPCET, Nagpur (2023 – 2027)</a><br/>
               <span className="text-[#D2A8FF]">  CGPA: 8.3 / 10</span>
             </div>
 
@@ -89,7 +91,11 @@ const AboutScreen = () => {
                 <div key={i} className="mb-2">
                   <span className="text-[#3FB950]">- {a.title}</span><br/>
                   <span className="text-[#8B949E]">  {a.org}</span><br/>
-                  <span className="text-[#8B949E]">  {a.sub}</span>
+                  {a.link ? (
+                    <a href={a.link} target="_blank" rel="noreferrer" className="text-[#8B949E] hover:text-[#58A6FF] hover:underline cursor-pointer transition-colors whitespace-pre">  {a.sub}</a>
+                  ) : (
+                    <span className="text-[#8B949E]">  {a.sub}</span>
+                  )}
                 </div>
               ))}
             </div>

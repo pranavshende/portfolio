@@ -171,19 +171,22 @@ const SkillsScreen = () => {
         >
           <h3 className="text-xs font-mono text-[#8B949E] uppercase tracking-widest">Certifications</h3>
           {[
-            { name: "Data Structures & Algorithms in C++", org: "Codetantra", type: "lab_practicals" },
-            { name: "Java Programming", org: "Codetantra", type: "lab_practicals" },
+            { name: "Data Structures & Algorithms in C++", org: "Codetantra", type: "lab_practicals", href: 'https://drive.google.com/file/d/12aX9JQ50mf9VfFU4D5Nq7GItDCJ3yjxf/view?usp=sharing' },
+            { name: "Java Programming", org: "Codetantra", type: "lab_practicals", href: 'https://drive.google.com/file/d/1VghN2nvLFVZThKYlk2wJuLCuNmnAz3FX/view?usp=sharing' },
           ].map((cert) => (
-            <div
+            <a
               key={cert.name}
-              className="flex items-center gap-3 p-3 rounded-md bg-[#0D1117] border border-[#30363D]"
+              href={cert.href}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-3 p-3 rounded-md bg-[#0D1117] border border-[#30363D] hover:bg-[#161B22] transition-colors group"
             >
               <div className="text-[#D2A8FF] font-mono text-[10px]">CERT</div>
               <div>
-                <p className="text-xs font-mono text-[#C9D1D9]">{cert.name}</p>
+                <p className="text-xs font-mono text-[#C9D1D9] group-hover:text-[#58A6FF] transition-colors">{cert.name}</p>
                 <p className="text-[10px] font-mono text-[#8B949E] mt-0.5">{cert.org} · {cert.type}</p>
               </div>
-            </div>
+            </a>
           ))}
         </motion.div>
 

@@ -236,21 +236,24 @@ const HomeScreen = ({ onNavigate }: HomeScreenProps) => {
         </motion.div>
 
         {/* Achievement highlight */}
-        <motion.div
+        <motion.a
+          href="https://drive.google.com/file/d/1abiQVWd72J9scEi2OrO6oI5UyBcKa9fX/view?usp=sharing"
+          target="_blank"
+          rel="noreferrer"
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.55 }}
-          className="p-4 rounded-2xl overflow-hidden relative glass-card"
+          className="block p-4 rounded-2xl overflow-hidden relative glass-card hover:bg-black/5 transition-colors group cursor-pointer"
         >
           <div className="absolute top-0 right-0 w-20 h-20 bg-black/5 rounded-full blur-2xl" />
           <div className="flex items-center gap-3 relative z-10">
             <div className="text-2xl">🏆</div>
             <div>
-              <p className="text-xs font-bold text-zinc-900">IEEE Published Researcher</p>
+              <p className="text-xs font-bold text-zinc-900 group-hover:text-blue-600 transition-colors">IEEE Published Researcher</p>
               <p className="text-[10px] text-zinc-500 mt-0.5">Best Research Paper Award — ICTT</p>
             </div>
           </div>
-        </motion.div>
+        </motion.a>
 
         {/* Bottom padding */}
         <div className="h-4" />
