@@ -6,6 +6,7 @@ import {
   Smartphone, Tablet, Monitor
 } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import FloatingHeader from '../components/FloatingHeader';
 
 type AppType = 'home' | 'game2048' | 'hextris' | 'dino' | 'tetris' | 'subway' | 'flappy' | 'spotify' | 'jansampark' | 'pashurakshak' | 'solar' | 'agriscore';
 
@@ -93,19 +94,21 @@ const PlayGames = () => {
   ];
 
   return (
-    <div className="h-[100dvh] sm:h-screen bg-black flex flex-col p-0 sm:p-6 md:p-8 font-sans overflow-hidden">
+    <div className="h-[100dvh] sm:h-screen bg-zinc-50 dark:bg-black flex flex-col p-0 sm:p-6 md:p-8 font-sans overflow-hidden">
       
+      <FloatingHeader />
+
       {/* Desktop Header */}
-      <div className="hidden sm:flex w-full justify-between items-center z-[60] mb-4 shrink-0">
+      <div className="hidden sm:flex w-full justify-between items-center z-[60] mb-4 shrink-0 pointer-events-none">
         <Link 
           to="/" 
-          className="text-zinc-300 hover:text-white flex items-center gap-2 transition-colors bg-black/40 hover:bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10"
+          className="pointer-events-auto text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white flex items-center gap-2 transition-colors bg-black/5 hover:bg-black/10 dark:bg-black/40 dark:hover:bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-black/10 dark:border-white/10"
         >
           <ChevronLeft size={20} />
           <span className="font-medium">Back to Portfolio</span>
         </Link>
 
-        <div className="flex bg-black/40 backdrop-blur-md rounded-full p-1 border border-white/10 relative">
+        <div className="pointer-events-auto flex bg-black/5 dark:bg-black/40 backdrop-blur-md rounded-full p-1 border border-black/10 dark:border-white/10 relative">
           {(['mobile', 'tablet', 'desktop'] as const).map((type) => {
             const icons = {
               mobile: Smartphone,
@@ -119,7 +122,7 @@ const PlayGames = () => {
               <button
                 key={type}
                 onClick={() => setDeviceType(type)}
-                className={`relative p-2 rounded-full transition-colors z-10 ${isActive ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
+                className={`relative p-2 rounded-full transition-colors z-10 ${isActive ? 'text-zinc-900 dark:text-white' : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'}`}
                 title={`${type.charAt(0).toUpperCase() + type.slice(1)} View`}
               >
                 {isActive && (
@@ -151,7 +154,7 @@ const PlayGames = () => {
       {/* Mobile Absolute Back Button */}
       <Link 
         to="/" 
-        className="sm:hidden absolute top-4 left-4 text-zinc-300 hover:text-white flex items-center gap-2 transition-colors z-[60] bg-black/40 backdrop-blur-md p-2 rounded-full"
+        className="sm:hidden absolute top-4 left-4 text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white flex items-center gap-2 transition-colors z-[60] bg-black/5 dark:bg-black/40 backdrop-blur-md p-2 rounded-full border border-black/10 dark:border-transparent"
       >
         <ChevronLeft size={20} />
       </Link>
@@ -167,7 +170,7 @@ const PlayGames = () => {
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: "spring", damping: 25, stiffness: 120 }}
-        className={`relative w-full h-full sm:max-h-full bg-zinc-950 sm:border-[10px] sm:border-zinc-800 shadow-2xl overflow-hidden sm:shadow-purple-900/20 transition-all duration-500 ${
+        className={`relative w-full h-full sm:max-h-full bg-[#09090b] sm:border-[10px] sm:border-[#27272a] shadow-2xl overflow-hidden sm:shadow-purple-900/20 transition-all duration-500 ${
           deviceType === 'mobile' 
             ? 'sm:h-[812px] sm:w-auto sm:aspect-[375/812] sm:rounded-[3rem]' 
             : deviceType === 'tablet'
@@ -178,14 +181,14 @@ const PlayGames = () => {
         {/* Hardware Buttons */}
         {deviceType !== 'desktop' && (
           <>
-            <div className="hidden sm:block absolute -left-[14px] top-32 w-1 h-12 bg-zinc-700 rounded-l-md" />
-            <div className="hidden sm:block absolute -left-[14px] top-48 w-1 h-12 bg-zinc-700 rounded-l-md" />
-            <div className="hidden sm:block absolute -right-[14px] top-40 w-1 h-16 bg-zinc-700 rounded-r-md" />
+            <div className="hidden sm:block absolute -left-[14px] top-32 w-1 h-12 bg-[#3f3f46] rounded-l-md" />
+            <div className="hidden sm:block absolute -left-[14px] top-48 w-1 h-12 bg-[#3f3f46] rounded-l-md" />
+            <div className="hidden sm:block absolute -right-[14px] top-40 w-1 h-16 bg-[#3f3f46] rounded-r-md" />
           </>
         )}
 
         {/* Screen Content */}
-        <div className="relative w-full h-full bg-zinc-900 overflow-hidden">
+        <div className="relative w-full h-full bg-[#18181b] overflow-hidden">
           
           <AnimatePresence mode="wait">
             {/* HOME SCREEN */}
@@ -202,10 +205,10 @@ const PlayGames = () => {
                 <div className="relative z-10 flex flex-col h-full pt-16 px-6 pb-8">
                   {/* Aesthetic Clock Widget */}
                   <div className="w-full flex flex-col items-center justify-center mb-12 mt-4 pointer-events-none drop-shadow-lg">
-                    <span className="text-white text-6xl font-light tracking-tight">
+                    <span className="text-[#ffffff] text-6xl font-light tracking-tight">
                       {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }).replace(' AM', '').replace(' PM', '')}
                     </span>
-                    <span className="text-white/80 text-sm font-medium tracking-widest uppercase mt-2">
+                    <span className="text-[#ffffff]/80 text-sm font-medium tracking-widest uppercase mt-2">
                       {time.toLocaleDateString([], { weekday: 'long', month: 'short', day: 'numeric' })}
                     </span>
                   </div>
@@ -229,7 +232,7 @@ const PlayGames = () => {
                         }}
                       >
                         {app.icon}
-                        <span className="text-white text-[11px] font-medium drop-shadow-md tracking-wide w-full text-center truncate px-1">
+                        <span className="text-[#ffffff] text-[11px] font-medium drop-shadow-md tracking-wide w-full text-center truncate px-1">
                           {app.name}
                         </span>
                       </div>
@@ -254,7 +257,7 @@ const PlayGames = () => {
                         className="w-full max-w-[280px] bg-white/20 backdrop-blur-md rounded-[32px] p-6 border border-white/20 shadow-2xl"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <h3 className="text-white font-medium text-center mb-6 text-sm tracking-wide">
+                        <h3 className="text-[#ffffff] font-medium text-center mb-6 text-sm tracking-wide">
                           {apps.find(a => a.id === openFolder)?.name}
                         </h3>
                         <div className="grid grid-cols-3 gap-x-4 gap-y-6">
@@ -272,7 +275,7 @@ const PlayGames = () => {
                               className="flex flex-col items-center gap-1.5 cursor-pointer group"
                             >
                               {fApp.icon}
-                              <span className="text-white text-[10px] font-medium drop-shadow-md tracking-wide w-full text-center truncate px-1">
+                              <span className="text-[#ffffff] text-[10px] font-medium drop-shadow-md tracking-wide w-full text-center truncate px-1">
                                 {fApp.name}
                               </span>
                             </div>
@@ -294,22 +297,22 @@ const PlayGames = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute top-0 left-0 right-0 bottom-10 bg-zinc-900 flex flex-col items-center justify-center p-6 text-center"
+                className="absolute top-0 left-0 right-0 bottom-10 bg-[#18181b] flex flex-col items-center justify-center p-6 text-center"
               >
-                <div className="w-20 h-20 bg-zinc-800 rounded-full flex items-center justify-center mb-6">
+                <div className="w-20 h-20 bg-[#27272a] rounded-full flex items-center justify-center mb-6">
                   {activeApp === 'pashurakshak' && <Activity size={32} className="text-emerald-500" />}
                   {activeApp === 'agriscore' && <Circle size={32} className="text-green-500" />}
                 </div>
-                <h3 className="text-white font-bold text-xl mb-2">
+                <h3 className="text-[#ffffff] font-bold text-xl mb-2">
                   {activeApp === 'pashurakshak' && 'PashuRakshak'}
                   {activeApp === 'agriscore' && 'AgriScore'}
                 </h3>
-                <p className="text-zinc-400 text-sm mb-8">
+                <p className="text-[#a1a1aa] text-sm mb-8">
                   This project is currently not deployed on a public URL. You can check out the source code on GitHub!
                 </p>
                 <button 
                   onClick={() => setActiveApp('home')}
-                  className="px-6 py-2 bg-white text-black text-sm font-medium rounded-full hover:bg-zinc-200 transition-colors"
+                  className="px-6 py-2 bg-white text-black text-sm font-medium rounded-full hover:bg-[#e4e4e7] transition-colors"
                 >
                   Go Back
                 </button>
@@ -490,7 +493,7 @@ const PlayGames = () => {
         <div className="absolute bottom-0 left-0 right-0 h-10 bg-black/80 backdrop-blur-md flex items-center justify-around z-50 border-t border-white/10">
           <button 
             onClick={() => setActiveApp('home')}
-            className="w-10 h-10 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-all active:scale-90"
+            className="w-10 h-10 flex items-center justify-center text-[#ffffff]/70 hover:text-[#ffffff] hover:bg-white/10 rounded-full transition-all active:scale-90"
             aria-label="Back"
           >
             <ChevronLeft size={20} />
@@ -498,7 +501,7 @@ const PlayGames = () => {
           
           <button 
             onClick={() => setActiveApp('home')}
-            className="w-10 h-10 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-all active:scale-90"
+            className="w-10 h-10 flex items-center justify-center text-[#ffffff]/70 hover:text-[#ffffff] hover:bg-white/10 rounded-full transition-all active:scale-90"
             aria-label="Home"
           >
             <Circle size={16} className="fill-transparent stroke-2" />
@@ -506,7 +509,7 @@ const PlayGames = () => {
 
           <Link 
             to="/"
-            className="w-10 h-10 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-all active:scale-90"
+            className="w-10 h-10 flex items-center justify-center text-[#ffffff]/70 hover:text-[#ffffff] hover:bg-white/10 rounded-full transition-all active:scale-90"
             aria-label="Portfolio"
           >
             <Square size={14} className="fill-transparent stroke-2" />
