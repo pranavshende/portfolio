@@ -34,6 +34,7 @@ const Index = () => {
         <section id="activity" className="w-full flex justify-center">
           <LiveActivity />
         </section>
+
       </main>
 
       <FloatingDock />

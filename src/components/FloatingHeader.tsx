@@ -61,18 +61,37 @@ function useWeather() {
   return { temp, code, loading };
 }
 
+function useVisitorCount() {
+  const [count, setCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch('https://api.counterapi.dev/v1/pranavshende/portfolio/up')
+      .then(r => r.json())
+      .then(data => setCount(data.count))
+      .catch(() => setCount(null));
+  }, []);
+
+  return count;
+}
+
 const FloatingHeader = () => {
   const time = useTime();
   const { temp, code, loading } = useWeather();
+  const views = useVisitorCount();
   const { mode, toggleMode } = useMode();
   const isDark = mode === 'developer';
   const weather = getWeatherInfo(code);
 
   return (
     <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 rounded-full bg-zinc-950/85 backdrop-blur-xl border border-zinc-800/80 shadow-2xl py-2.5 px-5 flex items-center gap-6 text-zinc-300 w-auto">
-      {/* Live clock */}
-      <div className="text-[10px] font-mono tracking-widest text-zinc-500">
-        {time} GMT+5:30
+      {/* Live clock & Views */}
+      <div className="flex items-center gap-3 text-[10px] font-mono tracking-widest text-zinc-500">
+        <div>{time}</div>
+        <div className="w-[1px] h-2.5 bg-zinc-800" />
+        <div className="flex items-center gap-1.5">
+          <span>VIEWS</span>
+          <span className="text-zinc-300">{views !== null ? views : '...'}</span>
+        </div>
       </div>
 
       <div className="w-[1px] h-3 bg-zinc-800" />
