@@ -39,8 +39,22 @@ export const ModeProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try { localStorage.setItem("portfolio-theme", mode); } catch {}
   }, [mode]);
 
-  const toggleMode = () =>
-    setMode(prev => (prev === "developer" ? "recruiter" : "developer"));
+  const toggleMode = () => {
+    const nextMode = mode === "developer" ? "recruiter" : "developer";
+    
+    if (!('startViewTransition' in document)) {
+      setMode(nextMode);
+      return;
+    }
+
+    const isGoingDark = nextMode === "developer";
+    document.documentElement.dataset.themeTransition = isGoingDark ? "slide-left" : "slide-right";
+
+    // @ts-ignore
+    document.startViewTransition(() => {
+      setMode(nextMode);
+    });
+  };
 
   return (
     <ModeContext.Provider value={{ mode, toggleMode }}>

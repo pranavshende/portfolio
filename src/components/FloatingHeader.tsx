@@ -118,14 +118,14 @@ const FloatingHeader = () => {
         title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
         className={`
           relative w-11 h-6 rounded-full flex items-center transition-colors duration-300 px-0.5
-          ${isDark ? 'bg-zinc-700 justify-start' : 'bg-amber-400 justify-end'}
+          ${isDark ? 'bg-zinc-700' : 'bg-amber-400'}
         `}
       >
         {/* Sliding dot */}
         <span
           className={`
-            w-5 h-5 rounded-full shadow-md flex items-center justify-center transition-all duration-300
-            ${isDark ? 'bg-zinc-300 translate-x-0' : 'bg-white translate-x-0'}
+            w-5 h-5 rounded-full shadow-md flex items-center justify-center transition-transform duration-300 transform
+            ${isDark ? 'bg-zinc-300 translate-x-0' : 'bg-white translate-x-5'}
           `}
         >
           {isDark
