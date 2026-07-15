@@ -8,7 +8,7 @@ import {
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import FloatingHeader from '../components/FloatingHeader';
 
-type AppType = 'home' | 'game2048' | 'hextris' | 'dino' | 'tetris' | 'subway' | 'flappy' | 'spotify' | 'jansampark' | 'pashurakshak' | 'solar' | 'agriscore';
+type AppType = 'home' | 'game2048' | 'hextris' | 'dino' | 'tetris' | 'subway' | 'flappy' | 'spotify' | 'jansampark' | 'pashurakshak' | 'solar' | 'agriscore' | 'dsa';
 
 const SquircleIcon = ({ 
   imgUrl, 
@@ -84,7 +84,8 @@ const PlayGames = () => {
       { id: 'jansampark', name: 'JanSampark', icon: <SquircleIcon imgUrl="https://projectjansampark.pranavshende.online/favicon.ico" FallbackIcon={Globe} gradient="from-blue-500 to-indigo-600" alt="JanSampark" />, appId: 'jansampark' },
       { id: 'pashurakshak', name: 'PashuRakshak', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={Activity} gradient="from-emerald-400 to-teal-600" alt="PashuRakshak" />, appId: 'pashurakshak' },
       { id: 'solar', name: 'Solar Analytics', icon: <SquircleIcon imgUrl="https://projectsolarsalesanalysis.pranavshende.online/favicon.ico" FallbackIcon={Hexagon} gradient="from-amber-400 to-orange-600" alt="Solar Analytics" />, appId: 'solar' },
-      { id: 'agriscore', name: 'AgriScore', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={Circle} gradient="from-green-400 to-emerald-600" alt="AgriScore" />, appId: 'agriscore' }
+      { id: 'agriscore', name: 'AgriScore', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={Circle} gradient="from-green-400 to-emerald-600" alt="AgriScore" />, appId: 'agriscore' },
+      { id: 'dsa', name: 'DSA', icon: <SquircleIcon imgUrl="https://dsa.pranavshende.online/favicon.ico" FallbackIcon={Square} gradient="from-indigo-400 to-purple-600" alt="DSA" />, appId: 'dsa' }
     ], icon: (
       <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/20 backdrop-blur-sm shadow-sm flex items-center justify-center border border-white/30 group-hover:scale-95 transition-transform duration-200">
         <Folder size={22} className="text-white drop-shadow-md" fill="currentColor" opacity={0.8} />
@@ -352,6 +353,23 @@ const PlayGames = () => {
                   src="https://projectsolarsalesanalysis.pranavshende.online/" 
                   className="w-full h-full border-none pointer-events-auto bg-white"
                   title="Solar Analysis"
+                  sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                />
+              </motion.div>
+            )}
+            {activeApp === 'dsa' && (
+              <motion.div 
+                key="dsa"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 50 }}
+                transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                className="absolute top-0 left-0 right-0 bottom-16 sm:bottom-12 bg-black"
+              >
+                <iframe 
+                  src="https://dsa.pranavshende.online/" 
+                  className="w-full h-full border-none pointer-events-auto bg-white"
+                  title="DSA"
                   sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
                 />
               </motion.div>
