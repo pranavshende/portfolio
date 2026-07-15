@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ChevronLeft, Circle, Square,
   Grid, Hexagon, Activity, Gamepad2, TrainFront, Bird, Globe, Music, Folder,
-  Smartphone, Tablet, Monitor
+  Smartphone, Tablet, Monitor, ExternalLink
 } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import FloatingHeader from '../components/FloatingHeader';
@@ -332,6 +332,15 @@ const PlayGames = () => {
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
                 className="absolute top-0 left-0 right-0 bottom-16 sm:bottom-12 bg-black"
               >
+                <a 
+                  href="https://projectjansampark.pranavshende.online/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="absolute top-4 right-4 px-4 py-2 bg-black/50 hover:bg-black/70 backdrop-blur-md border border-white/20 text-white text-sm font-medium rounded-full z-50 flex items-center gap-2 transition-colors pointer-events-auto"
+                >
+                  <ExternalLink size={16} />
+                  Go to Project Website
+                </a>
                 <iframe 
                   src="https://projectjansampark.pranavshende.online/" 
                   className="w-full h-full border-none pointer-events-auto bg-white"
@@ -349,6 +358,15 @@ const PlayGames = () => {
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
                 className="absolute top-0 left-0 right-0 bottom-16 sm:bottom-12 bg-black"
               >
+                <a 
+                  href="https://projectsolarsalesanalysis.pranavshende.online/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="absolute top-4 right-4 px-4 py-2 bg-black/50 hover:bg-black/70 backdrop-blur-md border border-white/20 text-white text-sm font-medium rounded-full z-50 flex items-center gap-2 transition-colors pointer-events-auto"
+                >
+                  <ExternalLink size={16} />
+                  Go to Project Website
+                </a>
                 <iframe 
                   src="https://projectsolarsalesanalysis.pranavshende.online/" 
                   className="w-full h-full border-none pointer-events-auto bg-white"
@@ -366,6 +384,15 @@ const PlayGames = () => {
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
                 className="absolute top-0 left-0 right-0 bottom-16 sm:bottom-12 bg-black"
               >
+                <a 
+                  href="https://dsa.pranavshende.online/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="absolute top-4 right-4 px-4 py-2 bg-black/50 hover:bg-black/70 backdrop-blur-md border border-white/20 text-white text-sm font-medium rounded-full z-50 flex items-center gap-2 transition-colors pointer-events-auto"
+                >
+                  <ExternalLink size={16} />
+                  Go to Project Website
+                </a>
                 <iframe 
                   src="https://dsa.pranavshende.online/" 
                   className="w-full h-full border-none pointer-events-auto bg-white"

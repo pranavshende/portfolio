@@ -16,21 +16,6 @@ interface Project {
 
 const projects: Project[] = [
   {
-    title: "PashuRakshak",
-    subtitle: "AI Livestock Disease Detection System",
-    description: "An AI-powered livestock healthcare platform with 5+ modules using edge computing and TensorFlow Lite for offline disease detection and veterinary assistance.",
-    tech: ["React Native (Expo)", "Node.js", "PostgreSQL", "Python", "CNN", "TensorFlow Lite"],
-    highlights: [
-      "5+ modules with offline-first edge computing",
-      "CNN-based disease classification model",
-      "15+ RESTful APIs connected",
-      "IEEE Conference presentation & publication",
-    ],
-    badge: "IEEE Published",
-    github: "#",
-    demo: "/playgames?folder=projects_folder"
-  },
-  {
     title: "JanSampark",
     subtitle: "Smart Civic Grievance Platform",
     description: "Full-stack civic platform bridging citizens and administration. Built 25+ frontend modules in React Native with a secure Node.js backend featuring JWT + RBAC for 4 user roles.",
@@ -40,7 +25,7 @@ const projects: Project[] = [
       "JWT + RBAC for 4 user roles",
       "40+ RESTful APIs with PostgreSQL",
     ],
-    github: "#",
+    github: "private",
     demo: "/playgames?folder=projects_folder"
   },
   {
@@ -54,6 +39,33 @@ const projects: Project[] = [
       "36+ states/UTs analyzed across 500+ records",
     ],
     github: "https://github.com/pranavshende/SolarSalesAnalysis",
+    demo: "/playgames?folder=projects_folder"
+  },
+  {
+    title: "DSA Questions",
+    subtitle: "Data Structures and Algorithms",
+    description: "A comprehensive collection of Data Structures and Algorithms questions and solutions, built for competitive programming and interview preparation.",
+    tech: ["C++", "DSA", "Problem Solving"],
+    highlights: [
+      "Extensive collection of DSA problems",
+      "Optimized solutions in C++",
+    ],
+    github: "https://github.com/PranavShende/DSAQUESTIONS",
+    demo: "/playgames?folder=projects_folder"
+  },
+  {
+    title: "PashuRakshak",
+    subtitle: "AI Livestock Disease Detection System",
+    description: "An AI-powered livestock healthcare platform with 5+ modules using edge computing and TensorFlow Lite for offline disease detection and veterinary assistance.",
+    tech: ["React Native (Expo)", "Node.js", "PostgreSQL", "Python", "CNN", "TensorFlow Lite"],
+    highlights: [
+      "5+ modules with offline-first edge computing",
+      "CNN-based disease classification model",
+      "15+ RESTful APIs connected",
+      "IEEE Conference presentation & publication",
+    ],
+    badge: "IEEE Published",
+    github: "https://github.com/pranavshende/HackNation_SKB-F17_SKB_P2",
     demo: "/playgames?folder=projects_folder"
   }
 ];
@@ -106,7 +118,7 @@ export const ProjectsScreen = () => {
             </div>
 
             <div className="mt-5 flex gap-3">
-              {project.github && (
+              {project.github && project.github !== "private" && (
                 <a 
                   href={project.github} 
                   target="_blank" 
@@ -116,6 +128,15 @@ export const ProjectsScreen = () => {
                   <Github className="w-3.5 h-3.5" />
                   GitHub Source
                 </a>
+              )}
+              {project.github === "private" && (
+                <div 
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800/50 text-zinc-500 text-[11px] font-medium border border-zinc-800 cursor-not-allowed"
+                  title="Currently this repo is private"
+                >
+                  <Github className="w-3.5 h-3.5" />
+                  Private Repository
+                </div>
               )}
               {project.demo && (
                 <Link 
