@@ -41,18 +41,7 @@ const projects: Project[] = [
     github: "https://github.com/pranavshende/SolarSalesAnalysis",
     demo: "/playgames?folder=projects_folder"
   },
-  {
-    title: "DSA Questions",
-    subtitle: "Data Structures and Algorithms",
-    description: "A comprehensive collection of Data Structures and Algorithms questions and solutions, built for competitive programming and interview preparation.",
-    tech: ["C++", "DSA", "Problem Solving"],
-    highlights: [
-      "Extensive collection of DSA problems",
-      "Optimized solutions in C++",
-    ],
-    github: "https://github.com/PranavShende/DSAQUESTIONS",
-    demo: "/playgames?folder=projects_folder"
-  },
+
   {
     title: "PashuRakshak",
     subtitle: "AI Livestock Disease Detection System",
