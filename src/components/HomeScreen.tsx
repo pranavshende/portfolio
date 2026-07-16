@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import profilePhoto from '../photo/1000170373_optimized_1000.jpg.jpeg';
+import bannerBg from '../photo/home_banner_bg.png';
 import SkillsMarquee from './SkillsMarquee';
 import { Github, Twitter, Linkedin, Mail, ArrowUpRight, X, Gamepad2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -74,13 +75,25 @@ export const HomeScreen = () => {
       {/* Hero Banner + Profile Picture wrapper */}
       <div className="relative w-full mb-12 sm:mb-14">
         {/* Banner */}
-        <div className="relative w-full h-32 sm:h-48 rounded-2xl overflow-hidden">
+        <div className="relative w-full h-32 sm:h-48 rounded-2xl overflow-hidden bg-black">
           <img 
-            src="https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=3540&auto=format&fit=crop" 
+            src={bannerBg}
             alt="Banner" 
-            className="w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover opacity-90"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+
+          {/* Text Overlay to match the provided design */}
+          <div className="relative z-10 flex flex-col items-center justify-center h-full w-full pointer-events-none">
+             <div className="mt-6 sm:mt-12 flex flex-col items-center drop-shadow-lg">
+               <h2 className="text-white font-bold text-sm sm:text-xl tracking-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
+                 Hello, my name is Pranav.
+               </h2>
+               <p className="text-zinc-300 text-xs sm:text-sm font-serif mt-0.5">
+                 A Tech Enthusiast<span className="text-yellow-400">✨</span>
+               </p>
+             </div>
+          </div>
 
           {/* Buttons */}
           <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 flex items-center gap-2">
