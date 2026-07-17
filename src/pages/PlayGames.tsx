@@ -8,7 +8,7 @@ import {
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import FloatingHeader from '../components/FloatingHeader';
 
-type AppType = 'home' | 'game2048' | 'hextris' | 'dino' | 'tetris' | 'subway' | 'flappy' | 'spotify' | 'jansampark' | 'pashurakshak' | 'solar' | 'agriscore' | 'dsa';
+type AppType = 'home' | 'mario' | 'hextris' | 'dino' | 'tetris' | 'subway' | 'flappy' | 'spotify' | 'jansampark' | 'pashurakshak' | 'solar' | 'agriscore' | 'dsa';
 
 const SquircleIcon = ({ 
   imgUrl, 
@@ -74,7 +74,7 @@ const PlayGames = () => {
   };
 
   const apps: AppItem[] = [
-    { id: 'game2048', name: '2048', icon: <SquircleIcon imgUrl="https://upload.wikimedia.org/wikipedia/commons/1/18/2048_logo.svg" FallbackIcon={Grid} gradient="from-yellow-400 to-orange-500" alt="2048" /> },
+    { id: 'mario', name: 'Mario', icon: <SquircleIcon imgUrl="https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Super_Mario_Bros._box.png/220px-Super_Mario_Bros._box.png" FallbackIcon={Gamepad2} gradient="from-red-500 to-blue-600" alt="Super Mario" /> },
     { id: 'hextris', name: 'Hextris', icon: <SquircleIcon imgUrl="https://raw.githubusercontent.com/hextris/hextris/master/favicon.ico" FallbackIcon={Hexagon} gradient="from-slate-700 to-slate-900" alt="Hextris" /> },
     { id: 'dino', name: 'Dino Run', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={Activity} gradient="from-zinc-400 to-zinc-600" alt="Dino" /> },
     { id: 'tetris', name: 'Tetris', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={Gamepad2} gradient="from-violet-500 to-fuchsia-600" alt="Tetris" /> },
@@ -205,7 +205,7 @@ const PlayGames = () => {
               >
                 <div className="absolute inset-0 bg-black/40 backdrop-blur-[4px] pointer-events-none" />
                 
-                <div className="relative z-10 flex flex-col h-full pt-16 px-6 pb-8">
+                <div className="relative z-10 flex flex-col h-full pt-16 px-6 pb-20 sm:pb-16">
                   {/* Aesthetic Clock Widget */}
                   <div className="w-full flex flex-col items-center justify-center mb-10 mt-2 sm:mb-12 sm:mt-4 pointer-events-none drop-shadow-lg">
                     <span className="text-[#ffffff] text-5xl sm:text-7xl font-light tracking-tight">
@@ -401,9 +401,9 @@ const PlayGames = () => {
                 />
               </motion.div>
             )}
-            {activeApp === 'game2048' && (
+            {activeApp === 'mario' && (
               <motion.div 
-                key="game2048"
+                key="mario"
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
@@ -411,9 +411,9 @@ const PlayGames = () => {
                 className="absolute top-0 left-0 right-0 bottom-16 sm:bottom-12 bg-black"
               >
                 <iframe 
-                  src="https://cyberzhg.github.io/2048/" 
-                  className="w-full h-full border-none pointer-events-auto bg-white"
-                  title="2048"
+                  src="https://supermariobrosonline.github.io/" 
+                  className="w-full h-full border-none pointer-events-auto bg-black"
+                  title="Super Mario"
                   sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
                 />
               </motion.div>

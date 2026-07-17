@@ -84,8 +84,8 @@ export const HomeScreen = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
           {/* Text Overlay to match the provided design */}
-          <div className="relative z-10 flex flex-col items-center justify-center h-full w-full pointer-events-none">
-             <div className="mt-6 sm:mt-12 flex flex-col items-center drop-shadow-lg">
+          <div className="relative z-10 flex flex-col items-center justify-start pt-6 sm:pt-0 sm:justify-center h-full w-full pointer-events-none">
+             <div className="sm:mt-12 flex flex-col items-center drop-shadow-lg px-4 text-center">
                <h2 className="text-white font-bold text-sm sm:text-xl tracking-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
                  Hello, my name is Pranav.
                </h2>
