@@ -153,7 +153,7 @@ export const ProjectsScreen = () => {
             onMouseLeave={() => setIsExpanded(false)}
             onTouchStart={() => setIsExpanded(true)}
           >
-            <div className="flex items-center min-w-max px-2">
+            <div className="flex items-stretch min-w-max px-2 py-4">
               {projects.map((project, i) => (
                 <motion.div 
                   key={i} 
@@ -168,7 +168,7 @@ export const ProjectsScreen = () => {
                     damping: 25, 
                     delay: isExpanded ? i * 0.05 : (projects.length - i) * 0.05 
                   }}
-                  className="flex-shrink-0 w-[280px] flex flex-col p-5 rounded-xl bg-zinc-900 border border-zinc-800 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] transition-colors h-[380px]"
+                  className="flex-shrink-0 w-[280px] flex flex-col p-5 rounded-xl bg-zinc-900 border border-zinc-800 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] transition-colors min-h-[380px]"
                   style={{ 
                     zIndex: projects.length - i,
                   }}
