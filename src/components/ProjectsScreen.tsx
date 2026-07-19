@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, Github, Smartphone } from 'lucide-react';
+import { motion } from 'framer-motion';
 import SectionHeader from './SectionHeader';
 
 interface Project {
@@ -41,7 +42,6 @@ const projects: Project[] = [
     github: "https://github.com/pranavshende/SolarSalesAnalysis",
     demo: "/playgames?folder=projects_folder"
   },
-
   {
     title: "PashuRakshak",
     subtitle: "AI Livestock Disease Detection System",
@@ -60,87 +60,199 @@ const projects: Project[] = [
 ];
 
 export const ProjectsScreen = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
   return (
     <div className="relative z-10 w-full max-w-3xl mx-auto px-4 sm:px-6">
       <div className="rounded-2xl bg-zinc-950 border border-white/[0.06] px-5 py-6 sm:px-7 sm:py-7">
-      <SectionHeader title="Featured Projects" />
-      
-      <div className="space-y-4">
-        {projects.map((project, i) => (
-          <div 
-            key={i} 
-            className="group flex flex-col p-5 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-all"
-          >
-            <div className="flex items-start justify-between">
-              <div className="flex-1 pr-4">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <h3 className="text-sm font-semibold text-white group-hover:text-zinc-200 transition-colors">{project.title}</h3>
-                  {project.badge && (
-                    <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[10px] font-medium text-emerald-400">
-                      {project.badge}
-                    </span>
-                  )}
+        <SectionHeader title="Featured Projects" />
+        
+        {/* Desktop View (Standard vertical list) */}
+        <div className="hidden sm:block space-y-4 mt-6">
+          {projects.map((project, i) => (
+            <div 
+              key={i} 
+              className="group flex flex-col p-5 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-all"
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex-1 pr-4">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="text-sm font-semibold text-white group-hover:text-zinc-200 transition-colors">{project.title}</h3>
+                    {project.badge && (
+                      <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[10px] font-medium text-emerald-400">
+                        {project.badge}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-zinc-500 mt-0.5">{project.subtitle}</p>
                 </div>
-                <p className="text-xs text-zinc-500 mt-0.5">{project.subtitle}</p>
+              </div>
+              
+              <p className="mt-3 text-xs text-zinc-400 leading-relaxed">
+                {project.description}
+              </p>
+
+              <ul className="mt-3 space-y-1">
+                {project.highlights.map((h, j) => (
+                  <li key={j} className="text-[11px] text-zinc-500 flex gap-1.5">
+                    <span className="text-emerald-500 flex-shrink-0">•</span>
+                    <span>{h}</span>
+                  </li>
+                ))}
+              </ul>
+              
+              <div className="mt-4 flex flex-wrap gap-2">
+                {project.tech.map((t, idx) => (
+                  <span key={idx} className="px-2 py-0.5 rounded-full bg-zinc-950 border border-zinc-800 text-[10px] font-medium text-zinc-400">
+                    {t}
+                  </span>
+                ))}
+              </div>
+
+              <div className="mt-5 flex gap-3">
+                {project.github && project.github !== "private" && (
+                  <a 
+                    href={project.github} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white text-[11px] font-medium transition-colors border border-zinc-700"
+                  >
+                    <Github className="w-3.5 h-3.5" />
+                    GitHub Source
+                  </a>
+                )}
+                {project.github === "private" && (
+                  <div 
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800/50 text-zinc-500 text-[11px] font-medium border border-zinc-800 cursor-not-allowed"
+                    title="Currently this repo is private"
+                  >
+                    <Github className="w-3.5 h-3.5" />
+                    Private Repository
+                  </div>
+                )}
+                {project.demo && (
+                  <Link 
+                    to={project.demo} 
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-[11px] font-medium transition-colors border border-emerald-500/30"
+                  >
+                    <Smartphone className="w-3.5 h-3.5" />
+                    View in Arcade
+                    <ArrowUpRight className="w-3 h-3 ml-0.5 opacity-70" />
+                  </Link>
+                )}
               </div>
             </div>
-            
-            <p className="mt-3 text-xs text-zinc-400 leading-relaxed">
-              {project.description}
-            </p>
+          ))}
+        </div>
 
-            <ul className="mt-3 space-y-1">
-              {project.highlights.map((h, j) => (
-                <li key={j} className="text-[11px] text-zinc-500 flex gap-1.5">
-                  <span className="text-emerald-500 flex-shrink-0">•</span>
-                  <span>{h}</span>
-                </li>
-              ))}
-            </ul>
-            
-            <div className="mt-4 flex flex-wrap gap-2">
-              {project.tech.map((t, idx) => (
-                <span key={idx} className="px-2 py-0.5 rounded-full bg-zinc-950 border border-zinc-800 text-[10px] font-medium text-zinc-400">
-                  {t}
-                </span>
-              ))}
-            </div>
+        {/* Mobile View (Sliding Overlapping Cards) */}
+        <div className="sm:hidden">
+          <div 
+            className="relative w-full overflow-x-auto no-scrollbar py-8 -my-4 px-2 -mx-2"
+            onMouseEnter={() => setIsExpanded(true)}
+            onMouseLeave={() => setIsExpanded(false)}
+            onTouchStart={() => setIsExpanded(true)}
+          >
+            <div className="flex items-center min-w-max px-2">
+              {projects.map((project, i) => (
+                <motion.div 
+                  key={i} 
+                  animate={{
+                    marginLeft: isExpanded ? (i === 0 ? 0 : 16) : (i === 0 ? 0 : -220),
+                    rotate: isExpanded ? 0 : (i * 3),
+                    y: isExpanded ? 0 : (i * 8),
+                  }}
+                  transition={{ 
+                    type: "spring", 
+                    stiffness: 250, 
+                    damping: 25, 
+                    delay: isExpanded ? i * 0.05 : (projects.length - i) * 0.05 
+                  }}
+                  className="flex-shrink-0 w-[280px] flex flex-col p-5 rounded-xl bg-zinc-900 border border-zinc-800 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] transition-colors h-[380px]"
+                  style={{ 
+                    zIndex: projects.length - i,
+                  }}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1 pr-4">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h3 className="text-sm font-semibold text-white">{project.title}</h3>
+                        {project.badge && (
+                          <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[10px] font-medium text-emerald-400">
+                            {project.badge}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-zinc-500 mt-0.5">{project.subtitle}</p>
+                    </div>
+                  </div>
+                  
+                  <p className="mt-3 text-xs text-zinc-400 leading-relaxed">
+                    {project.description}
+                  </p>
 
-            <div className="mt-5 flex gap-3">
-              {project.github && project.github !== "private" && (
-                <a 
-                  href={project.github} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white text-[11px] font-medium transition-colors border border-zinc-700"
-                >
-                  <Github className="w-3.5 h-3.5" />
-                  GitHub Source
-                </a>
-              )}
-              {project.github === "private" && (
-                <div 
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800/50 text-zinc-500 text-[11px] font-medium border border-zinc-800 cursor-not-allowed"
-                  title="Currently this repo is private"
-                >
-                  <Github className="w-3.5 h-3.5" />
-                  Private Repository
-                </div>
-              )}
-              {project.demo && (
-                <Link 
-                  to={project.demo} 
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-[11px] font-medium transition-colors border border-emerald-500/30"
-                >
-                  <Smartphone className="w-3.5 h-3.5" />
-                  View in Arcade
-                  <ArrowUpRight className="w-3 h-3 ml-0.5 opacity-70" />
-                </Link>
-              )}
+                  <ul className="mt-3 space-y-1">
+                    {project.highlights.map((h, j) => (
+                      <li key={j} className="text-[11px] text-zinc-500 flex gap-1.5">
+                        <span className="text-emerald-500 flex-shrink-0">•</span>
+                        <span className="line-clamp-2">{h}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {project.tech.map((t, idx) => (
+                      <span key={idx} className="px-2 py-0.5 rounded-full bg-zinc-950 border border-zinc-800 text-[10px] font-medium text-zinc-400">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-auto flex gap-2 pt-4">
+                    {project.github && project.github !== "private" && (
+                      <a 
+                        href={project.github} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="flex flex-1 items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white text-[11px] font-medium transition-colors border border-zinc-700"
+                      >
+                        <Github className="w-3.5 h-3.5" />
+                        Code
+                      </a>
+                    )}
+                    {project.github === "private" && (
+                      <div 
+                        className="flex flex-1 items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-zinc-800/50 text-zinc-500 text-[11px] font-medium border border-zinc-800 cursor-not-allowed"
+                        title="Currently this repo is private"
+                      >
+                        <Github className="w-3.5 h-3.5" />
+                        Private
+                      </div>
+                    )}
+                    {project.demo && (
+                      <Link 
+                        to={project.demo} 
+                        className="flex flex-1 items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-[11px] font-medium transition-colors border border-emerald-500/30"
+                      >
+                        <Smartphone className="w-3.5 h-3.5" />
+                        Arcade
+                        <ArrowUpRight className="w-3 h-3 ml-0.5 opacity-70" />
+                      </Link>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
-        ))}
-      </div>
+
+          <div className="flex justify-center mt-2">
+            <p className="text-[10px] text-zinc-500 flex items-center gap-1 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800">
+              <span>Swipe to expand cards horizontally</span>
+              <ArrowUpRight className="w-3 h-3 ml-1 opacity-70" />
+            </p>
+          </div>
+        </div>
+
       </div>
     </div>
   );

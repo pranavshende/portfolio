@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Github, ExternalLink, CheckCircle2 } from "lucide-react";
 import { Button } from "./ui/button";
@@ -80,104 +81,142 @@ const projects = [
 ];
 
 const ProjectsSection = () => {
-  return (
-    <section id="projects" className="section-padding relative">
-      <div className="container-narrow">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
-          <h2 className="font-display text-3xl md:text-5xl font-bold mb-4">
-            Featured <span className="text-primary">Projects</span>
-          </h2>
-          <div className="h-1 w-20 bg-primary mx-auto rounded-full" />
-        </motion.div>
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
-        <div className="space-y-24">
-          {projects.map((project, idx) => (
-            <motion.div
-              key={project.title}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.7 }}
-              className={`flex flex-col gap-8 lg:gap-16 items-center ${
-                idx % 2 === 1 ? "lg:flex-row-reverse" : "lg:flex-row"
-              }`}
+  return (
+    <section id="projects" ref={containerRef} className="relative h-[400vh] bg-background">
+      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden">
+        
+        <div className="absolute top-16 md:top-24 left-1/2 -translate-x-1/2 z-50 text-center w-full px-4">
+            <h2 className="font-display text-3xl md:text-5xl font-bold mb-4">
+              Featured <span className="text-primary">Projects</span>
+            </h2>
+            <div className="h-1 w-20 bg-primary mx-auto rounded-full" />
+            <motion.div 
+              className="mt-6 text-muted-foreground text-sm flex flex-col items-center justify-center gap-2"
+              style={{ opacity: useTransform(scrollYProgress, [0, 0.05], [1, 0]) }}
             >
-              {/* Project Image/Banner */}
-              <div className="w-full lg:w-1/2">
-                <div className="relative aspect-video rounded-2xl overflow-hidden border border-white/10 group shadow-2xl">
-                  <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-20 group-hover:opacity-40 transition-opacity duration-500`} />
-                  <div className="absolute inset-0 bg-zinc-900/50 backdrop-blur-sm" />
+              <span>Scroll down to unveil</span>
+              <motion.div
+                animate={{ y: [0, 5, 0] }}
+                transition={{ repeat: Infinity, duration: 1.5 }}
+                className="w-5 h-5 rounded-full border border-muted-foreground/50 flex items-center justify-center"
+              >
+                <span className="text-[10px]">↓</span>
+              </motion.div>
+            </motion.div>
+        </div>
+
+        <div className="relative w-full h-[75vh] md:h-[65vh] max-w-[100vw] flex items-center justify-center mt-20 md:mt-12">
+          {projects.map((project, idx) => {
+            
+            // At 0: Cards are stacked slightly offset
+            // At 0.2: Cards have un-slided from left to right (spread out horizontally)
+            // At 1.0: The entire track has scrolled fully to the left
+            const x = useTransform(
+              scrollYProgress,
+              [0, 0.2, 1],
+              [
+                `${idx * 15}px`, 
+                `${idx * 105}%`, 
+                `${idx * 105 - 105 * (projects.length - 1)}%` 
+              ]
+            );
+
+            const zIndex = projects.length - idx;
+
+            const rotate = useTransform(
+              scrollYProgress,
+              [0, 0.1],
+              [idx * -2, 0] // subtle fan out when stacked
+            );
+
+            const scale = useTransform(
+              scrollYProgress,
+              [0, 0.1],
+              [1 - idx * 0.05, 1]
+            );
+
+            const opacity = useTransform(
+              scrollYProgress,
+              [0, 0.1],
+              [1 - idx * 0.1, 1]
+            );
+
+            return (
+              <motion.div
+                key={project.title}
+                style={{ x, zIndex, rotate, scale, opacity }}
+                className="absolute left-0 right-0 mx-auto w-[90vw] md:w-[70vw] lg:w-[60vw] max-w-5xl h-[70vh] md:h-[60vh] rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-zinc-900/95 backdrop-blur-xl flex flex-col md:flex-row"
+              >
+                {/* Image Half */}
+                <div className="w-full h-48 md:h-full md:w-2/5 relative shrink-0">
+                  <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-30`} />
+                  <div className="absolute inset-0 bg-zinc-900/40 backdrop-blur-[2px]" />
                   <div className="absolute inset-0 flex items-center justify-center p-8 text-center z-10">
-                    <span className="font-display text-2xl md:text-4xl font-bold text-white/50 tracking-wider">
+                    <span className="font-display text-3xl md:text-4xl font-bold text-white/70 tracking-wider drop-shadow-lg">
                       {project.title}
                     </span>
                   </div>
-                  {/* Decorative Elements */}
-                  <div className="absolute top-4 left-4 flex gap-2 z-20">
-                    <div className="w-3 h-3 rounded-full bg-destructive/50" />
-                    <div className="w-3 h-3 rounded-full bg-amber-500/50" />
-                    <div className="w-3 h-3 rounded-full bg-primary/50" />
+                </div>
+
+                {/* Content Half */}
+                <div className="w-full md:w-3/5 p-6 md:p-8 flex flex-col justify-center space-y-4 md:space-y-6 overflow-y-auto no-scrollbar relative z-20">
+                  <div>
+                    <h3 className="text-2xl md:text-4xl font-bold text-foreground mb-2 font-display">{project.title}</h3>
+                    <h4 className="text-primary font-medium text-sm md:text-lg">{project.subtitle}</h4>
+                  </div>
+
+                  <div className="p-3 md:p-4 rounded-xl bg-primary/10 border border-primary/20 text-primary-foreground/90 font-medium text-xs md:text-sm">
+                    {project.highlight}
+                  </div>
+
+                  <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
+                    {project.description}
+                  </p>
+
+                  <div className="hidden sm:block">
+                    <h5 className="font-semibold text-foreground mb-3 text-sm">Key Features:</h5>
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {project.features.slice(0, 4).map(feature => (
+                        <li key={feature} className="flex items-start gap-2 text-xs md:text-sm text-muted-foreground">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {project.tech.map(tech => (
+                      <span key={tech} className="px-2 py-1 md:px-3 md:py-1 rounded-full text-[10px] md:text-xs font-medium bg-white/5 border border-white/10 text-foreground">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="flex flex-wrap gap-3 md:gap-4 pt-2 md:pt-4">
+                    <a href={project.github} target="_blank" rel="noopener noreferrer">
+                      <Button size="sm" variant="default" className="bg-foreground text-background hover:bg-foreground/90 gap-2">
+                        <Github className="w-4 h-4" /> Code
+                      </Button>
+                    </a>
+                    <Link to={project.demo}>
+                      <Button size="sm" variant="outline" className="border-border hover:bg-secondary gap-2 border-white/20">
+                        <ExternalLink className="w-4 h-4" /> Demo
+                      </Button>
+                    </Link>
                   </div>
                 </div>
-              </div>
-
-              {/* Project Details */}
-              <div className="w-full lg:w-1/2 space-y-6">
-                <div>
-                  <h3 className="text-3xl font-bold text-foreground mb-2 font-display">{project.title}</h3>
-                  <h4 className="text-primary font-medium text-lg">{project.subtitle}</h4>
-                </div>
-
-                <div className="p-4 rounded-xl bg-primary/5 border border-primary/20 text-primary-foreground/90 font-medium">
-                  {project.highlight}
-                </div>
-
-                <p className="text-muted-foreground leading-relaxed">
-                  {project.description}
-                </p>
-
-                <div>
-                  <h5 className="font-semibold text-foreground mb-3">Key Features:</h5>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {project.features.map(feature => (
-                      <li key={feature} className="flex items-start gap-2 text-sm text-muted-foreground">
-                        <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {project.tech.map(tech => (
-                    <span key={tech} className="px-3 py-1 rounded-full text-xs font-medium bg-white/5 border border-white/10 text-foreground">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex flex-wrap gap-4 pt-4">
-                  <a href={project.github} target="_blank" rel="noopener noreferrer">
-                    <Button variant="default" className="bg-foreground text-background hover:bg-foreground/90 gap-2">
-                      <Github className="w-4 h-4" /> View Source
-                    </Button>
-                  </a>
-                  <Link to={project.demo}>
-                    <Button variant="outline" className="border-border hover:bg-secondary gap-2">
-                      <ExternalLink className="w-4 h-4" /> Live Demo
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            )
+          })}
         </div>
+
       </div>
     </section>
   );
