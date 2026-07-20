@@ -82,7 +82,7 @@ const PlayGames = () => {
     { id: 'flappy', name: 'Flappy', icon: <SquircleIcon imgUrl="https://upload.wikimedia.org/wikipedia/en/0/0a/Flappy_Bird_icon.png" FallbackIcon={Bird} gradient="from-sky-300 to-blue-500" alt="Flappy Bird" /> },
     { id: 'projects_folder', name: 'Projects', isFolder: true, folderApps: [
       { id: 'jansampark', name: 'JanSampark', icon: <SquircleIcon imgUrl="https://projectjansampark.pranavshende.online/favicon.ico" FallbackIcon={Globe} gradient="from-blue-500 to-indigo-600" alt="JanSampark" />, appId: 'jansampark' },
-      { id: 'pashurakshak', name: 'PashuRakshak', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={Activity} gradient="from-emerald-400 to-teal-600" alt="PashuRakshak" />, appId: 'pashurakshak' },
+      { id: 'pashurakshak', name: 'PashuRakshak', icon: <SquircleIcon imgUrl="https://projectpashurakshak.pranavshende.online/favicon.ico" FallbackIcon={Activity} gradient="from-emerald-400 to-teal-600" alt="PashuRakshak" />, appId: 'pashurakshak' },
       { id: 'solar', name: 'Solar Analytics', icon: <SquircleIcon imgUrl="https://projectsolarsalesanalysis.pranavshende.online/favicon.ico" FallbackIcon={Hexagon} gradient="from-amber-400 to-orange-600" alt="Solar Analytics" />, appId: 'solar' },
       { id: 'agriscore', name: 'AgriScore', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={Circle} gradient="from-green-400 to-emerald-600" alt="AgriScore" />, appId: 'agriscore' },
       { id: 'dsa', name: 'DSA', icon: <SquircleIcon imgUrl="https://dsa.pranavshende.online/favicon.ico" FallbackIcon={Square} gradient="from-indigo-400 to-purple-600" alt="DSA" />, appId: 'dsa' }
@@ -293,7 +293,7 @@ const PlayGames = () => {
             )}
 
             {/* COMING SOON SCREENS FOR UNDEPLOYED PROJECTS */}
-            {(activeApp === 'pashurakshak' || activeApp === 'agriscore') && (
+            {(activeApp === 'agriscore') && (
               <motion.div 
                 key={activeApp}
                 initial={{ opacity: 0, y: 50 }}
@@ -303,11 +303,9 @@ const PlayGames = () => {
                 className="absolute top-0 left-0 right-0 bottom-10 bg-[#18181b] flex flex-col items-center justify-center p-6 text-center"
               >
                 <div className="w-20 h-20 bg-[#27272a] rounded-full flex items-center justify-center mb-6">
-                  {activeApp === 'pashurakshak' && <Activity size={32} className="text-emerald-500" />}
                   {activeApp === 'agriscore' && <Circle size={32} className="text-green-500" />}
                 </div>
                 <h3 className="text-[#ffffff] font-bold text-xl mb-2">
-                  {activeApp === 'pashurakshak' && 'PashuRakshak'}
                   {activeApp === 'agriscore' && 'AgriScore'}
                 </h3>
                 <p className="text-[#a1a1aa] text-sm mb-8">
@@ -345,6 +343,32 @@ const PlayGames = () => {
                   src="https://projectjansampark.pranavshende.online/" 
                   className="w-full h-full border-none pointer-events-auto bg-white"
                   title="JanSampark"
+                  sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                />
+              </motion.div>
+            )}
+            {activeApp === 'pashurakshak' && (
+              <motion.div 
+                key="pashurakshak"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 50 }}
+                transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                className="absolute top-0 left-0 right-0 bottom-16 sm:bottom-12 bg-black"
+              >
+                <a 
+                  href="https://projectpashurakshak.pranavshende.online/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="absolute top-4 right-4 px-4 py-2 bg-black/50 hover:bg-black/70 backdrop-blur-md border border-white/20 text-white text-sm font-medium rounded-full z-50 flex items-center gap-2 transition-colors pointer-events-auto"
+                >
+                  <ExternalLink size={16} />
+                  Go to Project Website
+                </a>
+                <iframe 
+                  src="https://projectpashurakshak.pranavshende.online/" 
+                  className="w-full h-full border-none pointer-events-auto bg-white"
+                  title="PashuRakshak"
                   sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
                 />
               </motion.div>
