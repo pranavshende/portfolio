@@ -61,8 +61,7 @@ export const ExperienceScreen = () => {
           {experiences.map((exp, i) => (
             <div 
               key={i} 
-              className="group flex flex-col p-4 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 hover:border-zinc-700 transition-all cursor-pointer"
-              onClick={() => setExpanded(expanded === i ? null : i)}
+              className="group flex flex-col p-4 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 hover:border-zinc-700 transition-all"
             >
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
                 <div className="flex items-center gap-3">
@@ -82,23 +81,14 @@ export const ExperienceScreen = () => {
               </div>
               
               {/* Expandable bullet points */}
-              {expanded === i && (
-                <ul className="mt-4 space-y-2 ml-[52px]">
-                  {exp.bullets.map((b, j) => (
-                    <li key={j} className="text-xs text-zinc-400 leading-relaxed flex gap-2">
-                      <span className="text-emerald-500 flex-shrink-0 mt-0.5">•</span>
-                      <span>{b}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              
-              {/* Expand hint */}
-              <div className="mt-3 ml-[52px]">
-                <span className="text-[10px] text-zinc-600 group-hover:text-zinc-500 transition-colors">
-                  {expanded === i ? '▲ collapse' : '▼ expand details'}
-                </span>
-              </div>
+              <ul className="mt-4 space-y-2 ml-[52px]">
+                {exp.bullets.map((b, j) => (
+                  <li key={j} className="text-xs text-zinc-400 leading-relaxed flex gap-2">
+                    <span className="text-emerald-500 flex-shrink-0 mt-0.5">•</span>
+                    <span>{b}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>
@@ -126,11 +116,10 @@ export const ExperienceScreen = () => {
                     damping: 25, 
                     delay: isExpandedSlider ? i * 0.05 : (experiences.length - i) * 0.05 
                   }}
-                  className="flex-shrink-0 w-[280px] flex flex-col p-5 rounded-xl bg-zinc-900 border border-zinc-800 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] transition-colors min-h-[220px] cursor-pointer"
+                  className="flex-shrink-0 w-[280px] flex flex-col p-5 rounded-xl bg-zinc-900 border border-zinc-800 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] transition-colors min-h-[220px]"
                   style={{ 
                     zIndex: experiences.length - i,
                   }}
-                  onClick={() => setExpanded(expanded === i ? null : i)}
                 >
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 rounded-lg bg-zinc-800 border border-zinc-700/50 flex items-center justify-center flex-shrink-0">
@@ -147,22 +136,14 @@ export const ExperienceScreen = () => {
                     <div className="text-[10px] text-zinc-600 mt-1">{exp.location}</div>
                   </div>
                   
-                  {expanded === i && (
-                    <ul className="mt-2 mb-4 space-y-2">
-                      {exp.bullets.map((b, j) => (
-                        <li key={j} className="text-[11px] text-zinc-400 leading-relaxed flex gap-2">
-                          <span className="text-emerald-500 flex-shrink-0 mt-0.5">•</span>
-                          <span>{b}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-
-                  <div className="mt-auto pt-2 border-t border-zinc-800/50">
-                    <span className="text-[10px] text-zinc-500 transition-colors">
-                      {expanded === i ? '▲ Tap to collapse' : '▼ Tap to expand details'}
-                    </span>
-                  </div>
+                  <ul className="mt-2 mb-4 space-y-2">
+                    {exp.bullets.map((b, j) => (
+                      <li key={j} className="text-[11px] text-zinc-400 leading-relaxed flex gap-2">
+                        <span className="text-emerald-500 flex-shrink-0 mt-0.5">•</span>
+                        <span>{b}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </motion.div>
               ))}
             </div>
