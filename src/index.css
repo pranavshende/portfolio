@@ -681,3 +681,16 @@ body.recruiter-mode .bg-zinc-950\/80 {
     clip-path: circle(150% at 50% 44px);
   }
 }
+
+@keyframes glow-pulse {
+  0%, 100% {
+    border-color: rgba(34, 197, 94, 0.6);
+  }
+  50% {
+    border-color: rgba(34, 197, 94, 1);
+  }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}

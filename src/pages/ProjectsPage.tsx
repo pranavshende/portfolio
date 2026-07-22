@@ -143,7 +143,9 @@ const ProjectsPage = () => {
                     src={project.image} 
                     alt={project.title} 
                     loading="lazy" 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${
+                      project.title === 'JanSampark' ? 'object-left' : 'object-center'
+                    }`}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/60 to-transparent pointer-events-none" />
                 </div>
@@ -259,7 +261,9 @@ const ProjectsPage = () => {
                         src={project.image} 
                         alt={project.title} 
                         loading="lazy" 
-                        className="w-full h-full object-cover"
+                        className={`w-full h-full object-cover ${
+                          project.title === 'JanSampark' ? 'object-left' : 'object-center'
+                        }`}
                       />
                     </div>
 
