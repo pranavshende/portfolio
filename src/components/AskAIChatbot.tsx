@@ -260,13 +260,14 @@ const AskAIChatbot: React.FC<ChatbotProps> = ({ isOpen, onClose }) => {
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: 15, scale: 0.96 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 15, scale: 0.96 }}
-          transition={{ duration: 0.2, ease: "easeOut" }}
-          className="fixed bottom-[64px] sm:bottom-22 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-auto sm:right-8 z-50 w-[92vw] sm:w-[360px] h-[48vh] sm:h-[480px] min-h-[330px] max-h-[500px] rounded-2xl bg-zinc-950/95 border border-white/[0.08] shadow-[0_20px_50px_rgba(0,0,0,0.9)] backdrop-blur-2xl flex flex-col overflow-hidden"
-        >
+        <div className="fixed bottom-[64px] sm:bottom-22 left-1/2 transform -translate-x-1/2 sm:transform-none sm:translate-x-0 sm:left-auto sm:right-8 z-50 w-[88vw] max-w-[340px] sm:w-[360px] sm:max-w-none h-[60vh] sm:h-[550px] min-h-[400px] sm:min-h-none max-h-[600px] sm:max-h-none">
+          <motion.div
+            initial={{ opacity: 0, y: 15, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 15, scale: 0.96 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="w-full h-full rounded-2xl bg-zinc-950/95 border border-white/[0.08] shadow-[0_20px_50px_rgba(0,0,0,0.9)] backdrop-blur-2xl flex flex-col overflow-hidden"
+          >
           {/* Header */}
           <div className="flex items-center justify-between px-3.5 py-2.5 sm:px-4 sm:py-3 bg-zinc-900/50 border-b border-white/[0.06]">
             <div className="flex items-center gap-2">
@@ -377,7 +378,8 @@ const AskAIChatbot: React.FC<ChatbotProps> = ({ isOpen, onClose }) => {
               <Send className="w-3 h-3" />
             </button>
           </form>
-        </motion.div>
+          </motion.div>
+        </div>
       )}
     </AnimatePresence>
   );
