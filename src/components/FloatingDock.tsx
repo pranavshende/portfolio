@@ -52,7 +52,7 @@ const FloatingDock = () => {
     {
       icon: <Bot className="w-3.5 h-3.5 sm:w-[16px] sm:h-[16px]" />,
       label: 'Ask AI',
-      action: () => setIsChatOpen(true),
+      action: () => setIsChatOpen(prev => !prev),
       type: 'action',
     },
     {
