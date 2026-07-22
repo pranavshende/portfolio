@@ -75,21 +75,21 @@ export const HomeScreen = () => {
       {/* Hero Banner + Profile Picture wrapper */}
       <div className="relative w-full mb-12 sm:mb-14">
         {/* Banner */}
-        <div className="relative w-full h-32 sm:h-48 rounded-2xl overflow-hidden bg-black">
+        <div className="relative w-full h-32 sm:h-48 rounded-2xl overflow-hidden bg-[#000000]">
           <img 
             src={bannerBg}
             alt="Banner" 
             className="absolute inset-0 w-full h-full object-cover opacity-90"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/80 via-[#000000]/20 to-transparent pointer-events-none" />
 
           {/* Text Overlay to match the provided design */}
           <div className="relative z-10 flex flex-col items-center justify-start pt-6 sm:pt-0 sm:justify-center h-full w-full pointer-events-none">
              <div className="sm:mt-12 flex flex-col items-center drop-shadow-lg px-4 text-center">
-               <h2 className="text-white font-bold text-sm sm:text-xl tracking-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
+               <h2 className="text-[#ffffff] font-bold text-sm sm:text-xl tracking-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
                  Hello, my name is Pranav.
                </h2>
-               <p className="text-zinc-300 text-xs sm:text-sm font-serif mt-0.5">
+               <p className="text-[#d4d4d8] text-xs sm:text-sm font-serif mt-0.5">
                  A Tech Enthusiast<span className="text-yellow-400">✨</span>
                </p>
              </div>
@@ -194,44 +194,37 @@ export const HomeScreen = () => {
           </h1>
           
           {/* Social Icons */}
-          <div className="flex items-center gap-4 text-zinc-400 pt-1">
-            <a 
-              href="https://x.com/pranavshende" 
-              target="_blank" 
-              rel="noreferrer" 
-              className="hover:text-white transition-colors"
-              aria-label="Twitter / X"
-              title="Twitter / X"
-            >
-              <Twitter className="w-4 h-4" />
-            </a>
+          <div className="flex flex-wrap items-center gap-3 text-zinc-400 pt-1">
             <a 
               href="https://github.com/PranavShende" 
               target="_blank" 
               rel="noreferrer" 
-              className="hover:text-white transition-colors"
+              className="relative overflow-hidden flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-zinc-500 hover:text-white transition-all group shadow-sm"
               aria-label="GitHub"
-              title="GitHub"
             >
-              <Github className="w-4 h-4" />
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 group-hover:animate-shine bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
+              <Github className="relative z-10 w-3.5 h-3.5 group-hover:text-emerald-400 transition-colors" />
+              <span className="relative z-10 text-[12px] font-medium">GitHub</span>
             </a>
             <a 
               href="https://linkedin.com/in/pranavshende" 
               target="_blank" 
               rel="noreferrer" 
-              className="hover:text-white transition-colors"
+              className="relative overflow-hidden flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-zinc-500 hover:text-white transition-all group shadow-sm"
               aria-label="LinkedIn"
-              title="LinkedIn"
             >
-              <Linkedin className="w-4 h-4" />
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 group-hover:animate-shine bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
+              <Linkedin className="relative z-10 w-3.5 h-3.5 group-hover:text-emerald-400 transition-colors" />
+              <span className="relative z-10 text-[12px] font-medium">LinkedIn</span>
             </a>
             <a 
               href="mailto:pranavshende97@gmail.com" 
-              className="hover:text-white transition-colors"
+              className="relative overflow-hidden flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-zinc-500 hover:text-white transition-all group shadow-sm"
               aria-label="Email"
-              title="pranavshende97@gmail.com"
             >
-              <Mail className="w-4 h-4" />
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 group-hover:animate-shine bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
+              <Mail className="relative z-10 w-3.5 h-3.5 group-hover:text-emerald-400 transition-colors" />
+              <span className="relative z-10 text-[12px] font-medium">Email</span>
             </a>
           </div>
           

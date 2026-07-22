@@ -7,6 +7,7 @@ import SkillsMarquee from "@/components/SkillsMarquee";
 import LiveActivity from "@/components/LiveActivity";
 import FloatingCodeBackground from "@/components/FloatingCodeBackground";
 import { Toaster } from "@/components/ui/toaster";
+import ContactSection from "@/components/ContactSection";
 
 const Index = () => {
   return (
@@ -34,6 +35,8 @@ const Index = () => {
         <section id="activity" className="w-full flex justify-center">
           <LiveActivity />
         </section>
+
+
 
       </main>
 

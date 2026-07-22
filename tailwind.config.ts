@@ -117,6 +117,10 @@ export default {
           "0%": { transform: "translateX(0%)" },
           "100%": { transform: "translateX(-100%)" },
         },
+        shine: {
+          "0%": { transform: "translateX(-150%) skewX(-12deg)" },
+          "100%": { transform: "translateX(150%) skewX(-12deg)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -129,6 +133,7 @@ export default {
         float: "float 6s ease-in-out infinite",
         marquee: "marquee 25s linear infinite",
         "marquee-reverse": "marquee 25s linear infinite reverse",
+        shine: "shine 1.5s ease-in-out infinite",
       },
       boxShadow: {
         sm: "var(--shadow-sm)",

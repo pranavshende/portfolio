@@ -1,97 +1,103 @@
-import React, { useState } from 'react';
-import { Home, Github, Linkedin, Mail, Briefcase, FolderGit2, Code2 } from 'lucide-react';
+import React from 'react';
+import { Home, Briefcase, FolderGit2, Code2, User } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useMode } from '../contexts/ModeContext';
 
 interface DockItem {
   icon: React.ReactNode;
   label: string;
   action: () => void;
-  type: 'scroll' | 'link' | 'email';
-  href?: string;
+  type: 'scroll';
 }
 
 const FloatingDock = () => {
-  const [tooltip, setTooltip] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { mode } = useMode();
+  const isDark = mode === 'developer';
 
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  const handleNavigation = (path: string, hash?: string) => {
+    if (location.pathname !== path) {
+      navigate(path);
+      if (hash) {
+        setTimeout(() => {
+          document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth' });
+        }, 300);
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    } else if (hash) {
+      document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const dockItems: DockItem[] = [
     {
-      icon: <Home className="w-[18px] h-[18px]" />,
+      icon: <Home className="w-3.5 h-3.5 sm:w-[16px] sm:h-[16px]" />,
       label: 'Home',
-      action: () => scrollTo('home'),
+      action: () => handleNavigation('/', 'home'),
       type: 'scroll',
     },
     {
-      icon: <Briefcase className="w-[18px] h-[18px]" />,
+      icon: <User className="w-3.5 h-3.5 sm:w-[16px] sm:h-[16px]" />,
+      label: 'About',
+      action: () => handleNavigation('/about'),
+      type: 'scroll',
+    },
+    {
+      icon: <Briefcase className="w-3.5 h-3.5 sm:w-[16px] sm:h-[16px]" />,
       label: 'Experience',
-      action: () => scrollTo('experience'),
+      action: () => handleNavigation('/', 'experience'),
       type: 'scroll',
     },
     {
-      icon: <FolderGit2 className="w-[18px] h-[18px]" />,
+      icon: <FolderGit2 className="w-3.5 h-3.5 sm:w-[16px] sm:h-[16px]" />,
       label: 'Projects',
-      action: () => scrollTo('projects'),
+      action: () => handleNavigation('/projects'),
       type: 'scroll',
     },
-    {
-      icon: <Code2 className="w-[18px] h-[18px]" />,
-      label: 'Skills',
-      action: () => scrollTo('skills'),
-      type: 'scroll',
-    },
-    {
-      icon: <Github className="w-[18px] h-[18px]" />,
-      label: 'GitHub',
-      action: () => window.open('https://github.com/PranavShende', '_blank'),
-      type: 'link',
-      href: 'https://github.com/PranavShende',
-    },
-    {
-      icon: <Linkedin className="w-[18px] h-[18px]" />,
-      label: 'LinkedIn',
-      action: () => window.open('https://linkedin.com/in/pranavshende', '_blank'),
-      type: 'link',
-      href: 'https://linkedin.com/in/pranavshende',
-    },
-    {
-      icon: <Mail className="w-[18px] h-[18px]" />,
-      label: 'Email',
-      action: () => { window.location.href = 'mailto:pranavshende97@gmail.com'; },
-      type: 'email',
-    },
-
   ];
 
   return (
-    <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-40">
-      {/* Tooltip */}
-      <div 
-        className={`absolute -top-9 left-1/2 -translate-x-1/2 bg-zinc-900 border border-zinc-700/50 rounded-full px-3 py-1 text-[11px] font-medium text-white whitespace-nowrap transition-all duration-150 ${tooltip ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1 pointer-events-none'}`}
-      >
-        {tooltip}
-      </div>
-
-      {/* Separator between nav and social */}
-      <div className="mx-auto h-14 flex items-center bg-zinc-950/80 backdrop-blur-xl border border-zinc-800/80 rounded-full px-2.5 py-2 shadow-2xl gap-1">
-        {dockItems.map((item, i) => (
-          <React.Fragment key={item.label}>
-            {/* Divider before social links */}
-            {i === 4 && <div className="w-[1px] h-5 bg-zinc-800 mx-1" />}
-            
+    <div className="fixed bottom-4 sm:bottom-6 left-1/2 transform -translate-x-1/2 z-40 w-[95%] max-w-md px-2 pb-safe">
+      <div className={`mx-auto flex justify-evenly items-center backdrop-blur-xl rounded-full px-1.5 sm:px-3 py-1 sm:py-1.5 transition-all duration-300 ${
+        isDark 
+          ? 'bg-black border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)]' 
+          : 'bg-white border border-gray-200 shadow-md'
+      }`}>
+        {dockItems.map((item) => {
+          const isActive = (item.label === 'Home' && location.pathname === '/') || 
+                           (item.label === 'About' && location.pathname === '/about') ||
+                           (item.label === 'Projects' && location.pathname === '/projects');
+          
+          return (
             <button
+              key={item.label}
               onClick={item.action}
-              onMouseEnter={() => setTooltip(item.label)}
-              onMouseLeave={() => setTooltip(null)}
-              className="relative flex items-center justify-center rounded-full bg-zinc-900 transition-all duration-200 hover:bg-zinc-700 hover:scale-110 w-9 h-9 border border-zinc-800/50 text-zinc-400 hover:text-white active:scale-95"
+              className={`relative flex items-center justify-center rounded-full transition-all duration-300 h-7 sm:h-8 px-2 sm:px-3 active:scale-95 group ${
+                isActive 
+                  ? (isDark 
+                      ? 'text-[#EAF8FF] drop-shadow-[0_0_8px_rgba(0,229,255,0.45)]' 
+                      : 'text-blue-600') 
+                  : (isDark 
+                      ? 'text-zinc-400 hover:text-cyan-400' 
+                      : 'text-gray-500 hover:text-blue-500')
+              }`}
               aria-label={item.label}
-              title={item.label}
             >
-              {item.icon}
+              <div className="flex items-center justify-center gap-1 sm:gap-1.5">
+                <span className={`transition-all duration-300 ${isActive ? (isDark ? 'drop-shadow-[0_0_8px_rgba(0,229,255,0.45)]' : '') : ''}`}>
+                  {item.icon}
+                </span>
+                <span className={`text-[10px] sm:text-[11px] font-medium whitespace-nowrap transition-colors duration-300`}>
+                  {item.label}
+                </span>
+              </div>
             </button>
-          </React.Fragment>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

@@ -669,24 +669,15 @@ body.recruiter-mode .bg-zinc-950\/80 {
 }
 
 ::view-transition-new(root) {
-  animation: none;
+  animation: ripple-in 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
   z-index: 2;
 }
 
-[data-theme-transition="slide-right"]::view-transition-new(root) {
-  animation: wipe-in-left-to-right 0.8s cubic-bezier(0.25, 1, 0.5, 1) both;
-}
-
-[data-theme-transition="slide-left"]::view-transition-new(root) {
-  animation: wipe-in-right-to-left 0.8s cubic-bezier(0.25, 1, 0.5, 1) both;
-}
-
-@keyframes wipe-in-left-to-right {
-  from { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); }
-  to { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-}
-
-@keyframes wipe-in-right-to-left {
-  from { clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%); }
-  to { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+@keyframes ripple-in {
+  from {
+    clip-path: circle(0% at 50% 44px);
+  }
+  to {
+    clip-path: circle(150% at 50% 44px);
+  }
 }
