@@ -1,23 +1,17 @@
-import { useEffect, useState } from "react";
-import Particles, { initParticlesEngine } from "@tsparticles/react";
+import { useCallback } from "react";
+import Particles, { ParticlesProvider } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
+import type { Engine } from "@tsparticles/engine";
 
 const DynamicBackground = () => {
-  const [init, setInit] = useState(false);
-
-  useEffect(() => {
-    initParticlesEngine(async (engine) => {
-      await loadSlim(engine);
-    }).then(() => {
-      setInit(true);
-    });
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadSlim(engine);
   }, []);
-
-  if (!init) return null;
 
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-      <Particles
+      <ParticlesProvider init={particlesInit}>
+        <Particles
         id="tsparticles"
         options={{
           fullScreen: { enable: false },
@@ -57,6 +51,7 @@ const DynamicBackground = () => {
         }}
         className="absolute inset-0 w-full h-full pointer-events-auto"
       />
+      </ParticlesProvider>
 
       {/* Subtle vignette */}
       <div className="absolute inset-0 bg-radial-[ellipse_at_center] from-transparent via-transparent to-black/40 pointer-events-none" />
