@@ -25,13 +25,13 @@ const About = () => {
               className="relative group"
             >
               {/* Outer soft glow */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-emerald-500 to-cyan-500 blur-xl opacity-20 group-hover:opacity-30 transition-opacity" />
+              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-emerald-500 to-cyan-500 blur-xl opacity-20 group-hover:opacity-30 transition-opacity" />
               {/* Image Frame */}
-              <div className="relative p-1 rounded-2xl bg-zinc-900 border border-zinc-800 shadow-2xl">
+              <div className="relative p-1 rounded-full bg-zinc-900 border border-zinc-800 shadow-2xl overflow-hidden">
                 <img 
                   src={profilePhoto} 
                   alt="Pranav Shende" 
-                  className="w-48 h-48 md:w-56 md:h-56 object-cover rounded-xl"
+                  className="w-48 h-48 md:w-56 md:h-56 object-cover object-[46%_20%] scale-[1.0] rounded-full"
                 />
               </div>
             </motion.div>

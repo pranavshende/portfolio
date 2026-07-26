@@ -107,33 +107,33 @@ export const LiveActivity = () => {
 
   return (
     <div className="relative z-10 w-full max-w-3xl mx-auto px-4 sm:px-6 mb-24">
-      <div className="rounded-2xl bg-zinc-950 border border-white/[0.06] px-5 py-6 sm:px-7 sm:py-7">
+      <div className="rounded-2xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-white/[0.06] px-5 py-6 sm:px-7 sm:py-7">
 
         {/* ── Achievements ── */}
         <SectionHeader title="Achievements" />
         <div className="space-y-3 mb-16">
-          <a href="https://drive.google.com/file/d/1abiQVWd72J9scEi2OrO6oI5UyBcKa9fX/view?usp=sharing" target="_blank" rel="noreferrer" className="flex items-start gap-4 p-4 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-gradient-to-r hover:from-zinc-800 hover:to-zinc-700/50 transition-all group">
+          <a href="https://drive.google.com/file/d/1abiQVWd72J9scEi2OrO6oI5UyBcKa9fX/view?usp=sharing" target="_blank" rel="noreferrer" className="flex items-start gap-4 p-4 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-200 dark:hover:bg-gradient-to-r dark:hover:from-zinc-800 dark:hover:to-zinc-700/50 transition-all group">
             <div className="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-              <Award className="w-5 h-5 text-amber-400" />
+              <Award className="w-5 h-5 text-amber-500 dark:text-amber-400" />
             </div>
             <div className="flex-1">
               <div className="flex items-center justify-between">
-                <p className="text-sm font-medium text-white group-hover:text-amber-400 transition-colors">Best Research Paper Award</p>
-                <ExternalLink className="w-3.5 h-3.5 text-zinc-600 group-hover:text-amber-400 transition-colors" />
+                <p className="text-sm font-medium text-zinc-900 dark:text-white group-hover:text-amber-500 dark:group-hover:text-amber-400 transition-colors">Best Research Paper Award</p>
+                <ExternalLink className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-600 group-hover:text-amber-500 dark:group-hover:text-amber-400 transition-colors" />
               </div>
-              <p className="text-xs text-zinc-400 mt-0.5">International Conference on Tech &amp; Trends, Suryodaya College</p>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-0.5">International Conference on Tech &amp; Trends, Suryodaya College</p>
             </div>
           </a>
-          <a href="https://drive.google.com/file/d/16YkeHOFIaYoUiic2LQWVwMAHAMjkR_SN/view?usp=sharing" target="_blank" rel="noreferrer" className="flex items-start gap-4 p-4 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-gradient-to-r hover:from-zinc-800 hover:to-zinc-700/50 transition-all group">
+          <a href="https://drive.google.com/file/d/16YkeHOFIaYoUiic2LQWVwMAHAMjkR_SN/view?usp=sharing" target="_blank" rel="noreferrer" className="flex items-start gap-4 p-4 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-200 dark:hover:bg-gradient-to-r dark:hover:from-zinc-800 dark:hover:to-zinc-700/50 transition-all group">
             <div className="w-10 h-10 rounded-lg bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-              <Trophy className="w-5 h-5 text-yellow-400" />
+              <Trophy className="w-5 h-5 text-yellow-500 dark:text-yellow-400" />
             </div>
             <div className="flex-1">
               <div className="flex items-center justify-between">
-                <p className="text-sm font-medium text-white group-hover:text-yellow-400 transition-colors">Technex 2025 — National Hackathon 3rd Prize</p>
-                <ExternalLink className="w-3.5 h-3.5 text-zinc-600 group-hover:text-yellow-400 transition-colors" />
+                <p className="text-sm font-medium text-zinc-900 dark:text-white group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors">Technex 2025 — National Hackathon 3rd Prize</p>
+                <ExternalLink className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-600 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors" />
               </div>
-              <p className="text-xs text-zinc-400 mt-0.5">Inter-college national-level hackathon</p>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-0.5">Inter-college national-level hackathon</p>
             </div>
           </a>
         </div>
@@ -145,16 +145,16 @@ export const LiveActivity = () => {
             { color: 'blue', label: 'Data Structures and Algorithms (DSA) in C++', sub: 'Codetantra — With Lab Practicals', href: 'https://drive.google.com/file/d/12aX9JQ50mf9VfFU4D5Nq7GItDCJ3yjxf/view?usp=sharing' },
             { color: 'orange', label: 'Java Programming', sub: 'Codetantra — With Lab Practicals', href: 'https://drive.google.com/file/d/1VghN2nvLFVZThKYlk2wJuLCuNmnAz3FX/view?usp=sharing' },
           ].map((c, i) => (
-            <a key={i} href={c.href} target="_blank" rel="noreferrer" className={`flex items-start gap-4 p-4 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-gradient-to-r hover:from-zinc-800 hover:to-zinc-700/50 transition-all group`}>
+            <a key={i} href={c.href} target="_blank" rel="noreferrer" className="flex items-start gap-4 p-4 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-200 dark:hover:bg-gradient-to-r dark:hover:from-zinc-800 dark:hover:to-zinc-700/50 transition-all group">
               <div className={`w-10 h-10 rounded-lg bg-${c.color}-500/10 border border-${c.color}-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
-                <BookOpen className={`w-5 h-5 text-${c.color}-400`} />
+                <BookOpen className={`w-5 h-5 text-${c.color}-500 dark:text-${c.color}-400`} />
               </div>
               <div className="flex-1">
                 <div className="flex items-center justify-between">
-                  <p className="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors">{c.label}</p>
-                  <ExternalLink className="w-3.5 h-3.5 text-zinc-600 group-hover:text-emerald-400 transition-colors" />
+                  <p className="text-sm font-medium text-zinc-900 dark:text-white group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors">{c.label}</p>
+                  <ExternalLink className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-600 group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors" />
                 </div>
-                <p className="text-xs text-zinc-400 mt-0.5">{c.sub}</p>
+                <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-0.5">{c.sub}</p>
               </div>
             </a>
           ))}
@@ -162,17 +162,17 @@ export const LiveActivity = () => {
 
         {/* ── Education ── */}
         <SectionHeader title="Education" />
-        <a href="https://www.stvincentngp.edu.in/" target="_blank" rel="noreferrer" className="block p-5 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-gradient-to-r hover:from-zinc-800 hover:to-zinc-700/50 transition-all mb-16 group">
+        <a href="https://www.stvincentngp.edu.in/" target="_blank" rel="noreferrer" className="block p-5 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-200 dark:hover:bg-gradient-to-r dark:hover:from-zinc-800 dark:hover:to-zinc-700/50 transition-all mb-16 group">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
             <div>
               <div className="flex items-center gap-2">
-                <p className="text-sm font-semibold text-white group-hover:text-emerald-400 transition-colors">St. Vincent Pallotti College of Engineering &amp; Technology</p>
-                <ExternalLink className="w-3.5 h-3.5 text-zinc-600 group-hover:text-emerald-400 transition-colors" />
+                <p className="text-sm font-semibold text-zinc-900 dark:text-white group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors">St. Vincent Pallotti College of Engineering &amp; Technology</p>
+                <ExternalLink className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-600 group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors" />
               </div>
-              <p className="text-xs text-zinc-400 mt-1">B.Tech in Information Technology · CGPA: <span className="text-emerald-400 font-medium group-hover:text-emerald-300">8.3/10</span></p>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">B.Tech in Information Technology · CGPA: <span className="text-emerald-600 dark:text-emerald-400 font-medium group-hover:text-emerald-500 dark:group-hover:text-emerald-300">8.3/10</span></p>
               <p className="text-xs text-zinc-500 mt-0.5">Nagpur, India</p>
             </div>
-            <span className="text-[11px] text-zinc-400 font-mono tracking-wider flex-shrink-0 mt-1 sm:mt-0">2023 – 2027</span>
+            <span className="text-[11px] text-zinc-600 dark:text-zinc-400 font-mono tracking-wider flex-shrink-0 mt-1 sm:mt-0">2023 – 2027</span>
           </div>
         </a>
 
@@ -188,24 +188,24 @@ export const LiveActivity = () => {
               { label: 'Following', value: profile.following },
               { label: 'Gists', value: profile.public_gists },
             ].map(s => (
-              <div key={s.label} className="flex flex-col items-center py-3 rounded-xl bg-zinc-900 border border-zinc-800">
-                <span className="text-lg font-bold text-white">{s.value}</span>
-                <span className="text-[10px] text-zinc-500 mt-0.5">{s.label}</span>
+              <div key={s.label} className="flex flex-col items-center py-3 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+                <span className="text-lg font-bold text-zinc-900 dark:text-white">{s.value}</span>
+                <span className="text-[10px] text-zinc-600 dark:text-zinc-500 mt-0.5">{s.label}</span>
               </div>
             ))}
           </div>
         )}
 
         {/* Tab switcher */}
-        <div className="flex gap-1 p-1 rounded-lg bg-zinc-900 border border-zinc-800 mb-5 flex-wrap">
+        <div className="flex gap-1 p-1 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 mb-5 flex-wrap">
           {(['calendar','repos','events'] as const).map(tab => (
             <button
               key={tab}
               onClick={() => setTab(tab)}
               className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all capitalize ${
                 activeTab === tab
-                  ? isLight ? 'bg-zinc-200 text-zinc-900 shadow-sm' : 'bg-zinc-700 text-white shadow-sm'
-                  : isLight ? 'text-zinc-500 hover:text-zinc-800' : 'text-zinc-500 hover:text-zinc-300'
+                  ? 'bg-white text-zinc-900 dark:bg-zinc-700 dark:text-white shadow-sm'
+                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
               }`}
             >
               {tab === 'calendar' ? '📅 Calendar' : tab === 'repos' ? '📦 Repos' : '⚡ Events'}
@@ -217,14 +217,14 @@ export const LiveActivity = () => {
         {activeTab === 'calendar' && (
           <div className="space-y-4">
             {/* Contribution Calendar */}
-            <div className="w-full rounded-xl bg-zinc-900 border border-zinc-800 p-5">
+            <div className="w-full rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-5">
               <div className="flex items-center justify-between mb-5">
                 <div>
-                  <h3 className="text-sm font-medium text-white">Contribution Calendar</h3>
-                  <p className="text-xs text-zinc-500 mt-0.5">Last 12 months — live from GitHub</p>
+                  <h3 className="text-sm font-medium text-zinc-900 dark:text-white">Contribution Calendar</h3>
+                  <p className="text-xs text-zinc-600 dark:text-zinc-500 mt-0.5">Last 12 months — live from GitHub</p>
                 </div>
                 <a href={`https://github.com/${GH_USER}`} target="_blank" rel="noreferrer"
-                  className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white transition-colors">
+                  className="flex items-center gap-1.5 text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
                   <Github className="w-4 h-4" />
                   <span className="hidden sm:inline">{GH_USER}</span>
                 </a>
@@ -255,17 +255,17 @@ export const LiveActivity = () => {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {PINNED_REPOS.map(repo => (
                   <a key={repo.name} href={repo.html_url} target="_blank" rel="noreferrer"
-                    className="group flex flex-col p-3.5 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 hover:border-zinc-700 transition-all">
+                    className="group flex flex-col p-3.5 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-all">
                     <div className="flex items-start justify-between mb-2">
-                      <span className="text-xs font-semibold text-white group-hover:text-emerald-400 transition-colors truncate pr-2">{repo.name}</span>
-                      <ExternalLink className="w-3 h-3 text-zinc-600 group-hover:text-zinc-400 transition-colors flex-shrink-0" />
+                      <span className="text-xs font-semibold text-zinc-900 dark:text-white group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors truncate pr-2">{repo.name}</span>
+                      <ExternalLink className="w-3 h-3 text-zinc-500 dark:text-zinc-600 group-hover:text-zinc-700 dark:group-hover:text-zinc-400 transition-colors flex-shrink-0" />
                     </div>
                     {repo.description && (
-                      <p className="text-[11px] text-zinc-500 leading-relaxed line-clamp-2 mb-3">{repo.description}</p>
+                      <p className="text-[11px] text-zinc-600 dark:text-zinc-500 leading-relaxed line-clamp-2 mb-3">{repo.description}</p>
                     )}
                     <div className="flex items-center gap-3 mt-auto">
                       {repo.language && (
-                        <span className="flex items-center gap-1 text-[10px] text-zinc-400">
+                        <span className="flex items-center gap-1 text-[10px] text-zinc-600 dark:text-zinc-400">
                           <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: LANG_COLORS[repo.language] ?? LANG_COLORS.default }} />
                           {repo.language}
                         </span>
@@ -286,30 +286,30 @@ export const LiveActivity = () => {
           <div className="space-y-3">
             {loading ? (
               [...Array(4)].map((_, i) => (
-                <div key={i} className="h-20 rounded-xl bg-zinc-900 border border-zinc-800 animate-pulse" />
+                <div key={i} className="h-20 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 animate-pulse" />
               ))
             ) : repos.length === 0 ? (
               <p className="text-sm text-zinc-500">No public repos found.</p>
             ) : repos.map(repo => (
               <a key={repo.name} href={repo.html_url} target="_blank" rel="noreferrer"
-                className="group flex flex-col p-4 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 hover:border-zinc-700 transition-all">
+                className="group flex flex-col p-4 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-all">
                 <div className="flex items-start justify-between">
                   <div className="flex-1 min-w-0 pr-3">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-sm font-semibold text-white group-hover:text-emerald-400 transition-colors truncate">{repo.name}</span>
+                      <span className="text-sm font-semibold text-zinc-900 dark:text-white group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors truncate">{repo.name}</span>
                       {repo.topics?.slice(0, 2).map(t => (
-                        <span key={t} className="px-1.5 py-0.5 rounded text-[10px] bg-zinc-800 border border-zinc-700 text-zinc-400">{t}</span>
+                        <span key={t} className="px-1.5 py-0.5 rounded text-[10px] bg-zinc-200 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-400">{t}</span>
                       ))}
                     </div>
                     {repo.description && (
-                      <p className="text-xs text-zinc-400 mt-1 leading-relaxed line-clamp-2">{repo.description}</p>
+                      <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1 leading-relaxed line-clamp-2">{repo.description}</p>
                     )}
                   </div>
-                  <ExternalLink className="w-3.5 h-3.5 text-zinc-600 group-hover:text-zinc-400 transition-colors flex-shrink-0 mt-0.5" />
+                  <ExternalLink className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-600 group-hover:text-zinc-700 dark:group-hover:text-zinc-400 transition-colors flex-shrink-0 mt-0.5" />
                 </div>
                 <div className="flex items-center gap-4 mt-3">
                   {repo.language && (
-                    <span className="flex items-center gap-1.5 text-[11px] text-zinc-400">
+                    <span className="flex items-center gap-1.5 text-[11px] text-zinc-600 dark:text-zinc-400">
                       <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: LANG_COLORS[repo.language] ?? LANG_COLORS.default }} />
                       {repo.language}
                     </span>
@@ -327,7 +327,7 @@ export const LiveActivity = () => {
               </a>
             ))}
             <a href={`https://github.com/${GH_USER}?tab=repositories`} target="_blank" rel="noreferrer"
-              className="flex items-center justify-center gap-2 py-2.5 rounded-xl border border-dashed border-zinc-800 text-xs text-zinc-500 hover:text-zinc-300 hover:border-zinc-700 transition-all">
+              className="flex items-center justify-center gap-2 py-2.5 rounded-xl border border-dashed border-zinc-300 dark:border-zinc-800 text-xs text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-300 transition-all">
               View all repositories <ExternalLink className="w-3 h-3" />
             </a>
           </div>
@@ -335,11 +335,11 @@ export const LiveActivity = () => {
 
         {/* ── Events tab ── */}
         {activeTab === 'events' && (
-          <div className="rounded-xl bg-zinc-900 border border-zinc-800 divide-y divide-zinc-800/70">
+          <div className="rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 divide-y divide-zinc-200 dark:divide-zinc-800/70">
             {loading ? (
               [...Array(5)].map((_, i) => (
                 <div key={i} className="h-12 px-4 flex items-center">
-                  <div className="h-3 bg-zinc-800 rounded animate-pulse w-3/4" />
+                  <div className="h-3 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse w-3/4" />
                 </div>
               ))
             ) : events.length === 0 ? (
@@ -347,18 +347,18 @@ export const LiveActivity = () => {
             ) : events.slice(0, 10).map(ev => {
               const { icon, label } = eventLabel(ev);
               return (
-                <div key={ev.id} className="flex items-start gap-3 px-4 py-3 hover:bg-zinc-800/50 transition-colors">
+                <div key={ev.id} className="flex items-start gap-3 px-4 py-3 hover:bg-zinc-200/60 dark:hover:bg-zinc-800/50 transition-colors">
                   <div className="mt-0.5 flex-shrink-0">{icon}</div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs text-zinc-300 truncate">{label}</p>
-                    <p className="text-[10px] text-zinc-600 mt-0.5">{timeAgo(ev.created_at)}</p>
+                    <p className="text-xs text-zinc-800 dark:text-zinc-300 truncate">{label}</p>
+                    <p className="text-[10px] text-zinc-500 dark:text-zinc-600 mt-0.5">{timeAgo(ev.created_at)}</p>
                   </div>
                 </div>
               );
             })}
             <div className="px-4 py-3">
               <a href={`https://github.com/${GH_USER}`} target="_blank" rel="noreferrer"
-                className="flex items-center gap-1.5 text-xs text-zinc-500 hover:text-zinc-300 transition-colors">
+                className="flex items-center gap-1.5 text-xs text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-300 transition-colors">
                 <Github className="w-3.5 h-3.5" /> View full activity on GitHub
               </a>
             </div>

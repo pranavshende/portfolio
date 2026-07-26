@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import profilePhoto from '../photo/1000170373_optimized_1000.jpg.jpeg';
 import bannerBg from '../photo/home_banner_bg.png';
 import SkillsMarquee from './SkillsMarquee';
-import { Github, Twitter, Linkedin, Mail, ArrowUpRight, X, Gamepad2 } from 'lucide-react';
+import { Github, Twitter, Linkedin, Mail, ArrowUpRight, X, Gamepad2, BadgeCheck, MapPin, Trophy, GraduationCap, Code } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const HomeScreen = () => {
@@ -72,63 +72,118 @@ export const HomeScreen = () => {
   return (
     <div className="relative z-10 w-full max-w-3xl mx-auto flex flex-col px-4 sm:px-6">
       
-      {/* Hero Banner + Profile Picture wrapper */}
-      <div className="relative w-full mb-12 sm:mb-14">
-        {/* Banner */}
-        <div className="relative w-full h-32 sm:h-48 rounded-2xl overflow-hidden bg-[#000000]">
-          <img 
-            src={bannerBg}
-            alt="Banner" 
-            className="absolute inset-0 w-full h-full object-cover opacity-90"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/80 via-[#000000]/20 to-transparent pointer-events-none" />
+      {/* New Hero Section */}
+      <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 sm:gap-12 mb-8 sm:mb-16">
+        {/* Profile Picture */}
+        <div className="relative shrink-0">
+          <button
+            onClick={() => setPhotoOpen(true)}
+            aria-label="View profile photo"
+            className="group block w-32 h-32 sm:w-48 sm:h-48 rounded-full overflow-hidden border-4 border-[#121212] shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 cursor-zoom-in transition-transform duration-200 hover:scale-105 bg-zinc-900"
+          >
+            <img
+              src={profilePhoto}
+              alt="Pranav Shende"
+              className="w-full h-full object-cover object-[46%_20%] scale-[1.0] transition-transform duration-300 group-hover:scale-[1.2]"
+            />
+          </button>
+        </div>
 
-          {/* Text Overlay to match the provided design */}
-          <div className="relative z-10 flex flex-col items-center justify-start pt-6 sm:pt-0 sm:justify-center h-full w-full pointer-events-none">
-             <div className="sm:mt-12 flex flex-col items-center drop-shadow-lg px-4 text-center">
-               <h2 className="text-[#ffffff] font-bold text-sm sm:text-xl tracking-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
-                 Hello, my name is Pranav.
-               </h2>
-               <p className="text-[#d4d4d8] text-xs sm:text-sm font-serif mt-0.5">
-                 A Tech Enthusiast<span className="text-yellow-400">✨</span>
-               </p>
-             </div>
+        {/* Info Content */}
+        <div className="flex flex-col flex-1 items-center sm:items-start text-center sm:text-left space-y-4 sm:space-y-5">
+          {/* Header */}
+          <div className="flex items-center gap-2">
+            <h1 className="font-bold text-2xl sm:text-4xl tracking-tight text-zinc-900 dark:text-white" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
+              Hi, I'm Pranav
+            </h1>
+            <BadgeCheck className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500 shrink-0" fill="currentColor" stroke="black" />
           </div>
 
-          {/* Buttons */}
-          <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 flex items-center gap-2">
+          {/* Subheader */}
+          <p className="text-sm sm:text-lg text-zinc-800 dark:text-zinc-100 font-medium leading-snug max-w-xl">
+            21y/o full-stack engineer who loves building scalable backend architectures and shipping things that actually work.
+          </p>
+          
+          <p className="text-xs sm:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-xl">
+            IT B.Tech student building backend systems and cross-platform apps. Currently focusing on MERN stack, React Native, and AI/ML integrations.
+          </p>
+
+          {/* Details List */}
+          <div className="flex flex-col gap-2.5 pt-1 text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 font-mono sm:font-sans w-full max-w-md items-start sm:items-start text-left pl-2 sm:pl-0">
+            <div className="flex items-center gap-2.5">
+              <Code className="w-4 h-4 shrink-0 text-zinc-500 dark:text-zinc-400 mt-0.5" />
+              <span>Full Stack Developer @ NkSkillEdge Pvt. Ltd</span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <MapPin className="w-4 h-4 shrink-0 text-zinc-500 dark:text-zinc-400 mt-0.5" />
+              <span>Nagpur, India</span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <Mail className="w-4 h-4 shrink-0 text-zinc-500 dark:text-zinc-400 mt-0.5" />
+              <a 
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=pranavshende97@gmail.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hover:text-emerald-500 dark:hover:text-emerald-400 underline underline-offset-2 decoration-zinc-400 dark:decoration-zinc-700 hover:decoration-emerald-500 transition-colors"
+              >
+                pranavshende97@gmail.com
+              </a>
+            </div>
+            <div className="flex items-center gap-2.5 text-yellow-600 dark:text-yellow-400 font-medium">
+              <Trophy className="w-4 h-4 shrink-0 mt-0.5" />
+              <span>IEEE Published Researcher</span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <GraduationCap className="w-4 h-4 shrink-0 text-zinc-500 dark:text-zinc-400 mt-0.5" />
+              <span>IT @SVPCET, Nagpur, graduating 2027</span>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5 sm:gap-3 pt-2 sm:pt-4">
+            <a 
+              href="https://github.com/PranavShende" 
+              target="_blank" 
+              rel="noreferrer" 
+              className="group flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-zinc-100 dark:bg-[#111] border border-zinc-200 dark:border-white/10 hover:bg-zinc-200 dark:hover:bg-[#222] hover:border-zinc-300 dark:hover:border-white/20 text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition-all shadow-sm"
+              aria-label="GitHub"
+            >
+              <Github className="w-4 h-4" />
+            </a>
+            <a 
+              href="https://linkedin.com/in/pranavshende" 
+              target="_blank" 
+              rel="noreferrer" 
+              className="group flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-zinc-100 dark:bg-[#111] border border-zinc-200 dark:border-white/10 hover:bg-zinc-200 dark:hover:bg-[#222] hover:border-zinc-300 dark:hover:border-white/20 text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition-all shadow-sm"
+              aria-label="LinkedIn"
+            >
+              <Linkedin className="w-4 h-4" />
+            </a>
+            <a 
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=pranavshende97@gmail.com" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="group flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-zinc-100 dark:bg-[#111] border border-zinc-200 dark:border-white/10 hover:bg-zinc-200 dark:hover:bg-[#222] hover:border-zinc-300 dark:hover:border-white/20 text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition-all shadow-sm"
+              aria-label="Email"
+            >
+              <Mail className="w-4 h-4" />
+            </a>
             <Link 
               to="/playgames"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-500 text-black hover:bg-emerald-400 active:scale-95 transition-all shadow-md shadow-emerald-500/20 backdrop-blur-md"
+              className="flex items-center justify-center gap-1.5 h-9 sm:h-10 px-4 sm:px-5 rounded-xl bg-emerald-500 text-black text-xs sm:text-sm font-semibold hover:bg-emerald-400 active:scale-95 transition-all shadow-md shadow-emerald-500/20"
             >
-              <Gamepad2 className="w-3.5 h-3.5" />
+              <Gamepad2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               Arcade
             </Link>
             <a 
               href="https://drive.google.com/drive/folders/1z3-tvjY5U1OP90Dls4IfLwV10E8e4qij?usp=sharing"
               target="_blank" 
               rel="noopener noreferrer" 
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-white text-black hover:bg-zinc-100 active:scale-95 transition-all border border-white/20 shadow-md backdrop-blur-md"
+              className="flex items-center justify-center h-9 sm:h-10 px-5 sm:px-6 rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-black text-xs sm:text-sm font-semibold hover:bg-black dark:hover:bg-zinc-200 transition-colors shadow-sm"
             >
-              <ArrowUpRight className="w-3.5 h-3.5" />
               Resume
             </a>
           </div>
-        </div>
-
-        {/* Profile Picture — sits below banner, not inside overflow-hidden */}
-        <div className="absolute -bottom-10 left-6 sm:left-8 z-10">
-          <button
-            onClick={() => setPhotoOpen(true)}
-            aria-label="View profile photo"
-            className="group block w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden border-4 border-black shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 cursor-zoom-in transition-transform duration-200 hover:scale-105"
-          >
-            <img
-              src={profilePhoto}
-              alt="Pranav Shende"
-              className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-110"
-            />
-          </button>
         </div>
       </div>
 
@@ -154,7 +209,7 @@ export const HomeScreen = () => {
                 <img
                   src={profilePhoto}
                   alt="Pranav Shende"
-                  className="w-full h-full object-cover object-top"
+                  className="w-full h-full object-cover object-[54%_12%] scale-[1.1]"
                   draggable={false}
                 />
               </div>
@@ -183,90 +238,24 @@ export const HomeScreen = () => {
         </div>
       )}
 
-      {/* Profile Info — frosted glass panel for readability over the animated background */}
+      {/* Bottom Content Area */}
       <div className="relative rounded-2xl bg-zinc-950 border border-white/[0.06] px-5 py-6 sm:px-7 sm:py-7 space-y-6">
-        <div className="space-y-1.5">
-          <h1 
-            className="font-bold text-2xl sm:text-3xl tracking-tight text-white"
-            style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
-          >
-            Pranav Shende
-          </h1>
-          
-          {/* Social Icons */}
-          <div className="flex flex-wrap items-center gap-3 text-zinc-400 pt-1">
-            <a 
-              href="https://github.com/PranavShende" 
-              target="_blank" 
-              rel="noreferrer" 
-              className="relative overflow-hidden flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-zinc-500 hover:text-white transition-all group shadow-sm"
-              aria-label="GitHub"
-            >
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 group-hover:animate-shine bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
-              <Github className="relative z-10 w-3.5 h-3.5 group-hover:text-emerald-400 transition-colors" />
-              <span className="relative z-10 text-[12px] font-medium">GitHub</span>
-            </a>
-            <a 
-              href="https://linkedin.com/in/pranavshende" 
-              target="_blank" 
-              rel="noreferrer" 
-              className="relative overflow-hidden flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-zinc-500 hover:text-white transition-all group shadow-sm"
-              aria-label="LinkedIn"
-            >
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 group-hover:animate-shine bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
-              <Linkedin className="relative z-10 w-3.5 h-3.5 group-hover:text-emerald-400 transition-colors" />
-              <span className="relative z-10 text-[12px] font-medium">LinkedIn</span>
-            </a>
-            <a 
-              href="mailto:pranavshende97@gmail.com" 
-              className="relative overflow-hidden flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-zinc-500 hover:text-white transition-all group shadow-sm"
-              aria-label="Email"
-            >
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 group-hover:animate-shine bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
-              <Mail className="relative z-10 w-3.5 h-3.5 group-hover:text-emerald-400 transition-colors" />
-              <span className="relative z-10 text-[12px] font-medium">Email</span>
-            </a>
-          </div>
-          
-          <div className="flex items-center gap-3 pt-2">
-            <span className="font-serif italic text-lg text-zinc-500 select-none">pranavshende</span>
-            <div className="h-[1px] bg-zinc-800 w-32"></div>
-          </div>
-        </div>
-
-        {/* Bio */}
-        <div className="text-sm sm:text-base text-zinc-400 leading-relaxed space-y-4 max-w-2xl">
-          <p>
-            B.Tech IT student at <span className="text-white font-semibold">SVPCET, Nagpur</span> specializing in the{' '}
-            <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-medium mx-0.5">MERN</span>{' '}
-            stack and{' '}
-            <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-medium mx-0.5">React Native</span>,
-            focused on <span className="text-white font-semibold">scalable backend architectures</span> and shipping things that{' '}
-            <span className="italic text-white">actually work</span> under pressure.
-          </p>
-          <p>
-            IEEE-published researcher with hands-on experience in <span className="text-white font-semibold">AI/ML, edge computing,</span> and building{' '}
-            <span className="text-white font-semibold">40+ REST APIs</span>. I like digging into distributed systems and the kind of engineering where
-            you have to think about what happens when things <span className="italic text-white">go wrong</span>.
-          </p>
-          <p>
-            When I learn something worth sharing, I{' '}
-            <button 
-              onClick={() => scrollToSection('projects')}
-              className="text-white font-medium underline underline-offset-4 decoration-zinc-700 hover:decoration-white transition-colors"
-            >
-              write about it
-            </button>.
-          </p>
-        </div>
-
         {/* Recently Listening & Key Stats */}
-        <div className="space-y-6 pt-4">
+        <div className="space-y-6 pt-2">
           <div className="space-y-3">
             <h3 className="text-xs font-medium text-zinc-500">Recently <span className="text-white">listening</span></h3>
             <div className="overflow-hidden rounded-xl border border-zinc-800/50 bg-zinc-900/30">
-              {/* This div is replaced by the Spotify IFrame API */}
-              <div ref={spotifyContainerRef}></div>
+              <iframe 
+                style={{ borderRadius: '12px' }} 
+                src="https://open.spotify.com/embed/track/5y2ijHECwFYWqcAHKTZgzD?utm_source=generator&theme=0" 
+                width="100%" 
+                height="152" 
+                frameBorder="0" 
+                allowFullScreen 
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                loading="lazy" 
+                title="Recently Listening"
+              />
             </div>
           </div>
 
