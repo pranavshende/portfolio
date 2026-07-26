@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SectionHeader from './SectionHeader';
 import { 
   SiJavascript, SiTypescript, SiPython, SiCplusplus, SiC,
@@ -249,12 +249,38 @@ const ALL_TECH_ITEMS: TechItem[] = [
 
 const SkillsMarquee = () => {
   const [selectedTech, setSelectedTech] = useState<TechItem | null>(null);
+  const [isAutoCycling, setIsAutoCycling] = useState(true);
+
+  useEffect(() => {
+    if (!isAutoCycling) return;
+
+    const interval = setInterval(() => {
+      setSelectedTech(prev => {
+        if (!prev) return ALL_TECH_ITEMS[0];
+        const nextIndex = (ALL_TECH_ITEMS.findIndex(t => t.id === prev.id) + 1) % ALL_TECH_ITEMS.length;
+        return ALL_TECH_ITEMS[nextIndex];
+      });
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [isAutoCycling]);
+
+  useEffect(() => {
+    if (isAutoCycling && !selectedTech) {
+      setSelectedTech(ALL_TECH_ITEMS[0]);
+    }
+  }, []);
+
+  const handleTechClick = (item: TechItem) => {
+    setIsAutoCycling(false);
+    setSelectedTech(prev => (prev?.id === item.id ? null : item));
+  };
 
   const innerItems = ALL_TECH_ITEMS.filter(item => item.orbit === 'inner');
   const outerItems = ALL_TECH_ITEMS.filter(item => item.orbit === 'outer');
 
   return (
-    <div className="relative z-10 w-full max-w-3xl mx-auto px-4 sm:px-6 pb-8 sm:pb-12">
+    <div className="relative z-10 w-full max-w-3xl mx-auto px-4 sm:px-6">
       <div className="rounded-2xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-white/[0.06] px-4 py-5 sm:px-6 sm:py-6 shadow-xl">
         <div className="flex items-center justify-between mb-1">
           <SectionHeader title="Tech Stack Orbit" className="my-0" />
@@ -321,7 +347,7 @@ const SkillsMarquee = () => {
             return (
               <button
                 key={item.id}
-                onClick={() => setSelectedTech(isSelected ? null : item)}
+                onClick={() => handleTechClick(item)}
                 aria-label={`View details for ${item.name}`}
                 className={`absolute w-7 h-7 sm:w-8 sm:h-8 -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center transition-all duration-300 group z-20 ${
                   isSelected 
@@ -361,7 +387,7 @@ const SkillsMarquee = () => {
             return (
               <button
                 key={item.id}
-                onClick={() => setSelectedTech(isSelected ? null : item)}
+                onClick={() => handleTechClick(item)}
                 aria-label={`View details for ${item.name}`}
                 className={`absolute w-6 h-6 sm:w-7 sm:h-7 -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center transition-all duration-300 group z-20 ${
                   isSelected 
@@ -408,7 +434,10 @@ const SkillsMarquee = () => {
                 </div>
               </div>
               <button 
-                onClick={() => setSelectedTech(null)}
+                onClick={() => {
+                  setIsAutoCycling(false);
+                  setSelectedTech(null);
+                }}
                 className="text-zinc-400 hover:text-zinc-700 dark:hover:text-white p-0.5 shrink-0"
                 aria-label="Close details"
               >

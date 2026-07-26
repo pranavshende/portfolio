@@ -15,29 +15,28 @@ const Index = () => {
       <FloatingCodeBackground />
       <FloatingHeader />
       
-      <main className="flex flex-col items-center w-full overflow-x-hidden pt-24 pb-24 space-y-6">
-        <section id="home" className="w-full flex justify-center">
-          <HomeScreen />
-        </section>
+      <main className="flex flex-col items-center w-full overflow-x-hidden pt-24 pb-24">
+        <div className="w-full flex flex-col items-center space-y-4">
+          <section id="home" className="w-full flex justify-center">
+            <HomeScreen />
+          </section>
 
-        <section id="experience" className="w-full flex justify-center">
-          <ExperienceScreen />
-        </section>
+          <section id="experience" className="w-full flex justify-center">
+            <ExperienceScreen />
+          </section>
 
-        <section id="projects" className="w-full flex justify-center">
-          <ProjectsScreen />
-        </section>
+          <section id="projects" className="w-full flex justify-center">
+            <ProjectsScreen />
+          </section>
 
-        <section id="skills" className="w-full flex justify-center">
-          <SkillsMarquee />
-        </section>
+          <section id="skills" className="w-full flex justify-center">
+            <SkillsMarquee />
+          </section>
 
-        <section id="activity" className="w-full flex justify-center">
-          <LiveActivity />
-        </section>
-
-
-
+          <section id="activity" className="w-full flex justify-center">
+            <LiveActivity />
+          </section>
+        </div>
       </main>
 
       <FloatingDock />

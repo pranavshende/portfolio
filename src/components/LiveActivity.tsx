@@ -107,14 +107,13 @@ export const LiveActivity = () => {
   }, []);
 
   return (
-    <div className="relative z-10 w-full max-w-3xl mx-auto px-4 sm:px-6 mb-24">
+    <div className="relative z-10 w-full max-w-3xl mx-auto px-4 sm:px-6 mb-24 space-y-4">
       <div className="rounded-2xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-white/[0.06] px-5 py-6 sm:px-7 sm:py-7">
-
         {/* ── Journey Timeline ── */}
-        <div className="mb-16">
-          <MyJourneyTimeline />
-        </div>
+        <MyJourneyTimeline />
+      </div>
 
+      <div className="rounded-2xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-white/[0.06] px-5 py-6 sm:px-7 sm:py-7">
         {/* ── GitHub Live Dashboard ── */}
         <SectionHeader title="Live GitHub Activity" />
 
@@ -303,11 +302,12 @@ export const LiveActivity = () => {
             </div>
           </div>
         )}
+      </div>
 
-        <div className="mt-16">
-          {/* ── Achievements ── */}
-          <SectionHeader title="Achievements" />
-          <div className="space-y-3 mb-16">
+      <div className="rounded-2xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-white/[0.06] px-5 py-6 sm:px-7 sm:py-7">
+        {/* ── Achievements ── */}
+        <SectionHeader title="Achievements" />
+        <div className="space-y-3">
             <a href="https://drive.google.com/file/d/1abiQVWd72J9scEi2OrO6oI5UyBcKa9fX/view?usp=sharing" target="_blank" rel="noreferrer" className="flex items-start gap-4 p-4 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-200 dark:hover:bg-gradient-to-r dark:hover:from-zinc-800 dark:hover:to-zinc-700/50 transition-all group">
               <div className="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                 <Award className="w-5 h-5 text-amber-500 dark:text-amber-400" />
@@ -333,9 +333,11 @@ export const LiveActivity = () => {
               </div>
             </a>
           </div>
+      </div>
 
-          {/* ── Education ── */}
-          <SectionHeader title="Education" />
+      <div className="rounded-2xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-white/[0.06] px-5 py-6 sm:px-7 sm:py-7">
+        {/* ── Education ── */}
+        <SectionHeader title="Education" />
           <a href="https://www.stvincentngp.edu.in/" target="_blank" rel="noreferrer" className="block p-5 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-200 dark:hover:bg-gradient-to-r dark:hover:from-zinc-800 dark:hover:to-zinc-700/50 transition-all mb-4 group">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
               <div>
@@ -349,7 +351,6 @@ export const LiveActivity = () => {
               <span className="text-[11px] text-zinc-600 dark:text-zinc-400 font-mono tracking-wider flex-shrink-0 mt-1 sm:mt-0">2023 – 2027</span>
             </div>
           </a>
-        </div>
 
         <p className="mt-8 text-sm text-zinc-500 italic">I code daily, share openly, and ship relentlessly — turning ideas into reality.</p>
       </div>
