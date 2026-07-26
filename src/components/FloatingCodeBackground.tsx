@@ -85,7 +85,7 @@ const FloatingCodeBackground = () => {
   return (
     <div
       aria-hidden="true"
-      className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none"
+      className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none [mask-image:linear-gradient(to_bottom,transparent_5%,black_40%)] sm:[mask-image:none]"
     >
       {TOKENS.map((t) => (
         <span

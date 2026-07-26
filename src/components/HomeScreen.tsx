@@ -101,7 +101,7 @@ export const HomeScreen = () => {
 
           {/* Subheader */}
           <p className="text-sm sm:text-lg text-zinc-800 dark:text-zinc-100 font-medium leading-snug max-w-xl">
-            21y/o full-stack engineer who loves building scalable backend architectures and shipping things that actually work.
+            Full-stack engineer dedicated to building scalable backend architectures, exploring system design, and shipping high-impact solutions.
           </p>
           
           <p className="text-xs sm:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-xl">

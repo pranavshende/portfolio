@@ -66,7 +66,7 @@ const FloatingDock = () => {
   return (
     <>
       <div className="fixed bottom-4 sm:bottom-6 left-1/2 transform -translate-x-1/2 z-40 w-[95%] max-w-md px-2 pb-safe">
-        <div className="mx-auto flex justify-evenly items-center backdrop-blur-xl rounded-[18px] border-2 border-[#22c55e] px-1 sm:px-2.5 py-1 sm:py-1.5 transition-all duration-300 bg-zinc-950/80 shadow-[0_8px_32px_rgba(0,0,0,0.5)] animate-glow-pulse">
+        <div className="mx-auto flex justify-evenly items-center backdrop-blur-2xl rounded-full border border-[#39FF88]/30 px-1 sm:px-2.5 py-1 sm:py-1.5 transition-all duration-300 bg-[#050505]/60 shadow-[0_0_20px_rgba(57,255,136,0.15)]">
           {dockItems.map((item) => {
             const isActive = (item.label === 'Home' && location.pathname === '/' && !isChatOpen) || 
                              (item.label === 'About' && location.pathname === '/about' && !isChatOpen) ||
