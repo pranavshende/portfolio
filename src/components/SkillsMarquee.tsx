@@ -323,7 +323,7 @@ const SkillsMarquee = () => {
                 key={item.id}
                 onClick={() => setSelectedTech(isSelected ? null : item)}
                 aria-label={`View details for ${item.name}`}
-                className={`absolute w-7 h-7 sm:w-8.5 sm:h-8.5 -ml-3.5 -mt-3.5 sm:-ml-4.25 sm:-mt-4.25 rounded-full flex items-center justify-center transition-all duration-300 group z-20 ${
+                className={`absolute w-7 h-7 sm:w-8 sm:h-8 -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center transition-all duration-300 group z-20 ${
                   isSelected 
                     ? 'bg-emerald-500 text-black ring-4 ring-emerald-500/40 scale-125 z-30 shadow-lg' 
                     : 'bg-zinc-100 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:border-emerald-500 hover:scale-110 shadow-sm'
@@ -363,7 +363,7 @@ const SkillsMarquee = () => {
                 key={item.id}
                 onClick={() => setSelectedTech(isSelected ? null : item)}
                 aria-label={`View details for ${item.name}`}
-                className={`absolute w-6.5 h-6.5 sm:w-7.5 sm:h-7.5 -ml-3.25 -mt-3.25 sm:-ml-3.75 sm:-mt-3.75 rounded-full flex items-center justify-center transition-all duration-300 group z-20 ${
+                className={`absolute w-6 h-6 sm:w-7 sm:h-7 -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center transition-all duration-300 group z-20 ${
                   isSelected 
                     ? 'bg-emerald-500 text-black ring-4 ring-emerald-500/40 scale-125 z-30 shadow-lg' 
                     : 'bg-zinc-100 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700/70 text-zinc-700 dark:text-zinc-300 hover:border-emerald-500 hover:scale-110 shadow-sm'
