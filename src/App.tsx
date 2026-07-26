@@ -16,7 +16,6 @@ const queryClient = new QueryClient();
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
-  const { mode } = useMode();
 
   useEffect(() => {
     const html = document.documentElement;
@@ -49,7 +48,7 @@ const ScrollToTop = () => {
       clearTimeout(timeoutId3);
       html.style.scrollBehavior = originalScrollBehavior;
     };
-  }, [pathname, mode]);
+  }, [pathname]);
 
   return null;
 };

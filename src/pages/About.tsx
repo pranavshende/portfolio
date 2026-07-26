@@ -3,8 +3,9 @@ import { motion } from 'framer-motion';
 import FloatingHeader from '@/components/FloatingHeader';
 import FloatingDock from '@/components/FloatingDock';
 import FloatingCodeBackground from '@/components/FloatingCodeBackground';
+import MyJourneyTimeline from '@/components/MyJourneyTimeline';
 import profilePhoto from '../photo/IMG_20240323_152847.jpg';
-import { GraduationCap, Code, Server, HeartHandshake, MapPin, Rocket, BrainCircuit } from 'lucide-react';
+import { GraduationCap, Code, Server, HeartHandshake, MapPin, Rocket, BrainCircuit, BookOpen, ExternalLink } from 'lucide-react';
 
 
 const About = () => {
@@ -138,7 +139,8 @@ const About = () => {
               </div>
             </motion.section>
 
-            {/* 5-Year Roadmap */}
+
+            {/* Certifications */}
             <motion.section 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -147,26 +149,32 @@ const About = () => {
               className="rounded-2xl bg-zinc-950 border border-white/[0.06] p-5 py-6 sm:p-7 space-y-4 shadow-sm"
             >
               <div className="space-y-1.5 border-b border-white/[0.06] pb-4">
-                <h2 className="text-xs font-mono uppercase tracking-widest text-emerald-400">04 / Horizon</h2>
-                <h3 className="text-xl font-bold text-white tracking-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>Social Impact & Tech Roadmap</h3>
+                <h2 className="text-xs font-mono uppercase tracking-widest text-emerald-400">04 / Certifications</h2>
+                <h3 className="text-xl font-bold text-white tracking-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>Verified Skills</h3>
               </div>
               
-              <div className="relative border-l border-zinc-800 pl-4 ml-2 space-y-6 pt-4">
+              <div className="space-y-3 pt-2">
                 {[
-                  { phase: "Public Interest Technology", detail: "Leveraging software to build transparent, accessible systems for local communities, helping make public administration more responsive to everyday citizens." },
-                  { phase: "Ecological & Sustainability Tools", detail: "Developing data pipelines and algorithms that map climate and energy metrics to support sustainable community planning and resource efficiency." },
-                  { phase: "Inclusive & Secure Infrastructure", detail: "Structuring light, high-performance applications that operate reliably on lower-tier networks, ensuring that essential tools remain accessible to all societal groups." },
-                  { phase: "Open Knowledge & Collaborative Impact", detail: "Supporting community-first open-source systems, mentoring younger builders, and prioritizing digital transparency in software development." }
-                ].map((step, idx) => (
-                  <div key={idx} className="relative space-y-1">
-                    {/* Dot on the timeline */}
-                    <div className="absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-black" />
-                    <h4 className="text-xs sm:text-sm font-semibold text-white">{step.phase}</h4>
-                    <p className="text-[11px] sm:text-xs text-zinc-400 leading-relaxed">{step.detail}</p>
-                  </div>
+                  { color: 'blue', label: 'Data Structures and Algorithms (DSA) in C++', sub: 'Codetantra — With Lab Practicals', href: 'https://drive.google.com/file/d/12aX9JQ50mf9VfFU4D5Nq7GItDCJ3yjxf/view?usp=sharing' },
+                  { color: 'orange', label: 'Java Programming', sub: 'Codetantra — With Lab Practicals', href: 'https://drive.google.com/file/d/1VghN2nvLFVZThKYlk2wJuLCuNmnAz3FX/view?usp=sharing' },
+                ].map((c, i) => (
+                  <a key={i} href={c.href} target="_blank" rel="noreferrer" className="flex items-start gap-4 p-4 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-colors shadow-sm group">
+                    <div className={`w-10 h-10 rounded-lg bg-${c.color}-500/10 border border-${c.color}-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
+                      <BookOpen className={`w-5 h-5 text-${c.color}-500 dark:text-${c.color}-400`} />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors">{c.label}</p>
+                        <ExternalLink className="w-3.5 h-3.5 text-zinc-500 group-hover:text-emerald-400 transition-colors" />
+                      </div>
+                      <p className="text-xs text-zinc-400 mt-0.5">{c.sub}</p>
+                    </div>
+                  </a>
                 ))}
               </div>
             </motion.section>
+
+            <MyJourneyTimeline />
 
           </div>
         </div>

@@ -3,6 +3,7 @@ import { GitHubCalendar } from 'react-github-calendar';
 import { Github, Trophy, Award, BookOpen, Star, GitFork, ExternalLink, GitCommit, Clock, AlertCircle } from 'lucide-react';
 import SectionHeader from './SectionHeader';
 import { useMode } from '../contexts/ModeContext';
+import MyJourneyTimeline from './MyJourneyTimeline';
 
 const GH_USER = 'PranavShende';
 
@@ -109,72 +110,10 @@ export const LiveActivity = () => {
     <div className="relative z-10 w-full max-w-3xl mx-auto px-4 sm:px-6 mb-24">
       <div className="rounded-2xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-white/[0.06] px-5 py-6 sm:px-7 sm:py-7">
 
-        {/* ── Achievements ── */}
-        <SectionHeader title="Achievements" />
-        <div className="space-y-3 mb-16">
-          <a href="https://drive.google.com/file/d/1abiQVWd72J9scEi2OrO6oI5UyBcKa9fX/view?usp=sharing" target="_blank" rel="noreferrer" className="flex items-start gap-4 p-4 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-200 dark:hover:bg-gradient-to-r dark:hover:from-zinc-800 dark:hover:to-zinc-700/50 transition-all group">
-            <div className="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-              <Award className="w-5 h-5 text-amber-500 dark:text-amber-400" />
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-medium text-zinc-900 dark:text-white group-hover:text-amber-500 dark:group-hover:text-amber-400 transition-colors">Best Research Paper Award</p>
-                <ExternalLink className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-600 group-hover:text-amber-500 dark:group-hover:text-amber-400 transition-colors" />
-              </div>
-              <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-0.5">International Conference on Tech &amp; Trends, Suryodaya College</p>
-            </div>
-          </a>
-          <a href="https://drive.google.com/file/d/16YkeHOFIaYoUiic2LQWVwMAHAMjkR_SN/view?usp=sharing" target="_blank" rel="noreferrer" className="flex items-start gap-4 p-4 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-200 dark:hover:bg-gradient-to-r dark:hover:from-zinc-800 dark:hover:to-zinc-700/50 transition-all group">
-            <div className="w-10 h-10 rounded-lg bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-              <Trophy className="w-5 h-5 text-yellow-500 dark:text-yellow-400" />
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-medium text-zinc-900 dark:text-white group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors">Technex 2025 — National Hackathon 3rd Prize</p>
-                <ExternalLink className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-600 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors" />
-              </div>
-              <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-0.5">Inter-college national-level hackathon</p>
-            </div>
-          </a>
+        {/* ── Journey Timeline ── */}
+        <div className="mb-16">
+          <MyJourneyTimeline />
         </div>
-
-        {/* ── Certifications ── */}
-        <SectionHeader title="Certifications" />
-        <div className="space-y-3 mb-16">
-          {[
-            { color: 'blue', label: 'Data Structures and Algorithms (DSA) in C++', sub: 'Codetantra — With Lab Practicals', href: 'https://drive.google.com/file/d/12aX9JQ50mf9VfFU4D5Nq7GItDCJ3yjxf/view?usp=sharing' },
-            { color: 'orange', label: 'Java Programming', sub: 'Codetantra — With Lab Practicals', href: 'https://drive.google.com/file/d/1VghN2nvLFVZThKYlk2wJuLCuNmnAz3FX/view?usp=sharing' },
-          ].map((c, i) => (
-            <a key={i} href={c.href} target="_blank" rel="noreferrer" className="flex items-start gap-4 p-4 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-200 dark:hover:bg-gradient-to-r dark:hover:from-zinc-800 dark:hover:to-zinc-700/50 transition-all group">
-              <div className={`w-10 h-10 rounded-lg bg-${c.color}-500/10 border border-${c.color}-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
-                <BookOpen className={`w-5 h-5 text-${c.color}-500 dark:text-${c.color}-400`} />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-medium text-zinc-900 dark:text-white group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors">{c.label}</p>
-                  <ExternalLink className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-600 group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors" />
-                </div>
-                <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-0.5">{c.sub}</p>
-              </div>
-            </a>
-          ))}
-        </div>
-
-        {/* ── Education ── */}
-        <SectionHeader title="Education" />
-        <a href="https://www.stvincentngp.edu.in/" target="_blank" rel="noreferrer" className="block p-5 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-200 dark:hover:bg-gradient-to-r dark:hover:from-zinc-800 dark:hover:to-zinc-700/50 transition-all mb-16 group">
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
-            <div>
-              <div className="flex items-center gap-2">
-                <p className="text-sm font-semibold text-zinc-900 dark:text-white group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors">St. Vincent Pallotti College of Engineering &amp; Technology</p>
-                <ExternalLink className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-600 group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors" />
-              </div>
-              <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">B.Tech in Information Technology · CGPA: <span className="text-emerald-600 dark:text-emerald-400 font-medium group-hover:text-emerald-500 dark:group-hover:text-emerald-300">8.3/10</span></p>
-              <p className="text-xs text-zinc-500 mt-0.5">Nagpur, India</p>
-            </div>
-            <span className="text-[11px] text-zinc-600 dark:text-zinc-400 font-mono tracking-wider flex-shrink-0 mt-1 sm:mt-0">2023 – 2027</span>
-          </div>
-        </a>
 
         {/* ── GitHub Live Dashboard ── */}
         <SectionHeader title="Live GitHub Activity" />
@@ -364,6 +303,53 @@ export const LiveActivity = () => {
             </div>
           </div>
         )}
+
+        <div className="mt-16">
+          {/* ── Achievements ── */}
+          <SectionHeader title="Achievements" />
+          <div className="space-y-3 mb-16">
+            <a href="https://drive.google.com/file/d/1abiQVWd72J9scEi2OrO6oI5UyBcKa9fX/view?usp=sharing" target="_blank" rel="noreferrer" className="flex items-start gap-4 p-4 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-200 dark:hover:bg-gradient-to-r dark:hover:from-zinc-800 dark:hover:to-zinc-700/50 transition-all group">
+              <div className="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                <Award className="w-5 h-5 text-amber-500 dark:text-amber-400" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-medium text-zinc-900 dark:text-white group-hover:text-amber-500 dark:group-hover:text-amber-400 transition-colors">Best Research Paper Award</p>
+                  <ExternalLink className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-600 group-hover:text-amber-500 dark:group-hover:text-amber-400 transition-colors" />
+                </div>
+                <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-0.5">International Conference on Tech &amp; Trends, Suryodaya College</p>
+              </div>
+            </a>
+            <a href="https://drive.google.com/file/d/16YkeHOFIaYoUiic2LQWVwMAHAMjkR_SN/view?usp=sharing" target="_blank" rel="noreferrer" className="flex items-start gap-4 p-4 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-200 dark:hover:bg-gradient-to-r dark:hover:from-zinc-800 dark:hover:to-zinc-700/50 transition-all group">
+              <div className="w-10 h-10 rounded-lg bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                <Trophy className="w-5 h-5 text-yellow-500 dark:text-yellow-400" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-medium text-zinc-900 dark:text-white group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors">Technex 2025 — National Hackathon 3rd Prize</p>
+                  <ExternalLink className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-600 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors" />
+                </div>
+                <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-0.5">Inter-college national-level hackathon</p>
+              </div>
+            </a>
+          </div>
+
+          {/* ── Education ── */}
+          <SectionHeader title="Education" />
+          <a href="https://www.stvincentngp.edu.in/" target="_blank" rel="noreferrer" className="block p-5 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-200 dark:hover:bg-gradient-to-r dark:hover:from-zinc-800 dark:hover:to-zinc-700/50 transition-all mb-4 group">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+              <div>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-semibold text-zinc-900 dark:text-white group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors">St. Vincent Pallotti College of Engineering &amp; Technology</p>
+                  <ExternalLink className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-600 group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors" />
+                </div>
+                <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">B.Tech in Information Technology · CGPA: <span className="text-emerald-600 dark:text-emerald-400 font-medium group-hover:text-emerald-500 dark:group-hover:text-emerald-300">8.3/10</span></p>
+                <p className="text-xs text-zinc-500 mt-0.5">Nagpur, India</p>
+              </div>
+              <span className="text-[11px] text-zinc-600 dark:text-zinc-400 font-mono tracking-wider flex-shrink-0 mt-1 sm:mt-0">2023 – 2027</span>
+            </div>
+          </a>
+        </div>
 
         <p className="mt-8 text-sm text-zinc-500 italic">I code daily, share openly, and ship relentlessly — turning ideas into reality.</p>
       </div>
