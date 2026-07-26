@@ -7,7 +7,7 @@ import SkillsMarquee from "@/components/SkillsMarquee";
 import LiveActivity from "@/components/LiveActivity";
 import FloatingCodeBackground from "@/components/FloatingCodeBackground";
 import { Toaster } from "@/components/ui/toaster";
-import ContactSection from "@/components/ContactSection";
+
 
 const Index = () => {
   return (

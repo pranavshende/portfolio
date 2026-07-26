@@ -5,7 +5,7 @@ import FloatingDock from '@/components/FloatingDock';
 import FloatingCodeBackground from '@/components/FloatingCodeBackground';
 import { Github, Smartphone, ArrowUpRight, Star, GitFork } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import ContactSection from '@/components/ContactSection';
+
 
 import jansamparkPhoto from '../photo/jansampark.png';
 import solarAnalyticsPhoto from '../photo/solar_analytics.png';

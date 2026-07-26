@@ -65,9 +65,19 @@ function useVisitorCount() {
   const [count, setCount] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch('https://api.counterapi.dev/v1/pranavshende/portfolio/up')
+    const hasVisited = localStorage.getItem('portfolio_visited');
+    const endpoint = hasVisited 
+      ? 'https://api.counterapi.dev/v1/pranavshende/portfolio/'
+      : 'https://api.counterapi.dev/v1/pranavshende/portfolio/up';
+
+    fetch(endpoint)
       .then(r => r.json())
-      .then(data => setCount(data.count))
+      .then(data => {
+        setCount(data.count);
+        if (!hasVisited) {
+          localStorage.setItem('portfolio_visited', 'true');
+        }
+      })
       .catch(() => setCount(null));
   }, []);
 
@@ -83,7 +93,7 @@ const FloatingHeader = () => {
   const weather = getWeatherInfo(code);
 
   return (
-    <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 rounded-full bg-zinc-950/85 backdrop-blur-xl border border-zinc-800/80 shadow-2xl py-2.5 px-5 flex items-center gap-6 text-zinc-300 w-auto">
+    <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 rounded-full bg-[#050505]/60 backdrop-blur-2xl border border-[#39FF88]/30 shadow-[0_0_20px_rgba(57,255,136,0.15)] py-2.5 px-5 flex items-center gap-6 text-zinc-300 w-auto">
       {/* Live clock & Views */}
       <div className="flex items-center gap-3 text-[10px] font-mono tracking-widest text-zinc-500">
         <div>{time}</div>

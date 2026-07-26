@@ -5,7 +5,7 @@ import FloatingDock from '@/components/FloatingDock';
 import FloatingCodeBackground from '@/components/FloatingCodeBackground';
 import profilePhoto from '../photo/IMG_20240323_152847.jpg';
 import { GraduationCap, Code, Server, HeartHandshake, MapPin, Rocket, BrainCircuit } from 'lucide-react';
-import ContactSection from '@/components/ContactSection';
+
 
 const About = () => {
   return (
