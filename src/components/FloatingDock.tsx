@@ -66,7 +66,7 @@ const FloatingDock = () => {
   return (
     <>
       <div className="fixed bottom-4 sm:bottom-6 left-1/2 transform -translate-x-1/2 z-40 w-[95%] max-w-md px-2 pb-safe">
-        <div className="mx-auto flex justify-evenly items-center backdrop-blur-2xl rounded-full border border-[#39FF88]/30 px-1 sm:px-2.5 py-1 sm:py-1.5 transition-all duration-300 bg-[#050505]/60 shadow-[0_0_20px_rgba(57,255,136,0.15)]">
+        <div className="mx-auto flex justify-evenly items-center backdrop-blur-2xl rounded-full border border-emerald-500/30 dark:border-[#39FF88]/30 px-1 sm:px-2.5 py-1 sm:py-1.5 transition-all duration-300 bg-white/80 dark:bg-[#050505]/60 shadow-[0_0_20px_rgba(16,185,129,0.15)] dark:shadow-[0_0_20px_rgba(57,255,136,0.15)]">
           {dockItems.map((item) => {
             const isActive = (item.label === 'Home' && location.pathname === '/' && !isChatOpen) || 
                              (item.label === 'About' && location.pathname === '/about' && !isChatOpen) ||
@@ -79,13 +79,13 @@ const FloatingDock = () => {
                 onClick={item.action}
                 className={`relative flex items-center justify-center rounded-full transition-all duration-250 h-7 sm:h-8 px-2 sm:px-3 active:scale-95 group ${
                   isActive 
-                    ? 'text-emerald-400 drop-shadow-[0_0_8px_rgba(34,197,94,0.65)]' 
-                    : 'text-zinc-400 hover:text-emerald-400 hover:drop-shadow-[0_0_8px_rgba(34,197,94,0.65)]'
+                    ? 'text-emerald-600 dark:text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.4)] dark:drop-shadow-[0_0_8px_rgba(34,197,94,0.65)]' 
+                    : 'text-zinc-500 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:drop-shadow-[0_0_8px_rgba(16,185,129,0.4)] dark:hover:drop-shadow-[0_0_8px_rgba(34,197,94,0.65)]'
                 }`}
                 aria-label={item.label}
               >
                 <div className="flex items-center justify-center gap-1 sm:gap-1.5">
-                  <span className={`transition-all duration-250 ${isActive ? 'drop-shadow-[0_0_8px_rgba(34,197,94,0.65)]' : ''}`}>
+                  <span className={`transition-all duration-250 ${isActive ? 'drop-shadow-[0_0_8px_rgba(16,185,129,0.4)] dark:drop-shadow-[0_0_8px_rgba(34,197,94,0.65)]' : ''}`}>
                     {item.icon}
                   </span>
                   <span className="text-[10px] sm:text-[11px] font-medium whitespace-nowrap transition-colors duration-250">

@@ -93,24 +93,24 @@ const FloatingHeader = () => {
   const weather = getWeatherInfo(code);
 
   return (
-    <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 rounded-full bg-[#050505]/60 backdrop-blur-2xl border border-[#39FF88]/30 shadow-[0_0_20px_rgba(57,255,136,0.15)] py-2.5 px-5 flex items-center gap-6 text-zinc-300 w-auto">
+    <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 rounded-full bg-white/80 dark:bg-[#050505]/60 backdrop-blur-2xl border border-emerald-500/30 dark:border-[#39FF88]/30 shadow-[0_0_20px_rgba(16,185,129,0.15)] dark:shadow-[0_0_20px_rgba(57,255,136,0.15)] py-2.5 px-5 flex items-center gap-6 text-zinc-800 dark:text-zinc-300 w-auto transition-colors duration-300">
       {/* Live clock & Views */}
       <div className="flex items-center gap-3 text-[10px] font-mono tracking-widest text-zinc-500">
         <div>{time}</div>
-        <div className="w-[1px] h-2.5 bg-zinc-800" />
+        <div className="w-[1px] h-2.5 bg-zinc-300 dark:bg-zinc-800" />
         <div className="flex items-center gap-1.5">
           <span>VIEWS</span>
-          <span className="text-zinc-300">{views !== null ? views : '...'}</span>
+          <span className="text-zinc-800 dark:text-zinc-300">{views !== null ? views : '...'}</span>
         </div>
       </div>
 
-      <div className="w-[1px] h-3 bg-zinc-800" />
+      <div className="w-[1px] h-3 bg-zinc-300 dark:bg-zinc-800" />
 
       {/* Weather — Nagpur */}
-      <div className="flex items-center gap-2 text-[11px] font-medium text-white">
-        <span className="text-zinc-400">Nagpur</span>
+      <div className="flex items-center gap-2 text-[11px] font-medium text-zinc-900 dark:text-white">
+        <span className="text-zinc-500 dark:text-zinc-400">Nagpur</span>
         {loading ? (
-          <span className="text-zinc-500 text-[10px]">...</span>
+          <span className="text-zinc-400 dark:text-zinc-500 text-[10px]">...</span>
         ) : (
           <>
             {weather.icon}
@@ -119,7 +119,7 @@ const FloatingHeader = () => {
         )}
       </div>
 
-      <div className="w-[1px] h-3 bg-zinc-800" />
+      <div className="w-[1px] h-3 bg-zinc-300 dark:bg-zinc-800" />
 
       {/* Dark / Light mode toggle */}
       <button
