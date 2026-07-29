@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import profilePhoto from '../photo/1000170373_optimized_1000.jpg.jpeg';
+import profilePhoto from '../photo/profile_photo_wide.png';
 import bannerBg from '../photo/home_banner_bg.png';
 import SkillsMarquee from './SkillsMarquee';
 import { Github, Twitter, Linkedin, Mail, ArrowUpRight, X, Gamepad2, BadgeCheck, MapPin, Trophy, GraduationCap, Code } from 'lucide-react';
@@ -84,7 +84,8 @@ export const HomeScreen = () => {
             <img
               src={profilePhoto}
               alt="Pranav Shende"
-              className="w-full h-full object-cover object-[46%_20%] scale-[1.0] transition-transform duration-300 group-hover:scale-[1.2]"
+              className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-[1.0]"
+              style={{ transform: 'scale(1.75) translateY(8%)' }}
             />
           </button>
         </div>
