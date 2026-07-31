@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import FloatingHeader from '@/components/FloatingHeader';
 import FloatingDock from '@/components/FloatingDock';
@@ -6,9 +6,31 @@ import FloatingCodeBackground from '@/components/FloatingCodeBackground';
 import MyJourneyTimeline from '@/components/MyJourneyTimeline';
 import profilePhoto from '../photo/IMG_20240323_152847.jpg';
 import { GraduationCap, Code, Server, HeartHandshake, MapPin, Rocket, BrainCircuit, BookOpen, ExternalLink } from 'lucide-react';
-
+import { useMode } from '@/contexts/ModeContext';
 
 const About = () => {
+  const { mode } = useMode();
+  const badgeTheme = mode === 'developer' ? 'dark' : 'light';
+  
+  const githubBadgeUrl = badgeTheme === 'dark' 
+    ? 'https://streak-stats.demolab.com/?user=PranavShende&theme=dark&hide_border=true&background=000000&ring=10b981&fire=10b981&currStreakNum=10b981'
+    : 'https://streak-stats.demolab.com/?user=PranavShende&theme=default&hide_border=true&background=ffffff&ring=059669&fire=059669&currStreakNum=059669';
+  useEffect(() => {
+    // Force the LinkedIn script to reload when this component mounts 
+    // or when the theme changes so it properly detects and transforms the badge divs.
+    const scriptId = 'linkedin-badge-script';
+    const existingScript = document.getElementById(scriptId);
+    if (existingScript) {
+      existingScript.remove();
+    }
+    const script = document.createElement('script');
+    script.id = scriptId;
+    script.src = 'https://platform.linkedin.com/badges/js/profile.js';
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+  }, [badgeTheme]);
+
   return (
     <div className="relative min-h-screen bg-black text-white selection:bg-emerald-500/30 pb-24">
       <FloatingCodeBackground />
@@ -43,10 +65,7 @@ const About = () => {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="space-y-3"
             >
-              <h1 className="text-3xl font-bold tracking-tight text-white" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
-                Pranav <span className="text-emerald-400">Shende</span>
-              </h1>
-              
+
               <div className="space-y-2 text-xs font-mono text-zinc-500 uppercase tracking-wider">
                 <div className="flex items-center justify-center md:justify-start gap-2">
                   <MapPin className="w-3.5 h-3.5 text-zinc-600" />
@@ -56,6 +75,20 @@ const About = () => {
                   <GraduationCap className="w-3.5 h-3.5 text-zinc-600" />
                   <span>B.Tech IT @ SVPCET</span>
                 </div>
+              </div>
+              
+              {/* Connect Badges */}
+              <div className="hidden md:flex flex-col gap-6 pt-4 w-full items-center md:items-start">
+                <div key={badgeTheme} className="badge-base LI-profile-badge" data-locale="en_US" data-size="medium" data-theme={badgeTheme} data-type="VERTICAL" data-vanity="pranavshende" data-version="v1">
+                </div>
+                
+                <a href="https://github.com/PranavShende" target="_blank" rel="noreferrer" className="w-full max-w-[270px] hover:scale-[1.02] transition-transform">
+                  <img 
+                    src={githubBadgeUrl} 
+                    alt="Pranav's GitHub Stats" 
+                    className="w-full h-auto shadow-sm rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-black"
+                  />
+                </a>
               </div>
             </motion.div>
           </div>
@@ -173,6 +206,8 @@ const About = () => {
                 ))}
               </div>
             </motion.section>
+
+
 
             <MyJourneyTimeline />
 
