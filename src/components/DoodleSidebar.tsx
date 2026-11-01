@@ -111,11 +111,11 @@ export const DoodleSidebar: React.FC = () => {
           {/* Profile Header */}
           <div className="flex flex-col items-center text-center">
             {/* Circular Profile Photo */}
-            <div className="relative w-18 h-18 rounded-full overflow-hidden border-2 border-zinc-900 shadow-xs bg-zinc-100 mb-1.5">
+            <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border-2 border-zinc-900 shadow-xs bg-zinc-100 mb-2 shrink-0">
               <img
                 src={profilePhoto}
                 alt="Pranav Shende"
-                className="w-full h-full object-cover object-center scale-[1.7] translate-y-2"
+                className="w-full h-full object-cover object-center scale-[1.7] translate-y-1"
               />
             </div>
 
