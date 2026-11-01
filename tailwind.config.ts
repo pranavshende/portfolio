@@ -14,8 +14,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Space Grotesk", "system-ui", "-apple-system", "sans-serif"],
-        display: ["Space Grotesk", "system-ui", "sans-serif"],
+        sans: ["Plus Jakarta Sans", "Inter", "system-ui", "-apple-system", "sans-serif"],
+        display: ["Fredoka", "Plus Jakarta Sans", "sans-serif"],
+        doodle: ["Patrick Hand", "Gaegu", "cursive"],
+        hand: ["Gaegu", "Patrick Hand", "cursive"],
         mono: ["JetBrains Mono", "Fira Code", "monospace"],
       },
       colors: {

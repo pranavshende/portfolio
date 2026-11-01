@@ -1,222 +1,313 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import FloatingHeader from '@/components/FloatingHeader';
-import FloatingDock from '@/components/FloatingDock';
-import FloatingCodeBackground from '@/components/FloatingCodeBackground';
-import MyJourneyTimeline from '@/components/MyJourneyTimeline';
+import { DoodleLayout } from '@/components/DoodleLayout';
+import { PropellerHat } from '@/components/PropellerHat';
 import profilePhoto from '../photo/IMG_20240323_152847.jpg';
-import { GraduationCap, Code, Server, HeartHandshake, MapPin, Rocket, BrainCircuit, BookOpen, ExternalLink } from 'lucide-react';
-import { useMode } from '@/contexts/ModeContext';
+import { 
+  FileText, ExternalLink, Code2, Database, Cloud, 
+  Sparkles, GraduationCap, MapPin, Trophy, Award, Heart
+} from 'lucide-react';
 
-const About = () => {
-  const { mode } = useMode();
-  const badgeTheme = mode === 'developer' ? 'dark' : 'light';
-  
-  const githubBadgeUrl = badgeTheme === 'dark' 
-    ? 'https://streak-stats.demolab.com/?user=PranavShende&theme=dark&hide_border=true&background=000000&ring=10b981&fire=10b981&currStreakNum=10b981'
-    : 'https://streak-stats.demolab.com/?user=PranavShende&theme=default&hide_border=true&background=ffffff&ring=059669&fire=059669&currStreakNum=059669';
-  useEffect(() => {
-    // Force the LinkedIn script to reload when this component mounts 
-    // or when the theme changes so it properly detects and transforms the badge divs.
-    const scriptId = 'linkedin-badge-script';
-    const existingScript = document.getElementById(scriptId);
-    if (existingScript) {
-      existingScript.remove();
-    }
-    const script = document.createElement('script');
-    script.id = scriptId;
-    script.src = 'https://platform.linkedin.com/badges/js/profile.js';
-    script.async = true;
-    script.defer = true;
-    document.body.appendChild(script);
-  }, [badgeTheme]);
+interface TimelineItem {
+  age: string;
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  tag?: string;
+}
+
+const timelineData: TimelineItem[] = [
+  {
+    age: 'Age 10',
+    title: 'Doing Arts, Crafts & Taking Things Apart',
+    description:
+      'My imagination stemmed from my childhood. Drawing characters from favorite animated shows, folding origami ninja weapons, taking apart old radios and computer mice to see how the circuits clicked, and acting out stories on my bed with my figurines.',
+    icon: (
+      <svg viewBox="0 0 24 24" className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="m14 12-8.5 8.5a2.12 2.12 0 1 1-3-3L11 9" />
+        <path d="M15 13 9 7l4-4 6 6-4 4Z" />
+        <path d="M18 10l-1.5-1.5" />
+      </svg>
+    ),
+  },
+  {
+    age: 'Age 14',
+    title: 'Designing + Coding First Programs & LEGO',
+    description:
+      'This is where my curiosity for technology truly exploded. I joined middle school robotics competitions, built my first robots, designed custom gear assemblies for missions, and learned visual logic & C programming to bring static hardware to life.',
+    icon: (
+      <svg viewBox="0 0 24 24" className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect width="18" height="12" x="3" y="8" rx="2" />
+        <path d="M7 8V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3" />
+        <circle cx="8" cy="14" r="1" fill="currentColor" />
+        <circle cx="16" cy="14" r="1" fill="currentColor" />
+      </svg>
+    ),
+  },
+  {
+    age: 'Age 17',
+    title: 'Designing Systems & Engineering College',
+    description:
+      'Stepping into B.Tech Information Technology at St. Vincent Pallotti College of Engineering & Technology (SVPCET). Explored systems design, database normalization, algorithms, and led volunteer tech communities for national symposiums.',
+    icon: (
+      <svg viewBox="0 0 24 24" className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 21h18" />
+        <path d="M5 21V7l7-4 7 4v14" />
+        <path d="M9 10a3 3 0 0 0 6 0" />
+      </svg>
+    ),
+  },
+  {
+    age: 'Currently Age 20',
+    title: 'Engineering Production Products & AI Research',
+    description:
+      'Now engineering full-stack platforms with 25+ React Native modules, architecting secure Node.js & PostgreSQL APIs, publishing machine learning research with IEEE, and striving to build products that combine engineering rigor with playful human clarity.',
+    icon: (
+      <svg viewBox="0 0 24 24" className="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2v8" />
+        <path d="m4.93 10.93 1.41 1.41" />
+        <path d="M2 18h2" />
+        <path d="M20 18h2" />
+        <path d="m19.07 10.93-1.41 1.41" />
+        <path d="M22 22H2" />
+        <path d="m8 22 4-10 4 10" />
+      </svg>
+    ),
+    tag: 'Present',
+  },
+];
+
+export const About: React.FC = () => {
+  const [hatSpinning, setHatSpinning] = useState(false);
 
   return (
-    <div className="relative min-h-screen bg-black text-white selection:bg-emerald-500/30 pb-24">
-      <FloatingCodeBackground />
-      <FloatingHeader />
-      
-      <main className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 pt-28">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-16 items-start">
-          
-          {/* Left Column - Sticky on Desktop */}
-          <div className="md:col-span-4 md:sticky md:top-28 space-y-6 flex flex-col items-center md:items-start text-center md:text-left">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="relative group"
-            >
-              {/* Outer soft glow */}
-              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-emerald-500 to-cyan-500 blur-xl opacity-20 group-hover:opacity-30 transition-opacity" />
-              {/* Image Frame */}
-              <div className="relative p-1 rounded-full bg-zinc-900 border border-zinc-800 shadow-2xl overflow-hidden">
-                <img 
-                  src={profilePhoto} 
-                  alt="Pranav Shende" 
-                  className="w-48 h-48 md:w-56 md:h-56 object-cover object-[46%_20%] scale-[1.0] rounded-full"
-                />
-              </div>
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="space-y-3"
-            >
-
-              <div className="space-y-2 text-xs font-mono text-zinc-500 uppercase tracking-wider">
-                <div className="flex items-center justify-center md:justify-start gap-2">
-                  <MapPin className="w-3.5 h-3.5 text-zinc-600" />
-                  <span>Nagpur, India</span>
-                </div>
-                <div className="flex items-center justify-center md:justify-start gap-2">
-                  <GraduationCap className="w-3.5 h-3.5 text-zinc-600" />
-                  <span>B.Tech IT @ SVPCET</span>
-                </div>
-              </div>
-              
-              {/* Connect Badges */}
-              <div className="hidden md:flex flex-col gap-6 pt-4 w-full items-center md:items-start">
-                <div key={badgeTheme} className="badge-base LI-profile-badge" data-locale="en_US" data-size="medium" data-theme={badgeTheme} data-type="VERTICAL" data-vanity="pranavshende" data-version="v1">
-                </div>
-                
-                <a href="https://github.com/PranavShende" target="_blank" rel="noreferrer" className="w-full max-w-[270px] hover:scale-[1.02] transition-transform">
-                  <img 
-                    src={githubBadgeUrl} 
-                    alt="Pranav's GitHub Stats" 
-                    className="w-full h-auto shadow-sm rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-black"
-                  />
-                </a>
-              </div>
-            </motion.div>
+    <DoodleLayout>
+      {/* ─────────────────────────────────────────────────────────────
+          HERO PROFILE & HEADLINE (Direct match to Screenshot 1)
+      ────────────────────────────────────────────────────────────── */}
+      <section className="flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8 mb-12 sm:mb-16">
+        {/* Avatar with Propeller Hat Doodle */}
+        <div 
+          className="relative shrink-0 cursor-pointer group"
+          onMouseEnter={() => setHatSpinning(true)}
+          onMouseLeave={() => setHatSpinning(false)}
+          onClick={() => setHatSpinning(!hatSpinning)}
+          title="Hover or click to spin the propeller!"
+        >
+          {/* Propeller Hat perched neatly on top */}
+          <div className="absolute -top-7 left-1/2 -translate-x-[50%] z-20">
+            <PropellerHat spinning={hatSpinning} />
           </div>
 
-          {/* Right Column - Scrolling Narrative Content */}
-          <div className="md:col-span-8 space-y-6">
-            
-            {/* The Story */}
-            <motion.section 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="rounded-2xl bg-zinc-950 border border-white/[0.06] p-5 py-6 sm:p-7 space-y-4 shadow-sm"
-            >
-              <div className="space-y-1.5 border-b border-white/[0.06] pb-4">
-                <h2 className="text-xs font-mono uppercase tracking-widest text-emerald-400">01 / Biography</h2>
-                <h3 className="text-lg font-bold text-white tracking-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>Who am I?</h3>
-              </div>
-              <div className="text-sm sm:text-base text-zinc-400 leading-relaxed space-y-4 pt-2">
-                <p className="text-white text-base sm:text-lg leading-relaxed font-serif italic text-zinc-300 border-l-2 border-emerald-500 pl-4 py-1">
-                  "I construct robust server-side infrastructures and ship tools that remain stable when production demands it."
-                </p>
-                <p>
-                  I am a B.Tech IT student at SVPCET, Nagpur, specializing in the MERN stack and React Native. 
-                  With over 40+ RESTful APIs designed and deployed, I focus on the parts of application architecture that users rarely see but rely on completely.
-                </p>
-                <p>
-                  Beyond standard software building, I run research projects. I am an IEEE-published researcher, with past publications exploring CNN-based lumpy skin disease classification and distributed client-alumni educational platforms. I thrive in developer environments where scalability, reliability, and edge computing are top priorities.
-                </p>
-              </div>
-            </motion.section>
-
-            {/* The Vision */}
-            <motion.section 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="rounded-2xl bg-zinc-950 border border-white/[0.06] p-5 py-6 sm:p-7 space-y-4 shadow-sm"
-            >
-              <div className="space-y-1.5 border-b border-white/[0.06] pb-4">
-                <h2 className="text-xs font-mono uppercase tracking-widest text-emerald-400">02 / Purpose</h2>
-                <h3 className="text-xl font-bold text-white tracking-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>What do I want to become?</h3>
-              </div>
-              <p className="text-sm sm:text-base text-zinc-400 leading-relaxed pt-2">
-                My professional target is to develop into a Principal Engineer specializing in high-throughput distributed systems and AI systems integration. I am driven by structural complexity—I want to design the cloud-native systems, API orchestrations, and data pipelines that power modern, global digital platforms.
-              </p>
-            </motion.section>
-
-            {/* Core Focus */}
-            <motion.section 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="rounded-2xl bg-zinc-950 border border-white/[0.06] p-5 py-6 sm:p-7 space-y-4 shadow-sm"
-            >
-              <div className="space-y-1.5 border-b border-white/[0.06] pb-4">
-                <h2 className="text-xs font-mono uppercase tracking-widest text-emerald-400">03 / Competence</h2>
-                <h3 className="text-xl font-bold text-white tracking-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>Contributions</h3>
-              </div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                {[
-                  { icon: <Server className="w-4 h-4 text-emerald-400" />, title: 'Scalable Projects', desc: 'Architected platforms like JanSampark (civic management) with robust user systems and access controls.' },
-                  { icon: <BrainCircuit className="w-4 h-4 text-emerald-400" />, title: 'AI & ML Research', desc: 'Presented peer-reviewed research on CNN and Edge classification models at international IEEE conferences.' },
-                  { icon: <HeartHandshake className="w-4 h-4 text-emerald-400" />, title: 'Project Leadership', desc: 'Managed full-cycle team dynamics for hackathons, engineering software tools from concept to cloud deployment.' },
-                  { icon: <GraduationCap className="w-4 h-4 text-emerald-400" />, title: 'Modern Stacks', desc: 'Consistently diving deep into NestJS, PostgreSQL, Redis caches, and Docker containment setups.' }
-                ].map((item, idx) => (
-                  <div key={idx} className="p-4 rounded-xl bg-zinc-900 border border-zinc-800/80 hover:border-zinc-700 transition-colors shadow-sm space-y-2">
-                    <div className="flex items-center gap-2.5">
-                      <div className="p-1.5 rounded-lg bg-zinc-950 border border-zinc-800">
-                        {item.icon}
-                      </div>
-                      <h4 className="text-xs sm:text-sm font-bold text-white">{item.title}</h4>
-                    </div>
-                    <p className="text-[11px] sm:text-xs text-zinc-400 leading-relaxed">{item.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.section>
-
-
-            {/* Certifications */}
-            <motion.section 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="rounded-2xl bg-zinc-950 border border-white/[0.06] p-5 py-6 sm:p-7 space-y-4 shadow-sm"
-            >
-              <div className="space-y-1.5 border-b border-white/[0.06] pb-4">
-                <h2 className="text-xs font-mono uppercase tracking-widest text-emerald-400">04 / Certifications</h2>
-                <h3 className="text-xl font-bold text-white tracking-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>Verified Skills</h3>
-              </div>
-              
-              <div className="space-y-3 pt-2">
-                {[
-                  { color: 'blue', label: 'Data Structures and Algorithms (DSA) in C++', sub: 'Codetantra — With Lab Practicals', href: 'https://drive.google.com/file/d/12aX9JQ50mf9VfFU4D5Nq7GItDCJ3yjxf/view?usp=sharing' },
-                  { color: 'orange', label: 'Java Programming', sub: 'Codetantra — With Lab Practicals', href: 'https://drive.google.com/file/d/1VghN2nvLFVZThKYlk2wJuLCuNmnAz3FX/view?usp=sharing' },
-                ].map((c, i) => (
-                  <a key={i} href={c.href} target="_blank" rel="noreferrer" className="flex items-start gap-4 p-4 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-colors shadow-sm group">
-                    <div className={`w-10 h-10 rounded-lg bg-${c.color}-500/10 border border-${c.color}-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
-                      <BookOpen className={`w-5 h-5 text-${c.color}-500 dark:text-${c.color}-400`} />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors">{c.label}</p>
-                        <ExternalLink className="w-3.5 h-3.5 text-zinc-500 group-hover:text-emerald-400 transition-colors" />
-                      </div>
-                      <p className="text-xs text-zinc-400 mt-0.5">{c.sub}</p>
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </motion.section>
-
-
-
-            <MyJourneyTimeline />
-
+          {/* Circular Photo */}
+          <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-2 border-zinc-900 shadow-sm bg-zinc-100">
+            <img
+              src={profilePhoto}
+              alt="Pranav Shende"
+              className="w-full h-full object-cover object-[48%_18%] scale-105 group-hover:scale-110 transition-transform duration-300"
+            />
           </div>
         </div>
-      </main>
 
-      <FloatingDock />
-    </div>
+        {/* Headline matching Screenshot 1 */}
+        <div className="flex-1 text-center sm:text-left pt-2">
+          <h1 className="text-xl sm:text-2xl md:text-[28px] font-semibold text-zinc-900 leading-snug sm:leading-tight">
+            Hi again! I'm still the kid who can't stop building things, just with different tools now.
+          </h1>
+          <p className="text-sm text-zinc-500 mt-2 font-medium">
+            Based in Nagpur, India • B.Tech in Information Technology • Full Stack & Edge AI
+          </p>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────────
+          MY STORY SECTION (Direct match to Screenshot 1)
+      ────────────────────────────────────────────────────────────── */}
+      <section className="space-y-8 mb-16">
+        <div className="flex items-center gap-2.5 border-b border-zinc-200/80 pb-3">
+          <span className="text-xl">📝</span>
+          <h2 className="text-lg font-bold text-zinc-900 font-display">
+            My Story
+          </h2>
+        </div>
+
+        {/* Vertical Timeline */}
+        <div className="relative pl-6 sm:pl-8 space-y-10">
+          {/* Continuous vertical connecting line */}
+          <div className="absolute left-[18px] sm:left-[22px] top-4 bottom-4 w-[2px] bg-zinc-800" />
+
+          {timelineData.map((item, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, x: -10 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3, delay: idx * 0.1 }}
+              className="relative flex items-start gap-4 sm:gap-6"
+            >
+              {/* Circular node with doodle icon */}
+              <div className="relative z-10 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white border-2 border-zinc-900 shadow-sm flex items-center justify-center shrink-0 -ml-[18px] sm:-ml-[22px]">
+                {item.icon}
+              </div>
+
+              {/* Story Content */}
+              <div className="flex-1 space-y-1.5 pt-0.5">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h3 className="text-base sm:text-lg font-bold text-zinc-900 font-display">
+                    {item.age}: {item.title}
+                  </h3>
+                  {item.tag && (
+                    <span className="px-2 py-0.5 rounded-full bg-[#fef08a] text-[10px] font-bold text-zinc-900 border border-zinc-900/10">
+                      {item.tag}
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-sans max-w-2xl">
+                  {item.description}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────────
+          TECH STACK & TOOLBOX
+      ────────────────────────────────────────────────────────────── */}
+      <section className="space-y-4 mb-14 pt-4 border-t border-zinc-200/80">
+        <div className="flex items-center gap-2">
+          <span className="text-xl">🧰</span>
+          <h2 className="text-lg font-bold text-zinc-900 font-display">
+            Things I Love Building With
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+          {/* Frontend & Mobile */}
+          <div className="p-4 rounded-xl border border-zinc-200/80 bg-zinc-50/50 space-y-2">
+            <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider flex items-center gap-1.5">
+              <Code2 className="w-3.5 h-3.5 text-blue-500" /> Frontend & Mobile
+            </span>
+            <div className="flex flex-wrap gap-1.5">
+              {['React', 'React Native', 'TypeScript', 'Tailwind CSS', 'Expo', 'Framer Motion', 'Vite'].map((t) => (
+                <span key={t} className="px-2 py-0.5 bg-white border border-zinc-200 rounded-md text-xs text-zinc-700">
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Backend & Databases */}
+          <div className="p-4 rounded-xl border border-zinc-200/80 bg-zinc-50/50 space-y-2">
+            <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider flex items-center gap-1.5">
+              <Database className="w-3.5 h-3.5 text-emerald-500" /> Backend & Data
+            </span>
+            <div className="flex flex-wrap gap-1.5">
+              {['Node.js', 'Express', 'PostgreSQL', 'Python', 'JWT & RBAC', 'REST APIs', 'Prisma'].map((t) => (
+                <span key={t} className="px-2 py-0.5 bg-white border border-zinc-200 rounded-md text-xs text-zinc-700">
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* AI & Cloud */}
+          <div className="p-4 rounded-xl border border-zinc-200/80 bg-zinc-50/50 space-y-2">
+            <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider flex items-center gap-1.5">
+              <Cloud className="w-3.5 h-3.5 text-indigo-500" /> AI & Cloud
+            </span>
+            <div className="flex flex-wrap gap-1.5">
+              {['TensorFlow Lite', 'Edge AI', 'CNNs', 'Google Cloud (GCP)', 'Docker', 'Git', 'ETL'].map((t) => (
+                <span key={t} className="px-2 py-0.5 bg-white border border-zinc-200 rounded-md text-xs text-zinc-700">
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────────
+          EXPERIENCE & HONORS QUICK TILES
+      ────────────────────────────────────────────────────────────── */}
+      <section className="space-y-4 mb-10 pt-4 border-t border-zinc-200/80">
+        <div className="flex items-center gap-2">
+          <span className="text-xl">💼</span>
+          <h2 className="text-lg font-bold text-zinc-900 font-display">
+            Where I've Contributed
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="p-4 rounded-xl border border-zinc-200 bg-white shadow-sm space-y-1">
+            <div className="flex items-center justify-between">
+              <h3 className="font-bold text-sm text-zinc-900">NK SkillEdge Pvt. Ltd.</h3>
+              <span className="text-[11px] text-zinc-400">May 2026 – Present</span>
+            </div>
+            <p className="text-xs text-blue-600 font-medium">Android Developer Intern (Full Stack)</p>
+            <p className="text-xs text-zinc-600 pt-1">
+              Built 25+ modules in React Native for JanSampark, architected secure Node.js JWT + RBAC backend with 40+ RESTful APIs.
+            </p>
+          </div>
+
+          <div className="p-4 rounded-xl border border-zinc-200 bg-white shadow-sm space-y-1">
+            <div className="flex items-center justify-between">
+              <h3 className="font-bold text-sm text-zinc-900">IT Daksh</h3>
+              <span className="text-[11px] text-zinc-400">Jan 2026 – Present</span>
+            </div>
+            <p className="text-xs text-amber-600 font-medium">Data Analyst Intern (Solar Intelligence)</p>
+            <p className="text-xs text-zinc-600 pt-1">
+              Evaluated 10+ years of solar metrics covering 81.8+ GW across 36+ states with polynomial forecasting and geospatial heatmaps.
+            </p>
+          </div>
+
+          <div className="p-4 rounded-xl border border-zinc-200 bg-white shadow-sm space-y-1">
+            <div className="flex items-center justify-between">
+              <h3 className="font-bold text-sm text-zinc-900">Technex SVPCET</h3>
+              <span className="text-[11px] text-zinc-400">2024 – 2026</span>
+            </div>
+            <p className="text-xs text-purple-600 font-medium">Backend Developer & Advisor</p>
+            <p className="text-xs text-zinc-600 pt-1">
+              Engineered high-scale GCP backend powering 3,000+ national registrations and 100,000+ impressions with zero downtime.
+            </p>
+          </div>
+
+          <div className="p-4 rounded-xl border border-zinc-200 bg-white shadow-sm space-y-1">
+            <div className="flex items-center justify-between">
+              <h3 className="font-bold text-sm text-zinc-900">IEEE Research Author</h3>
+              <span className="text-[11px] text-emerald-600 font-semibold">Published 2026</span>
+            </div>
+            <p className="text-xs text-zinc-700 font-medium">PashuRakshak AI Livestock Disease Detection</p>
+            <p className="text-xs text-zinc-600 pt-1">
+              Authored and presented paper on lightweight CNN edge classification models for offline rural veterinary diagnostics.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────────
+          SPOTIFY PLAYER
+      ────────────────────────────────────────────────────────────── */}
+      <section className="pt-4 border-t border-zinc-200/80 mb-8">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-lg">🎧</span>
+          <h2 className="text-sm font-semibold text-zinc-700 font-sans">
+            On repeat while coding:
+          </h2>
+        </div>
+        <div className="w-full max-w-md rounded-2xl overflow-hidden border border-zinc-200 shadow-sm">
+          <iframe
+            src="https://open.spotify.com/embed/track/5y2ijHECwFYWqcAHKTZgzD?utm_source=generator&theme=0"
+            width="100%"
+            height="152"
+            frameBorder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+            title="Spotify Playlist"
+          />
+        </div>
+      </section>
+    </DoodleLayout>
   );
 };
 

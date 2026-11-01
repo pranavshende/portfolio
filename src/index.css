@@ -97,16 +97,15 @@
   }
 
   body {
-    font-family: 'Inter', system-ui, sans-serif;
-    background-color: #050505;
-    color: #fafafa;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: #ffffff;
+    color: #18181b;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
-    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
     @apply tracking-tight;
   }
 
