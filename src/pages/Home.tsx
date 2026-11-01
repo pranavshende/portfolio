@@ -1,146 +1,147 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ExternalLink, Github, ArrowUpRight, X, Sparkles, Layers, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { ExternalLink, Github, ArrowUpRight, X, Star, GitFork, BookOpen, Lock } from 'lucide-react';
 import { DoodleLayout } from '@/components/DoodleLayout';
+import { Link } from 'react-router-dom';
 
-import jansamparkImg from '../photo/jansampark.png';
-import solarImg from '../photo/solar_analytics.png';
-import pashuImg from '../photo/pashurakshak.png';
+import jansamparkPhoto from '../photo/jansampark.png';
+import solarAnalyticsPhoto from '../photo/solar_analytics.png';
+import pashurakshakPhoto from '../photo/pashurakshak.png';
 
 interface Project {
   id: string;
-  client: string;
-  category: string;
-  year: string;
   title: string;
-  headline: string;
+  subtitle: string;
   description: string;
-  image: string;
-  imageBg?: string;
   tech: string[];
   highlights: string[];
   github?: string;
   demo?: string;
   badge?: string;
+  image: string;
+  category: string;
 }
 
 const projects: Project[] = [
   {
     id: 'jansampark',
-    client: 'NK SkillEdge',
+    title: 'JanSampark',
+    subtitle: 'Smart Civic Grievance Platform',
     category: 'Full Stack & Mobile',
-    year: 'Shipped 2026',
-    title: 'Helping citizens and city administrators find, track, and resolve civic grievances',
-    headline: 'JanSampark: Smart Civic Grievance Platform',
     description:
-      'Engineered a comprehensive citizen engagement ecosystem with 25+ frontend modules in React Native and a hardened Node.js backend. Implemented JWT + Role-Based Access Control (RBAC) across 4 administrative tiers and created 40+ RESTful APIs with PostgreSQL.',
-    image: jansamparkImg,
-    imageBg: 'from-blue-600 to-indigo-800',
-    tech: ['React Native', 'Node.js', 'PostgreSQL', 'JWT', 'RBAC', 'Express'],
+      'Full-stack civic platform bridging citizens and administration. Built 25+ frontend modules in React Native with a secure Node.js backend featuring JWT + RBAC for 4 user roles.',
+    tech: ['React Native', 'Node.js', 'PostgreSQL', 'JWT', 'RBAC'],
     highlights: [
-      '25+ custom UI screens designed & built in React Native',
-      'Architected 40+ RESTful APIs with sub-100ms response times',
-      'JWT authentication with multi-level role-based access control',
-      'Real-time status updates and geo-tagged incident reporting',
+      '25+ frontend modules in React Native',
+      'JWT + RBAC for 4 user roles',
+      '40+ RESTful APIs with PostgreSQL',
     ],
-    github: 'https://github.com/PranavShende',
-    demo: 'https://pranavshende.online',
-    badge: 'Production Shipped',
+    github: 'private',
+    demo: '/playgames?folder=projects_folder',
+    image: jansamparkPhoto,
   },
   {
     id: 'solar-analytics',
-    client: 'IT Daksh',
+    title: 'Solar Intelligence',
+    subtitle: 'AI Sales Analytics Platform',
     category: 'AI & Data Intelligence',
-    year: 'Shipped 2026',
-    title: 'Letting solar leaders forecast capacity and analyze 10+ years of energy metrics',
-    headline: 'Solar Intelligence & Sales Optimization Platform',
     description:
-      'Built an AI-driven solar sales intelligence and forecasting system covering 81.8+ GW of installed capacity. Analyzed 10+ years (2014–2024) of solar installations across 36+ Indian states/UTs with polynomial regression and interactive geospatial heatmaps.',
-    image: solarImg,
-    imageBg: 'from-amber-500 to-orange-600',
-    tech: ['Python', 'PostgreSQL', 'ETL Pipelines', 'Scikit-Learn', 'Recharts', 'Geospatial'],
+      'AI-driven solar sales intelligence platform analyzing 10+ years of data across 36+ Indian states with geospatial heatmaps and polynomial regression forecasting (2025–2030).',
+    tech: ['Python', 'PostgreSQL', 'ETL', 'ML', 'Geospatial', 'Recharts'],
     highlights: [
-      'Evaluated 81.8+ GW of nationwide solar capacity data',
-      'Analyzed 36+ states/UTs across 500+ granular records',
-      'Optimized data cleaning pipelines reducing query latency by 45%',
-      'Predictive polynomial modeling forecasting growth to 2030',
+      '10+ years (2014–2024) of solar data',
+      '81.8+ GW of installed capacity evaluated',
+      '36+ states/UTs analyzed across 500+ records',
     ],
     github: 'https://github.com/pranavshende/SolarSalesAnalysis',
-    demo: 'https://pranavshende.online',
-    badge: 'AI Analytics',
+    demo: '/playgames?folder=projects_folder',
+    image: solarAnalyticsPhoto,
   },
   {
     id: 'pashurakshak',
-    client: 'IEEE Research Publication',
-    category: 'Edge AI & IoT',
-    year: 'Published 2026',
-    title: 'Empowering rural farmers with instant offline livestock disease diagnosis via edge AI',
-    headline: 'PashuRakshak: AI Livestock Disease Detection System',
+    title: 'PashuRakshak',
+    subtitle: 'AI Livestock Disease Detection System',
+    category: 'Edge AI & Mobile',
     description:
-      'Developed an offline-first Edge AI application that classifies livestock ailments directly on-device using quantized CNN models and TensorFlow Lite. Authored and presented an IEEE research paper on the classification architecture.',
-    image: pashuImg,
-    imageBg: 'from-emerald-600 to-teal-800',
-    tech: ['TensorFlow Lite', 'CNN', 'React Native (Expo)', 'Python', 'Node.js', 'Edge AI'],
+      'An AI-powered livestock healthcare platform with 5+ modules using edge computing and TensorFlow Lite for offline disease detection and veterinary assistance.',
+    tech: ['React Native (Expo)', 'Node.js', 'PostgreSQL', 'Python', 'CNN', 'TensorFlow Lite'],
     highlights: [
-      'Quantized CNN model running smoothly on resource-constrained mobile hardware',
-      'Offline-first architecture tailored for rural agricultural regions',
-      'Presented and published at an international IEEE conference',
-      'Integrated veterinary consultation directory and preventive alerts',
+      '5+ modules with offline-first edge computing',
+      'CNN-based disease classification model',
+      '15+ RESTful APIs connected',
+      'IEEE Conference presentation & publication',
     ],
-    github: 'https://github.com/pranavshende/HackNation_SKB-F17_SKB_P2',
-    demo: 'https://pranavshende.online',
     badge: 'IEEE Published',
-  },
-  {
-    id: 'technex',
-    client: 'Technex SVPCET',
-    category: 'Cloud & Infrastructure',
-    year: 'Delivered 2026',
-    title: 'Scaling high-concurrency event infrastructure on GCP for 3,000+ engineers',
-    headline: 'National TechFest Cloud Backend & Financial Engine',
-    description:
-      'Architected highly scalable cloud infrastructure on Google Cloud Platform for central India’s flagship techfest. Handled 3,000+ registrations, automated payment gateway reconciliations, and sustained 100,000+ impressions during live competition spikes.',
-    image: jansamparkImg,
-    imageBg: 'from-purple-600 to-slate-900',
-    tech: ['GCP', 'Node.js', 'PostgreSQL', 'Payment Gateways', 'Redis', 'Docker'],
-    highlights: [
-      '100% uptime sustained during peak national tournament registrations',
-      'Payment gateway integrations with automated webhook verification',
-      'Custom admin dashboard with real-time analytics for 20+ event coordinators',
-      'Zero latency degradation under 100k+ impressions',
-    ],
-    github: 'https://github.com/PranavShende',
-    demo: 'https://pranavshende.online',
-    badge: 'National Scale',
+    github: 'https://github.com/pranavshende/HackNation_SKB-F17_SKB_P2',
+    demo: '/playgames?folder=projects_folder',
+    image: pashurakshakPhoto,
   },
 ];
 
 export const Home: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [gitRepos, setGitRepos] = useState<any[]>([]);
+  const [loadingRepos, setLoadingRepos] = useState<boolean>(true);
+
+  // Fetch real repositories from Pranav's GitHub account
+  useEffect(() => {
+    fetch('https://api.github.com/users/pranavshende/repos?sort=updated&per_page=100')
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          const featuredNames = ['SolarSalesAnalysis', 'HackNation_SKB-F17_SKB_P2'];
+          const filtered = data.filter((repo: any) => !repo.fork && !featuredNames.includes(repo.name));
+          setGitRepos(filtered.slice(0, 6)); // display top 6 noteworthy repos
+        }
+      })
+      .catch((err) => console.error(err))
+      .finally(() => setLoadingRepos(false));
+  }, []);
 
   return (
     <DoodleLayout>
       {/* ─────────────────────────────────────────────────────────────
-          HERO STATEMENT (Direct match to Screenshot 4)
+          HERO STATEMENT
       ────────────────────────────────────────────────────────────── */}
-      <section className="mb-14 sm:mb-16">
-        <h1 className="text-2xl sm:text-3xl md:text-[34px] font-semibold text-zinc-900 tracking-tight leading-snug sm:leading-tight">
-          Hi there! I'm <span className="underline decoration-[#fde047] decoration-wavy decoration-2">Pranav</span>, a product designer & full-stack engineer who brings color and clarity to complicated products and systems. Prev. @{' '}
-          <span className="font-semibold text-zinc-900 hover:text-blue-600 transition-colors">NK SkillEdge</span>,{' '}
-          <span className="font-semibold text-zinc-900 hover:text-amber-600 transition-colors">IT Daksh</span>
+      <section className="mb-12 sm:mb-14">
+        <h1 className="font-doodle text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 leading-snug sm:leading-snug">
+          Hi there! I'm <span className="underline decoration-[#fde047] decoration-wavy decoration-2">Pranav</span>, a full-stack engineer dedicated to building scalable backend architectures, exploring system design, and shipping high-impact solutions.
         </h1>
+        <p className="font-doodle text-base sm:text-lg text-zinc-600 mt-3 font-medium">
+          IT B.Tech student @ SVPCET building backend systems, cross-platform apps (MERN, React Native), and AI/ML integrations.
+        </p>
+
+        {/* Quick action buttons matching previous website */}
+        <div className="flex flex-wrap items-center gap-3 pt-4">
+          <a
+            href="https://drive.google.com/drive/folders/1z3-tvjY5U1OP90Dls4IfLwV10E8e4qij?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 rounded-xl bg-[#fef08a] border-2 border-zinc-900 font-doodle text-base font-bold text-zinc-900 hover:bg-[#fde047] shadow-xs transition-transform active:scale-95"
+          >
+            📄 View Resume
+          </a>
+          <a
+            href="https://mail.google.com/mail/?view=cm&fs=1&to=pranavshende97@gmail.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 rounded-xl bg-white border-2 border-zinc-900 font-doodle text-base font-bold text-zinc-900 hover:bg-zinc-100 shadow-xs transition-transform active:scale-95"
+          >
+            ✉️ Contact Me
+          </a>
+        </div>
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          SELECTED PROJECTS (Direct match to Screenshot 4)
+          SELECTED FEATURED PROJECTS
       ────────────────────────────────────────────────────────────── */}
-      <section className="space-y-6">
-        <div className="flex items-center justify-between border-b border-zinc-200/80 pb-3">
-          <h2 className="text-sm sm:text-base font-medium text-zinc-500 font-sans">
+      <section className="space-y-6 mb-16">
+        <div className="flex items-center justify-between border-b-2 border-dashed border-zinc-200 pb-3">
+          <h2 className="font-doodle text-xl font-bold text-zinc-800">
             Selected Projects
           </h2>
-          <span className="text-xs text-zinc-400 font-doodle text-sm">
-            click cards to inspect details 🔍
+          <span className="font-doodle text-sm text-zinc-500">
+            click cards to inspect all details 🔍
           </span>
         </div>
 
@@ -154,40 +155,177 @@ export const Home: React.FC = () => {
               onClick={() => setSelectedProject(proj)}
               className="group cursor-pointer flex flex-col space-y-3"
             >
-              {/* Project Visual Container */}
-              <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-zinc-100 border border-zinc-200/80 shadow-sm group-hover:shadow-md group-hover:border-zinc-300 transition-all">
+              {/* Image banner */}
+              <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-zinc-100 border-2 border-zinc-900 shadow-xs group-hover:shadow-md transition-all">
                 <img
                   src={proj.image}
-                  alt={proj.headline}
+                  alt={proj.title}
                   className="w-full h-full object-cover object-center group-hover:scale-[1.03] transition-transform duration-500"
                 />
 
-                {/* Subtle vignette */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
-
-                {/* Optional floating badge */}
                 {proj.badge && (
-                  <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm text-zinc-800 text-[11px] font-semibold px-2.5 py-1 rounded-full border border-zinc-200/60 shadow-sm">
+                  <div className="absolute top-3 right-3 bg-[#fef08a] text-zinc-900 border border-zinc-900 text-xs font-doodle font-bold px-2.5 py-1 rounded-full shadow-xs">
                     {proj.badge}
                   </div>
                 )}
               </div>
 
-              {/* Metadata Row */}
-              <div className="flex items-center justify-between text-xs text-zinc-500 font-medium pt-0.5">
-                <span className="font-semibold text-zinc-800">{proj.client}</span>
-                <span>
-                  {proj.category} • {proj.year}
-                </span>
+              {/* Meta row */}
+              <div className="flex items-center justify-between font-doodle text-sm text-zinc-500 font-semibold pt-0.5">
+                <span className="text-zinc-800">{proj.title}</span>
+                <span>{proj.category}</span>
               </div>
 
-              {/* Bold Title */}
-              <h3 className="text-base sm:text-lg font-bold text-zinc-900 group-hover:text-blue-600 transition-colors leading-snug">
-                {proj.title}
-              </h3>
+              {/* Title & summary */}
+              <div>
+                <h3 className="font-doodle text-xl font-bold text-zinc-900 group-hover:text-blue-600 transition-colors leading-snug">
+                  {proj.subtitle}
+                </h3>
+                <p className="text-xs sm:text-sm text-zinc-600 font-sans mt-1 line-clamp-2 leading-relaxed">
+                  {proj.description}
+                </p>
+              </div>
+
+              {/* Tech chips */}
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                {proj.tech.map((t, idx) => (
+                  <span
+                    key={idx}
+                    className="px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-700 text-xs font-mono border border-zinc-200"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
             </motion.div>
           ))}
         </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────────
+          RESEARCH PUBLICATIONS SECTION (From previous website)
+      ────────────────────────────────────────────────────────────── */}
+      <section className="space-y-4 mb-16 pt-2">
+        <div className="border-b-2 border-dashed border-zinc-200 pb-3 flex items-center gap-2">
+          <BookOpen className="w-5 h-5 text-emerald-600" />
+          <h2 className="font-doodle text-xl font-bold text-zinc-800">
+            Research Publications
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+          {/* Publication 1 */}
+          <div className="p-4 rounded-xl border-2 border-zinc-900 bg-white shadow-xs space-y-2">
+            <span className="px-2 py-0.5 rounded-full bg-emerald-100 border border-emerald-300 text-[10px] font-bold text-emerald-800 uppercase font-mono">
+              IEEE Conference
+            </span>
+            <h3 className="font-doodle text-lg font-bold text-zinc-900 leading-snug">
+              CNN Based Classification of Lumpy Skin Disease
+            </h3>
+            <p className="text-xs text-zinc-600 leading-relaxed font-sans">
+              Presented at the 2025 4th OPJU International Conference on Technology and Management (IEEE).
+            </p>
+            <a
+              href="https://doi.org/10.1109/OTCON65728.2025.11070341"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-semibold pt-1 font-mono"
+            >
+              <span>doi: 10.1109/OTCON65728.2025.11070341</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </a>
+          </div>
+
+          {/* Publication 2 */}
+          <div className="p-4 rounded-xl border-2 border-zinc-900 bg-white shadow-xs space-y-2">
+            <span className="px-2 py-0.5 rounded-full bg-teal-100 border border-teal-300 text-[10px] font-bold text-teal-800 uppercase font-mono">
+              IJACTE Journal
+            </span>
+            <h3 className="font-doodle text-lg font-bold text-zinc-900 leading-snug">
+              Intelligent Platform to Interconnect Alumni and Student for Educational Institutes
+            </h3>
+            <p className="text-xs text-zinc-600 leading-relaxed font-sans">
+              Published in the International Journal on Advanced Computer Theory and Engineering, 14(1): 193–197, May 2025.
+            </p>
+            <a
+              href="https://doi.org/10.65521/ijacte.v14i1.388"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-xs text-teal-600 hover:text-teal-800 font-semibold pt-1 font-mono"
+            >
+              <span>doi: 10.65521/ijacte.v14i1.388</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────────
+          DYNAMIC GITHUB REPOSITORIES (From previous website)
+      ────────────────────────────────────────────────────────────── */}
+      <section className="space-y-4 mb-10 pt-2">
+        <div className="border-b-2 border-dashed border-zinc-200 pb-3 flex items-center justify-between">
+          <h2 className="font-doodle text-xl font-bold text-zinc-800">
+            Other Noteworthy Repositories
+          </h2>
+          <a
+            href="https://github.com/PranavShende"
+            target="_blank"
+            rel="noreferrer"
+            className="font-doodle text-sm font-semibold text-blue-600 hover:underline"
+          >
+            view all on GitHub →
+          </a>
+        </div>
+
+        {loadingRepos ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-32 rounded-xl bg-zinc-100 border border-zinc-200 animate-pulse" />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {gitRepos.map((repo) => (
+              <a
+                key={repo.id}
+                href={repo.html_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col justify-between p-4 rounded-xl border border-zinc-200 hover:border-zinc-900 bg-white transition-all shadow-2xs hover:shadow-sm"
+              >
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">
+                      Repo
+                    </span>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400 group-hover:text-zinc-900 transition-colors" />
+                  </div>
+                  <h3 className="font-doodle text-base font-bold text-zinc-900 group-hover:text-blue-600 truncate">
+                    {repo.name}
+                  </h3>
+                  <p className="text-xs text-zinc-500 font-sans line-clamp-2 leading-relaxed">
+                    {repo.description || 'Public repository on GitHub.'}
+                  </p>
+                </div>
+
+                <div className="pt-3 mt-3 border-t border-zinc-100 flex items-center justify-between text-xs text-zinc-500">
+                  {repo.language && (
+                    <span className="font-mono text-[11px] font-medium text-zinc-600">
+                      {repo.language}
+                    </span>
+                  )}
+                  {repo.stargazers_count > 0 && (
+                    <span className="flex items-center gap-1 text-[11px] font-mono">
+                      <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
+                      {repo.stargazers_count}
+                    </span>
+                  )}
+                </div>
+              </a>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
@@ -195,14 +333,13 @@ export const Home: React.FC = () => {
       ────────────────────────────────────────────────────────────── */}
       <AnimatePresence>
         {selectedProject && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/50 backdrop-blur-sm">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-xs">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl border border-zinc-200 p-6 sm:p-8 space-y-6"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl border-2 border-zinc-900 p-6 sm:p-8 space-y-5 shadow-2xl"
             >
-              {/* Close Button */}
               <button
                 onClick={() => setSelectedProject(null)}
                 className="absolute top-5 right-5 p-2 rounded-full text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
@@ -211,60 +348,53 @@ export const Home: React.FC = () => {
                 <X className="w-5 h-5" />
               </button>
 
-              {/* Header */}
-              <div className="space-y-1.5 pr-8">
-                <div className="flex items-center gap-2 text-xs font-semibold text-blue-600 uppercase tracking-wider">
-                  <span>{selectedProject.client}</span>
-                  <span>•</span>
-                  <span>{selectedProject.category}</span>
-                </div>
-                <h2 className="text-xl sm:text-2xl font-bold text-zinc-900 font-display">
-                  {selectedProject.headline}
-                </h2>
-                <p className="text-xs sm:text-sm text-zinc-500">
+              <div className="space-y-1 pr-6">
+                <span className="font-mono text-xs font-bold uppercase text-blue-600">
+                  {selectedProject.category}
+                </span>
+                <h2 className="font-doodle text-2xl font-bold text-zinc-900">
                   {selectedProject.title}
+                </h2>
+                <p className="font-doodle text-base text-zinc-500 font-semibold">
+                  {selectedProject.subtitle}
                 </p>
               </div>
 
-              {/* Large Image Banner */}
-              <div className="w-full aspect-[16/9] rounded-xl overflow-hidden bg-zinc-100 border border-zinc-200">
+              <div className="w-full aspect-[16/10] rounded-xl overflow-hidden border-2 border-zinc-900 bg-zinc-100">
                 <img
                   src={selectedProject.image}
-                  alt={selectedProject.headline}
+                  alt={selectedProject.title}
                   className="w-full h-full object-cover object-center"
                 />
               </div>
 
-              {/* Narrative Description */}
-              <div className="space-y-3 text-sm text-zinc-700 leading-relaxed">
-                <p>{selectedProject.description}</p>
-              </div>
+              <p className="text-sm text-zinc-700 leading-relaxed font-sans">
+                {selectedProject.description}
+              </p>
 
-              {/* Key Highlights */}
               <div className="space-y-2">
-                <h4 className="text-xs font-semibold uppercase text-zinc-400 tracking-wider">
-                  Key Achievements
+                <h4 className="font-doodle text-sm font-bold uppercase text-zinc-500 tracking-wider">
+                  Highlights
                 </h4>
-                <div className="space-y-1.5">
+                <div className="space-y-1.5 font-doodle text-base text-zinc-800">
                   {selectedProject.highlights.map((h, i) => (
-                    <div key={i} className="flex items-start gap-2 text-xs sm:text-sm text-zinc-700">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                    <div key={i} className="flex items-center gap-2">
+                      <span className="text-emerald-500">✔</span>
                       <span>{h}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Tech Stack Chips */}
-              <div className="space-y-2 pt-2">
-                <h4 className="text-xs font-semibold uppercase text-zinc-400 tracking-wider">
+              <div className="space-y-2 pt-1">
+                <h4 className="font-doodle text-sm font-bold uppercase text-zinc-500 tracking-wider">
                   Technologies
                 </h4>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5">
                   {selectedProject.tech.map((t, idx) => (
                     <span
                       key={idx}
-                      className="px-2.5 py-1 rounded-lg bg-zinc-100 text-zinc-700 text-xs font-medium border border-zinc-200/80"
+                      className="px-2.5 py-1 rounded-md bg-zinc-100 text-zinc-800 font-mono text-xs border border-zinc-200"
                     >
                       {t}
                     </span>
@@ -272,29 +402,31 @@ export const Home: React.FC = () => {
                 </div>
               </div>
 
-              {/* Actions Footer */}
-              <div className="flex items-center gap-3 pt-4 border-t border-zinc-100">
-                {selectedProject.github && (
+              <div className="flex items-center gap-3 pt-3 border-t border-zinc-200">
+                {selectedProject.github && selectedProject.github !== 'private' ? (
                   <a
                     href={selectedProject.github}
                     target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900 text-white text-xs sm:text-sm font-semibold hover:bg-zinc-800 transition-colors shadow-sm"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900 text-white font-doodle text-base font-bold hover:bg-zinc-800"
                   >
                     <Github className="w-4 h-4" />
-                    <span>View Repository</span>
+                    <span>View GitHub Repo</span>
                   </a>
+                ) : (
+                  <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-100 text-zinc-400 font-doodle text-base font-medium border border-zinc-200">
+                    <Lock className="w-4 h-4" />
+                    <span>Private Repository</span>
+                  </div>
                 )}
                 {selectedProject.demo && (
-                  <a
-                    href={selectedProject.demo}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#fef08a] text-zinc-900 text-xs sm:text-sm font-semibold hover:bg-[#fde047] transition-colors"
+                  <Link
+                    to={selectedProject.demo}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#fef08a] text-zinc-900 border-2 border-zinc-900 font-doodle text-base font-bold hover:bg-[#fde047]"
                   >
                     <ExternalLink className="w-4 h-4" />
-                    <span>Live Preview</span>
-                  </a>
+                    <span>Launch in Arcade</span>
+                  </Link>
                 )}
               </div>
             </motion.div>

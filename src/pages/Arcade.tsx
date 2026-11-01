@@ -546,10 +546,10 @@ export const Arcade: React.FC = () => {
       <section className="relative flex flex-col sm:flex-row items-start justify-between gap-6 mb-10 sm:mb-12">
         {/* Headline */}
         <div className="flex-1 max-w-xl">
-          <h1 className="text-xl sm:text-2xl md:text-[28px] font-semibold text-zinc-900 leading-snug sm:leading-tight">
+          <h1 className="font-doodle text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 leading-snug sm:leading-snug">
             Welcome to my arcade! This is where I design and code little games just for fun.
           </h1>
-          <p className="text-xs sm:text-sm text-zinc-500 mt-2 font-medium">
+          <p className="font-doodle text-base sm:text-lg text-zinc-500 mt-2 font-medium">
             Step right up! Everything here is interactive and made with code & love.
           </p>
         </div>

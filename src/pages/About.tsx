@@ -5,74 +5,45 @@ import { PropellerHat } from '@/components/PropellerHat';
 import profilePhoto from '../photo/IMG_20240323_152847.jpg';
 import { 
   FileText, ExternalLink, Code2, Database, Cloud, 
-  Sparkles, GraduationCap, MapPin, Trophy, Award, Heart
+  Sparkles, GraduationCap, MapPin, Trophy, Award, Mail
 } from 'lucide-react';
 
 interface TimelineItem {
-  age: string;
+  year: string;
   title: string;
   description: string;
-  icon: React.ReactNode;
+  icon: string;
   tag?: string;
 }
 
-const timelineData: TimelineItem[] = [
+const realTimeline: TimelineItem[] = [
   {
-    age: 'Age 10',
-    title: 'Doing Arts, Crafts & Taking Things Apart',
+    year: '2023',
+    title: 'Started B.Tech IT & Leadership',
     description:
-      'My imagination stemmed from my childhood. Drawing characters from favorite animated shows, folding origami ninja weapons, taking apart old radios and computer mice to see how the circuits clicked, and acting out stories on my bed with my figurines.',
-    icon: (
-      <svg viewBox="0 0 24 24" className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="m14 12-8.5 8.5a2.12 2.12 0 1 1-3-3L11 9" />
-        <path d="M15 13 9 7l4-4 6 6-4 4Z" />
-        <path d="M18 10l-1.5-1.5" />
-      </svg>
-    ),
+      'Began B.Tech in Information Technology at St. Vincent Pallotti College of Engineering & Technology (SVPCET), Nagpur. Elected Class Representative (CR) and won 2nd Place in Codetronics robotics competition.',
+    icon: '🎓',
   },
   {
-    age: 'Age 14',
-    title: 'Designing + Coding First Programs & LEGO',
+    year: '2024',
+    title: 'Cognizance IIT Roorkee & Full-Stack Deep Dive',
     description:
-      'This is where my curiosity for technology truly exploded. I joined middle school robotics competitions, built my first robots, designed custom gear assemblies for missions, and learned visual logic & C programming to bring static hardware to life.',
-    icon: (
-      <svg viewBox="0 0 24 24" className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect width="18" height="12" x="3" y="8" rx="2" />
-        <path d="M7 8V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3" />
-        <circle cx="8" cy="14" r="1" fill="currentColor" />
-        <circle cx="16" cy="14" r="1" fill="currentColor" />
-      </svg>
-    ),
+      'Represented college at Cognizance IIT Roorkee. Mastered MERN stack, Data Structures & Algorithms, joined Computer Society of India (CSI), and architected backend services for the Technex techfest platform.',
+    icon: '🚀',
   },
   {
-    age: 'Age 17',
-    title: 'Designing Systems & Engineering College',
+    year: '2025',
+    title: 'IEEE Research, CSI Technical Head & GSSoC Mentor',
     description:
-      'Stepping into B.Tech Information Technology at St. Vincent Pallotti College of Engineering & Technology (SVPCET). Explored systems design, database normalization, algorithms, and led volunteer tech communities for national symposiums.',
-    icon: (
-      <svg viewBox="0 0 24 24" className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M3 21h18" />
-        <path d="M5 21V7l7-4 7 4v14" />
-        <path d="M9 10a3 3 0 0 0 6 0" />
-      </svg>
-    ),
+      'Promoted to Technical Head of CSI, leading hackathons and mentoring 80+ volunteers at IAC 2.0. Selected as GirlScript Summer of Code (GSSoC) Mentor and presented my first IEEE research paper at an international conference.',
+    icon: '🏆',
   },
   {
-    age: 'Currently Age 20',
-    title: 'Engineering Production Products & AI Research',
+    year: '2026',
+    title: 'Shipping JanSampark, Solar Intelligence & PashuRakshak',
     description:
-      'Now engineering full-stack platforms with 25+ React Native modules, architecting secure Node.js & PostgreSQL APIs, publishing machine learning research with IEEE, and striving to build products that combine engineering rigor with playful human clarity.',
-    icon: (
-      <svg viewBox="0 0 24 24" className="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2v8" />
-        <path d="m4.93 10.93 1.41 1.41" />
-        <path d="M2 18h2" />
-        <path d="M20 18h2" />
-        <path d="m19.07 10.93-1.41 1.41" />
-        <path d="M22 22H2" />
-        <path d="m8 22 4-10 4 10" />
-      </svg>
-    ),
+      'Building JanSampark with 25+ React Native modules at NK SkillEdge, conducting nationwide solar analytics covering 81.8+ GW at IT Daksh, and developing edge AI livestock diagnostics published in IEEE.',
+    icon: '⚡',
     tag: 'Present',
   },
 ];
@@ -80,12 +51,15 @@ const timelineData: TimelineItem[] = [
 export const About: React.FC = () => {
   const [hatSpinning, setHatSpinning] = useState(false);
 
+  const resumeUrl = "https://drive.google.com/drive/folders/1z3-tvjY5U1OP90Dls4IfLwV10E8e4qij?usp=sharing";
+  const emailUrl = "https://mail.google.com/mail/?view=cm&fs=1&to=pranavshende97@gmail.com";
+
   return (
     <DoodleLayout>
       {/* ─────────────────────────────────────────────────────────────
-          HERO PROFILE & HEADLINE (Direct match to Screenshot 1)
+          HERO PROFILE & HEADLINE
       ────────────────────────────────────────────────────────────── */}
-      <section className="flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8 mb-12 sm:mb-16">
+      <section className="flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8 mb-12 sm:mb-14">
         {/* Avatar with Propeller Hat Doodle */}
         <div 
           className="relative shrink-0 cursor-pointer group"
@@ -109,34 +83,55 @@ export const About: React.FC = () => {
           </div>
         </div>
 
-        {/* Headline matching Screenshot 1 */}
+        {/* Headline */}
         <div className="flex-1 text-center sm:text-left pt-2">
-          <h1 className="text-xl sm:text-2xl md:text-[28px] font-semibold text-zinc-900 leading-snug sm:leading-tight">
+          <h1 className="font-doodle text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 leading-snug sm:leading-snug">
             Hi again! I'm still the kid who can't stop building things, just with different tools now.
           </h1>
-          <p className="text-sm text-zinc-500 mt-2 font-medium">
-            Based in Nagpur, India • B.Tech in Information Technology • Full Stack & Edge AI
+          <p className="font-doodle text-base sm:text-lg text-zinc-600 mt-2 font-medium">
+            Based in Nagpur, India • B.Tech in Information Technology @ SVPCET • Full Stack & AI Researcher
           </p>
+
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 pt-3">
+            <a
+              href={resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-1.5 rounded-xl bg-[#fef08a] border-2 border-zinc-900 font-doodle text-sm font-bold text-zinc-900 hover:bg-[#fde047] shadow-xs inline-flex items-center gap-1.5"
+            >
+              <FileText className="w-4 h-4" />
+              <span>Resume (Google Drive)</span>
+            </a>
+            <a
+              href={emailUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-1.5 rounded-xl bg-white border-2 border-zinc-900 font-doodle text-sm font-bold text-zinc-900 hover:bg-zinc-100 shadow-xs inline-flex items-center gap-1.5"
+            >
+              <Mail className="w-4 h-4" />
+              <span>pranavshende97@gmail.com</span>
+            </a>
+          </div>
         </div>
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          MY STORY SECTION (Direct match to Screenshot 1)
+          MY STORY SECTION
       ────────────────────────────────────────────────────────────── */}
       <section className="space-y-8 mb-16">
-        <div className="flex items-center gap-2.5 border-b border-zinc-200/80 pb-3">
-          <span className="text-xl">📝</span>
-          <h2 className="text-lg font-bold text-zinc-900 font-display">
-            My Story
+        <div className="flex items-center gap-2.5 border-b-2 border-dashed border-zinc-200 pb-3">
+          <span className="text-2xl">📝</span>
+          <h2 className="font-doodle text-2xl font-bold text-zinc-900">
+            My Journey & Story
           </h2>
         </div>
 
         {/* Vertical Timeline */}
-        <div className="relative pl-6 sm:pl-8 space-y-10">
+        <div className="relative pl-6 sm:pl-8 space-y-8">
           {/* Continuous vertical connecting line */}
-          <div className="absolute left-[18px] sm:left-[22px] top-4 bottom-4 w-[2px] bg-zinc-800" />
+          <div className="absolute left-[18px] sm:left-[22px] top-4 bottom-4 w-[2px] bg-zinc-900" />
 
-          {timelineData.map((item, idx) => (
+          {realTimeline.map((item, idx) => (
             <motion.div
               key={idx}
               initial={{ opacity: 0, x: -10 }}
@@ -146,18 +141,18 @@ export const About: React.FC = () => {
               className="relative flex items-start gap-4 sm:gap-6"
             >
               {/* Circular node with doodle icon */}
-              <div className="relative z-10 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white border-2 border-zinc-900 shadow-sm flex items-center justify-center shrink-0 -ml-[18px] sm:-ml-[22px]">
+              <div className="relative z-10 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white border-2 border-zinc-900 shadow-xs flex items-center justify-center text-lg shrink-0 -ml-[18px] sm:-ml-[22px]">
                 {item.icon}
               </div>
 
               {/* Story Content */}
               <div className="flex-1 space-y-1.5 pt-0.5">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <h3 className="text-base sm:text-lg font-bold text-zinc-900 font-display">
-                    {item.age}: {item.title}
+                  <h3 className="font-doodle text-xl font-bold text-zinc-900">
+                    {item.year}: {item.title}
                   </h3>
                   {item.tag && (
-                    <span className="px-2 py-0.5 rounded-full bg-[#fef08a] text-[10px] font-bold text-zinc-900 border border-zinc-900/10">
+                    <span className="px-2 py-0.5 rounded-full bg-[#fef08a] font-doodle text-xs font-bold text-zinc-900 border border-zinc-900">
                       {item.tag}
                     </span>
                   )}
@@ -172,25 +167,25 @@ export const About: React.FC = () => {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          TECH STACK & TOOLBOX
+          TECH TOOLBOX
       ────────────────────────────────────────────────────────────── */}
-      <section className="space-y-4 mb-14 pt-4 border-t border-zinc-200/80">
+      <section className="space-y-4 mb-14 pt-4 border-t-2 border-dashed border-zinc-200">
         <div className="flex items-center gap-2">
-          <span className="text-xl">🧰</span>
-          <h2 className="text-lg font-bold text-zinc-900 font-display">
-            Things I Love Building With
+          <span className="text-2xl">🧰</span>
+          <h2 className="font-doodle text-2xl font-bold text-zinc-900">
+            Technologies & Tools
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
           {/* Frontend & Mobile */}
-          <div className="p-4 rounded-xl border border-zinc-200/80 bg-zinc-50/50 space-y-2">
-            <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider flex items-center gap-1.5">
-              <Code2 className="w-3.5 h-3.5 text-blue-500" /> Frontend & Mobile
+          <div className="p-4 rounded-xl border-2 border-zinc-900 bg-white shadow-xs space-y-2">
+            <span className="font-doodle text-base font-bold text-blue-600 flex items-center gap-1.5">
+              <Code2 className="w-4 h-4" /> Frontend & Mobile
             </span>
             <div className="flex flex-wrap gap-1.5">
-              {['React', 'React Native', 'TypeScript', 'Tailwind CSS', 'Expo', 'Framer Motion', 'Vite'].map((t) => (
-                <span key={t} className="px-2 py-0.5 bg-white border border-zinc-200 rounded-md text-xs text-zinc-700">
+              {['React Native', 'React.js', 'TypeScript', 'Expo', 'Tailwind CSS', 'Redux', 'Framer Motion'].map((t) => (
+                <span key={t} className="px-2 py-0.5 bg-zinc-100 border border-zinc-200 rounded-md text-xs font-mono text-zinc-700">
                   {t}
                 </span>
               ))}
@@ -198,13 +193,13 @@ export const About: React.FC = () => {
           </div>
 
           {/* Backend & Databases */}
-          <div className="p-4 rounded-xl border border-zinc-200/80 bg-zinc-50/50 space-y-2">
-            <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider flex items-center gap-1.5">
-              <Database className="w-3.5 h-3.5 text-emerald-500" /> Backend & Data
+          <div className="p-4 rounded-xl border-2 border-zinc-900 bg-white shadow-xs space-y-2">
+            <span className="font-doodle text-base font-bold text-emerald-600 flex items-center gap-1.5">
+              <Database className="w-4 h-4" /> Backend & Data
             </span>
             <div className="flex flex-wrap gap-1.5">
-              {['Node.js', 'Express', 'PostgreSQL', 'Python', 'JWT & RBAC', 'REST APIs', 'Prisma'].map((t) => (
-                <span key={t} className="px-2 py-0.5 bg-white border border-zinc-200 rounded-md text-xs text-zinc-700">
+              {['Node.js', 'Express.js', 'PostgreSQL', 'Python', 'JWT & RBAC', 'REST APIs', 'Supabase'].map((t) => (
+                <span key={t} className="px-2 py-0.5 bg-zinc-100 border border-zinc-200 rounded-md text-xs font-mono text-zinc-700">
                   {t}
                 </span>
               ))}
@@ -212,13 +207,13 @@ export const About: React.FC = () => {
           </div>
 
           {/* AI & Cloud */}
-          <div className="p-4 rounded-xl border border-zinc-200/80 bg-zinc-50/50 space-y-2">
-            <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider flex items-center gap-1.5">
-              <Cloud className="w-3.5 h-3.5 text-indigo-500" /> AI & Cloud
+          <div className="p-4 rounded-xl border-2 border-zinc-900 bg-white shadow-xs space-y-2">
+            <span className="font-doodle text-base font-bold text-purple-600 flex items-center gap-1.5">
+              <Cloud className="w-4 h-4" /> AI & Cloud
             </span>
             <div className="flex flex-wrap gap-1.5">
-              {['TensorFlow Lite', 'Edge AI', 'CNNs', 'Google Cloud (GCP)', 'Docker', 'Git', 'ETL'].map((t) => (
-                <span key={t} className="px-2 py-0.5 bg-white border border-zinc-200 rounded-md text-xs text-zinc-700">
+              {['TensorFlow Lite', 'CNNs', 'Edge AI', 'Google Cloud (GCP)', 'Docker', 'Git', 'ETL'].map((t) => (
+                <span key={t} className="px-2 py-0.5 bg-zinc-100 border border-zinc-200 rounded-md text-xs font-mono text-zinc-700">
                   {t}
                 </span>
               ))}
@@ -228,59 +223,67 @@ export const About: React.FC = () => {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          EXPERIENCE & HONORS QUICK TILES
+          EXPERIENCE CARDS (Direct from previous website)
       ────────────────────────────────────────────────────────────── */}
-      <section className="space-y-4 mb-10 pt-4 border-t border-zinc-200/80">
+      <section className="space-y-4 mb-10 pt-4 border-t-2 border-dashed border-zinc-200">
         <div className="flex items-center gap-2">
-          <span className="text-xl">💼</span>
-          <h2 className="text-lg font-bold text-zinc-900 font-display">
-            Where I've Contributed
+          <span className="text-2xl">💼</span>
+          <h2 className="font-doodle text-2xl font-bold text-zinc-900">
+            Work Experience
           </h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="p-4 rounded-xl border border-zinc-200 bg-white shadow-sm space-y-1">
+          <div className="p-4 rounded-xl border-2 border-zinc-900 bg-white shadow-xs space-y-1.5">
             <div className="flex items-center justify-between">
-              <h3 className="font-bold text-sm text-zinc-900">NK SkillEdge Pvt. Ltd.</h3>
-              <span className="text-[11px] text-zinc-400">May 2026 – Present</span>
+              <h3 className="font-doodle text-lg font-bold text-zinc-900">NK SkillEdge Pvt. Ltd.</h3>
+              <span className="font-mono text-[10px] text-zinc-500">May 2026 – Present</span>
             </div>
-            <p className="text-xs text-blue-600 font-medium">Android Developer Intern (Full Stack)</p>
-            <p className="text-xs text-zinc-600 pt-1">
-              Built 25+ modules in React Native for JanSampark, architected secure Node.js JWT + RBAC backend with 40+ RESTful APIs.
-            </p>
+            <p className="font-doodle text-sm text-blue-600 font-semibold">Android Developer Intern (Full Stack)</p>
+            <ul className="text-xs text-zinc-600 space-y-1 font-sans pt-1">
+              <li>• Spearheaded core development of JanSampark, building 25+ React Native modules.</li>
+              <li>• Architected Node.js backend secured with JWT & RBAC for 4 user roles.</li>
+              <li>• Created 40+ RESTful APIs with PostgreSQL for rapid database query execution.</li>
+            </ul>
           </div>
 
-          <div className="p-4 rounded-xl border border-zinc-200 bg-white shadow-sm space-y-1">
+          <div className="p-4 rounded-xl border-2 border-zinc-900 bg-white shadow-xs space-y-1.5">
             <div className="flex items-center justify-between">
-              <h3 className="font-bold text-sm text-zinc-900">IT Daksh</h3>
-              <span className="text-[11px] text-zinc-400">Jan 2026 – Present</span>
+              <h3 className="font-doodle text-lg font-bold text-zinc-900">IT Daksh</h3>
+              <span className="font-mono text-[10px] text-zinc-500">Jan 2026 – Present</span>
             </div>
-            <p className="text-xs text-amber-600 font-medium">Data Analyst Intern (Solar Intelligence)</p>
-            <p className="text-xs text-zinc-600 pt-1">
-              Evaluated 10+ years of solar metrics covering 81.8+ GW across 36+ states with polynomial forecasting and geospatial heatmaps.
-            </p>
+            <p className="font-doodle text-sm text-amber-600 font-semibold">Data Analyst Intern (Solar Sales Intelligence)</p>
+            <ul className="text-xs text-zinc-600 space-y-1 font-sans pt-1">
+              <li>• Analyzed 10+ years of solar metrics covering 81.8+ GW across 36+ Indian states/UTs.</li>
+              <li>• Built automated ETL pipelines in Python & PostgreSQL reducing query latency.</li>
+              <li>• Built regression forecast models projecting solar adoption through 2030.</li>
+            </ul>
           </div>
 
-          <div className="p-4 rounded-xl border border-zinc-200 bg-white shadow-sm space-y-1">
+          <div className="p-4 rounded-xl border-2 border-zinc-900 bg-white shadow-xs space-y-1.5">
             <div className="flex items-center justify-between">
-              <h3 className="font-bold text-sm text-zinc-900">Technex SVPCET</h3>
-              <span className="text-[11px] text-zinc-400">2024 – 2026</span>
+              <h3 className="font-doodle text-lg font-bold text-zinc-900">Technex SVPCET</h3>
+              <span className="font-mono text-[10px] text-zinc-500">Dec 2024 – Jan 2026</span>
             </div>
-            <p className="text-xs text-purple-600 font-medium">Backend Developer & Advisor</p>
-            <p className="text-xs text-zinc-600 pt-1">
-              Engineered high-scale GCP backend powering 3,000+ national registrations and 100,000+ impressions with zero downtime.
-            </p>
+            <p className="font-doodle text-sm text-purple-600 font-semibold">Backend Developer & Advisor</p>
+            <ul className="text-xs text-zinc-600 space-y-1 font-sans pt-1">
+              <li>• Architected scalable cloud infrastructure on GCP handling 3,000+ registrations.</li>
+              <li>• Sustained 100,000+ impressions during national events with zero downtime.</li>
+              <li>• Integrated secure payment gateways with automated transaction webhooks.</li>
+            </ul>
           </div>
 
-          <div className="p-4 rounded-xl border border-zinc-200 bg-white shadow-sm space-y-1">
+          <div className="p-4 rounded-xl border-2 border-zinc-900 bg-white shadow-xs space-y-1.5">
             <div className="flex items-center justify-between">
-              <h3 className="font-bold text-sm text-zinc-900">IEEE Research Author</h3>
-              <span className="text-[11px] text-emerald-600 font-semibold">Published 2026</span>
+              <h3 className="font-doodle text-lg font-bold text-zinc-900">Computer Society of India (CSI)</h3>
+              <span className="font-mono text-[10px] text-zinc-500">2024 – 2025</span>
             </div>
-            <p className="text-xs text-zinc-700 font-medium">PashuRakshak AI Livestock Disease Detection</p>
-            <p className="text-xs text-zinc-600 pt-1">
-              Authored and presented paper on lightweight CNN edge classification models for offline rural veterinary diagnostics.
-            </p>
+            <p className="font-doodle text-sm text-emerald-600 font-semibold">Technical Head</p>
+            <ul className="text-xs text-zinc-600 space-y-1 font-sans pt-1">
+              <li>• Organized and conducted hands-on coding workshops, hackathons, and seminars.</li>
+              <li>• Coordinated 80+ volunteers for the Industry Academia Conclave 2.0.</li>
+              <li>• Mentored students in open source and software engineering practices.</li>
+            </ul>
           </div>
         </div>
       </section>
@@ -288,14 +291,14 @@ export const About: React.FC = () => {
       {/* ─────────────────────────────────────────────────────────────
           SPOTIFY PLAYER
       ────────────────────────────────────────────────────────────── */}
-      <section className="pt-4 border-t border-zinc-200/80 mb-8">
+      <section className="pt-4 border-t-2 border-dashed border-zinc-200 mb-8">
         <div className="flex items-center gap-2 mb-3">
-          <span className="text-lg">🎧</span>
-          <h2 className="text-sm font-semibold text-zinc-700 font-sans">
-            On repeat while coding:
+          <span className="text-xl">🎧</span>
+          <h2 className="font-doodle text-lg font-bold text-zinc-800">
+            Recently Listening On Repeat:
           </h2>
         </div>
-        <div className="w-full max-w-md rounded-2xl overflow-hidden border border-zinc-200 shadow-sm">
+        <div className="w-full max-w-md rounded-2xl overflow-hidden border-2 border-zinc-900 shadow-xs">
           <iframe
             src="https://open.spotify.com/embed/track/5y2ijHECwFYWqcAHKTZgzD?utm_source=generator&theme=0"
             width="100%"
