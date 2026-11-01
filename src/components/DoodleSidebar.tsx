@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Briefcase, MapPin, Menu, X, ExternalLink } from 'lucide-react';
 import profilePhoto from '../photo/profile_photo_wide.png';
 
-// ── Hand-drawn outline doodle icons ──────────────────────────
+// ── Hand-drawn outline doodle icons matching Image 1 & 2 ─────────────────────
 const DoodleHouse = () => (
   <svg viewBox="0 0 24 24" className="w-5 h-5 text-zinc-900 fill-none stroke-current stroke-[2.2] stroke-linecap-round stroke-linejoin-round">
     <path d="M3 10.5 12 3l9 7.5" />
@@ -104,13 +104,14 @@ export const DoodleSidebar: React.FC = () => {
     <>
       {/* ─────────────────────────────────────────────────────────────
           DESKTOP FIXED SIDEBAR (md and above)
+          Completely fixed, zero scrollbar, perfectly matching Image 1
       ────────────────────────────────────────────────────────────── */}
-      <aside className="hidden md:flex flex-col justify-between w-64 h-screen fixed left-0 top-0 bg-[#ffffff] border-r border-zinc-200/90 px-6 py-6 z-40 select-none overflow-y-auto">
-        <div className="flex flex-col space-y-6">
-          {/* ── PROFILE HEADER (Clean, no Experience Includes) ── */}
-          <div className="flex flex-col items-center text-center pt-2">
-            {/* Circular Profile Photo using previous photo */}
-            <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-zinc-900 shadow-sm bg-zinc-100 mb-2.5">
+      <aside className="hidden md:flex flex-col justify-between w-64 h-screen fixed left-0 top-0 bg-[#ffffff] border-r border-zinc-200/90 px-6 py-5 z-40 select-none overflow-hidden">
+        <div className="flex flex-col space-y-4">
+          {/* ── PROFILE HEADER (Exact match to Image 1) ── */}
+          <div className="flex flex-col items-center text-center pt-1">
+            {/* Circular Profile Photo */}
+            <div className="relative w-22 h-22 rounded-full overflow-hidden border-2 border-zinc-900 shadow-sm bg-zinc-100 mb-2">
               <img
                 src={profilePhoto}
                 alt="Pranav Shende"
@@ -119,7 +120,7 @@ export const DoodleSidebar: React.FC = () => {
             </div>
 
             {/* Blue Open to Work Pill */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-bold tracking-wide border border-blue-200 mb-2.5 shadow-2xs">
+            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-blue-50 text-blue-600 text-xs font-bold tracking-wide border border-blue-200 mb-2 shadow-2xs">
               <Briefcase className="w-3.5 h-3.5 text-blue-600 shrink-0" />
               <span>Open to Work</span>
             </div>
@@ -143,12 +144,12 @@ export const DoodleSidebar: React.FC = () => {
 
           <hr className="border-t border-zinc-200/90 -mx-2" />
 
-          {/* ── NAVIGATION SECTION ── */}
-          <div className="flex flex-col space-y-1.5">
+          {/* ── NAVIGATION SECTION (Exact match to Image 1) ── */}
+          <div className="flex flex-col space-y-1">
             <span className="text-xs font-bold tracking-wider text-zinc-400 uppercase px-3">
               Navigation
             </span>
-            <nav className="flex flex-col space-y-1">
+            <nav className="flex flex-col space-y-1 pt-0.5">
               {navItems.map((item) => {
                 const isActive =
                   item.path === '/'
@@ -159,7 +160,7 @@ export const DoodleSidebar: React.FC = () => {
                   <NavLink
                     key={item.name}
                     to={item.path}
-                    className={`relative flex items-center gap-3 px-3.5 py-2 rounded-xl text-base font-semibold transition-all duration-150 ${
+                    className={`relative flex items-center gap-3 px-3.5 py-1.5 rounded-xl text-base font-semibold transition-all duration-150 ${
                       isActive
                         ? 'bg-[#fef08a] text-zinc-900 font-bold shadow-xs'
                         : 'text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100/80'
@@ -181,17 +182,17 @@ export const DoodleSidebar: React.FC = () => {
             </nav>
           </div>
 
-          {/* ── CONTACTS SECTION ── */}
-          <div className="flex flex-col space-y-1.5 pt-1">
+          {/* ── CONTACTS SECTION (Exact match to Image 1) ── */}
+          <div className="flex flex-col space-y-1 pt-1">
             <span className="text-xs font-bold tracking-wider text-zinc-400 uppercase px-3">
               Contacts
             </span>
-            <div className="flex flex-col space-y-1">
+            <div className="flex flex-col space-y-1 pt-0.5">
               <a
                 href={emailUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-3 px-3.5 py-2 rounded-xl text-base font-semibold text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100/80 transition-colors"
+                className="group flex items-center gap-3 px-3.5 py-1.5 rounded-xl text-base font-semibold text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100/80 transition-colors"
                 title="Send email to pranavshende97@gmail.com"
               >
                 <DoodleEmail />
@@ -202,7 +203,7 @@ export const DoodleSidebar: React.FC = () => {
                 href={linkedInUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="group flex items-center gap-3 px-3.5 py-2 rounded-xl text-base font-semibold text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100/80 transition-colors"
+                className="group flex items-center gap-3 px-3.5 py-1.5 rounded-xl text-base font-semibold text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100/80 transition-colors"
               >
                 <DoodleLinkedIn />
                 <span className="pt-0.5">LinkedIn</span>
@@ -212,7 +213,7 @@ export const DoodleSidebar: React.FC = () => {
                 href={githubUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="group flex items-center gap-3 px-3.5 py-2 rounded-xl text-base font-semibold text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100/80 transition-colors"
+                className="group flex items-center gap-3 px-3.5 py-1.5 rounded-xl text-base font-semibold text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100/80 transition-colors"
               >
                 <DoodleGitHub />
                 <span className="pt-0.5">GitHub</span>
@@ -222,7 +223,7 @@ export const DoodleSidebar: React.FC = () => {
                 href={resumeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-3 px-3.5 py-2 rounded-xl text-base font-semibold text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100/80 transition-colors"
+                className="group flex items-center gap-3 px-3.5 py-1.5 rounded-xl text-base font-semibold text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100/80 transition-colors"
                 title="View Pranav's Resume on Google Drive"
               >
                 <DoodleResume />
@@ -233,8 +234,8 @@ export const DoodleSidebar: React.FC = () => {
           </div>
         </div>
 
-        {/* ── FOOTER (Clean copyright without 'doodled with love') ── */}
-        <div className="pt-4 border-t border-dashed border-zinc-200 text-zinc-400 flex items-center justify-between text-xs">
+        {/* ── FOOTER (Clean copyright) ── */}
+        <div className="pt-3 border-t border-dashed border-zinc-200 text-zinc-400 flex items-center justify-between text-xs">
           <span>© Pranav Shende 2026</span>
         </div>
       </aside>
@@ -310,7 +311,7 @@ export const DoodleSidebar: React.FC = () => {
             </div>
 
             <div className="flex flex-col space-y-2 border-t border-zinc-100 pt-4">
-              <span className="text-xs font-bold tracking-wider text-zinc-400 uppercase">
+              <span className="text-xs font-bold tracking-widest text-zinc-400 uppercase">
                 Contacts
               </span>
               <div className="flex flex-col space-y-2 pt-1 text-base font-semibold">

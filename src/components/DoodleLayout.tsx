@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { DoodleSidebar } from './DoodleSidebar';
 
 interface DoodleLayoutProps {
@@ -6,8 +6,23 @@ interface DoodleLayoutProps {
 }
 
 export const DoodleLayout: React.FC<DoodleLayoutProps> = ({ children }) => {
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (scrollHeight > 0) {
+        setScrollProgress(Math.min(100, Math.max(0, (window.scrollY / scrollHeight) * 100)));
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-[#ffffff] text-zinc-900 font-sans selection:bg-[#fef08a] selection:text-zinc-900">
+    <div className="min-h-screen bg-[#ffffff] text-zinc-900 font-sans selection:bg-[#fef08a] selection:text-zinc-900 relative">
       <DoodleSidebar />
 
       {/* Main Content Area */}
@@ -16,6 +31,23 @@ export const DoodleLayout: React.FC<DoodleLayoutProps> = ({ children }) => {
           {children}
         </main>
       </div>
+
+      {/* ── Thin Translucent Line replacing scrollbar (Direct match to Image 2) ── */}
+      <div 
+        className="fixed right-1.5 sm:right-2 top-0 bottom-0 w-[1.5px] bg-zinc-200/80 pointer-events-none z-50"
+        aria-hidden="true"
+      >
+        {/* Subtle active progress indicator gliding on the line */}
+        <div
+          className="w-[2.5px] -ml-[0.5px] bg-zinc-400/80 rounded-full transition-transform duration-75 ease-out"
+          style={{
+            height: '45px',
+            transform: `translateY(${scrollProgress * ((typeof window !== 'undefined' ? window.innerHeight : 800) - 60) / 100}px)`,
+          }}
+        />
+      </div>
     </div>
   );
 };
+
+export default DoodleLayout;
