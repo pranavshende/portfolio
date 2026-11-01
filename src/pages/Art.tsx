@@ -97,6 +97,58 @@ const creativeItems: CreativeItem[] = [
     ),
   },
   {
+    id: 'attrition-copilot',
+    category: 'Analytics',
+    title: 'Employee Attrition AI Copilot & Risk Factor Visualizations',
+    organization: 'HR AI Intelligence',
+    description:
+      'Executive dashboard visualization suite and conversational copilot grounded in workforce datasets. Features 11 interactive Chart.js charts, flight-risk scorecards, and individual employee retention lookup.',
+    preview: (
+      <div className="w-full h-full min-h-[220px] bg-gradient-to-br from-emerald-50 to-teal-100 rounded-xl flex flex-col items-center justify-center p-4 border border-emerald-200">
+        <div className="w-44 bg-white border-2 border-zinc-900 rounded-2xl shadow-sm p-3 flex flex-col space-y-2">
+          <div className="flex items-center justify-between border-b border-zinc-200 pb-1">
+            <span className="font-doodle text-xs font-bold text-emerald-700">Attrition Intelligence</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+          </div>
+          <div className="w-full h-16 bg-emerald-50 rounded-lg border border-emerald-200 flex flex-col items-center justify-center p-1 text-center">
+            <span className="text-xl">📊🤖</span>
+            <span className="font-doodle text-[10px] text-emerald-900 font-bold">Gemini 2.5 Copilot</span>
+          </div>
+          <div className="flex justify-between text-[9px] font-mono text-zinc-500">
+            <span>11 Visualizations</span>
+            <span>React 19 + Flask</span>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+  {
+    id: 'tastifyy-delivery',
+    category: 'Mobile UI',
+    title: 'Tastifyy Multi-Role On-Demand Delivery & Order Architecture',
+    organization: 'Tastifyy Delivery Ecosystem',
+    description:
+      'Complete food delivery UI and bidirectional real-time dispatcher. Built with React 19, React Native Expo, Prisma ORM, PostgreSQL on Supabase, and live driver updates over Socket.io.',
+    preview: (
+      <div className="w-full h-full min-h-[220px] bg-gradient-to-br from-orange-50 to-amber-100 rounded-xl flex flex-col items-center justify-center p-4 border border-orange-200">
+        <div className="w-44 bg-white border-2 border-zinc-900 rounded-2xl shadow-sm p-3 flex flex-col space-y-2">
+          <div className="flex items-center justify-between border-b border-zinc-200 pb-1">
+            <span className="font-doodle text-xs font-bold text-orange-600">Tastifyy Platform</span>
+            <span className="text-xs">🛵</span>
+          </div>
+          <div className="w-full h-16 bg-orange-50 rounded-lg border border-orange-200 flex flex-col items-center justify-center p-1 text-center">
+            <span className="text-xl">🍔📱</span>
+            <span className="font-doodle text-[10px] text-zinc-700 font-bold">Web + Expo Mobile</span>
+          </div>
+          <div className="flex justify-between text-[9px] font-mono text-zinc-500">
+            <span>Socket.io Live</span>
+            <span>4 Role Portals</span>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+  {
     id: 'technex-branding',
     category: 'Branding',
     title: 'Technex National TechFest Identity & Cloud Badges',

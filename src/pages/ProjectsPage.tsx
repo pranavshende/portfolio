@@ -10,6 +10,8 @@ import { Link } from 'react-router-dom';
 import jansamparkPhoto from '../photo/jansampark.png';
 import solarAnalyticsPhoto from '../photo/solar_analytics.png';
 import pashurakshakPhoto from '../photo/pashurakshak.png';
+import attritionBanner from '../photo/attrition_banner.png';
+import tastifyyBanner from '../photo/tastifyy_banner.png';
 
 interface Project {
   title: string;
@@ -36,9 +38,42 @@ const projects: Project[] = [
       "40+ RESTful APIs with PostgreSQL",
     ],
     github: "private",
-    demo: "/playgames?folder=projects_folder",
+    demo: "/arcade?folder=projects_folder",
     gradient: "from-blue-500 to-indigo-600",
     image: jansamparkPhoto
+  },
+  {
+    title: "Employee Attrition System",
+    subtitle: "AI Workforce Analytics & Predictive Copilot",
+    description: "End-to-end AI workforce attrition analysis dashboard and conversational copilot with instant dynamic CSV dataset ingestion, 11 interactive visualizations, and Gemini 2.5 Flash copilot.",
+    tech: ["React 19", "Flask", "Python", "Google Gemini 2.5", "Pandas", "Chart.js"],
+    highlights: [
+      "Instant dynamic CSV ingestion with automatic column detection",
+      "11 interactive Chart.js visualizations & root-cause driver ranking",
+      "High-risk employee watchlist table with composite flight risk scores",
+      "AttritionAI Copilot grounded in dataset metrics for employee lookup",
+    ],
+    badge: "AI Intelligence",
+    github: "https://github.com/pranavshende/EmployeeAttritionSystem",
+    gradient: "from-emerald-500 to-teal-700",
+    image: attritionBanner
+  },
+  {
+    title: "Tastifyy",
+    subtitle: "Multi-Role Food Delivery Platform",
+    description: "On-demand food delivery platform featuring dual client surfaces (React 19 Web + Expo App), Express + TypeScript backend, Prisma ORM with Supabase PostgreSQL, and live Socket.io tracking.",
+    tech: ["React 19", "React Native", "TypeScript", "Node.js", "Express", "Prisma", "Socket.io"],
+    highlights: [
+      "Dual client interfaces: React 19 web portal & React Native (Expo) app",
+      "4-role architecture: Customer, Restaurant, Delivery Driver, Admin",
+      "Real-time event dispatching & live driver tracking with Socket.io",
+      "Automated job assignment algorithm with PostgreSQL and Prisma",
+    ],
+    badge: "Production Shipped",
+    github: "https://github.com/pranavshende/tastifyy",
+    demo: "https://www.tastifyy.in",
+    gradient: "from-orange-500 to-amber-600",
+    image: tastifyyBanner
   },
   {
     title: "Solar Intelligence",
@@ -51,7 +86,7 @@ const projects: Project[] = [
       "36+ states/UTs analyzed across 500+ records",
     ],
     github: "https://github.com/pranavshende/SolarSalesAnalysis",
-    demo: "/playgames?folder=projects_folder",
+    demo: "/arcade?folder=projects_folder",
     gradient: "from-amber-400 to-orange-500",
     image: solarAnalyticsPhoto
   },
@@ -68,7 +103,7 @@ const projects: Project[] = [
     ],
     badge: "IEEE Published",
     github: "https://github.com/pranavshende/HackNation_SKB-F17_SKB_P2",
-    demo: "/playgames?folder=projects_folder",
+    demo: "/arcade?folder=projects_folder",
     gradient: "from-emerald-400 to-teal-600",
     image: pashurakshakPhoto
   }
@@ -85,7 +120,7 @@ const ProjectsPage = () => {
       .then(data => {
         if (Array.isArray(data)) {
           // Filter out forks and the repos that are already featured
-          const featuredNames = ["SolarSalesAnalysis", "HackNation_SKB-F17_SKB_P2"];
+          const featuredNames = ["SolarSalesAnalysis", "HackNation_SKB-F17_SKB_P2", "EmployeeAttritionSystem", "tastifyy"];
           const filtered = data.filter((repo: any) => !repo.fork && !featuredNames.includes(repo.name));
           setGitRepos(filtered);
         }

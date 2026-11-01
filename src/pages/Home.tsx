@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import jansamparkPhoto from '../photo/jansampark.png';
 import solarAnalyticsPhoto from '../photo/solar_analytics.png';
 import pashurakshakPhoto from '../photo/pashurakshak.png';
+import attritionBanner from '../photo/attrition_banner.png';
+import tastifyyBanner from '../photo/tastifyy_banner.png';
 
 interface Project {
   id: string;
@@ -42,9 +44,50 @@ const projects: Project[] = [
       'Offline-capable incident reporting with geo-tagging',
     ],
     github: 'private',
-    demo: '/playgames?folder=projects_folder',
+    demo: '/arcade?folder=projects_folder',
     badge: 'Production Shipped',
     image: jansamparkPhoto,
+  },
+  {
+    id: 'attrition',
+    client: 'HR AI Analytics',
+    category: 'AI & Full Stack',
+    year: 'Shipped 2026',
+    title: 'Employee Attrition Intelligence System: Predictive flight-risk analytics and Gemini 2.5 Flash conversational workforce copilot',
+    subtitle: 'AI Workforce Attrition Intelligence',
+    description:
+      'An end-to-end, AI-powered workforce attrition analysis platform and conversational copilot built with React 19, Flask, and Google Gemini 2.5 Flash. Features dynamic CSV dataset ingestion, 11 interactive Chart.js visualizations, differential root-cause ranking, and an AttritionAI copilot grounded in cohort metrics for individual employee risk lookups.',
+    tech: ['React 19', 'Flask', 'Python', 'Google Gemini 2.5', 'Pandas', 'Chart.js', 'Vite'],
+    highlights: [
+      'Instant dynamic CSV ingestion with automatic column detection and schema normalization',
+      '11 interactive Chart.js visualizations covering departments, tenure curves, and overtime impact',
+      'Differential root-cause driver ranking quantifying percentage-point turnover impact',
+      'AttritionAI Copilot grounded in dataset metrics with individual employee ID flight-risk lookup',
+    ],
+    github: 'https://github.com/pranavshende/EmployeeAttritionSystem',
+    badge: 'AI Intelligence',
+    image: attritionBanner,
+  },
+  {
+    id: 'tastifyy',
+    client: 'On-Demand Logistics',
+    category: 'Full Stack & Mobile',
+    year: 'Shipped 2026',
+    title: 'Tastifyy: Premium on-demand food delivery platform with real-time tracking, dual Web/Expo clients, and 4-role portal architecture',
+    subtitle: 'Multi-Role Food Delivery Platform',
+    description:
+      'A scalable food delivery ecosystem for India featuring dual client surfaces (React 19 Web + React Native Expo App), centralized Express + TypeScript backend, Prisma ORM with PostgreSQL (Supabase), real-time order dispatch via Socket.io, and automated delivery partner job assignments across 4 distinct role portals.',
+    tech: ['React 19', 'React Native (Expo)', 'TypeScript', 'Node.js', 'Express', 'Prisma', 'PostgreSQL', 'Socket.io'],
+    highlights: [
+      'Dual client interfaces: React 19 web portal and cross-platform React Native (Expo) app',
+      '4-role portal architecture: Customer ordering, Restaurant management, Delivery partner dispatch, and Admin oversight',
+      'Real-time bidirectional event dispatching and live driver tracking powered by Socket.io',
+      'Production backend with Prisma ORM, Supabase PostgreSQL, and automated delivery assignment algorithm',
+    ],
+    github: 'https://github.com/pranavshende/tastifyy',
+    demo: 'https://www.tastifyy.in',
+    badge: 'Production Shipped',
+    image: tastifyyBanner,
   },
   {
     id: 'solar-analytics',
@@ -63,7 +106,7 @@ const projects: Project[] = [
       'Polynomial regression forecast curves projecting capacity to 2030',
     ],
     github: 'https://github.com/pranavshende/SolarSalesAnalysis',
-    demo: '/playgames?folder=projects_folder',
+    demo: '/arcade?folder=projects_folder',
     badge: 'AI Analytics',
     image: solarAnalyticsPhoto,
   },
@@ -85,7 +128,7 @@ const projects: Project[] = [
     ],
     badge: 'IEEE Published',
     github: 'https://github.com/pranavshende/HackNation_SKB-F17_SKB_P2',
-    demo: '/playgames?folder=projects_folder',
+    demo: '/arcade?folder=projects_folder',
     image: pashurakshakPhoto,
   },
 ];
@@ -101,7 +144,7 @@ export const Home: React.FC = () => {
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
-          const featuredNames = ['SolarSalesAnalysis', 'HackNation_SKB-F17_SKB_P2'];
+          const featuredNames = ['SolarSalesAnalysis', 'HackNation_SKB-F17_SKB_P2', 'EmployeeAttritionSystem', 'tastifyy'];
           const filtered = data.filter((repo: any) => !repo.fork && !featuredNames.includes(repo.name));
           setGitRepos(filtered.slice(0, 6));
         }
@@ -416,13 +459,25 @@ export const Home: React.FC = () => {
                   </div>
                 )}
                 {selectedProject.demo && (
-                  <Link
-                    to={selectedProject.demo}
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#fef08a] text-zinc-900 border border-zinc-900/10 text-xs sm:text-sm font-semibold hover:bg-[#fde047] transition-colors"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                    <span>Launch in Arcade</span>
-                  </Link>
+                  selectedProject.demo.startsWith('http') ? (
+                    <a
+                      href={selectedProject.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#fef08a] text-zinc-900 border border-zinc-900/10 text-xs sm:text-sm font-semibold hover:bg-[#fde047] transition-colors"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      <span>Visit Live Platform</span>
+                    </a>
+                  ) : (
+                    <Link
+                      to={selectedProject.demo}
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#fef08a] text-zinc-900 border border-zinc-900/10 text-xs sm:text-sm font-semibold hover:bg-[#fde047] transition-colors"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      <span>Launch in Arcade</span>
+                    </Link>
+                  )
                 )}
               </div>
             </motion.div>

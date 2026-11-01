@@ -5,13 +5,13 @@ import { triggerConfetti } from '@/lib/confetti';
 import { 
   Sparkles, RefreshCw, Trophy, Gamepad2, Gift, 
   ChevronLeft, Circle, Square, Smartphone, Tablet, Monitor,
-  Activity, Hexagon, TrainFront, Bird, Folder, Music, Globe, ExternalLink
+  Activity, Hexagon, TrainFront, Bird, Folder, Music, Globe, ExternalLink, UtensilsCrossed, Users
 } from 'lucide-react';
 
 /* ─────────────────────────────────────────────────────────────────────────────
    1. RETRO OS CONSOLE SIMULATOR (Direct match to uploaded image)
 ───────────────────────────────────────────────────────────────────────────── */
-type AppType = 'home' | 'mario' | 'hextris' | 'dino' | 'tetris' | 'subway' | 'flappy' | 'spotify' | 'jansampark' | 'pashurakshak' | 'solar' | 'agriscore' | 'dsa';
+type AppType = 'home' | 'mario' | 'hextris' | 'dino' | 'tetris' | 'subway' | 'flappy' | 'spotify' | 'jansampark' | 'pashurakshak' | 'solar' | 'agriscore' | 'dsa' | 'attrition' | 'tastifyy';
 
 const SquircleIcon = ({ 
   imgUrl, 
@@ -77,6 +77,8 @@ const RetroOSConsole: React.FC = () => {
     { id: 'flappy', name: 'Flappy', icon: <SquircleIcon imgUrl="https://upload.wikimedia.org/wikipedia/en/0/0a/Flappy_Bird_icon.png" FallbackIcon={Bird} gradient="from-sky-300 to-blue-500" alt="Flappy Bird" /> },
     { id: 'projects_folder', name: 'Projects', isFolder: true, folderApps: [
       { id: 'jansampark', name: 'JanSampark', icon: <SquircleIcon imgUrl="https://projectjansampark.pranavshende.online/favicon.ico" FallbackIcon={Globe} gradient="from-blue-500 to-indigo-600" alt="JanSampark" />, appId: 'jansampark' },
+      { id: 'attrition', name: 'Attrition AI', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={Users} gradient="from-emerald-500 to-teal-700" alt="Attrition AI" />, appId: 'attrition' },
+      { id: 'tastifyy', name: 'Tastifyy', icon: <SquircleIcon imgUrl="https://raw.githubusercontent.com/pranavshende/tastifyy/master/website/public/android-icon.png" FallbackIcon={UtensilsCrossed} gradient="from-orange-500 to-amber-600" alt="Tastifyy" />, appId: 'tastifyy' },
       { id: 'pashurakshak', name: 'PashuRakshak', icon: <SquircleIcon imgUrl="https://projectpashurakshak.pranavshende.online/favicon.ico" FallbackIcon={Activity} gradient="from-emerald-400 to-teal-600" alt="PashuRakshak" />, appId: 'pashurakshak' },
       { id: 'solar', name: 'Solar Analytics', icon: <SquircleIcon imgUrl="https://projectsolarsalesanalysis.pranavshende.online/favicon.ico" FallbackIcon={Hexagon} gradient="from-amber-400 to-orange-600" alt="Solar Analytics" />, appId: 'solar' },
       { id: 'agriscore', name: 'AgriScore', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={Circle} gradient="from-green-400 to-emerald-600" alt="AgriScore" />, appId: 'agriscore' },
@@ -349,6 +351,49 @@ const RetroOSConsole: React.FC = () => {
                   title="Solar Analysis"
                   sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
                 />
+              </motion.div>
+            )}
+
+            {/* TASTIFYY LIVE APP */}
+            {activeApp === 'tastifyy' && (
+              <motion.div key="tastifyy" className="absolute inset-0 pb-12 bg-white">
+                <iframe
+                  src="https://www.tastifyy.in/"
+                  className="w-full h-full border-none bg-white"
+                  title="Tastifyy Delivery Platform"
+                  sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                />
+              </motion.div>
+            )}
+
+            {/* ATTRITION AI PREVIEW */}
+            {activeApp === 'attrition' && (
+              <motion.div key="attrition" className="absolute inset-0 pb-12 bg-[#0c1815] flex flex-col items-center justify-center p-6 text-center text-white">
+                <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center mb-4 text-3xl shadow-lg">
+                  📊
+                </div>
+                <h3 className="font-bold text-xl mb-1 text-white">Employee Attrition Intelligence System</h3>
+                <p className="text-emerald-300 text-xs font-mono mb-2">React 19 • Flask • Google Gemini 2.5 Flash</p>
+                <p className="text-zinc-300 text-xs max-w-sm mb-5 leading-relaxed">
+                  Predictive flight-risk modeling, 11 interactive Chart.js visualizations, and an AttritionAI copilot grounded in real workforce cohorts.
+                </p>
+                <div className="flex gap-2">
+                  <a
+                    href="https://github.com/pranavshende/EmployeeAttritionSystem"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-zinc-950 rounded-xl text-xs font-bold transition-colors inline-flex items-center gap-1.5"
+                  >
+                    <span>View Repository</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                  <button
+                    onClick={() => setActiveApp('home')}
+                    className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-xl text-xs font-bold transition-colors"
+                  >
+                    Back to Desktop
+                  </button>
+                </div>
               </motion.div>
             )}
 
