@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Briefcase, MapPin, Menu, X, ExternalLink } from 'lucide-react';
+import { Briefcase, MapPin, Menu, X, ExternalLink, GraduationCap } from 'lucide-react';
 import profilePhoto from '../photo/profile_photo_wide.png';
 
 // ── Hand-drawn outline doodle icons ──────────────────────────
@@ -93,6 +93,7 @@ const navItems: NavItem[] = [
 export const DoodleSidebar: React.FC = () => {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
 
   // Exact links from previous website
   const emailUrl = "https://mail.google.com/mail/?view=cm&fs=1&to=pranavshende97@gmail.com";
@@ -106,27 +107,50 @@ export const DoodleSidebar: React.FC = () => {
           DESKTOP FIXED SIDEBAR
           Clean, perfectly proportioned, 100% fixed with zero scrollbar
       ────────────────────────────────────────────────────────────── */}
-      <aside className="hidden md:flex flex-col justify-between w-60 h-screen fixed left-0 top-0 bg-[#ffffff] border-r border-zinc-200/80 px-5 py-5 z-40 select-none overflow-hidden font-sans">
-        <div className="flex flex-col space-y-3.5">
+      <aside className="hidden md:flex flex-col justify-between w-60 h-screen fixed left-0 top-0 bg-[#ffffff] border-r border-zinc-200/80 px-5 py-4 z-40 select-none overflow-y-auto scrollbar-none font-sans">
+        <div className="flex flex-col space-y-3">
           {/* Profile Header */}
           <div className="flex flex-col items-center text-center">
-            {/* Circular Profile Photo */}
-            <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border-2 border-zinc-900 shadow-xs bg-zinc-100 mb-2 shrink-0">
-              <img
-                src={profilePhoto}
-                alt="Pranav Shende"
-                className="w-full h-full object-cover object-center scale-[1.7] translate-y-1"
-              />
-            </div>
+            {/* Clickable Circular Profile Photo (increased size from 64px to 80px) */}
+            <button
+              type="button"
+              onClick={() => setProfileModalOpen(true)}
+              className="group relative cursor-pointer focus:outline-hidden mb-2"
+              title="Click to view details & bio"
+              aria-label="View profile details"
+            >
+              <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-zinc-900 shadow-sm bg-zinc-100 shrink-0 group-hover:scale-105 group-hover:ring-4 group-hover:ring-zinc-900/10 transition-all duration-200">
+                <img
+                  src={profilePhoto}
+                  alt="Pranav Shende"
+                  className="w-full h-full object-cover object-center scale-[1.7] translate-y-1"
+                />
+                {/* Hover overlay hint */}
+                <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <span className="text-[10px] text-white font-bold bg-black/70 px-2 py-0.5 rounded-full shadow-xs">
+                    View
+                  </span>
+                </div>
+              </div>
+            </button>
 
             {/* Blue Open to Work Pill */}
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-600 text-[11px] font-bold tracking-wide border border-blue-200/70 mb-1.5 shadow-2xs">
+            <button
+              type="button"
+              onClick={() => setProfileModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-600 text-[11px] font-bold tracking-wide border border-blue-200/70 mb-1.5 shadow-2xs hover:bg-blue-100 transition-colors cursor-pointer"
+              title="Click to view full profile details"
+            >
               <Briefcase className="w-3 h-3 text-blue-600 shrink-0" />
               <span>Open to Work</span>
-            </div>
+            </button>
 
-            {/* Name */}
-            <h1 className="text-xl font-bold text-zinc-900 tracking-tight leading-none font-display">
+            {/* Name - Clickable */}
+            <h1 
+              onClick={() => setProfileModalOpen(true)}
+              className="text-xl font-bold text-zinc-900 tracking-tight leading-none font-display cursor-pointer hover:text-blue-600 transition-colors"
+              title="Click to view full profile details"
+            >
               Pranav Shende
             </h1>
 
@@ -244,8 +268,13 @@ export const DoodleSidebar: React.FC = () => {
           MOBILE TOP NAVBAR & DRAWER
       ────────────────────────────────────────────────────────────── */}
       <header className="md:hidden sticky top-0 left-0 right-0 h-14 bg-white/95 backdrop-blur-md border-b border-zinc-200/80 px-4 flex items-center justify-between z-50">
-        <NavLink to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full overflow-hidden border border-zinc-900">
+        <button
+          type="button"
+          onClick={() => setProfileModalOpen(true)}
+          className="flex items-center gap-2 text-left group cursor-pointer focus:outline-hidden"
+          title="Click to view full profile details & bio"
+        >
+          <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-zinc-900 shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
             <img
               src={profilePhoto}
               alt="Pranav Shende"
@@ -253,14 +282,14 @@ export const DoodleSidebar: React.FC = () => {
             />
           </div>
           <div>
-            <span className="font-bold text-base text-zinc-900 leading-none block">
+            <span className="font-bold text-base text-zinc-900 leading-none block group-hover:text-blue-600 transition-colors">
               Pranav Shende
             </span>
             <span className="text-[10px] text-blue-600 font-semibold leading-none block mt-0.5">
-              Open to Work
+              Open to Work • Tap for details
             </span>
           </div>
-        </NavLink>
+        </button>
 
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -360,6 +389,168 @@ export const DoodleSidebar: React.FC = () => {
               © Pranav Shende 2026
             </div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ─────────────────────────────────────────────────────────────
+          PROFILE DETAILS & PHOTO MODAL (Light-box Dialog)
+          Opens on clicking the sidebar profile photo or name
+      ────────────────────────────────────────────────────────────── */}
+      <AnimatePresence>
+        {profileModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs select-auto">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.94, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.94, y: 12 }}
+              transition={{ duration: 0.2 }}
+              className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white rounded-3xl border-2 border-zinc-900 shadow-2xl p-6 sm:p-8 space-y-5"
+            >
+              {/* Close Button */}
+              <button
+                type="button"
+                onClick={() => setProfileModalOpen(false)}
+                className="absolute top-5 right-5 p-2 rounded-full text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
+                aria-label="Close profile modal"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {/* Profile Card Header */}
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5 pt-1">
+                {/* Large High-Res Photo View */}
+                <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border-2 border-zinc-900 shadow-sm bg-zinc-100 shrink-0">
+                  <img
+                    src={profilePhoto}
+                    alt="Pranav Shende"
+                    className="w-full h-full object-cover object-center scale-[1.7] translate-y-1"
+                  />
+                </div>
+
+                <div className="flex flex-col items-center sm:items-start text-center sm:text-left space-y-1.5 flex-1 pr-6">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-blue-50 text-blue-600 text-xs font-bold border border-blue-200/70 shadow-2xs">
+                    <Briefcase className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                    <span>Open to Work • 2026</span>
+                  </div>
+
+                  <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 tracking-tight leading-tight">
+                    Pranav Shende
+                  </h2>
+
+                  <p className="text-sm font-semibold text-zinc-600 leading-tight">
+                    Full Stack Developer & AI Engineer
+                  </p>
+
+                  <p className="inline-flex items-center gap-1 text-xs text-zinc-500 font-medium">
+                    <MapPin className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                    <span>Nagpur, Maharashtra, India</span>
+                  </p>
+                </div>
+              </div>
+
+              {/* Bio / Summary */}
+              <div className="space-y-1.5 border-t border-zinc-100 pt-3.5">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                  About Me
+                </h3>
+                <p className="text-xs sm:text-sm text-zinc-700 leading-relaxed">
+                  Full-stack software engineer and IEEE-published researcher passionate about building scalable backend architectures, high-performance web systems, edge AI applications, and intuitive mobile solutions.
+                </p>
+              </div>
+
+              {/* Education */}
+              <div className="space-y-1.5 border-t border-zinc-100 pt-3.5">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                  Education
+                </h3>
+                <div className="p-3 rounded-xl bg-zinc-50 border border-zinc-200/80 space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <GraduationCap className="w-4 h-4 text-zinc-700 shrink-0" />
+                    <span className="text-xs sm:text-sm font-bold text-zinc-900">
+                      St. Vincent Pallotti College of Engineering and Technology
+                    </span>
+                  </div>
+                  <p className="text-xs text-zinc-600 pl-6">
+                    B.Tech in Information Technology • Nagpur (2022 – 2026)
+                  </p>
+                </div>
+              </div>
+
+              {/* Core Technical Expertise */}
+              <div className="space-y-2 border-t border-zinc-100 pt-3.5">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                  Core Skills
+                </h3>
+                <div className="flex flex-wrap gap-1.5">
+                  {[
+                    'Full-Stack Systems',
+                    'React 19 & Next.js',
+                    'React Native & Expo',
+                    'Node.js & Express',
+                    'Python & Flask',
+                    'PostgreSQL & Prisma',
+                    'Google Gemini 2.5',
+                    'TensorFlow Lite Edge AI',
+                    'Socket.io Real-Time',
+                  ].map((skill) => (
+                    <span
+                      key={skill}
+                      className="px-2.5 py-1 rounded-md bg-zinc-100 text-zinc-800 text-xs font-semibold border border-zinc-200/80"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Actions & Links */}
+              <div className="flex flex-wrap items-center gap-2.5 pt-3.5 border-t border-zinc-100">
+                <a
+                  href={resumeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#fef08a] text-zinc-900 border border-zinc-900/15 text-xs sm:text-sm font-bold hover:bg-[#fde047] transition-all shadow-xs"
+                >
+                  <DoodleResume />
+                  <span>View Resume</span>
+                  <ExternalLink className="w-3.5 h-3.5 opacity-60" />
+                </a>
+
+                <a
+                  href={emailUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-900 text-white text-xs sm:text-sm font-bold hover:bg-zinc-800 transition-all shadow-xs"
+                >
+                  <DoodleEmail />
+                  <span>Send Email</span>
+                </a>
+
+                <div className="flex items-center gap-2">
+                  <a
+                    href={linkedInUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="p-2.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-700 transition-colors flex items-center justify-center border border-zinc-200"
+                    title="LinkedIn Profile"
+                    aria-label="LinkedIn"
+                  >
+                    <DoodleLinkedIn />
+                  </a>
+                  <a
+                    href={githubUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="p-2.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-700 transition-colors flex items-center justify-center border border-zinc-200"
+                    title="GitHub Profile"
+                    aria-label="GitHub"
+                  >
+                    <DoodleGitHub />
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </>
