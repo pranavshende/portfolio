@@ -85,10 +85,10 @@ export const About: React.FC = () => {
 
         {/* Headline */}
         <div className="flex-1 text-center sm:text-left pt-2">
-          <h1 className="font-doodle text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 leading-snug sm:leading-snug">
+          <h1 className="text-2xl sm:text-3xl md:text-[32px] font-medium text-zinc-900 leading-snug leading-snug sm:leading-snug">
             Hi again! I'm still the kid who can't stop building things, just with different tools now.
           </h1>
-          <p className="font-doodle text-base sm:text-lg text-zinc-600 mt-2 font-medium">
+          <p className="text-sm sm:text-base text-zinc-500 mt-2 font-medium">
             Based in Nagpur, India • B.Tech in Information Technology @ SVPCET • Full Stack & AI Researcher
           </p>
 
@@ -97,7 +97,7 @@ export const About: React.FC = () => {
               href={resumeUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-1.5 rounded-xl bg-[#fef08a] border-2 border-zinc-900 font-doodle text-sm font-bold text-zinc-900 hover:bg-[#fde047] shadow-xs inline-flex items-center gap-1.5"
+              className="px-4 py-1.5 rounded-xl bg-[#fef08a] border-2 border-zinc-900 text-xs font-semibold text-zinc-800 hover:bg-[#fde047] shadow-xs inline-flex items-center gap-1.5"
             >
               <FileText className="w-4 h-4" />
               <span>Resume (Google Drive)</span>
@@ -106,7 +106,7 @@ export const About: React.FC = () => {
               href={emailUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-1.5 rounded-xl bg-white border-2 border-zinc-900 font-doodle text-sm font-bold text-zinc-900 hover:bg-zinc-100 shadow-xs inline-flex items-center gap-1.5"
+              className="px-4 py-1.5 rounded-xl bg-white border-2 border-zinc-900 text-xs font-semibold text-zinc-800 hover:bg-zinc-100 shadow-xs inline-flex items-center gap-1.5"
             >
               <Mail className="w-4 h-4" />
               <span>pranavshende97@gmail.com</span>
@@ -121,7 +121,7 @@ export const About: React.FC = () => {
       <section className="space-y-8 mb-16">
         <div className="flex items-center gap-2.5 border-b-2 border-dashed border-zinc-200 pb-3">
           <span className="text-2xl">📝</span>
-          <h2 className="font-doodle text-2xl font-bold text-zinc-900">
+          <h2 className="text-xl font-bold text-zinc-900">
             My Journey & Story
           </h2>
         </div>
@@ -148,7 +148,7 @@ export const About: React.FC = () => {
               {/* Story Content */}
               <div className="flex-1 space-y-1.5 pt-0.5">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <h3 className="font-doodle text-xl font-bold text-zinc-900">
+                  <h3 className="text-base sm:text-lg font-bold text-zinc-900">
                     {item.year}: {item.title}
                   </h3>
                   {item.tag && (
@@ -172,7 +172,7 @@ export const About: React.FC = () => {
       <section className="space-y-4 mb-14 pt-4 border-t-2 border-dashed border-zinc-200">
         <div className="flex items-center gap-2">
           <span className="text-2xl">🧰</span>
-          <h2 className="font-doodle text-2xl font-bold text-zinc-900">
+          <h2 className="text-xl font-bold text-zinc-900">
             Technologies & Tools
           </h2>
         </div>
@@ -228,7 +228,7 @@ export const About: React.FC = () => {
       <section className="space-y-4 mb-10 pt-4 border-t-2 border-dashed border-zinc-200">
         <div className="flex items-center gap-2">
           <span className="text-2xl">💼</span>
-          <h2 className="font-doodle text-2xl font-bold text-zinc-900">
+          <h2 className="text-xl font-bold text-zinc-900">
             Work Experience
           </h2>
         </div>
@@ -236,10 +236,10 @@ export const About: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="p-4 rounded-xl border-2 border-zinc-900 bg-white shadow-xs space-y-1.5">
             <div className="flex items-center justify-between">
-              <h3 className="font-doodle text-lg font-bold text-zinc-900">NK SkillEdge Pvt. Ltd.</h3>
+              <h3 className="text-sm font-bold text-zinc-900">NK SkillEdge Pvt. Ltd.</h3>
               <span className="font-mono text-[10px] text-zinc-500">May 2026 – Present</span>
             </div>
-            <p className="font-doodle text-sm text-blue-600 font-semibold">Android Developer Intern (Full Stack)</p>
+            <p className="text-xs text-blue-600 font-semibold">Android Developer Intern (Full Stack)</p>
             <ul className="text-xs text-zinc-600 space-y-1 font-sans pt-1">
               <li>• Spearheaded core development of JanSampark, building 25+ React Native modules.</li>
               <li>• Architected Node.js backend secured with JWT & RBAC for 4 user roles.</li>
@@ -249,10 +249,10 @@ export const About: React.FC = () => {
 
           <div className="p-4 rounded-xl border-2 border-zinc-900 bg-white shadow-xs space-y-1.5">
             <div className="flex items-center justify-between">
-              <h3 className="font-doodle text-lg font-bold text-zinc-900">IT Daksh</h3>
+              <h3 className="text-sm font-bold text-zinc-900">IT Daksh</h3>
               <span className="font-mono text-[10px] text-zinc-500">Jan 2026 – Present</span>
             </div>
-            <p className="font-doodle text-sm text-amber-600 font-semibold">Data Analyst Intern (Solar Sales Intelligence)</p>
+            <p className="text-xs text-amber-600 font-semibold">Data Analyst Intern (Solar Sales Intelligence)</p>
             <ul className="text-xs text-zinc-600 space-y-1 font-sans pt-1">
               <li>• Analyzed 10+ years of solar metrics covering 81.8+ GW across 36+ Indian states/UTs.</li>
               <li>• Built automated ETL pipelines in Python & PostgreSQL reducing query latency.</li>
@@ -262,10 +262,10 @@ export const About: React.FC = () => {
 
           <div className="p-4 rounded-xl border-2 border-zinc-900 bg-white shadow-xs space-y-1.5">
             <div className="flex items-center justify-between">
-              <h3 className="font-doodle text-lg font-bold text-zinc-900">Technex SVPCET</h3>
+              <h3 className="text-sm font-bold text-zinc-900">Technex SVPCET</h3>
               <span className="font-mono text-[10px] text-zinc-500">Dec 2024 – Jan 2026</span>
             </div>
-            <p className="font-doodle text-sm text-purple-600 font-semibold">Backend Developer & Advisor</p>
+            <p className="text-xs text-purple-600 font-semibold">Backend Developer & Advisor</p>
             <ul className="text-xs text-zinc-600 space-y-1 font-sans pt-1">
               <li>• Architected scalable cloud infrastructure on GCP handling 3,000+ registrations.</li>
               <li>• Sustained 100,000+ impressions during national events with zero downtime.</li>
@@ -275,10 +275,10 @@ export const About: React.FC = () => {
 
           <div className="p-4 rounded-xl border-2 border-zinc-900 bg-white shadow-xs space-y-1.5">
             <div className="flex items-center justify-between">
-              <h3 className="font-doodle text-lg font-bold text-zinc-900">Computer Society of India (CSI)</h3>
+              <h3 className="text-sm font-bold text-zinc-900">Computer Society of India (CSI)</h3>
               <span className="font-mono text-[10px] text-zinc-500">2024 – 2025</span>
             </div>
-            <p className="font-doodle text-sm text-emerald-600 font-semibold">Technical Head</p>
+            <p className="text-xs text-emerald-600 font-semibold">Technical Head</p>
             <ul className="text-xs text-zinc-600 space-y-1 font-sans pt-1">
               <li>• Organized and conducted hands-on coding workshops, hackathons, and seminars.</li>
               <li>• Coordinated 80+ volunteers for the Industry Academia Conclave 2.0.</li>

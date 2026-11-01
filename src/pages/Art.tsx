@@ -200,10 +200,10 @@ export const Art: React.FC = () => {
           HERO HEADLINE
       ────────────────────────────────────────────────────────────── */}
       <section className="mb-8 sm:mb-10">
-        <h1 className="font-doodle text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 leading-snug sm:leading-snug">
+        <h1 className="text-2xl sm:text-3xl md:text-[32px] font-medium text-zinc-900 leading-snug leading-snug sm:leading-snug">
           Here are some other things I've designed and built, from mobile UI systems to research posters and hackathon assets~
         </h1>
-        <p className="font-doodle text-base sm:text-lg text-zinc-500 mt-2 font-medium">
+        <p className="text-sm sm:text-base text-zinc-500 mt-2 font-medium">
           A visual showcase of real interface designs, research papers, data graphics, and event identities.
         </p>
       </section>
@@ -216,7 +216,7 @@ export const Art: React.FC = () => {
           <button
             key={f}
             onClick={() => setActiveFilter(f)}
-            className={`px-3.5 py-1.5 rounded-full font-doodle text-sm font-bold transition-all ${
+            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
               activeFilter === f
                 ? 'bg-[#fef08a] text-zinc-900 border-2 border-zinc-900 shadow-2xs'
                 : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200/80 border border-zinc-200'
@@ -249,7 +249,7 @@ export const Art: React.FC = () => {
             </div>
 
             {/* Metadata */}
-            <div className="flex items-center justify-between font-doodle text-sm text-zinc-500 font-bold pt-1">
+            <div className="flex items-center justify-between text-xs text-zinc-500 font-semibold pt-1">
               <span className="text-zinc-800">{item.organization}</span>
               <span className="px-2 py-0.5 rounded-full bg-[#fef08a] text-xs font-bold text-zinc-900 border border-zinc-900">
                 {item.category}
@@ -257,7 +257,7 @@ export const Art: React.FC = () => {
             </div>
 
             {/* Bold Title */}
-            <h3 className="font-doodle text-base sm:text-lg font-bold text-zinc-900 group-hover:text-blue-600 transition-colors leading-snug">
+            <h3 className="text-sm sm:text-base font-bold text-zinc-900 group-hover:text-blue-600 transition-colors leading-snug">
               {item.title}
             </h3>
           </motion.div>
@@ -289,13 +289,13 @@ export const Art: React.FC = () => {
               </div>
 
               <div className="space-y-1">
-                <div className="flex items-center justify-between font-doodle text-sm text-zinc-500 font-bold">
+                <div className="flex items-center justify-between text-xs text-zinc-500 font-semibold">
                   <span>{selectedItem.organization}</span>
                   <span className="px-2 py-0.5 rounded-full bg-[#fef08a] text-xs font-bold text-zinc-900 border border-zinc-900">
                     {selectedItem.category}
                   </span>
                 </div>
-                <h3 className="font-doodle text-xl font-bold text-zinc-900">
+                <h3 className="text-lg font-bold text-zinc-900">
                   {selectedItem.title}
                 </h3>
                 <p className="text-xs sm:text-sm text-zinc-600 font-sans leading-relaxed pt-1">
