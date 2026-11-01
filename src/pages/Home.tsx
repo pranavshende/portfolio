@@ -159,13 +159,60 @@ export const Home: React.FC = () => {
           HERO STATEMENT (Direct match to Jerry Chen aesthetic)
       ────────────────────────────────────────────────────────────── */}
       <section className="mb-14 sm:mb-16 pt-2">
-        <h1 className="text-2xl sm:text-3xl md:text-[34px] font-medium text-zinc-900 tracking-tight leading-[1.35]">
-          Hi there! I'm <span className="font-bold text-zinc-950">Pranav</span>, a full-stack engineer dedicated to building scalable backend architectures, exploring system design, and shipping high-impact solutions. Prev. @{' '}
-          <span className="font-semibold text-zinc-900 hover:text-blue-600 transition-colors">NK SkillEdge</span>,{' '}
-          <span className="font-semibold text-zinc-900 hover:text-amber-600 transition-colors">IT Daksh</span>
+        <h1 className="text-2xl sm:text-3xl md:text-[34px] font-medium text-zinc-900 tracking-tight leading-[1.45] select-text">
+          <span>Hi there! </span>
+          <span className="inline-block hover:rotate-12 transition-transform cursor-pointer" title="Wave!">👋</span>
+          <span> I'm </span>
+          <span className="font-doodle text-[1.18em] font-bold text-zinc-950 px-2 py-0.5 rounded-xl bg-yellow-100/80 border border-yellow-300/80 hover:bg-amber-200 hover:text-amber-950 hover:rotate-[-2deg] transition-all inline-block cursor-pointer shadow-2xs">
+            Pranav
+          </span>
+          <span>, a </span>
+          <span className="font-sans font-semibold text-zinc-900 hover:text-blue-600 hover:underline decoration-blue-400 decoration-2 transition-all cursor-pointer">
+            full-stack engineer
+          </span>
+          <span> dedicated to building </span>
+          <span className="font-mono text-[0.88em] font-semibold text-zinc-900 px-2 py-0.5 rounded-lg bg-zinc-100 hover:bg-emerald-100 hover:text-emerald-800 border border-zinc-200/80 hover:border-emerald-300 transition-all inline-block cursor-pointer">
+            scalable backend architectures
+          </span>
+          <span>, exploring </span>
+          <span className="font-serif italic font-bold text-zinc-900 hover:text-purple-600 hover:underline decoration-wavy decoration-purple-400 transition-all cursor-pointer">
+            system design
+          </span>
+          <span>, and shipping </span>
+          <span className="font-doodle text-[1.15em] font-bold text-zinc-900 hover:text-rose-600 hover:scale-105 transition-all inline-block cursor-pointer">
+            high-impact solutions
+          </span>
+          <span>. Prev. @ </span>
+          <span className="font-sans font-bold text-teal-800 bg-teal-50 hover:bg-teal-100 hover:text-teal-950 px-2 py-0.5 rounded-lg border border-teal-200/80 hover:border-teal-300 transition-all inline-block cursor-pointer">
+            NK SkillEdge
+          </span>
+          <span>, </span>
+          <span className="font-sans font-bold text-amber-800 bg-amber-50 hover:bg-amber-100 hover:text-amber-950 px-2 py-0.5 rounded-lg border border-amber-200/80 hover:border-amber-300 transition-all inline-block cursor-pointer">
+            IT Daksh
+          </span>
         </h1>
-        <p className="text-sm sm:text-base text-zinc-500 mt-3 font-normal leading-relaxed max-w-2xl">
-          IT B.Tech student @ SVPCET building backend systems, cross-platform apps (MERN, React Native), and AI/ML integrations.
+        <p className="text-sm sm:text-base text-zinc-500 mt-4 font-normal leading-relaxed max-w-2xl">
+          <span>IT B.Tech student @ </span>
+          <span className="font-semibold text-zinc-800 hover:text-indigo-600 transition-colors cursor-pointer">
+            SVPCET
+          </span>
+          <span> building </span>
+          <span className="font-mono text-xs font-semibold text-zinc-700 px-1.5 py-0.5 rounded bg-zinc-100 hover:text-emerald-700 hover:bg-emerald-50 border border-zinc-200/70 transition-colors inline-block cursor-pointer">
+            backend systems
+          </span>
+          <span>, </span>
+          <span className="font-sans font-medium text-zinc-700 hover:text-sky-600 transition-colors cursor-pointer">
+            cross-platform apps
+          </span>
+          <span> (</span>
+          <span className="font-mono text-xs text-zinc-600 hover:text-cyan-600 transition-colors cursor-pointer">
+            MERN, React Native
+          </span>
+          <span>), and </span>
+          <span className="font-doodle text-base font-bold text-zinc-800 hover:text-violet-600 transition-colors cursor-pointer">
+            AI/ML integrations
+          </span>
+          <span>.</span>
         </p>
       </section>
 
