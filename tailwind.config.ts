@@ -14,10 +14,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Plus Jakarta Sans", "Inter", "system-ui", "-apple-system", "sans-serif"],
-        display: ["Fredoka", "Plus Jakarta Sans", "sans-serif"],
-        doodle: ["Patrick Hand", "Gaegu", "cursive"],
-        hand: ["Gaegu", "Patrick Hand", "cursive"],
+        sans: ["Patrick Hand", "Comic Neue", "Gaegu", "cursive", "sans-serif"],
+        display: ["Patrick Hand", "Comic Neue", "cursive", "sans-serif"],
+        doodle: ["Patrick Hand", "Comic Neue", "cursive", "sans-serif"],
+        hand: ["Patrick Hand", "Comic Neue", "cursive", "sans-serif"],
         mono: ["JetBrains Mono", "Fira Code", "monospace"],
       },
       colors: {

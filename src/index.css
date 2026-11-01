@@ -97,16 +97,18 @@
   }
 
   body {
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    font-family: 'Patrick Hand', 'Comic Neue', 'Gaegu', cursive, sans-serif;
     background-color: #ffffff;
     color: #18181b;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    font-size: 17px;
+    letter-spacing: 0.015em;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-    @apply tracking-tight;
+    font-family: 'Patrick Hand', 'Comic Neue', 'Gaegu', cursive, sans-serif;
+    @apply tracking-wide;
   }
 
   .font-mono {

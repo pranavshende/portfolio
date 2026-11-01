@@ -1,19 +1,93 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, Linkedin, Github, FileText, Menu, X, ExternalLink } from 'lucide-react';
+import { Briefcase, MapPin, Menu, X, ExternalLink } from 'lucide-react';
+import profilePhoto from '../photo/profile_photo_wide.png';
+
+// ── Hand-drawn outline doodle icons matching Image 2 ──────────────────────────
+const DoodleHouse = () => (
+  <svg viewBox="0 0 24 24" className="w-5 h-5 text-zinc-900 fill-none stroke-current stroke-[2.2] stroke-linecap-round stroke-linejoin-round">
+    <path d="M3 10.5 12 3l9 7.5" />
+    <path d="M5 9v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9" />
+    <path d="M9 21v-6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6" />
+    <path d="M18 5.5V3h-2v4.2" />
+  </svg>
+);
+
+const DoodleSmiley = () => (
+  <svg viewBox="0 0 24 24" className="w-5 h-5 text-zinc-900 fill-none stroke-current stroke-[2.2] stroke-linecap-round stroke-linejoin-round">
+    <rect width="18" height="18" x="3" y="3" rx="5" />
+    <circle cx="8.5" cy="10" r="1.2" fill="currentColor" />
+    <circle cx="15.5" cy="10" r="1.2" fill="currentColor" />
+    <path d="M7.5 14c1.2 2 3.2 2.5 4.5 2.5s3.3-.5 4.5-2.5" />
+  </svg>
+);
+
+const DoodlePalette = () => (
+  <svg viewBox="0 0 24 24" className="w-5 h-5 text-zinc-900 fill-none stroke-current stroke-[2.2] stroke-linecap-round stroke-linejoin-round">
+    <path d="M12 2C6.5 2 2 6.5 2 12c0 2.5 1.5 4.5 3.5 5 1 .25 1.5.8 1.5 1.8 0 1.8 1.5 3.2 3.2 3.2h1.8c5.5 0 10-4.5 10-10C22 6.5 17.5 2 12 2Z" />
+    <circle cx="7.5" cy="9.5" r="1.3" fill="currentColor" />
+    <circle cx="11.5" cy="6.5" r="1.3" fill="currentColor" />
+    <circle cx="16.5" cy="9.5" r="1.3" fill="currentColor" />
+    <circle cx="16.5" cy="14" r="1.3" fill="currentColor" />
+  </svg>
+);
+
+const DoodleGamepad = () => (
+  <svg viewBox="0 0 24 24" className="w-5 h-5 text-zinc-900 fill-none stroke-current stroke-[2.2] stroke-linecap-round stroke-linejoin-round">
+    <rect width="20" height="12" x="2" y="6" rx="6" />
+    <path d="M6 12h4" />
+    <path d="M8 10v4" />
+    <circle cx="15" cy="11" r="1.2" fill="currentColor" />
+    <circle cx="18" cy="13" r="1.2" fill="currentColor" />
+  </svg>
+);
+
+const DoodleEmail = () => (
+  <svg viewBox="0 0 24 24" className="w-5 h-5 text-zinc-900 fill-none stroke-current stroke-[2.2] stroke-linecap-round stroke-linejoin-round">
+    <rect width="20" height="15" x="2" y="4.5" rx="2" />
+    <path d="m22 6-10 7L2 6" />
+    <path d="m10 13-7 5.5" />
+    <path d="m14 13 7 5.5" />
+  </svg>
+);
+
+const DoodleLinkedIn = () => (
+  <svg viewBox="0 0 24 24" className="w-5 h-5 text-zinc-900 fill-none stroke-current stroke-[2.2] stroke-linecap-round stroke-linejoin-round">
+    <rect width="18" height="18" x="3" y="3" rx="4" />
+    <path d="M7.5 10.5v6" />
+    <circle cx="7.5" cy="7.5" r="1.2" fill="currentColor" />
+    <path d="M12 16.5v-3.5c0-1.2.8-2 2-2s2 .8 2 2v3.5" />
+    <path d="M12 10.5v6" />
+  </svg>
+);
+
+const DoodleGitHub = () => (
+  <svg viewBox="0 0 24 24" className="w-5 h-5 text-zinc-900 fill-none stroke-current stroke-[2.2] stroke-linecap-round stroke-linejoin-round">
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+  </svg>
+);
+
+const DoodleResume = () => (
+  <svg viewBox="0 0 24 24" className="w-5 h-5 text-zinc-900 fill-none stroke-current stroke-[2.2] stroke-linecap-round stroke-linejoin-round">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+    <path d="M14 2v6h6" />
+    <path d="M8 13h8" />
+    <path d="M8 17h6" />
+  </svg>
+);
 
 interface NavItem {
   name: string;
   path: string;
-  icon: string;
+  icon: React.ReactNode;
 }
 
 const navItems: NavItem[] = [
-  { name: 'Home', path: '/', icon: '🏠' },
-  { name: 'About', path: '/about', icon: '😃' },
-  { name: 'Art', path: '/art', icon: '🎨' },
-  { name: 'Arcade', path: '/arcade', icon: '🎮' },
+  { name: 'Home', path: '/', icon: <DoodleHouse /> },
+  { name: 'About', path: '/about', icon: <DoodleSmiley /> },
+  { name: 'Art', path: '/art', icon: <DoodlePalette /> },
+  { name: 'Arcade', path: '/arcade', icon: <DoodleGamepad /> },
 ];
 
 export const DoodleSidebar: React.FC = () => {
@@ -31,39 +105,87 @@ export const DoodleSidebar: React.FC = () => {
       {/* ─────────────────────────────────────────────────────────────
           DESKTOP FIXED SIDEBAR (md and above)
       ────────────────────────────────────────────────────────────── */}
-      <aside className="hidden md:flex flex-col justify-between w-60 h-screen fixed left-0 top-0 bg-[#ffffff] border-r border-zinc-200/90 px-6 py-8 z-40 select-none overflow-y-auto">
-        <div className="flex flex-col space-y-7">
-          {/* Header / Brand */}
-          <NavLink to="/" className="group flex flex-col">
-            <div className="flex items-center gap-2.5">
-              {/* Hand-drawn pencil icon */}
-              <svg
-                viewBox="0 0 24 24"
-                className="w-5 h-5 text-zinc-900 -rotate-12 transition-transform duration-300 group-hover:rotate-0"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                <path d="m15 5 4 4" />
-                <path d="M11 9l4 4" />
-              </svg>
-              <span className="font-doodle font-bold text-2xl text-zinc-900 tracking-wide">
-                Pranav Shende
-              </span>
+      <aside className="hidden md:flex flex-col justify-between w-64 h-screen fixed left-0 top-0 bg-[#ffffff] border-r border-zinc-200/90 px-6 py-6 z-40 select-none overflow-y-auto">
+        <div className="flex flex-col space-y-5">
+          {/* ── PROFILE HEADER (Direct match to Image 1) ── */}
+          <div className="flex flex-col items-center text-center pt-2">
+            {/* Circular Profile Photo using previous photo */}
+            <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-zinc-900 shadow-sm bg-zinc-100 mb-2">
+              <img
+                src={profilePhoto}
+                alt="Pranav Shende"
+                className="w-full h-full object-cover object-center scale-[1.7] translate-y-2"
+              />
             </div>
-            <span className="font-doodle text-sm text-zinc-500 font-medium pl-8 mt-0.5 tracking-wide">
+
+            {/* Blue Open to Work Pill */}
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-bold tracking-wide border border-blue-200 mb-2 shadow-2xs">
+              <Briefcase className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+              <span>Open to Work</span>
+            </div>
+
+            {/* Name */}
+            <h1 className="text-2xl font-bold text-zinc-900 tracking-tight leading-tight">
+              Pranav Shende
+            </h1>
+
+            {/* Title */}
+            <p className="text-sm font-semibold text-zinc-600 mt-0.5">
               Full Stack Developer
-            </span>
-          </NavLink>
+            </p>
 
-          <hr className="border-t border-zinc-200/80 -mx-2" />
+            {/* Location */}
+            <p className="inline-flex items-center gap-1 text-xs text-zinc-500 font-medium mt-0.5">
+              <MapPin className="w-3 h-3 text-zinc-400" />
+              <span>Nagpur, India</span>
+            </p>
 
-          {/* Navigation Section */}
-          <div className="flex flex-col space-y-2">
-            <span className="font-doodle text-xs font-bold tracking-widest text-zinc-400 uppercase px-3">
+            {/* Experience Includes with Company Badges */}
+            <div className="w-full pt-3 mt-3 border-t border-dashed border-zinc-200 flex flex-col items-center">
+              <span className="text-xs text-zinc-500 font-medium mb-2">
+                Experience Includes:
+              </span>
+              <div className="flex items-center justify-center gap-2">
+                {/* NK SkillEdge */}
+                <div
+                  className="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold text-[11px] flex items-center justify-center shadow-xs border border-zinc-900 cursor-default"
+                  title="NK SkillEdge Pvt. Ltd. (Full Stack Intern)"
+                >
+                  NK
+                </div>
+
+                {/* IT Daksh */}
+                <div
+                  className="w-8 h-8 rounded-full bg-amber-500 text-white font-bold text-[11px] flex items-center justify-center shadow-xs border border-zinc-900 cursor-default"
+                  title="IT Daksh (Data Analyst Intern)"
+                >
+                  IT
+                </div>
+
+                {/* Technex SVPCET */}
+                <div
+                  className="w-8 h-8 rounded-full bg-blue-600 text-white font-bold text-[11px] flex items-center justify-center shadow-xs border border-zinc-900 cursor-default"
+                  title="Technex SVPCET (Backend Developer & Advisor)"
+                >
+                  TX
+                </div>
+
+                {/* IEEE Research */}
+                <div
+                  className="w-8 h-8 rounded-full bg-indigo-700 text-white font-bold text-[9px] flex items-center justify-center shadow-xs border border-zinc-900 cursor-default"
+                  title="IEEE Published Researcher"
+                >
+                  IEEE
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr className="border-t border-zinc-200/90 -mx-2" />
+
+          {/* ── NAVIGATION SECTION (Direct match to Image 2) ── */}
+          <div className="flex flex-col space-y-1.5">
+            <span className="text-xs font-bold tracking-wider text-zinc-400 uppercase px-3">
               Navigation
             </span>
             <nav className="flex flex-col space-y-1">
@@ -77,13 +199,13 @@ export const DoodleSidebar: React.FC = () => {
                   <NavLink
                     key={item.name}
                     to={item.path}
-                    className={`relative flex items-center gap-3 px-3.5 py-2 rounded-xl font-doodle text-lg transition-all duration-150 ${
+                    className={`relative flex items-center gap-3 px-3.5 py-2 rounded-xl text-base font-semibold transition-all duration-150 ${
                       isActive
                         ? 'bg-[#fef08a] text-zinc-900 font-bold shadow-xs'
-                        : 'text-zinc-600 hover:text-zinc-950 hover:bg-zinc-100/80 font-medium'
+                        : 'text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100/80'
                     }`}
                   >
-                    <span className="text-lg leading-none">{item.icon}</span>
+                    <span className="shrink-0">{item.icon}</span>
                     <span className="leading-none pt-0.5">{item.name}</span>
 
                     {isActive && (
@@ -99,9 +221,9 @@ export const DoodleSidebar: React.FC = () => {
             </nav>
           </div>
 
-          {/* Contacts Section */}
-          <div className="flex flex-col space-y-2 pt-2">
-            <span className="font-doodle text-xs font-bold tracking-widest text-zinc-400 uppercase px-3">
+          {/* ── CONTACTS SECTION (Direct match to Image 2) ── */}
+          <div className="flex flex-col space-y-1.5 pt-1">
+            <span className="text-xs font-bold tracking-wider text-zinc-400 uppercase px-3">
               Contacts
             </span>
             <div className="flex flex-col space-y-1">
@@ -109,10 +231,10 @@ export const DoodleSidebar: React.FC = () => {
                 href={emailUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-3 px-3.5 py-2 rounded-xl font-doodle text-base font-medium text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100/80 transition-colors"
+                className="group flex items-center gap-3 px-3.5 py-2 rounded-xl text-base font-semibold text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100/80 transition-colors"
                 title="Send email to pranavshende97@gmail.com"
               >
-                <Mail className="w-4 h-4 text-zinc-600 group-hover:text-zinc-900 transition-colors shrink-0" />
+                <DoodleEmail />
                 <span className="pt-0.5">Email</span>
               </a>
 
@@ -120,9 +242,9 @@ export const DoodleSidebar: React.FC = () => {
                 href={linkedInUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="group flex items-center gap-3 px-3.5 py-2 rounded-xl font-doodle text-base font-medium text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100/80 transition-colors"
+                className="group flex items-center gap-3 px-3.5 py-2 rounded-xl text-base font-semibold text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100/80 transition-colors"
               >
-                <Linkedin className="w-4 h-4 text-zinc-600 group-hover:text-zinc-900 transition-colors shrink-0" />
+                <DoodleLinkedIn />
                 <span className="pt-0.5">LinkedIn</span>
               </a>
 
@@ -130,9 +252,9 @@ export const DoodleSidebar: React.FC = () => {
                 href={githubUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="group flex items-center gap-3 px-3.5 py-2 rounded-xl font-doodle text-base font-medium text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100/80 transition-colors"
+                className="group flex items-center gap-3 px-3.5 py-2 rounded-xl text-base font-semibold text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100/80 transition-colors"
               >
-                <Github className="w-4 h-4 text-zinc-600 group-hover:text-zinc-900 transition-colors shrink-0" />
+                <DoodleGitHub />
                 <span className="pt-0.5">GitHub</span>
               </a>
 
@@ -140,10 +262,10 @@ export const DoodleSidebar: React.FC = () => {
                 href={resumeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-3 px-3.5 py-2 rounded-xl font-doodle text-base font-medium text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100/80 transition-colors"
+                className="group flex items-center gap-3 px-3.5 py-2 rounded-xl text-base font-semibold text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100/80 transition-colors"
                 title="View Pranav's Resume on Google Drive"
               >
-                <FileText className="w-4 h-4 text-zinc-600 group-hover:text-zinc-900 transition-colors shrink-0" />
+                <DoodleResume />
                 <span className="pt-0.5">Resume</span>
                 <ExternalLink className="w-3.5 h-3.5 text-zinc-400 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
               </a>
@@ -151,8 +273,8 @@ export const DoodleSidebar: React.FC = () => {
           </div>
         </div>
 
-        {/* Sidebar Footer */}
-        <div className="pt-6 border-t border-dashed border-zinc-200 text-zinc-500 font-doodle flex flex-col space-y-1">
+        {/* ── FOOTER ── */}
+        <div className="pt-5 border-t border-dashed border-zinc-200 text-zinc-500 flex flex-col space-y-1">
           <p className="flex items-center gap-1.5 text-zinc-700 text-base font-semibold">
             <span>Doodled with love</span>
             <span className="text-red-500 text-base">❤️</span>
@@ -165,23 +287,22 @@ export const DoodleSidebar: React.FC = () => {
           MOBILE TOP NAVBAR & DRAWER
       ────────────────────────────────────────────────────────────── */}
       <header className="md:hidden sticky top-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-md border-b border-zinc-200/90 px-4 flex items-center justify-between z-50">
-        <NavLink to="/" className="flex items-center gap-2">
-          <svg
-            viewBox="0 0 24 24"
-            className="w-5 h-5 text-zinc-900 -rotate-12"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-            <path d="m15 5 4 4" />
-            <path d="M11 9l4 4" />
-          </svg>
-          <span className="font-doodle font-bold text-xl text-zinc-900">
-            Pranav Shende
-          </span>
+        <NavLink to="/" className="flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-full overflow-hidden border border-zinc-900">
+            <img
+              src={profilePhoto}
+              alt="Pranav Shende"
+              className="w-full h-full object-cover scale-[1.7] translate-y-1"
+            />
+          </div>
+          <div>
+            <span className="font-bold text-lg text-zinc-900 leading-none block">
+              Pranav Shende
+            </span>
+            <span className="text-xs text-blue-600 font-semibold leading-none block">
+              Open to Work
+            </span>
+          </div>
         </NavLink>
 
         <button
@@ -189,7 +310,7 @@ export const DoodleSidebar: React.FC = () => {
           className="p-2 rounded-xl text-zinc-700 hover:bg-zinc-100 focus:outline-none"
           aria-label="Toggle navigation menu"
         >
-          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </header>
 
@@ -200,10 +321,10 @@ export const DoodleSidebar: React.FC = () => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="md:hidden fixed inset-x-0 top-16 bg-white border-b border-zinc-200 px-6 py-6 shadow-xl z-50 flex flex-col space-y-6"
+            className="md:hidden fixed inset-x-0 top-16 bg-white border-b border-zinc-200 px-6 py-6 shadow-xl z-50 flex flex-col space-y-5"
           >
             <div className="flex flex-col space-y-1">
-              <span className="font-doodle text-xs font-bold tracking-widest text-zinc-400 uppercase">
+              <span className="text-xs font-bold tracking-widest text-zinc-400 uppercase">
                 Navigation
               </span>
               <nav className="flex flex-col space-y-1 pt-1">
@@ -218,13 +339,13 @@ export const DoodleSidebar: React.FC = () => {
                       key={item.name}
                       to={item.path}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl font-doodle text-lg ${
+                      className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-lg font-semibold ${
                         isActive
                           ? 'bg-[#fef08a] text-zinc-900 font-bold'
-                          : 'text-zinc-700 hover:bg-zinc-100 font-medium'
+                          : 'text-zinc-700 hover:bg-zinc-100'
                       }`}
                     >
-                      <span className="text-xl">{item.icon}</span>
+                      <span className="shrink-0">{item.icon}</span>
                       <span>{item.name}</span>
                     </NavLink>
                   );
@@ -233,17 +354,17 @@ export const DoodleSidebar: React.FC = () => {
             </div>
 
             <div className="flex flex-col space-y-2 border-t border-zinc-100 pt-4">
-              <span className="font-doodle text-xs font-bold tracking-widest text-zinc-400 uppercase">
+              <span className="text-xs font-bold tracking-widest text-zinc-400 uppercase">
                 Contacts
               </span>
-              <div className="flex flex-col space-y-2 pt-1 font-doodle text-base">
+              <div className="flex flex-col space-y-2 pt-1 text-base font-semibold">
                 <a
                   href={emailUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 p-2 rounded-lg text-zinc-700 hover:bg-zinc-100"
                 >
-                  <Mail className="w-4 h-4 text-zinc-600" />
+                  <DoodleEmail />
                   <span>pranavshende97@gmail.com</span>
                 </a>
                 <a
@@ -252,7 +373,7 @@ export const DoodleSidebar: React.FC = () => {
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 p-2 rounded-lg text-zinc-700 hover:bg-zinc-100"
                 >
-                  <FileText className="w-4 h-4 text-zinc-600" />
+                  <DoodleResume />
                   <span>View Resume (Google Drive)</span>
                 </a>
                 <div className="flex items-center gap-3 pt-2">
@@ -263,7 +384,7 @@ export const DoodleSidebar: React.FC = () => {
                     className="p-2.5 rounded-xl bg-zinc-100 text-zinc-700 hover:text-zinc-950"
                     aria-label="LinkedIn"
                   >
-                    <Linkedin className="w-5 h-5" />
+                    <DoodleLinkedIn />
                   </a>
                   <a
                     href={githubUrl}
@@ -272,13 +393,13 @@ export const DoodleSidebar: React.FC = () => {
                     className="p-2.5 rounded-xl bg-zinc-100 text-zinc-700 hover:text-zinc-950"
                     aria-label="GitHub"
                   >
-                    <Github className="w-5 h-5" />
+                    <DoodleGitHub />
                   </a>
                 </div>
               </div>
             </div>
 
-            <div className="text-sm text-zinc-400 font-doodle pt-2">
+            <div className="text-sm text-zinc-400 pt-2 border-t border-dashed border-zinc-200">
               Doodled with love ❤️ • © Pranav Shende 2026
             </div>
           </motion.div>
