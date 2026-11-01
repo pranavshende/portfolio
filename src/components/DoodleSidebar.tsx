@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Briefcase, MapPin, Menu, X, ExternalLink } from 'lucide-react';
 import profilePhoto from '../photo/profile_photo_wide.png';
 
-// ── Hand-drawn outline doodle icons matching Image 2 ──────────────────────────
+// ── Hand-drawn outline doodle icons ──────────────────────────
 const DoodleHouse = () => (
   <svg viewBox="0 0 24 24" className="w-5 h-5 text-zinc-900 fill-none stroke-current stroke-[2.2] stroke-linecap-round stroke-linejoin-round">
     <path d="M3 10.5 12 3l9 7.5" />
@@ -106,11 +106,11 @@ export const DoodleSidebar: React.FC = () => {
           DESKTOP FIXED SIDEBAR (md and above)
       ────────────────────────────────────────────────────────────── */}
       <aside className="hidden md:flex flex-col justify-between w-64 h-screen fixed left-0 top-0 bg-[#ffffff] border-r border-zinc-200/90 px-6 py-6 z-40 select-none overflow-y-auto">
-        <div className="flex flex-col space-y-5">
-          {/* ── PROFILE HEADER (Direct match to Image 1) ── */}
+        <div className="flex flex-col space-y-6">
+          {/* ── PROFILE HEADER (Clean, no Experience Includes) ── */}
           <div className="flex flex-col items-center text-center pt-2">
             {/* Circular Profile Photo using previous photo */}
-            <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-zinc-900 shadow-sm bg-zinc-100 mb-2">
+            <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-zinc-900 shadow-sm bg-zinc-100 mb-2.5">
               <img
                 src={profilePhoto}
                 alt="Pranav Shende"
@@ -119,7 +119,7 @@ export const DoodleSidebar: React.FC = () => {
             </div>
 
             {/* Blue Open to Work Pill */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-bold tracking-wide border border-blue-200 mb-2 shadow-2xs">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-bold tracking-wide border border-blue-200 mb-2.5 shadow-2xs">
               <Briefcase className="w-3.5 h-3.5 text-blue-600 shrink-0" />
               <span>Open to Work</span>
             </div>
@@ -139,51 +139,11 @@ export const DoodleSidebar: React.FC = () => {
               <MapPin className="w-3 h-3 text-zinc-400" />
               <span>Nagpur, India</span>
             </p>
-
-            {/* Experience Includes with Company Badges */}
-            <div className="w-full pt-3 mt-3 border-t border-dashed border-zinc-200 flex flex-col items-center">
-              <span className="text-xs text-zinc-500 font-medium mb-2">
-                Experience Includes:
-              </span>
-              <div className="flex items-center justify-center gap-2">
-                {/* NK SkillEdge */}
-                <div
-                  className="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold text-[11px] flex items-center justify-center shadow-xs border border-zinc-900 cursor-default"
-                  title="NK SkillEdge Pvt. Ltd. (Full Stack Intern)"
-                >
-                  NK
-                </div>
-
-                {/* IT Daksh */}
-                <div
-                  className="w-8 h-8 rounded-full bg-amber-500 text-white font-bold text-[11px] flex items-center justify-center shadow-xs border border-zinc-900 cursor-default"
-                  title="IT Daksh (Data Analyst Intern)"
-                >
-                  IT
-                </div>
-
-                {/* Technex SVPCET */}
-                <div
-                  className="w-8 h-8 rounded-full bg-blue-600 text-white font-bold text-[11px] flex items-center justify-center shadow-xs border border-zinc-900 cursor-default"
-                  title="Technex SVPCET (Backend Developer & Advisor)"
-                >
-                  TX
-                </div>
-
-                {/* IEEE Research */}
-                <div
-                  className="w-8 h-8 rounded-full bg-indigo-700 text-white font-bold text-[9px] flex items-center justify-center shadow-xs border border-zinc-900 cursor-default"
-                  title="IEEE Published Researcher"
-                >
-                  IEEE
-                </div>
-              </div>
-            </div>
           </div>
 
           <hr className="border-t border-zinc-200/90 -mx-2" />
 
-          {/* ── NAVIGATION SECTION (Direct match to Image 2) ── */}
+          {/* ── NAVIGATION SECTION ── */}
           <div className="flex flex-col space-y-1.5">
             <span className="text-xs font-bold tracking-wider text-zinc-400 uppercase px-3">
               Navigation
@@ -221,7 +181,7 @@ export const DoodleSidebar: React.FC = () => {
             </nav>
           </div>
 
-          {/* ── CONTACTS SECTION (Direct match to Image 2) ── */}
+          {/* ── CONTACTS SECTION ── */}
           <div className="flex flex-col space-y-1.5 pt-1">
             <span className="text-xs font-bold tracking-wider text-zinc-400 uppercase px-3">
               Contacts
@@ -273,13 +233,9 @@ export const DoodleSidebar: React.FC = () => {
           </div>
         </div>
 
-        {/* ── FOOTER ── */}
-        <div className="pt-5 border-t border-dashed border-zinc-200 text-zinc-500 flex flex-col space-y-1">
-          <p className="flex items-center gap-1.5 text-zinc-700 text-base font-semibold">
-            <span>Doodled with love</span>
-            <span className="text-red-500 text-base">❤️</span>
-          </p>
-          <p className="text-zinc-400 text-sm">© Pranav Shende 2026</p>
+        {/* ── FOOTER (Clean copyright without 'doodled with love') ── */}
+        <div className="pt-4 border-t border-dashed border-zinc-200 text-zinc-400 flex items-center justify-between text-xs">
+          <span>© Pranav Shende 2026</span>
         </div>
       </aside>
 
@@ -354,7 +310,7 @@ export const DoodleSidebar: React.FC = () => {
             </div>
 
             <div className="flex flex-col space-y-2 border-t border-zinc-100 pt-4">
-              <span className="text-xs font-bold tracking-widest text-zinc-400 uppercase">
+              <span className="text-xs font-bold tracking-wider text-zinc-400 uppercase">
                 Contacts
               </span>
               <div className="flex flex-col space-y-2 pt-1 text-base font-semibold">
@@ -399,8 +355,8 @@ export const DoodleSidebar: React.FC = () => {
               </div>
             </div>
 
-            <div className="text-sm text-zinc-400 pt-2 border-t border-dashed border-zinc-200">
-              Doodled with love ❤️ • © Pranav Shende 2026
+            <div className="text-xs text-zinc-400 pt-2 border-t border-dashed border-zinc-200">
+              © Pranav Shende 2026
             </div>
           </motion.div>
         )}
