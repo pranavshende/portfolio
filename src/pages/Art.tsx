@@ -14,6 +14,32 @@ interface CreativeItem {
 
 const creativeItems: CreativeItem[] = [
   {
+    id: 'electropathy-rag',
+    category: 'Research',
+    title: 'Electropathy AI Clinical Decision Wizard & Multilingual RAG Engine',
+    organization: 'Dr. Ashish Wandhare',
+    description:
+      'Clinical intake decision support architecture and multilingual RAG copilot grounded in verified Electropathy literature with zero-hallucination vector retrieval across English, Hindi, and Marathi.',
+    preview: (
+      <div className="w-full h-full min-h-[220px] bg-gradient-to-br from-indigo-50 to-violet-100 rounded-xl flex flex-col items-center justify-center p-4 border border-indigo-200">
+        <div className="w-44 bg-white border-2 border-zinc-900 rounded-2xl shadow-sm p-3 flex flex-col space-y-2">
+          <div className="flex items-center justify-between border-b border-zinc-200 pb-1">
+            <span className="font-doodle text-xs font-bold text-indigo-600">Electropathy AI</span>
+            <span className="w-2 h-2 rounded-full bg-indigo-500 animate-ping" />
+          </div>
+          <div className="w-full h-16 bg-indigo-50 rounded-lg border border-indigo-200 flex flex-col items-center justify-center p-1 text-center">
+            <span className="text-xl">🩺🧬</span>
+            <span className="font-doodle text-[10px] text-indigo-900 font-bold">RAG Decision Copilot</span>
+          </div>
+          <div className="flex justify-between text-[9px] font-mono text-zinc-500">
+            <span>pgvector DB</span>
+            <span>EN | HI | MR</span>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+  {
     id: 'jansampark-ui',
     category: 'Mobile UI',
     title: 'JanSampark 25+ React Native Screens & Design System',

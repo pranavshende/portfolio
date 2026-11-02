@@ -9,6 +9,7 @@ import solarAnalyticsPhoto from '../photo/solar_analytics.png';
 import pashurakshakPhoto from '../photo/pashurakshak.png';
 import attritionBanner from '../photo/attrition_banner.png';
 import tastifyyBanner from '../photo/tastifyy_banner.png';
+import electropathyBanner from '../photo/electropathy_banner.png';
 
 interface Project {
   title: string;
@@ -24,39 +25,26 @@ interface Project {
 
 const projects: Project[] = [
   {
-    title: "JanSampark",
-    subtitle: "Civic Grievance Platform (Redis & Kafka Dispatch)",
-    description: "Full-stack civic platform bridging citizens and administration. Built 25+ frontend modules in React Native with Kafka event queues, Redis caching, and a secure Node.js backend featuring JWT + RBAC for 4 user roles.",
-    tech: ["Redis", "Kafka", "React Native", "Node.js", "PostgreSQL", "JWT", "RBAC"],
+    title: "Electropathy AI",
+    subtitle: "Agentic Clinical RAG Copilot & pgvector Knowledge Engine",
+    description: "Clinical decision-support and medical RAG platform built for Dr. Ashish Wandhare. Integrates verified medical literature embeddings with zero hallucinations, pgvector semantic search, and multilingual consultation in English, Hindi, and Marathi.",
+    tech: ["Agentic RAG", "Multilingual NLP", "pgvector", "Prisma ORM", "TypeScript", "Node.js", "Supabase", "Tailwind CSS"],
     highlights: [
-      "25+ frontend modules in React Native",
-      "Kafka event queues & Redis state caching",
-      "JWT + RBAC for 4 user roles & 40+ RESTful APIs",
+      "Option A RAG Knowledge Assistant grounded in verified clinical datasets",
+      "pgvector semantic search enabling multilingual clinical queries",
+      "Multi-step intake wizard covering patient history, lifestyle & constitution",
+      "Production deployment with mobile OTP auth via BlackSMS",
     ],
-    github: "private",
-    demo: "/arcade?folder=projects_folder",
-    image: jansamparkPhoto
-  },
-  {
-    title: "Employee Attrition AI",
-    subtitle: "RAG-Grounded Workforce Analytics & Predictive Copilot",
-    description: "End-to-end RAG-grounded AI workforce attrition analysis dashboard and conversational copilot with instant dynamic CSV dataset ingestion, Redis caching, 11 interactive visualizations, and Gemini 2.5 Flash copilot.",
-    tech: ["RAG AI", "Google Gemini 2.5", "Redis Cache", "React 19", "Flask", "Python", "Pandas", "Chart.js"],
-    highlights: [
-      "Instant dynamic CSV ingestion with automatic column detection",
-      "11 interactive Chart.js visualizations & root-cause driver ranking",
-      "High-risk employee watchlist table with composite flight risk scores",
-      "RAG AI Copilot grounded in dataset metrics with Redis query caching",
-    ],
-    badge: "RAG AI Intelligence",
-    github: "https://github.com/pranavshende/EmployeeAttritionSystem",
-    image: attritionBanner
+    badge: "Live Production",
+    github: "https://github.com/pranavshende/Electropathy_AI",
+    demo: "https://client-raprax.vercel.app",
+    image: electropathyBanner
   },
   {
     title: "Tastifyy",
-    subtitle: "Scalable Food Logistics with Kafka Event Bus & Redis Caching",
+    subtitle: "Distributed Logistics Engine with Kafka Streaming & Redis Geospatial",
     description: "On-demand food delivery platform featuring dual client surfaces (React 19 Web + Expo App), Kafka event-driven dispatch pipelines, Redis geospatial caching, Express + TypeScript backend, Prisma ORM with Supabase PostgreSQL, and live Socket.io tracking.",
-    tech: ["Kafka", "Redis", "AI Dispatch", "React 19", "React Native", "TypeScript", "Node.js", "Express", "Prisma", "Socket.io"],
+    tech: ["Kafka Streams", "Redis Geospatial", "WebSockets (Socket.io)", "Distributed Systems", "React 19", "React Native", "TypeScript", "Prisma"],
     highlights: [
       "Dual client interfaces: React 19 web portal & React Native (Expo) app",
       "Kafka event queue & Redis geospatial cache for delivery logistics",
@@ -69,14 +57,45 @@ const projects: Project[] = [
     image: tastifyyBanner
   },
   {
-    title: "Solar Intelligence",
-    subtitle: "AI Time-Series Analytics & Kafka Stream Ingestion",
-    description: "AI-driven solar sales intelligence platform analyzing 10+ years of data across 36+ Indian states with Kafka stream ingestion, geospatial heatmaps, and polynomial regression forecasting (2025–2030).",
-    tech: ["AI & ML", "Kafka Streams", "Python", "PostgreSQL", "ETL", "ML", "Geospatial", "Recharts"],
+    title: "Employee Attrition AI",
+    subtitle: "Predictive HR Intelligence Platform & Gemini 2.5 Copilot",
+    description: "End-to-end predictive HR workforce intelligence platform and conversational copilot with instant dynamic CSV dataset ingestion, Redis caching, 11 interactive visualizations, and Gemini 2.5 Flash copilot.",
+    tech: ["Google Gemini 2.5", "Predictive ML", "Dynamic ETL", "Python (Pandas)", "Flask REST APIs", "React 19", "Chart.js"],
     highlights: [
-      "10+ years (2014–2024) of solar data & Kafka stream ingestion",
-      "81.8+ GW of installed capacity evaluated",
-      "36+ states/UTs analyzed across 500+ records",
+      "Instant dynamic CSV ingestion with automatic column detection",
+      "11 interactive Chart.js visualizations & root-cause driver ranking",
+      "High-risk employee watchlist table with composite flight risk scores",
+      "Conversational AI copilot querying dataset metrics with zero hallucinations",
+    ],
+    badge: "Gemini 2.5 Flash",
+    github: "https://github.com/pranavshende/EmployeeAttritionSystem",
+    image: attritionBanner
+  },
+  {
+    title: "JanSampark",
+    subtitle: "Enterprise Civic Governance Platform with 25+ React Native Modules",
+    description: "Enterprise civic governance platform bridging citizens and administration. Built 25+ frontend modules in React Native with offline geo-tagging, JWT + RBAC security for 4 roles, and high-concurrency Node.js RESTful APIs.",
+    tech: ["Enterprise Architecture", "React Native", "RBAC Security", "Node.js", "PostgreSQL", "High-Concurrency APIs", "JWT"],
+    highlights: [
+      "25+ frontend modules built in React Native with offline geo-tagging",
+      "JWT + RBAC framework safeguarding citizen records across 4 administrative roles",
+      "40+ RESTful APIs handling high-concurrency complaint submissions",
+      "Sub-15ms database query execution with indexed PostgreSQL schemas",
+    ],
+    github: "private",
+    demo: "/arcade?folder=projects_folder",
+    image: jansamparkPhoto
+  },
+  {
+    title: "Solar Intelligence",
+    subtitle: "CleanTech Big Data Pipeline & Geospatial GIS Heatmaps",
+    description: "CleanTech big data analytics platform evaluating 10+ years (2014–2024) of nationwide solar metrics across 36+ Indian states/UTs covering 81.8+ GW with automated ETL pipelines, GIS heatmaps, and polynomial regression forecasting to 2030.",
+    tech: ["CleanTech Big Data", "Time-Series Forecasting", "Geospatial GIS", "Python", "PostgreSQL", "Polynomial Regression", "Recharts"],
+    highlights: [
+      "10+ years (2014–2024) of solar time-series data & automated ETL pipelines",
+      "81.8+ GW of installed capacity evaluated across 36+ states/UTs",
+      "Multi-decadal polynomial regression forecasting up to 2030",
+      "Interactive GIS choropleth heatmaps mapping nationwide solar adoption",
     ],
     github: "https://github.com/pranavshende/SolarSalesAnalysis",
     demo: "/playgames?folder=projects_folder",
@@ -84,17 +103,14 @@ const projects: Project[] = [
   },
   {
     title: "PashuRakshak",
-    subtitle: "Edge AI Livestock Disease Detection & Redis Sync",
-    description: "An Edge AI livestock healthcare platform with 5+ modules using TensorFlow Lite and CNNs for offline disease detection with real-time Redis sync.",
-    tech: ["Edge AI", "TensorFlow Lite", "CNN", "Redis Sync", "React Native (Expo)", "Node.js", "PostgreSQL"],
+    subtitle: "Edge Computing Livestock Pathology Classifier & Offline-First IoT",
+    description: "An Edge AI livestock healthcare platform with 5+ modules using quantized convolutional neural networks (TensorFlow Lite INT8) for offline disease detection and telemetry sync queuing. Presented and published at IEEE OPJU conference.",
+    tech: ["Edge Computing", "Quantized CNNs", "TensorFlow Lite", "Offline-First IoT", "Computer Vision", "React Native", "IEEE Research"],
     highlights: [
-      "5+ modules with offline-first edge computing",
-      "CNN-based disease classification model via TensorFlow Lite",
-      "Real-time Redis data synchronization",
-      "IEEE Conference presentation & publication",
-    ],
-      "15+ RESTful APIs connected",
-      "IEEE Conference presentation & publication",
+      "Sub-120ms on-device quantized CNN inference with 94%+ diagnostic accuracy",
+      "Offline-first IoT architecture designed for zero-connectivity rural livestock farms",
+      "Local caching queue buffering diagnostic telemetry until network reconnect",
+      "Presented and published at IEEE OPJU International Conference (OTCON)",
     ],
     badge: "IEEE Published",
     github: "https://github.com/pranavshende/HackNation_SKB-F17_SKB_P2",
