@@ -623,17 +623,17 @@ body.recruiter-mode .exp-card:hover {
   box-shadow: 0 8px 30px rgba(0,0,0,0.04);
 }
 
-/* ── Recruiter Mode: opaque section panels ── */
+/* ── Recruiter Mode / Light Mode specific styles ── */
 
-/* Root page background */
+/* Root page background matching sumi-e washi paper */
 body.recruiter-mode {
-  background-color: #f4f4f5 !important;
-  background-image: radial-gradient(rgba(0,0,0,0.06) 1px, transparent 1px) !important;
-  color: #111111 !important;
+  background-color: #f7f2ea !important;
+  background-image: none !important;
+  color: #1c1917 !important;
 }
 
 /* Main page wrapper */
-body.recruiter-mode .bg-black { background-color: #f4f4f5 !important; }
+body.recruiter-mode .bg-black { background-color: transparent !important; }
 
 /* Section outer panels (bg-zinc-950) → white card */
 body.recruiter-mode .bg-zinc-950 {
@@ -654,8 +654,7 @@ body.recruiter-mode .hover\:bg-zinc-800:hover {
 }
 body.recruiter-mode .bg-zinc-800 { background-color: #e4e4e7 !important; }
 
-/* Text colours */
-body.recruiter-mode .text-white      { color: #111111 !important; }
+/* Text colours - do NOT force text-white to black */
 body.recruiter-mode .text-zinc-300   { color: #333333 !important; }
 body.recruiter-mode .text-zinc-400   { color: #555555 !important; }
 body.recruiter-mode .text-zinc-500   { color: #777777 !important; }

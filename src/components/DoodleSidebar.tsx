@@ -176,12 +176,13 @@ export const DoodleSidebar: React.FC = () => {
                     to={item.path}
                     className={`relative flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all duration-150 ${
                       isActive
-                        ? 'bg-[#8b2323] text-white shadow-xs'
+                        ? '!bg-[#8b2323] !text-white shadow-xs'
                         : 'text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white hover:bg-stone-200/50 dark:hover:bg-stone-800/50'
                     }`}
+                    style={isActive ? { backgroundColor: '#8b2323', color: '#ffffff' } : undefined}
                   >
-                    <span className="shrink-0">{item.icon}</span>
-                    <span className="leading-none pt-0.5">{item.name}</span>
+                    <span className="shrink-0" style={isActive ? { color: '#ffffff' } : undefined}>{item.icon}</span>
+                    <span className="leading-none pt-0.5" style={isActive ? { color: '#ffffff' } : undefined}>{item.name}</span>
                   </NavLink>
                 );
               })}
@@ -346,14 +347,15 @@ export const DoodleSidebar: React.FC = () => {
                       key={item.name}
                       to={item.path}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center gap-3 px-3 py-2 rounded-xl text-base font-semibold ${
+                      className={`flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-bold transition-all ${
                         isActive
-                          ? 'bg-[#fef08a] dark:bg-amber-400/20 text-zinc-900 dark:text-amber-300 font-bold'
-                          : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/60'
+                          ? '!bg-[#8b2323] !text-white shadow-xs'
+                          : 'text-stone-700 dark:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/60'
                       }`}
+                      style={isActive ? { backgroundColor: '#8b2323', color: '#ffffff' } : undefined}
                     >
-                      <span className="shrink-0">{item.icon}</span>
-                      <span>{item.name}</span>
+                      <span className="shrink-0" style={isActive ? { color: '#ffffff' } : undefined}>{item.icon}</span>
+                      <span style={isActive ? { color: '#ffffff' } : undefined}>{item.name}</span>
                     </NavLink>
                   );
                 })}

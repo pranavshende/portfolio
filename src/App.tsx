@@ -10,11 +10,30 @@ import NotFound from "@/pages/NotFound";
 import PlayGames from "@/pages/PlayGames";
 import { ModeProvider } from "@/contexts/ModeContext";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import InitialLoader from "./components/InitialLoader";
+import PageSwitchSpinner from "./components/PageSwitchSpinner";
 import { AnimatePresence, motion } from "framer-motion";
+import cherryBlossomMist from "@/photo/cherry_blossom_mist.jpg";
+import cherryBlossomMistDark from "@/photo/cherry_blossom_mist_dark.jpg";
 
 const queryClient = new QueryClient();
+
+const GlobalBackground = () => (
+  <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+    {/* Light Mode: Cherry Blossom Mist */}
+    <div 
+      className="absolute inset-0 bg-cover bg-center bg-fixed opacity-95 dark:opacity-0 transition-opacity duration-300"
+      style={{ backgroundImage: `url(${cherryBlossomMist})` }}
+    />
+    {/* Dark Mode: Nocturnal Cherry Blossom Mist */}
+    <div 
+      className="absolute inset-0 bg-cover bg-center bg-fixed opacity-0 dark:opacity-90 transition-opacity duration-300"
+      style={{ backgroundImage: `url(${cherryBlossomMistDark})` }}
+    />
+    <div className="absolute inset-0 bg-gradient-to-b from-stone-900/[0.02] via-transparent to-stone-900/[0.04] dark:from-black/40 dark:to-black/60" />
+  </div>
+);
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -67,19 +86,35 @@ const PageTransition = ({ children }: { children: React.ReactNode }) => {
 
 const AnimatedRoutes = () => {
   const location = useLocation();
+  const [isNavigating, setIsNavigating] = useState(false);
+  const prevPathRef = useRef(location.pathname);
+
+  useEffect(() => {
+    if (prevPathRef.current !== location.pathname) {
+      prevPathRef.current = location.pathname;
+      setIsNavigating(true);
+      const timer = setTimeout(() => {
+        setIsNavigating(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [location.pathname]);
   
   return (
-    <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<PageTransition><Index /></PageTransition>} />
-        <Route path="/about" element={<PageTransition><About /></PageTransition>} />
-        <Route path="/art" element={<PageTransition><Art /></PageTransition>} />
-        <Route path="/arcade" element={<PageTransition><Arcade /></PageTransition>} />
-        <Route path="/projects" element={<PageTransition><Index /></PageTransition>} />
-        <Route path="/playgames" element={<PageTransition><PlayGames /></PageTransition>} />
-        <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
-      </Routes>
-    </AnimatePresence>
+    <>
+      <PageSwitchSpinner isLoading={isNavigating} />
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<PageTransition><Index /></PageTransition>} />
+          <Route path="/about" element={<PageTransition><About /></PageTransition>} />
+          <Route path="/art" element={<PageTransition><Art /></PageTransition>} />
+          <Route path="/arcade" element={<PageTransition><Arcade /></PageTransition>} />
+          <Route path="/projects" element={<PageTransition><Index /></PageTransition>} />
+          <Route path="/playgames" element={<PageTransition><PlayGames /></PageTransition>} />
+          <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
+        </Routes>
+      </AnimatePresence>
+    </>
   );
 };
 
@@ -94,6 +129,7 @@ const App = () => {
             <InitialLoader onComplete={() => setIsAppLoaded(true)} />
           ) : (
             <BrowserRouter>
+              <GlobalBackground />
               <ScrollToTop />
               <AnimatedRoutes />
             </BrowserRouter>
