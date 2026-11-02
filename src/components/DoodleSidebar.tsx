@@ -109,7 +109,7 @@ export const DoodleSidebar: React.FC = () => {
           DESKTOP FIXED SIDEBAR
           Clean, perfectly proportioned, 100% fixed with zero scrollbar
       ────────────────────────────────────────────────────────────── */}
-      <aside className="hidden md:flex flex-col justify-between w-60 h-screen fixed left-0 top-0 bg-white/90 dark:bg-[#121316]/92 backdrop-blur-md border-r border-zinc-200/80 dark:border-zinc-800/80 px-5 py-4 z-40 select-none overflow-y-auto scrollbar-none font-sans transition-colors duration-200">
+      <aside className="hidden md:flex flex-col justify-between w-60 h-screen fixed left-0 top-0 bg-[#f7f2ea]/40 dark:bg-[#0c0d10]/60 backdrop-blur-md border-r border-stone-800/10 dark:border-stone-700/30 px-5 py-4 z-40 select-none overflow-y-auto scrollbar-none font-sans transition-colors duration-200">
         <div className="flex flex-col space-y-3">
           {/* Profile Header */}
           <div className="flex flex-col items-center text-center">
@@ -140,39 +140,39 @@ export const DoodleSidebar: React.FC = () => {
             <button
               type="button"
               onClick={() => setProfileModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 text-[11px] font-bold tracking-wide border border-blue-200/70 dark:border-blue-800/60 mb-1.5 shadow-2xs hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50/90 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 text-[11px] font-bold tracking-wide border border-blue-300/80 dark:border-blue-700/80 mb-1.5 shadow-2xs hover:bg-blue-100 dark:hover:bg-blue-900/60 transition-colors cursor-pointer"
               title="Click to view full profile details"
             >
-              <Briefcase className="w-3 h-3 text-blue-600 dark:text-blue-400 shrink-0" />
+              <Briefcase className="w-3 h-3 text-blue-700 dark:text-blue-300 shrink-0" />
               <span>Open to Work</span>
             </button>
 
             {/* Name - Clickable */}
             <h1 
               onClick={() => setProfileModalOpen(true)}
-              className="text-xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight leading-none font-display cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className="text-xl font-bold text-stone-950 dark:text-stone-50 tracking-tight leading-none font-display cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               title="Click to view full profile details"
             >
               Pranav Shende
             </h1>
 
             {/* Title */}
-            <p className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 mt-1 leading-none">
+            <p className="text-xs font-semibold text-stone-700 dark:text-stone-300 mt-1 leading-none">
               Full Stack Developer
             </p>
 
             {/* Location */}
-            <p className="inline-flex items-center gap-1 text-[11px] text-zinc-400 dark:text-zinc-500 font-medium mt-1 leading-none">
-              <MapPin className="w-2.5 h-2.5 text-zinc-400 dark:text-zinc-500" />
+            <p className="inline-flex items-center gap-1 text-[11px] text-stone-600 dark:text-stone-400 font-medium mt-1 leading-none">
+              <MapPin className="w-2.5 h-2.5 text-stone-500 dark:text-stone-400" />
               <span>Nagpur, India</span>
             </p>
           </div>
 
-          <hr className="border-t border-zinc-200/70 dark:border-zinc-800/80 -mx-2" />
+          <hr className="border-t border-stone-800/10 dark:border-stone-700/30 -mx-2" />
 
           {/* Navigation Section */}
           <div className="flex flex-col space-y-1">
-            <span className="text-[10px] font-bold tracking-widest text-zinc-400 dark:text-zinc-500 uppercase px-3">
+            <span className="text-[10px] font-bold tracking-widest text-stone-500 dark:text-stone-400 uppercase px-3">
               Navigation
             </span>
             <nav className="flex flex-col space-y-0.5 pt-0.5">
@@ -186,10 +186,10 @@ export const DoodleSidebar: React.FC = () => {
                   <NavLink
                     key={item.name}
                     to={item.path}
-                    className={`relative flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-sm font-semibold transition-all duration-150 ${
+                    className={`relative flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-sm font-bold transition-all duration-150 ${
                       isActive
-                        ? 'bg-[#fef08a] dark:bg-amber-400/20 text-zinc-900 dark:text-amber-300 dark:border dark:border-amber-400/30 font-bold shadow-2xs'
-                        : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-100/70 dark:hover:bg-zinc-800/60'
+                        ? 'bg-[#fef08a] dark:bg-amber-400/20 text-zinc-900 dark:text-amber-200 border-2 border-zinc-900 dark:border-amber-400/40 shadow-2xs'
+                        : 'text-stone-800 dark:text-stone-200 hover:text-stone-950 dark:hover:text-stone-50 hover:bg-stone-900/5 dark:hover:bg-white/5'
                     }`}
                   >
                     <span className="shrink-0">{item.icon}</span>
@@ -232,7 +232,7 @@ export const DoodleSidebar: React.FC = () => {
 
           {/* Contacts Section */}
           <div className="flex flex-col space-y-1 pt-0.5">
-            <span className="text-[10px] font-bold tracking-widest text-zinc-400 dark:text-zinc-500 uppercase px-3">
+            <span className="text-[10px] font-bold tracking-widest text-stone-500 dark:text-stone-400 uppercase px-3">
               Contacts
             </span>
             <div className="flex flex-col space-y-0.5 pt-0.5">
@@ -240,7 +240,7 @@ export const DoodleSidebar: React.FC = () => {
                 href={emailUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-sm font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-100/70 dark:hover:bg-zinc-800/60 transition-colors"
+                className="group flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-sm font-bold text-stone-800 dark:text-stone-200 hover:text-stone-950 dark:hover:text-stone-50 hover:bg-stone-900/5 dark:hover:bg-white/5 transition-colors"
                 title="Send email to pranavshende97@gmail.com"
               >
                 <DoodleEmail />
@@ -251,7 +251,7 @@ export const DoodleSidebar: React.FC = () => {
                 href={linkedInUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="group flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-sm font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-100/70 dark:hover:bg-zinc-800/60 transition-colors"
+                className="group flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-sm font-bold text-stone-800 dark:text-stone-200 hover:text-stone-950 dark:hover:text-stone-50 hover:bg-stone-900/5 dark:hover:bg-white/5 transition-colors"
               >
                 <DoodleLinkedIn />
                 <span className="pt-0.5">LinkedIn</span>
@@ -261,7 +261,7 @@ export const DoodleSidebar: React.FC = () => {
                 href={githubUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="group flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-sm font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-100/70 dark:hover:bg-zinc-800/60 transition-colors"
+                className="group flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-sm font-bold text-stone-800 dark:text-stone-200 hover:text-stone-950 dark:hover:text-stone-50 hover:bg-stone-900/5 dark:hover:bg-white/5 transition-colors"
               >
                 <DoodleGitHub />
                 <span className="pt-0.5">GitHub</span>
@@ -271,19 +271,19 @@ export const DoodleSidebar: React.FC = () => {
                 href={resumeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-sm font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-100/70 dark:hover:bg-zinc-800/60 transition-colors"
+                className="group flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-sm font-bold text-stone-800 dark:text-stone-200 hover:text-stone-950 dark:hover:text-stone-50 hover:bg-stone-900/5 dark:hover:bg-white/5 transition-colors"
                 title="View Pranav's Resume on Google Drive"
               >
                 <DoodleResume />
                 <span className="pt-0.5">Resume</span>
-                <ExternalLink className="w-3 h-3 text-zinc-400 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+                <ExternalLink className="w-3 h-3 text-stone-400 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
               </a>
             </div>
           </div>
         </div>
 
         {/* Clean Footer */}
-        <div className="pt-2 border-t border-dashed border-zinc-200 dark:border-zinc-800 text-zinc-400 dark:text-zinc-500 flex items-center justify-between text-[11px]">
+        <div className="pt-2 border-t border-dashed border-stone-800/10 dark:border-stone-700/30 text-stone-500 dark:text-stone-400 flex items-center justify-between text-[11px] font-medium">
           <span>© Pranav Shende 2026</span>
         </div>
       </aside>
@@ -291,7 +291,7 @@ export const DoodleSidebar: React.FC = () => {
       {/* ─────────────────────────────────────────────────────────────
           MOBILE TOP NAVBAR & DRAWER
       ────────────────────────────────────────────────────────────── */}
-      <header className="md:hidden sticky top-0 left-0 right-0 h-14 bg-white/95 dark:bg-[#121316]/95 backdrop-blur-md border-b border-zinc-200/80 dark:border-zinc-800 px-4 flex items-center justify-between z-50 transition-colors">
+      <header className="md:hidden sticky top-0 left-0 right-0 h-14 bg-[#f7f2ea]/85 dark:bg-[#0c0d10]/90 backdrop-blur-md border-b border-stone-800/10 dark:border-stone-700/30 px-4 flex items-center justify-between z-50 transition-colors">
         <button
           type="button"
           onClick={() => setProfileModalOpen(true)}
@@ -306,10 +306,10 @@ export const DoodleSidebar: React.FC = () => {
             />
           </div>
           <div>
-            <span className="font-bold text-base text-zinc-900 dark:text-zinc-100 leading-none block group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+            <span className="font-bold text-base text-stone-950 dark:text-stone-50 leading-none block group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
               Pranav Shende
             </span>
-            <span className="text-[10px] text-blue-600 dark:text-blue-400 font-semibold leading-none block mt-0.5">
+            <span className="text-[10px] text-blue-700 dark:text-blue-300 font-semibold leading-none block mt-0.5">
               Open to Work • Tap for details
             </span>
           </div>
@@ -319,15 +319,15 @@ export const DoodleSidebar: React.FC = () => {
           <button
             type="button"
             onClick={toggleTheme}
-            className="p-1.5 rounded-lg text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg text-stone-800 dark:text-stone-200 hover:bg-stone-900/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
             title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
             aria-label="Toggle dark mode"
           >
-            {isDark ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-zinc-600" />}
+            {isDark ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-stone-700" />}
           </button>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-1.5 rounded-lg text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:outline-none"
+            className="p-1.5 rounded-lg text-stone-800 dark:text-stone-200 hover:bg-stone-900/5 dark:hover:bg-white/5 focus:outline-none"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -342,10 +342,10 @@ export const DoodleSidebar: React.FC = () => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="md:hidden fixed inset-x-0 top-14 bg-white dark:bg-[#121316] border-b border-zinc-200 dark:border-zinc-800 px-5 py-5 shadow-xl z-50 flex flex-col space-y-4 transition-colors"
+            className="md:hidden fixed inset-x-0 top-14 bg-[#f7f2ea]/95 dark:bg-[#0c0d10]/95 backdrop-blur-md border-b border-stone-800/15 dark:border-stone-700/40 px-5 py-5 shadow-xl z-50 flex flex-col space-y-4 transition-colors"
           >
             <div className="flex flex-col space-y-1">
-              <span className="text-[10px] font-bold tracking-widest text-zinc-400 dark:text-zinc-500 uppercase">
+              <span className="text-[10px] font-bold tracking-widest text-stone-500 dark:text-stone-400 uppercase">
                 Navigation
               </span>
               <nav className="flex flex-col space-y-0.5 pt-0.5">

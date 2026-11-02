@@ -181,10 +181,10 @@ export const Home: React.FC = () => {
           HERO STATEMENT
       ────────────────────────────────────────────────────────────── */}
       <section className="mb-12 sm:mb-14 pt-2">
-        <h1 className="text-2xl sm:text-3xl md:text-[32px] font-medium text-zinc-900 dark:text-zinc-100 tracking-tight leading-relaxed select-text">
-          Hi there! I'm <span className="font-semibold text-zinc-900 dark:text-zinc-100">Pranav</span>, an aspiring forward deployed engineer dedicated to building scalable backend architectures and AI solutions.
+        <h1 className="text-2xl sm:text-3xl md:text-[32px] font-semibold text-stone-950 dark:text-stone-50 tracking-tight leading-relaxed select-text">
+          Hi there! I'm <span className="font-bold text-stone-950 dark:text-stone-50">Pranav</span>, an aspiring forward deployed engineer dedicated to building scalable backend architectures and AI solutions.
         </h1>
-        <p className="text-sm sm:text-base text-zinc-500 dark:text-zinc-400 mt-3 font-normal leading-relaxed">
+        <p className="text-sm sm:text-base text-stone-700 dark:text-stone-300 mt-3 font-medium leading-relaxed">
           IT B.Tech student @ SVPCET building backend systems, cross-platform apps (MERN, React Native), and AI/ML integrations.
         </p>
       </section>
@@ -193,11 +193,11 @@ export const Home: React.FC = () => {
           SELECTED PROJECTS (Direct match to Jerry Chen layout)
       ────────────────────────────────────────────────────────────── */}
       <section className="space-y-6 mb-16">
-        <div className="flex items-center justify-between border-b border-zinc-200/80 dark:border-zinc-800/80 pb-3">
-          <h2 className="text-xs sm:text-sm font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider font-sans">
+        <div className="flex items-center justify-between border-b border-stone-800/15 dark:border-stone-700/40 pb-3">
+          <h2 className="text-xs sm:text-sm font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider font-sans">
             Selected Projects
           </h2>
-          <span className="font-doodle text-sm text-zinc-400 dark:text-zinc-500">
+          <span className="font-doodle text-sm text-stone-700 dark:text-stone-300 font-semibold">
             click cards to inspect all details 🔍
           </span>
         </div>
@@ -210,7 +210,7 @@ export const Home: React.FC = () => {
               whileHover={{ y: -4 }}
               transition={{ duration: 0.2 }}
               onClick={() => setSelectedProject(proj)}
-              className="group cursor-pointer p-4 sm:p-5 rounded-2xl border-2 border-zinc-900 dark:border-zinc-700 bg-white dark:bg-[#151619] shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-3.5"
+              className="group cursor-pointer p-4 sm:p-5 rounded-2xl border-2 border-zinc-900 dark:border-zinc-700 bg-white/95 dark:bg-[#151619]/95 backdrop-blur-xs shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-3.5"
             >
               <div className="space-y-3.5">
                 {/* Image banner with clean aspect ratio & matching border */}
@@ -232,15 +232,15 @@ export const Home: React.FC = () => {
                 </div>
 
                 {/* Meta row */}
-                <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400 font-medium pt-0.5">
-                  <span className="font-bold text-zinc-800 dark:text-zinc-300">{proj.client}</span>
+                <div className="flex items-center justify-between text-xs text-stone-600 dark:text-stone-400 font-medium pt-0.5">
+                  <span className="font-bold text-stone-900 dark:text-stone-200">{proj.client}</span>
                   <span className="font-mono text-[11px]">
                     {proj.category} • {proj.year}
                   </span>
                 </div>
 
                 {/* Title */}
-                <h3 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug">
+                <h3 className="text-base sm:text-lg font-bold text-stone-950 dark:text-stone-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug">
                   {proj.title}
                 </h3>
               </div>
