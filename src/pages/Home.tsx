@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ExternalLink, Github, ArrowUpRight, X, Star, BookOpen, Lock, CheckCircle2 } from 'lucide-react';
+import { 
+  ExternalLink, Github, ArrowUpRight, ArrowRight, X, Star, BookOpen, 
+  Lock, CheckCircle2, Download, Mail, GraduationCap, Layers, Target 
+} from 'lucide-react';
 import { DoodleLayout } from '@/components/DoodleLayout';
 import { Link } from 'react-router-dom';
 
@@ -178,86 +181,151 @@ export const Home: React.FC = () => {
   return (
     <DoodleLayout>
       {/* ─────────────────────────────────────────────────────────────
-          HERO STATEMENT
+          TOP ACTION BAR (Mockup match: Download Resume & Mail)
       ────────────────────────────────────────────────────────────── */}
-      <section className="mb-12 sm:mb-14 pt-2">
-        <h1 className="text-2xl sm:text-3xl md:text-[32px] font-semibold text-stone-950 dark:text-stone-50 tracking-tight leading-relaxed select-text">
-          Hi there! I'm <span className="font-bold text-stone-950 dark:text-stone-50">Pranav</span>, an aspiring forward deployed engineer dedicated to building scalable backend architectures and AI solutions.
+      <div className="flex items-center justify-end gap-2.5 sm:gap-3 mb-6 sm:mb-8 pt-1">
+        <a
+          href="/resume.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-semibold shadow-xs hover:shadow-md transition-all active:scale-95"
+        >
+          <Download className="w-4 h-4" />
+          <span>Download Resume</span>
+        </a>
+        <a
+          href="mailto:pranavshende25@gmail.com"
+          className="inline-flex items-center justify-center p-2.5 rounded-xl border border-stone-800/20 dark:border-stone-700/50 bg-white/70 dark:bg-[#14161d]/80 text-[#8b2323] hover:bg-[#8b2323] hover:text-white transition-all shadow-xs backdrop-blur-md active:scale-95"
+          aria-label="Send email"
+        >
+          <Mail className="w-4 h-4" />
+        </a>
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────
+          HERO STATEMENT (Mockup match)
+      ────────────────────────────────────────────────────────────── */}
+      <section className="mb-10 sm:mb-12">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium text-[#8b2323] bg-[#8b2323]/10 border border-[#8b2323]/25 mb-4">
+          <span>&lt;//&gt;</span>
+          <span>Welcome to my portfolio</span>
+        </div>
+
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 dark:text-stone-50 tracking-tight leading-tight select-text">
+          Hi there! I'm <span className="font-serif italic text-[#8b2323]">Pranav</span> 👋
         </h1>
-        <p className="text-sm sm:text-base text-stone-700 dark:text-stone-300 mt-3 font-medium leading-relaxed">
-          IT B.Tech student @ SVPCET building backend systems, cross-platform apps (MERN, React Native), and AI/ML integrations.
+
+        <p className="text-base sm:text-lg text-stone-700 dark:text-stone-300 mt-3 font-normal leading-relaxed max-w-3xl">
+          An aspiring forward deployed engineer dedicated to building scalable backend architectures and AI solutions.
         </p>
+
+        {/* Hero Tag Pills */}
+        <div className="flex flex-wrap items-center gap-2.5 mt-5">
+          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium bg-white/70 dark:bg-[#14161d]/70 border border-stone-300/80 dark:border-stone-700/80 text-stone-800 dark:text-stone-200 shadow-2xs backdrop-blur-xs">
+            <GraduationCap className="w-4 h-4 text-[#8b2323]" />
+            <span>B.Tech IT @ SVPCET</span>
+          </span>
+          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium bg-white/70 dark:bg-[#14161d]/70 border border-stone-300/80 dark:border-stone-700/80 text-stone-800 dark:text-stone-200 shadow-2xs backdrop-blur-xs">
+            <Layers className="w-4 h-4 text-[#8b2323]" />
+            <span>Backend & AI</span>
+          </span>
+          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium bg-white/70 dark:bg-[#14161d]/70 border border-stone-300/80 dark:border-stone-700/80 text-stone-800 dark:text-stone-200 shadow-2xs backdrop-blur-xs">
+            <Target className="w-4 h-4 text-[#8b2323]" />
+            <span>Building for Impact</span>
+          </span>
+        </div>
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          SELECTED PROJECTS (Direct match to Jerry Chen layout)
+          SELECTED PROJECTS (Mockup match: Red Accent Bar & Cards)
       ────────────────────────────────────────────────────────────── */}
       <section className="space-y-6 mb-16">
-        <div className="flex items-center justify-between border-b border-stone-800/15 dark:border-stone-700/40 pb-3">
-          <h2 className="text-xs sm:text-sm font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider font-sans">
-            Selected Projects
-          </h2>
-          <span className="font-doodle text-sm text-stone-700 dark:text-stone-300 font-semibold">
-            click cards to inspect all details 🔍
-          </span>
+        <div className="flex items-center justify-between pb-1">
+          <div className="flex items-center gap-2.5">
+            <div className="w-1.5 h-5 bg-[#8b2323] rounded-full" />
+            <h2 className="text-lg sm:text-xl font-bold text-stone-900 dark:text-stone-100 font-sans tracking-tight">
+              Selected Projects
+            </h2>
+          </div>
+          <Link
+            to="/projects"
+            className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-[#8b2323] hover:text-[#721c1c] transition-colors"
+          >
+            <span>View All Projects</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
 
         {/* 2-Column Responsive Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
           {projects.map((proj) => (
             <motion.div
               key={proj.id}
               whileHover={{ y: -4 }}
               transition={{ duration: 0.2 }}
               onClick={() => setSelectedProject(proj)}
-              className="group cursor-pointer p-4 sm:p-5 rounded-2xl border-2 border-zinc-900 dark:border-zinc-700 bg-white/95 dark:bg-[#151619]/95 backdrop-blur-xs shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-3.5"
+              className="group cursor-pointer rounded-2xl border border-stone-800/15 dark:border-stone-700/40 bg-white/85 dark:bg-[#14161d]/85 backdrop-blur-md shadow-xs hover:shadow-md transition-all overflow-hidden flex flex-col p-3.5 sm:p-4"
             >
-              <div className="space-y-3.5">
-                {/* Image banner with clean aspect ratio & matching border */}
-                <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-900/30 dark:border-zinc-700/80 shadow-2xs">
-                  <img
-                    src={proj.image}
-                    alt={proj.title}
-                    className="w-full h-full object-cover object-center group-hover:scale-[1.03] transition-transform duration-500"
-                  />
-
-                  {/* Subtle vignette */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
-
-                  {proj.badge && (
-                    <div className="absolute top-3 right-3 bg-white/95 dark:bg-zinc-900/90 backdrop-blur-xs text-zinc-900 dark:text-zinc-100 border-2 border-zinc-900 dark:border-zinc-700 text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-xs">
-                      {proj.badge}
-                    </div>
-                  )}
-                </div>
-
-                {/* Meta row */}
-                <div className="flex items-center justify-between text-xs text-stone-600 dark:text-stone-400 font-medium pt-0.5">
-                  <span className="font-bold text-stone-900 dark:text-stone-200">{proj.client}</span>
-                  <span className="font-mono text-[11px]">
-                    {proj.category} • {proj.year}
-                  </span>
-                </div>
-
-                {/* Title */}
-                <h3 className="text-base sm:text-lg font-bold text-stone-950 dark:text-stone-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug">
-                  {proj.title}
-                </h3>
+              {/* Banner with badge */}
+              <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 shadow-2xs">
+                <img
+                  src={proj.image}
+                  alt={proj.title}
+                  className="w-full h-full object-cover object-center group-hover:scale-[1.03] transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
+                {proj.badge && (
+                  <div className="absolute top-2.5 right-2.5 bg-white/95 dark:bg-stone-900/90 backdrop-blur-xs text-stone-900 dark:text-stone-100 border border-stone-300 dark:border-stone-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-xs">
+                    {proj.badge}
+                  </div>
+                )}
               </div>
 
-              {/* Tech chips */}
-              <div className="flex flex-wrap gap-1.5 pt-2 border-t border-dashed border-zinc-200 dark:border-zinc-800">
-                {proj.tech.map((t, idx) => (
-                  <span
-                    key={idx}
-                    className="px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300 text-[11px] font-mono border border-zinc-300 dark:border-zinc-700"
-                  >
-                    {t}
-                  </span>
-                ))}
+              {/* Footer row matching Image 2 */}
+              <div className="flex items-center justify-between gap-3 pt-3.5">
+                <div className="flex items-center gap-3 min-w-0">
+                  {/* Category Icon pill/square */}
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#8b2323]/10 text-[#8b2323] flex items-center justify-center shrink-0 border border-[#8b2323]/20">
+                    {proj.id === 'electropathy' ? (
+                      <span className="text-base sm:text-lg">🌿</span>
+                    ) : proj.id === 'tastifyy' ? (
+                      <span className="text-base sm:text-lg">🍴</span>
+                    ) : proj.id === 'attrition' ? (
+                      <span className="text-base sm:text-lg">📊</span>
+                    ) : proj.id === 'jansampark' ? (
+                      <span className="text-base sm:text-lg">🏛️</span>
+                    ) : proj.id === 'solar' ? (
+                      <span className="text-base sm:text-lg">⚡</span>
+                    ) : (
+                      <span className="text-base sm:text-lg">🐾</span>
+                    )}
+                  </div>
+
+                  {/* Title & subtitle */}
+                  <div className="min-w-0">
+                    <h3 className="text-sm sm:text-base font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] transition-colors truncate">
+                      {proj.title}
+                    </h3>
+                    <p className="text-[11px] sm:text-xs text-stone-500 dark:text-stone-400 truncate">
+                      {proj.client} • {proj.category} • {proj.year}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Circular arrow button */}
+                <div className="w-8 h-8 rounded-full border border-stone-300 dark:border-stone-700 flex items-center justify-center text-stone-600 dark:text-stone-400 group-hover:border-[#8b2323] group-hover:text-[#8b2323] group-hover:bg-[#8b2323]/10 transition-colors shrink-0">
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </div>
               </div>
             </motion.div>
           ))}
+        </div>
+
+        {/* Carousel pagination indicator matching mockup */}
+        <div className="flex justify-center items-center gap-1.5 pt-2">
+          <span className="w-2 h-2 rounded-full bg-[#8b2323]" />
+          <span className="w-1.5 h-1.5 rounded-full bg-stone-300 dark:bg-stone-700" />
+          <span className="w-1.5 h-1.5 rounded-full bg-stone-300 dark:bg-stone-700" />
         </div>
       </section>
 
