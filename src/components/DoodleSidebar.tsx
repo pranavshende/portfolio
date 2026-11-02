@@ -109,7 +109,7 @@ export const DoodleSidebar: React.FC = () => {
           DESKTOP FIXED SIDEBAR
           Clean, perfectly proportioned, 100% fixed with zero scrollbar
       ────────────────────────────────────────────────────────────── */}
-      <aside className="hidden md:flex flex-col justify-between w-60 h-screen fixed left-0 top-0 bg-[#ffffff] dark:bg-[#121316] border-r border-zinc-200/80 dark:border-zinc-800/80 px-5 py-4 z-40 select-none overflow-y-auto scrollbar-none font-sans transition-colors duration-200">
+      <aside className="hidden md:flex flex-col justify-between w-60 h-screen fixed left-0 top-0 bg-white/90 dark:bg-[#121316]/92 backdrop-blur-md border-r border-zinc-200/80 dark:border-zinc-800/80 px-5 py-4 z-40 select-none overflow-y-auto scrollbar-none font-sans transition-colors duration-200">
         <div className="flex flex-col space-y-3">
           {/* Profile Header */}
           <div className="flex flex-col items-center text-center">
