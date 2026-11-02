@@ -156,59 +156,14 @@ export const Home: React.FC = () => {
   return (
     <DoodleLayout>
       {/* ─────────────────────────────────────────────────────────────
-          HERO STATEMENT (Direct match to Jerry Chen aesthetic)
+          HERO STATEMENT
       ────────────────────────────────────────────────────────────── */}
-      <section className="mb-14 sm:mb-16 pt-2">
-        <h1 className="text-2xl sm:text-3xl md:text-[34px] font-medium text-zinc-900 dark:text-zinc-100 tracking-tight leading-[1.8] sm:leading-[1.85] select-text">
-          <span>Hi there! </span>
-          <span className="inline-block hover:rotate-12 transition-transform cursor-pointer" title="Wave!">👋</span>
-          <span> I'm </span>
-          <span className="font-doodle text-[1.18em] font-bold text-zinc-950 dark:text-amber-200 px-2 py-0.5 rounded-xl bg-yellow-100/80 dark:bg-amber-950/40 border border-yellow-300/80 dark:border-amber-600/50 hover:bg-amber-200 dark:hover:bg-amber-900/60 hover:text-amber-950 dark:hover:text-amber-100 hover:rotate-[-2deg] transition-all inline-block cursor-pointer shadow-2xs">
-            Pranav
-          </span>
-          <span>, a </span>
-          <span className="font-sans font-semibold text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 hover:underline decoration-blue-400 decoration-2 transition-all cursor-pointer">
-            full-stack engineer
-          </span>
-          <span> dedicated to building </span>
-          <span className="font-mono text-[0.88em] font-semibold text-zinc-900 dark:text-zinc-200 px-2 py-0.5 rounded-lg bg-zinc-100 dark:bg-zinc-800/80 hover:bg-emerald-100 dark:hover:bg-emerald-950/50 hover:text-emerald-800 dark:hover:text-emerald-300 border border-zinc-200/80 dark:border-zinc-700/80 hover:border-emerald-300 dark:hover:border-emerald-600 transition-all inline-block cursor-pointer">
-            scalable backend architectures
-          </span>
-          <span>, exploring </span>
-          <span className="font-serif italic font-bold text-zinc-900 dark:text-zinc-100 hover:text-purple-600 dark:hover:text-purple-400 hover:underline decoration-wavy decoration-purple-400 transition-all cursor-pointer">
-            system design
-          </span>
-          <span>, and shipping </span>
-          <span className="font-doodle text-[1.15em] font-bold text-zinc-900 dark:text-zinc-100 hover:text-rose-600 dark:hover:text-rose-400 hover:scale-105 transition-all inline-block cursor-pointer">
-            high-impact solutions
-          </span>
-          <span>. Prev. @ </span>
-          <span className="font-sans font-bold text-teal-800 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/40 hover:bg-teal-100 dark:hover:bg-teal-900/60 hover:text-teal-950 dark:hover:text-teal-100 px-2 py-0.5 rounded-lg border border-teal-200/80 dark:border-teal-800/60 hover:border-teal-300 transition-all inline-block cursor-pointer">
-            NK SkillEdge
-          </span>
-          <span>, </span>
-          <span className="font-sans font-bold text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 dark:hover:bg-amber-900/60 hover:text-amber-950 dark:hover:text-amber-100 px-2 py-0.5 rounded-lg border border-amber-200/80 dark:border-amber-800/60 hover:border-amber-300 transition-all inline-block cursor-pointer">
-            IT Daksh
-          </span>
+      <section className="mb-12 sm:mb-14 pt-2">
+        <h1 className="text-2xl sm:text-3xl md:text-[32px] font-medium text-zinc-900 dark:text-zinc-100 tracking-tight leading-relaxed select-text">
+          Hi there! I'm <span className="font-semibold text-zinc-900 dark:text-zinc-100">Pranav</span>, an aspiring forward deployed engineer dedicated to building scalable backend architectures and AI solutions.
         </h1>
-        <p className="text-sm sm:text-base text-zinc-500 dark:text-zinc-400 mt-6 sm:mt-7 font-normal leading-relaxed max-w-none tracking-wide">
-          <span>IT B.Tech student @ </span>
-          <span className="font-semibold text-zinc-800 dark:text-zinc-200 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer">
-            SVPCET
-          </span>
-          <span> building </span>
-          <span className="font-mono text-xs font-semibold text-zinc-700 dark:text-zinc-300 px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800/80 hover:text-emerald-700 dark:hover:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 border border-zinc-200/70 dark:border-zinc-700/70 transition-colors inline-block cursor-pointer">
-            backend systems
-          </span>
-          <span>, </span>
-          <span className="font-sans font-medium text-zinc-700 dark:text-zinc-300 hover:text-sky-600 dark:hover:text-sky-400 transition-colors cursor-pointer">
-            cross-platform apps (MERN, React Native)
-          </span>
-          <span>, and </span>
-          <span className="font-doodle text-base font-bold text-zinc-800 dark:text-zinc-200 hover:text-violet-600 dark:hover:text-violet-400 transition-colors cursor-pointer">
-            AI/ML integrations
-          </span>
-          <span>.</span>
+        <p className="text-sm sm:text-base text-zinc-500 dark:text-zinc-400 mt-3 font-normal leading-relaxed">
+          IT B.Tech student @ SVPCET building backend systems, cross-platform apps (MERN, React Native), and AI/ML integrations.
         </p>
       </section>
 
