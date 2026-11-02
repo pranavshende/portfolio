@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { DoodleLayout } from '@/components/DoodleLayout';
-import { PropellerHat } from '@/components/PropellerHat';
 import profilePhoto from '../photo/IMG_20240323_152847.jpg';
 import { 
   FileText, ExternalLink, Code2, Database, Cloud, 
@@ -49,8 +48,6 @@ const realTimeline: TimelineItem[] = [
 ];
 
 export const About: React.FC = () => {
-  const [hatSpinning, setHatSpinning] = useState(false);
-
   const resumeUrl = "https://drive.google.com/drive/folders/1z3-tvjY5U1OP90Dls4IfLwV10E8e4qij?usp=sharing";
   const emailUrl = "https://mail.google.com/mail/?view=cm&fs=1&to=pranavshende97@gmail.com";
 
@@ -60,19 +57,8 @@ export const About: React.FC = () => {
           HERO PROFILE & HEADLINE
       ────────────────────────────────────────────────────────────── */}
       <section className="flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8 mb-12 sm:mb-14">
-        {/* Avatar with Propeller Hat Doodle */}
-        <div 
-          className="relative shrink-0 cursor-pointer group"
-          onMouseEnter={() => setHatSpinning(true)}
-          onMouseLeave={() => setHatSpinning(false)}
-          onClick={() => setHatSpinning(!hatSpinning)}
-          title="Hover or click to spin the propeller!"
-        >
-          {/* Propeller Hat perched neatly on top */}
-          <div className="absolute -top-7 left-1/2 -translate-x-[50%] z-20">
-            <PropellerHat spinning={hatSpinning} />
-          </div>
-
+        {/* Avatar */}
+        <div className="relative shrink-0 group">
           {/* Circular Photo */}
           <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-2 border-zinc-900 dark:border-zinc-700 shadow-sm bg-zinc-100 dark:bg-zinc-800">
             <img

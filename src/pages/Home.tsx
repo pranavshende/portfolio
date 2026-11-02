@@ -159,7 +159,7 @@ export const Home: React.FC = () => {
           HERO STATEMENT (Direct match to Jerry Chen aesthetic)
       ────────────────────────────────────────────────────────────── */}
       <section className="mb-14 sm:mb-16 pt-2">
-        <h1 className="text-2xl sm:text-3xl md:text-[34px] font-medium text-zinc-900 dark:text-zinc-100 tracking-tight leading-[1.45] select-text">
+        <h1 className="text-2xl sm:text-3xl md:text-[34px] font-medium text-zinc-900 dark:text-zinc-100 tracking-tight leading-[1.8] sm:leading-[1.85] select-text">
           <span>Hi there! </span>
           <span className="inline-block hover:rotate-12 transition-transform cursor-pointer" title="Wave!">👋</span>
           <span> I'm </span>
@@ -191,7 +191,7 @@ export const Home: React.FC = () => {
             IT Daksh
           </span>
         </h1>
-        <p className="text-sm sm:text-base text-zinc-500 dark:text-zinc-400 mt-4 font-normal leading-relaxed max-w-2xl">
+        <p className="text-sm sm:text-base text-zinc-500 dark:text-zinc-400 mt-6 sm:mt-7 font-normal leading-relaxed max-w-none tracking-wide">
           <span>IT B.Tech student @ </span>
           <span className="font-semibold text-zinc-800 dark:text-zinc-200 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer">
             SVPCET
@@ -202,13 +202,9 @@ export const Home: React.FC = () => {
           </span>
           <span>, </span>
           <span className="font-sans font-medium text-zinc-700 dark:text-zinc-300 hover:text-sky-600 dark:hover:text-sky-400 transition-colors cursor-pointer">
-            cross-platform apps
+            cross-platform apps (MERN, React Native)
           </span>
-          <span> (</span>
-          <span className="font-mono text-xs text-zinc-600 dark:text-zinc-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors cursor-pointer">
-            MERN, React Native
-          </span>
-          <span>), and </span>
+          <span>, and </span>
           <span className="font-doodle text-base font-bold text-zinc-800 dark:text-zinc-200 hover:text-violet-600 dark:hover:text-violet-400 transition-colors cursor-pointer">
             AI/ML integrations
           </span>
@@ -230,52 +226,54 @@ export const Home: React.FC = () => {
         </div>
 
         {/* 2-Column Responsive Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
           {projects.map((proj) => (
             <motion.div
               key={proj.id}
               whileHover={{ y: -4 }}
               transition={{ duration: 0.2 }}
               onClick={() => setSelectedProject(proj)}
-              className="group cursor-pointer flex flex-col space-y-3"
+              className="group cursor-pointer p-4 sm:p-5 rounded-2xl border-2 border-zinc-900 dark:border-zinc-700 bg-white dark:bg-[#151619] shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-3.5"
             >
-              {/* Image banner with clean aspect ratio */}
-              <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs group-hover:shadow-md group-hover:border-zinc-300 dark:group-hover:border-zinc-700 transition-all">
-                <img
-                  src={proj.image}
-                  alt={proj.title}
-                  className="w-full h-full object-cover object-center group-hover:scale-[1.03] transition-transform duration-500"
-                />
+              <div className="space-y-3.5">
+                {/* Image banner with clean aspect ratio & matching border */}
+                <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-900/30 dark:border-zinc-700/80 shadow-2xs">
+                  <img
+                    src={proj.image}
+                    alt={proj.title}
+                    className="w-full h-full object-cover object-center group-hover:scale-[1.03] transition-transform duration-500"
+                  />
 
-                {/* Subtle vignette */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
+                  {/* Subtle vignette */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
 
-                {proj.badge && (
-                  <div className="absolute top-3 right-3 bg-white/95 dark:bg-zinc-900/90 backdrop-blur-xs text-zinc-800 dark:text-zinc-200 border border-zinc-200/80 dark:border-zinc-700 text-[11px] font-semibold px-2.5 py-0.5 rounded-full shadow-xs">
-                    {proj.badge}
-                  </div>
-                )}
+                  {proj.badge && (
+                    <div className="absolute top-3 right-3 bg-white/95 dark:bg-zinc-900/90 backdrop-blur-xs text-zinc-900 dark:text-zinc-100 border-2 border-zinc-900 dark:border-zinc-700 text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-xs">
+                      {proj.badge}
+                    </div>
+                  )}
+                </div>
+
+                {/* Meta row */}
+                <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400 font-medium pt-0.5">
+                  <span className="font-bold text-zinc-800 dark:text-zinc-300">{proj.client}</span>
+                  <span className="font-mono text-[11px]">
+                    {proj.category} • {proj.year}
+                  </span>
+                </div>
+
+                {/* Title */}
+                <h3 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug">
+                  {proj.title}
+                </h3>
               </div>
-
-              {/* Meta row */}
-              <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400 font-medium pt-0.5">
-                <span className="font-semibold text-zinc-800 dark:text-zinc-300">{proj.client}</span>
-                <span>
-                  {proj.category} • {proj.year}
-                </span>
-              </div>
-
-              {/* Title */}
-              <h3 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug">
-                {proj.title}
-              </h3>
 
               {/* Tech chips */}
-              <div className="flex flex-wrap gap-1.5 pt-0.5">
+              <div className="flex flex-wrap gap-1.5 pt-2 border-t border-dashed border-zinc-200 dark:border-zinc-800">
                 {proj.tech.map((t, idx) => (
                   <span
                     key={idx}
-                    className="px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-300 text-[11px] font-mono border border-zinc-200/70 dark:border-zinc-700/70"
+                    className="px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800/90 text-zinc-700 dark:text-zinc-300 text-[11px] font-mono border border-zinc-300 dark:border-zinc-700"
                   >
                     {t}
                   </span>
