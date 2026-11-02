@@ -113,25 +113,20 @@ export const DoodleSidebar: React.FC = () => {
         <div className="flex flex-col space-y-2.5">
           {/* Profile Header */}
           <div className="flex flex-col items-center text-center">
-            {/* Clickable Circular Profile Photo with red accent ring */}
+            {/* Clickable Circular Profile Photo with red accent ring (Compact size matching mockup) */}
             <button
               type="button"
               onClick={() => setProfileModalOpen(true)}
-              className="group relative cursor-pointer focus:outline-hidden mb-1.5"
+              className="group relative cursor-pointer focus:outline-hidden mb-2"
               title="Click to view details & bio"
               aria-label="View profile details"
             >
-              <div className="relative w-18 h-18 rounded-full overflow-hidden border-2 border-[#8b2323] shadow-xs bg-zinc-100 dark:bg-zinc-800 shrink-0 group-hover:scale-105 transition-all duration-200">
+              <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-[#8b2323] shadow-xs bg-zinc-100 dark:bg-zinc-800 shrink-0 group-hover:scale-105 group-hover:ring-2 group-hover:ring-[#8b2323]/30 transition-all duration-200">
                 <img
                   src={profilePhoto}
                   alt="Pranav Shende"
                   className="w-full h-full object-cover object-center scale-[1.7] translate-y-1"
                 />
-                <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span className="text-[10px] text-white font-bold bg-black/70 px-2 py-0.5 rounded-full shadow-xs">
-                    View
-                  </span>
-                </div>
               </div>
             </button>
 

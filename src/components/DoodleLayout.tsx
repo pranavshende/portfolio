@@ -47,8 +47,8 @@ export const DoodleLayout: React.FC<DoodleLayoutProps> = ({ children }) => {
       <DoodleSidebar />
 
       {/* Main Content Area */}
-      <div className="md:pl-68 flex flex-col min-h-screen relative z-10">
-        <main className="flex-1 w-full max-w-5xl px-4 sm:px-8 lg:px-12 py-6 sm:py-8 mx-auto">
+      <div className="md:pl-[268px] flex flex-col min-h-screen relative z-10">
+        <main className="flex-1 w-full max-w-[1420px] px-4 sm:px-8 lg:px-12 py-6 sm:py-8">
           {children}
         </main>
       </div>
