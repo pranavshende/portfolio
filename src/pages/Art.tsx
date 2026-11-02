@@ -252,10 +252,10 @@ export const Art: React.FC = () => {
           HERO HEADLINE
       ────────────────────────────────────────────────────────────── */}
       <section className="mb-8 sm:mb-10">
-        <h1 className="text-2xl sm:text-3xl md:text-[32px] font-medium text-zinc-900 leading-snug leading-snug sm:leading-snug">
+        <h1 className="text-2xl sm:text-3xl md:text-[32px] font-medium text-zinc-900 dark:text-zinc-100 leading-snug sm:leading-snug">
           Here are some other things I've designed and built, from mobile UI systems to research posters and hackathon assets~
         </h1>
-        <p className="text-sm sm:text-base text-zinc-500 mt-2 font-medium">
+        <p className="text-sm sm:text-base text-zinc-500 dark:text-zinc-400 mt-2 font-medium">
           A visual showcase of real interface designs, research papers, data graphics, and event identities.
         </p>
       </section>
@@ -263,7 +263,7 @@ export const Art: React.FC = () => {
       {/* ─────────────────────────────────────────────────────────────
           FILTER PILLS
       ────────────────────────────────────────────────────────────── */}
-      <div className="flex flex-wrap gap-2 mb-8 border-b-2 border-dashed border-zinc-200 pb-4">
+      <div className="flex flex-wrap gap-2 mb-8 border-b-2 border-dashed border-zinc-200 dark:border-zinc-800 pb-4">
         {filters.map((f) => (
           <button
             key={f}
@@ -271,7 +271,7 @@ export const Art: React.FC = () => {
             className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
               activeFilter === f
                 ? 'bg-[#fef08a] text-zinc-900 border-2 border-zinc-900 shadow-2xs'
-                : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200/80 border border-zinc-200'
+                : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200/80 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700'
             }`}
           >
             {f}
@@ -291,25 +291,25 @@ export const Art: React.FC = () => {
             className="group cursor-pointer flex flex-col space-y-2.5"
           >
             {/* Visual Preview Box */}
-            <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-zinc-50 border-2 border-zinc-900 shadow-xs flex items-center justify-center">
+            <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-zinc-50 dark:bg-zinc-900 border-2 border-zinc-900 dark:border-zinc-700 shadow-xs flex items-center justify-center">
               {item.preview}
 
               {/* Hover Zoom pill */}
-              <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity bg-white/95 p-2 rounded-full border border-zinc-900 shadow-sm text-zinc-800">
+              <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity bg-white/95 dark:bg-zinc-800/95 p-2 rounded-full border border-zinc-900 dark:border-zinc-700 shadow-sm text-zinc-800 dark:text-zinc-200">
                 <ZoomIn className="w-4 h-4" />
               </div>
             </div>
 
             {/* Metadata */}
-            <div className="flex items-center justify-between text-xs text-zinc-500 font-semibold pt-1">
-              <span className="text-zinc-800">{item.organization}</span>
+            <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400 font-semibold pt-1">
+              <span className="text-zinc-800 dark:text-zinc-300">{item.organization}</span>
               <span className="px-2 py-0.5 rounded-full bg-[#fef08a] text-xs font-bold text-zinc-900 border border-zinc-900">
                 {item.category}
               </span>
             </div>
 
             {/* Bold Title */}
-            <h3 className="text-sm sm:text-base font-bold text-zinc-900 group-hover:text-blue-600 transition-colors leading-snug">
+            <h3 className="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 dark:group-hover:text-amber-400 transition-colors leading-snug">
               {item.title}
             </h3>
           </motion.div>
@@ -326,31 +326,31 @@ export const Art: React.FC = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="relative w-full max-w-lg bg-white rounded-2xl border-2 border-zinc-900 shadow-2xl p-6 space-y-4"
+              className="relative w-full max-w-lg bg-white dark:bg-[#16171b] rounded-2xl border-2 border-zinc-900 dark:border-zinc-700 shadow-2xl p-6 space-y-4"
             >
               <button
                 onClick={() => setSelectedItem(null)}
-                className="absolute top-4 right-4 p-2 rounded-full text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
+                className="absolute top-4 right-4 p-2 rounded-full text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
                 aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
               </button>
 
-              <div className="w-full aspect-square rounded-xl overflow-hidden border-2 border-zinc-900 bg-zinc-50">
+              <div className="w-full aspect-square rounded-xl overflow-hidden border-2 border-zinc-900 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900">
                 {selectedItem.preview}
               </div>
 
               <div className="space-y-1">
-                <div className="flex items-center justify-between text-xs text-zinc-500 font-semibold">
+                <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400 font-semibold">
                   <span>{selectedItem.organization}</span>
                   <span className="px-2 py-0.5 rounded-full bg-[#fef08a] text-xs font-bold text-zinc-900 border border-zinc-900">
                     {selectedItem.category}
                   </span>
                 </div>
-                <h3 className="text-lg font-bold text-zinc-900">
+                <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
                   {selectedItem.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-zinc-600 font-sans leading-relaxed pt-1">
+                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 font-sans leading-relaxed pt-1">
                   {selectedItem.description}
                 </p>
               </div>

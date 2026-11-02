@@ -22,7 +22,7 @@ export const DoodleLayout: React.FC<DoodleLayoutProps> = ({ children }) => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#ffffff] text-zinc-900 font-sans selection:bg-[#fef08a] selection:text-zinc-900 relative">
+    <div className="min-h-screen bg-[#ffffff] dark:bg-[#0c0d10] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-[#fef08a] selection:text-zinc-900 relative transition-colors duration-200">
       <DoodleSidebar />
 
       {/* Main Content Area */}
@@ -34,12 +34,12 @@ export const DoodleLayout: React.FC<DoodleLayoutProps> = ({ children }) => {
 
       {/* ── Thin Translucent Line replacing scrollbar (Direct match to Image 2) ── */}
       <div 
-        className="fixed right-1.5 sm:right-2 top-0 bottom-0 w-[1.5px] bg-zinc-200/80 pointer-events-none z-50"
+        className="fixed right-1.5 sm:right-2 top-0 bottom-0 w-[1.5px] bg-zinc-200/80 dark:bg-zinc-800 pointer-events-none z-50"
         aria-hidden="true"
       >
         {/* Subtle active progress indicator gliding on the line */}
         <div
-          className="w-[2.5px] -ml-[0.5px] bg-zinc-400/80 rounded-full transition-transform duration-75 ease-out"
+          className="w-[2.5px] -ml-[0.5px] bg-zinc-400/80 dark:bg-zinc-600 rounded-full transition-transform duration-75 ease-out"
           style={{
             height: '45px',
             transform: `translateY(${scrollProgress * ((typeof window !== 'undefined' ? window.innerHeight : 800) - 60) / 100}px)`,
