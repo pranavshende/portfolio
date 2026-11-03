@@ -20,11 +20,11 @@ export const PageSwitchSpinner: React.FC<PageSwitchSpinnerProps> = ({ isLoading 
         >
           <div className="flex flex-col items-center space-y-3">
             {/* Japanese Sumi-e Enso Ink Spinner with Round Photo */}
-            <div className="relative w-16 h-16 flex items-center justify-center">
+            <div className="relative w-16 h-16 flex items-center justify-center shrink-0">
               {/* Outer rotating ink brush circle */}
               <svg
                 viewBox="0 0 100 100"
-                className="w-full h-full animate-[spin_1.4s_cubic-bezier(0.4,0,0.2,1)_infinite] text-[#8b2323] dark:text-rose-500 drop-shadow-xs"
+                className="w-full h-full animate-[spin_1.4s_cubic-bezier(0.4,0,0.2,1)_infinite] text-[#8b2323] dark:text-rose-500 drop-shadow-xs pointer-events-none"
               >
                 <circle
                   cx="50"
@@ -39,11 +39,13 @@ export const PageSwitchSpinner: React.FC<PageSwitchSpinnerProps> = ({ isLoading 
               </svg>
 
               {/* Inner Round Profile Photo with crimson border */}
-              <div className="absolute w-10 h-10 rounded-full overflow-hidden border-2 border-[#8b2323] shadow-xs bg-zinc-100 dark:bg-zinc-800 shrink-0">
+              <div className="absolute w-10 h-10 aspect-square rounded-full overflow-hidden border-2 border-[#8b2323] shadow-xs bg-zinc-100 dark:bg-zinc-800 shrink-0 flex items-center justify-center">
                 <img
                   src={profilePhoto}
                   alt="Pranav Shende"
-                  className="w-full h-full object-cover scale-[1.7] translate-y-0.5"
+                  className="w-full h-full max-w-full max-h-full object-cover scale-[1.7] translate-y-0.5 pointer-events-none select-none"
+                  loading="eager"
+                  draggable={false}
                 />
               </div>
             </div>
