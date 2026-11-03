@@ -107,6 +107,7 @@ export const analyticsController = {
       const visitorTrends = Object.values(dailyMap).map((item) => ({
         date: item.date,
         views: item.views,
+        count: item.views,
         visitors: item.visitors.size,
       }));
 
@@ -125,25 +126,36 @@ export const analyticsController = {
         select: { id: true, title: true, slug: true, viewCount: true, category: true },
       });
 
+      const totalDownloads = totalResumeDownloads._sum.downloadCount || 0;
+
       res.status(200).json({
         success: true,
         data: {
-          kpis: {
-            totalVisitors: uniqueVisitors,
-            totalPageViews,
-            totalInquiries,
-            unreadInquiries,
-            resumeDownloads: totalResumeDownloads._sum.downloadCount || 0,
-            totalProjects,
-          },
+          // Flat overview properties
+          totalVisitors: uniqueVisitors,
+          projectViews: totalPageViews,
+          totalInquiries,
+          unreadInquiries,
+          resumeDownloads: totalDownloads,
+          subscribers: 0,
+          visitorTrend: visitorTrends,
           visitorTrends,
+          popularProjects,
+          recentInquiries,
           deviceDistribution: [
             { name: 'Desktop', value: deviceCounts.desktop },
             { name: 'Mobile', value: deviceCounts.mobile },
             { name: 'Tablet', value: deviceCounts.tablet },
           ],
-          popularProjects,
-          recentInquiries,
+          // Nested KPI map
+          kpis: {
+            totalVisitors: uniqueVisitors,
+            totalPageViews,
+            totalInquiries,
+            unreadInquiries,
+            resumeDownloads: totalDownloads,
+            totalProjects,
+          },
         },
       });
     } catch (error) {

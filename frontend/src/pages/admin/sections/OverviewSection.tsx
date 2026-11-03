@@ -27,16 +27,20 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({ onNavigateSect
       .finally(() => setLoading(false));
   }, []);
 
-  const totalVisitors = data?.totalVisitors ?? 128;
-  const projectViews = data?.projectViews ?? 342;
-  const totalInquiries = data?.totalInquiries ?? 14;
-  const unreadInquiries = data?.unreadInquiries ?? 3;
-  const resumeDownloads = data?.resumeDownloads ?? 46;
-  const subscribers = data?.subscribers ?? 19;
+  const totalVisitors = data?.totalVisitors ?? data?.kpis?.totalVisitors ?? 0;
+  const projectViews = data?.projectViews ?? data?.kpis?.totalPageViews ?? 0;
+  const totalInquiries = data?.totalInquiries ?? data?.kpis?.totalInquiries ?? 0;
+  const unreadInquiries = data?.unreadInquiries ?? data?.kpis?.unreadInquiries ?? 0;
+  const resumeDownloads = data?.resumeDownloads ?? data?.kpis?.resumeDownloads ?? 0;
+  const subscribers = data?.subscribers ?? 0;
 
-  // Real or generated visitor trend data
-  const visitorTrend = data?.visitorTrend?.length > 0 
-    ? data.visitorTrend 
+  // Real or fallback visitor trend data
+  const rawTrends = data?.visitorTrend || data?.visitorTrends || [];
+  const visitorTrend = rawTrends.length > 0 
+    ? rawTrends.map((t: any) => ({
+        date: t.date,
+        count: t.count ?? t.views ?? 0,
+      }))
     : [
         { date: 'Day 1', count: 12 },
         { date: 'Day 5', count: 18 },

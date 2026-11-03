@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, CheckCircle2, AlertCircle, Loader2, Sparkles, Building, Mail, User, FileText, HelpCircle, Paperclip } from 'lucide-react';
 import { api, ContactPayload } from '@/lib/api';
@@ -91,10 +92,10 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
     onClose();
   };
 
-  return (
+  const modalContent = (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-sm select-auto">
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm select-auto">
           {/* Backdrop Click to Close */}
           <div 
             className="absolute inset-0 bg-transparent"
@@ -107,7 +108,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={{ duration: 0.22, ease: 'easeOut' }}
-            className="relative z-10 w-full max-w-lg max-h-[88vh] flex flex-col bg-[#faf6f0] dark:bg-[#16171c] rounded-2xl sm:rounded-3xl border border-stone-800/20 dark:border-stone-700/60 shadow-2xl overflow-hidden"
+            className="relative z-10 w-full max-w-lg max-h-[90dvh] flex flex-col bg-[#faf6f0] dark:bg-[#16171c] rounded-2xl sm:rounded-3xl border border-stone-800/20 dark:border-stone-700/60 shadow-2xl overflow-hidden"
           >
             {/* Modal Header */}
             <div className="p-4 sm:p-6 pb-2 sm:pb-3 flex items-start justify-between border-b border-stone-800/10 dark:border-stone-700/30 shrink-0 bg-[#faf6f0]/95 dark:bg-[#16171c]/95 backdrop-blur-xs">
@@ -210,7 +211,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                             required
                             value={formData.email}
                             onChange={handleChange}
-                            placeholder="you@domain.com"
+                            placeholder="xyz@gmail.com"
                             className="w-full pl-9 pr-3 py-2 rounded-xl border border-stone-300/80 dark:border-stone-700 bg-white dark:bg-[#1a1c23] text-stone-900 dark:text-stone-100 placeholder:text-stone-400 focus:outline-hidden focus:ring-2 focus:ring-[#8b2323]/40 text-xs sm:text-sm shadow-2xs"
                           />
                         </div>
@@ -312,7 +313,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                     </div>
 
                     {/* Submit Button Row with Safe Bottom Clearance */}
-                    <div className="pt-2 pb-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-stone-800/10 dark:border-stone-700/20">
+                    <div className="pt-2 pb-3 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-stone-800/10 dark:border-stone-700/20">
                       <span className="text-[10px] text-stone-500 dark:text-stone-400 text-center sm:text-left order-2 sm:order-1">
                         🔒 Protected by rate limiting & spam prevention
                       </span>
@@ -343,6 +344,11 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
       )}
     </AnimatePresence>
   );
+
+  if (typeof document !== 'undefined') {
+    return createPortal(modalContent, document.body);
+  }
+  return modalContent;
 };
 
 export default ContactModal;
