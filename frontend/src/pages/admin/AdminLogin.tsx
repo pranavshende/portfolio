@@ -117,7 +117,7 @@ export const AdminLogin: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="xyz@gmail.com"
-                className="w-full pl-9 pr-3 py-2 rounded-xl border border-stone-300/80 dark:border-stone-700 bg-stone-50/50 dark:bg-[#1d1f27] text-stone-900 dark:text-stone-100 placeholder:text-stone-400 focus:outline-hidden focus:ring-2 focus:ring-[#8b2323]/40 text-xs sm:text-sm"
+                className="w-full pl-9 pr-3 py-2.5 sm:py-2 rounded-xl border border-stone-300/80 dark:border-stone-700 bg-stone-50/50 dark:bg-[#1d1f27] text-stone-900 dark:text-stone-100 placeholder:text-stone-400 focus:outline-hidden focus:ring-2 focus:ring-[#8b2323]/40 text-base sm:text-sm"
               />
             </div>
           </div>
@@ -136,7 +136,7 @@ export const AdminLogin: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full pl-9 pr-10 py-2 rounded-xl border border-stone-300/80 dark:border-stone-700 bg-stone-50/50 dark:bg-[#1d1f27] text-stone-900 dark:text-stone-100 placeholder:text-stone-400 focus:outline-hidden focus:ring-2 focus:ring-[#8b2323]/40 text-xs sm:text-sm"
+                className="w-full pl-9 pr-10 py-2.5 sm:py-2 rounded-xl border border-stone-300/80 dark:border-stone-700 bg-stone-50/50 dark:bg-[#1d1f27] text-stone-900 dark:text-stone-100 placeholder:text-stone-400 focus:outline-hidden focus:ring-2 focus:ring-[#8b2323]/40 text-base sm:text-sm"
               />
               <button
                 type="button"

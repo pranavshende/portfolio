@@ -234,56 +234,45 @@ export const MessagesSection: React.FC = () => {
             </p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-stone-50 dark:bg-[#1c1d25] border-b border-stone-200 dark:border-stone-800 text-stone-500 font-semibold">
-                <tr>
-                  <th className="py-3 px-4">Sender</th>
-                  <th className="py-3 px-4">Inquiry Type</th>
-                  <th className="py-3 px-4">Subject</th>
-                  <th className="py-3 px-4">Status</th>
-                  <th className="py-3 px-4">Date</th>
-                  <th className="py-3 px-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-stone-100 dark:divide-stone-800/60">
-                {messages.map((m) => (
-                  <tr
-                    key={m.id}
-                    className={`hover:bg-stone-50/70 dark:hover:bg-stone-900/50 transition-colors ${
-                      !m.isRead ? 'bg-amber-50/30 dark:bg-amber-950/15 font-semibold' : ''
-                    }`}
-                  >
-                    <td className="py-3 px-4">
-                      <div className="flex items-center gap-2">
-                        {!m.isRead && (
-                          <span className="w-2 h-2 rounded-full bg-[#8b2323] shrink-0" title="Unread inquiry" />
-                        )}
-                        <div>
-                          <div className="text-stone-900 dark:text-stone-100 font-medium">{m.name}</div>
-                          <div className="text-[11px] text-stone-500 font-mono">{m.email}</div>
-                          {m.company && (
-                            <div className="text-[10px] text-stone-400">@ {m.company}</div>
-                          )}
+          <>
+            {/* Mobile Cards View (<640px) */}
+            <div className="sm:hidden divide-y divide-stone-100 dark:divide-stone-800">
+              {messages.map((m) => (
+                <div
+                  key={m.id}
+                  className={`p-3.5 space-y-2.5 ${
+                    !m.isRead ? 'bg-amber-50/40 dark:bg-amber-950/20' : ''
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0">
+                      {!m.isRead && (
+                        <span className="w-2 h-2 rounded-full bg-[#8b2323] shrink-0" title="Unread" />
+                      )}
+                      <div className="min-w-0">
+                        <div className="font-bold text-xs text-stone-900 dark:text-stone-100 truncate">
+                          {m.name}
+                        </div>
+                        <div className="text-[11px] text-stone-500 font-mono truncate">
+                          {m.email}
                         </div>
                       </div>
-                    </td>
+                    </div>
+                    <span className="px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-medium text-[10px] shrink-0">
+                      {m.inquiryType}
+                    </span>
+                  </div>
 
-                    <td className="py-3 px-4">
-                      <span className="px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-medium text-[11px]">
-                        {m.inquiryType}
-                      </span>
-                    </td>
+                  <div className="text-xs text-stone-800 dark:text-stone-200 font-medium line-clamp-2">
+                    {m.subject}
+                  </div>
 
-                    <td className="py-3 px-4 max-w-xs truncate text-stone-800 dark:text-stone-200">
-                      {m.subject}
-                    </td>
-
-                    <td className="py-3 px-4">
+                  <div className="flex items-center justify-between gap-2 pt-1 border-t border-stone-100 dark:border-stone-800/60">
+                    <div className="flex items-center gap-2">
                       <select
                         value={m.status}
                         onChange={(e) => handleStatusChange(m.id, e.target.value)}
-                        className="py-0.5 px-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-white dark:bg-[#1a1c23] text-[11px] font-semibold cursor-pointer"
+                        className="py-1 px-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-white dark:bg-[#1a1c23] text-[11px] font-semibold cursor-pointer"
                       >
                         <option value="NEW">NEW</option>
                         <option value="CONTACTED">CONTACTED</option>
@@ -291,37 +280,124 @@ export const MessagesSection: React.FC = () => {
                         <option value="RESOLVED">RESOLVED</option>
                         <option value="ARCHIVED">ARCHIVED</option>
                       </select>
-                    </td>
+                      <span className="text-[10px] text-stone-400 font-mono">
+                        {new Date(m.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
 
-                    <td className="py-3 px-4 text-stone-500 font-mono text-[11px] whitespace-nowrap">
-                      {new Date(m.createdAt).toLocaleDateString()}
-                    </td>
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => handleOpenMessage(m)}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 text-stone-800 dark:text-stone-200 text-[11px] font-semibold"
+                      >
+                        <Eye className="w-3.5 h-3.5" />
+                        <span>Read</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(m.id)}
+                        className="p-1.5 rounded-lg text-stone-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30"
+                        title="Delete"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
 
-                    <td className="py-3 px-4 text-right">
-                      <div className="flex items-center justify-end gap-1.5">
-                        <button
-                          type="button"
-                          onClick={() => handleOpenMessage(m)}
-                          className="p-1.5 rounded-lg hover:bg-stone-200 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-300 transition-colors"
-                          title="Read full message"
-                        >
-                          <Eye className="w-4 h-4" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleDelete(m.id)}
-                          className="p-1.5 rounded-lg hover:bg-red-50 text-stone-400 hover:text-red-600 transition-colors"
-                          title="Delete message"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </td>
+            {/* Desktop Table View (>=640px) */}
+            <div className="hidden sm:block overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-stone-50 dark:bg-[#1c1d25] border-b border-stone-200 dark:border-stone-800 text-stone-500 font-semibold">
+                  <tr>
+                    <th className="py-3 px-4">Sender</th>
+                    <th className="py-3 px-4">Inquiry Type</th>
+                    <th className="py-3 px-4">Subject</th>
+                    <th className="py-3 px-4">Status</th>
+                    <th className="py-3 px-4">Date</th>
+                    <th className="py-3 px-4 text-right">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-stone-100 dark:divide-stone-800/60">
+                  {messages.map((m) => (
+                    <tr
+                      key={m.id}
+                      className={`hover:bg-stone-50/70 dark:hover:bg-stone-900/50 transition-colors ${
+                        !m.isRead ? 'bg-amber-50/30 dark:bg-amber-950/15 font-semibold' : ''
+                      }`}
+                    >
+                      <td className="py-3 px-4">
+                        <div className="flex items-center gap-2">
+                          {!m.isRead && (
+                            <span className="w-2 h-2 rounded-full bg-[#8b2323] shrink-0" title="Unread inquiry" />
+                          )}
+                          <div>
+                            <div className="text-stone-900 dark:text-stone-100 font-medium">{m.name}</div>
+                            <div className="text-[11px] text-stone-500 font-mono">{m.email}</div>
+                            {m.company && (
+                              <div className="text-[10px] text-stone-400">@ {m.company}</div>
+                            )}
+                          </div>
+                        </div>
+                      </td>
+
+                      <td className="py-3 px-4">
+                        <span className="px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-medium text-[11px]">
+                          {m.inquiryType}
+                        </span>
+                      </td>
+
+                      <td className="py-3 px-4 max-w-xs truncate text-stone-800 dark:text-stone-200">
+                        {m.subject}
+                      </td>
+
+                      <td className="py-3 px-4">
+                        <select
+                          value={m.status}
+                          onChange={(e) => handleStatusChange(m.id, e.target.value)}
+                          className="py-0.5 px-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-white dark:bg-[#1a1c23] text-[11px] font-semibold cursor-pointer"
+                        >
+                          <option value="NEW">NEW</option>
+                          <option value="CONTACTED">CONTACTED</option>
+                          <option value="IN_PROGRESS">IN PROGRESS</option>
+                          <option value="RESOLVED">RESOLVED</option>
+                          <option value="ARCHIVED">ARCHIVED</option>
+                        </select>
+                      </td>
+
+                      <td className="py-3 px-4 text-stone-500 font-mono text-[11px] whitespace-nowrap">
+                        {new Date(m.createdAt).toLocaleDateString()}
+                      </td>
+
+                      <td className="py-3 px-4 text-right">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => handleOpenMessage(m)}
+                            className="p-1.5 rounded-lg hover:bg-stone-200 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-300 transition-colors"
+                            title="Read full message"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDelete(m.id)}
+                            className="p-1.5 rounded-lg hover:bg-red-50 text-stone-400 hover:text-red-600 transition-colors"
+                            title="Delete message"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </div>
 

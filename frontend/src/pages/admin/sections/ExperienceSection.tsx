@@ -209,8 +209,8 @@ export const ExperienceSection: React.FC = () => {
 
       {/* Experience Form Modal */}
       {isEditing && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs select-auto">
-          <div className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto bg-white dark:bg-[#16171d] rounded-3xl border border-stone-200 dark:border-stone-800 shadow-2xl p-6 sm:p-8 space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-xs select-auto">
+          <div className="relative w-full max-w-xl max-h-[90dvh] overflow-y-auto bg-white dark:bg-[#16171d] rounded-2xl sm:rounded-3xl border border-stone-200 dark:border-stone-800 shadow-2xl p-4 sm:p-7 space-y-4">
             <button
               onClick={() => setIsEditing(false)}
               className="absolute top-5 right-5 p-2 rounded-full text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-100"

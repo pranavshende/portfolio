@@ -144,7 +144,7 @@ export const SkillsSection: React.FC = () => {
                         className="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-stone-100 dark:bg-stone-800/80 text-stone-800 dark:text-stone-200 text-xs font-semibold border border-stone-200/80 dark:border-stone-700/60"
                       >
                         <span>{skill.name}</span>
-                        <div className="opacity-0 group-hover:opacity-100 flex items-center gap-1 transition-opacity ml-1">
+                        <div className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 flex items-center gap-1 transition-opacity ml-1">
                           <button
                             type="button"
                             onClick={() => handleOpenEdit(skill)}

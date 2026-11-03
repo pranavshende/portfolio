@@ -140,10 +140,10 @@ export const AnalyticsSection: React.FC = () => {
               </h3>
               <div className="w-full h-64">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={topProjects} layout="vertical">
+                  <BarChart data={topProjects} layout="vertical" margin={{ left: -15, right: 10, top: 0, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
-                    <XAxis type="number" tick={{ fontSize: 11 }} />
-                    <YAxis dataKey="name" type="category" width={140} tick={{ fontSize: 11 }} />
+                    <XAxis type="number" tick={{ fontSize: 10 }} />
+                    <YAxis dataKey="name" type="category" width={110} tick={{ fontSize: 10 }} />
                     <Tooltip 
                       contentStyle={{ 
                         backgroundColor: '#1f2937', 

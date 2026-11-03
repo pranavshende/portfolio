@@ -56,35 +56,35 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({ onNavigateSect
   return (
     <div className="space-y-6">
       {/* ── KPI Grid ── */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3.5">
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-2.5 sm:gap-3.5">
         {/* Visitors */}
-        <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs flex flex-col justify-between">
+        <div className="p-3 sm:p-4 rounded-2xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between text-stone-500 dark:text-stone-400">
-            <span className="text-xs font-semibold">Total Visitors</span>
-            <Users className="w-4 h-4 text-blue-500" />
+            <span className="text-[11px] sm:text-xs font-semibold">Total Visitors</span>
+            <Users className="w-4 h-4 text-blue-500 shrink-0" />
           </div>
-          <div className="mt-3">
-            <h3 className="text-2xl font-bold font-mono text-stone-900 dark:text-stone-50">
+          <div className="mt-2.5 sm:mt-3">
+            <h3 className="text-xl sm:text-2xl font-bold font-mono text-stone-900 dark:text-stone-50 leading-tight">
               {totalVisitors}
             </h3>
-            <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-0.5 mt-0.5">
-              <TrendingUp className="w-3 h-3" /> Privacy-conscious
+            <span className="text-[9px] sm:text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-0.5 mt-0.5 truncate">
+              <TrendingUp className="w-3 h-3 shrink-0" /> Privacy-conscious
             </span>
           </div>
         </div>
 
         {/* Project Views */}
-        <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs flex flex-col justify-between">
+        <div className="p-3 sm:p-4 rounded-2xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between text-stone-500 dark:text-stone-400">
-            <span className="text-xs font-semibold">Project Views</span>
-            <Eye className="w-4 h-4 text-purple-500" />
+            <span className="text-[11px] sm:text-xs font-semibold">Project Views</span>
+            <Eye className="w-4 h-4 text-purple-500 shrink-0" />
           </div>
-          <div className="mt-3">
-            <h3 className="text-2xl font-bold font-mono text-stone-900 dark:text-stone-50">
+          <div className="mt-2.5 sm:mt-3">
+            <h3 className="text-xl sm:text-2xl font-bold font-mono text-stone-900 dark:text-stone-50 leading-tight">
               {projectViews}
             </h3>
-            <span className="text-[10px] text-stone-500 font-medium mt-0.5">
-              Across 6 flagship apps
+            <span className="text-[9px] sm:text-[10px] text-stone-500 font-medium mt-0.5 block truncate">
+              Across flagship apps
             </span>
           </div>
         </div>
@@ -92,17 +92,17 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({ onNavigateSect
         {/* Total Inquiries */}
         <div 
           onClick={() => onNavigateSection('messages')}
-          className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs flex flex-col justify-between cursor-pointer hover:border-[#8b2323] transition-colors"
+          className="p-3 sm:p-4 rounded-2xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs flex flex-col justify-between cursor-pointer hover:border-[#8b2323] transition-colors"
         >
           <div className="flex items-center justify-between text-stone-500 dark:text-stone-400">
-            <span className="text-xs font-semibold">Inquiries</span>
-            <MessageSquare className="w-4 h-4 text-amber-500" />
+            <span className="text-[11px] sm:text-xs font-semibold">Inquiries</span>
+            <MessageSquare className="w-4 h-4 text-amber-500 shrink-0" />
           </div>
-          <div className="mt-3">
-            <h3 className="text-2xl font-bold font-mono text-stone-900 dark:text-stone-50">
+          <div className="mt-2.5 sm:mt-3">
+            <h3 className="text-xl sm:text-2xl font-bold font-mono text-stone-900 dark:text-stone-50 leading-tight">
               {totalInquiries}
             </h3>
-            <span className="text-[10px] text-amber-600 dark:text-amber-400 font-semibold mt-0.5">
+            <span className="text-[9px] sm:text-[10px] text-amber-600 dark:text-amber-400 font-semibold mt-0.5 block truncate">
               {unreadInquiries} pending review
             </span>
           </div>
@@ -111,34 +111,34 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({ onNavigateSect
         {/* Unread Messages */}
         <div 
           onClick={() => onNavigateSection('messages')}
-          className="p-4 rounded-2xl bg-[#8b2323]/5 dark:bg-[#8b2323]/15 border border-[#8b2323]/30 shadow-xs flex flex-col justify-between cursor-pointer hover:border-[#8b2323] transition-colors"
+          className="p-3 sm:p-4 rounded-2xl bg-[#8b2323]/5 dark:bg-[#8b2323]/15 border border-[#8b2323]/30 shadow-xs flex flex-col justify-between cursor-pointer hover:border-[#8b2323] transition-colors"
         >
           <div className="flex items-center justify-between text-[#8b2323] dark:text-rose-400">
-            <span className="text-xs font-bold">Unread</span>
-            <Mail className="w-4 h-4" />
+            <span className="text-[11px] sm:text-xs font-bold">Unread</span>
+            <Mail className="w-4 h-4 shrink-0" />
           </div>
-          <div className="mt-3">
-            <h3 className="text-2xl font-bold font-mono text-[#8b2323] dark:text-rose-400">
+          <div className="mt-2.5 sm:mt-3">
+            <h3 className="text-xl sm:text-2xl font-bold font-mono text-[#8b2323] dark:text-rose-400 leading-tight">
               {unreadInquiries}
             </h3>
-            <span className="text-[10px] text-stone-600 dark:text-stone-300 font-medium mt-0.5">
-              Instant email dispatched
+            <span className="text-[9px] sm:text-[10px] text-stone-600 dark:text-stone-300 font-medium mt-0.5 block truncate">
+              Instant email active
             </span>
           </div>
         </div>
 
         {/* Resume Downloads */}
-        <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs flex flex-col justify-between">
+        <div className="p-3 sm:p-4 rounded-2xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between text-stone-500 dark:text-stone-400">
-            <span className="text-xs font-semibold">Resume Downloads</span>
-            <Download className="w-4 h-4 text-emerald-500" />
+            <span className="text-[11px] sm:text-xs font-semibold">Downloads</span>
+            <Download className="w-4 h-4 text-emerald-500 shrink-0" />
           </div>
-          <div className="mt-3">
-            <h3 className="text-2xl font-bold font-mono text-stone-900 dark:text-stone-50">
+          <div className="mt-2.5 sm:mt-3">
+            <h3 className="text-xl sm:text-2xl font-bold font-mono text-stone-900 dark:text-stone-50 leading-tight">
               {resumeDownloads}
             </h3>
-            <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium mt-0.5">
-              Active v2026.1 PDF
+            <span className="text-[9px] sm:text-[10px] text-emerald-600 dark:text-emerald-400 font-medium mt-0.5 block truncate">
+              Resume v2026.1
             </span>
           </div>
         </div>
@@ -146,17 +146,17 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({ onNavigateSect
         {/* Newsletter Subscribers */}
         <div 
           onClick={() => onNavigateSection('subscribers')}
-          className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs flex flex-col justify-between cursor-pointer hover:border-[#8b2323] transition-colors"
+          className="p-3 sm:p-4 rounded-2xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs flex flex-col justify-between cursor-pointer hover:border-[#8b2323] transition-colors"
         >
           <div className="flex items-center justify-between text-stone-500 dark:text-stone-400">
-            <span className="text-xs font-semibold">Subscribers</span>
-            <Newspaper className="w-4 h-4 text-sky-500" />
+            <span className="text-[11px] sm:text-xs font-semibold">Subscribers</span>
+            <Newspaper className="w-4 h-4 text-sky-500 shrink-0" />
           </div>
-          <div className="mt-3">
-            <h3 className="text-2xl font-bold font-mono text-stone-900 dark:text-stone-50">
+          <div className="mt-2.5 sm:mt-3">
+            <h3 className="text-xl sm:text-2xl font-bold font-mono text-stone-900 dark:text-stone-50 leading-tight">
               {subscribers}
             </h3>
-            <span className="text-[10px] text-sky-600 dark:text-sky-400 font-medium mt-0.5">
+            <span className="text-[9px] sm:text-[10px] text-sky-600 dark:text-sky-400 font-medium mt-0.5 block truncate">
               Verified readers
             </span>
           </div>
@@ -279,19 +279,19 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({ onNavigateSect
       </div>
 
       {/* ── Bottom Row: Recent Inquiries Preview ── */}
-      <div className="p-5 rounded-3xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs space-y-4">
-        <div className="flex items-center justify-between">
+      <div className="p-4 sm:p-5 rounded-3xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h3 className="text-base font-bold text-stone-900 dark:text-stone-100">
-              Recent Inquiries & Contact Leads
+              Recent Inquiries & Leads
             </h3>
             <p className="text-xs text-stone-500">
-              Latest inquiries received through the public portfolio contact system
+              Latest inquiries received through the public contact system
             </p>
           </div>
           <button
             onClick={() => onNavigateSection('messages')}
-            className="px-3 py-1.5 rounded-xl bg-[#8b2323] text-white text-xs font-semibold hover:bg-[#721c1c] transition-colors"
+            className="self-start sm:self-auto px-3.5 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-semibold transition-colors cursor-pointer active:scale-95 shadow-xs"
           >
             Open All Messages
           </button>
@@ -302,49 +302,83 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({ onNavigateSect
             No inquiries received yet. When visitors send a message, they will appear here and trigger automated dual emails.
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead>
-                <tr className="border-b border-stone-200 dark:border-stone-800 text-stone-400 font-semibold">
-                  <th className="pb-2">Sender</th>
-                  <th className="pb-2">Type</th>
-                  <th className="pb-2">Subject</th>
-                  <th className="pb-2">Status</th>
-                  <th className="pb-2">Received</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-stone-100 dark:divide-stone-800/60">
-                {recentInquiries.slice(0, 5).map((inq: any) => (
-                  <tr key={inq.id} className="hover:bg-stone-50/50 dark:hover:bg-stone-900/50">
-                    <td className="py-2.5 font-medium text-stone-900 dark:text-stone-100">
-                      <div>{inq.name}</div>
-                      <div className="text-[11px] text-stone-500 font-mono">{inq.email}</div>
-                    </td>
-                    <td className="py-2.5">
-                      <span className="px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-medium text-[11px]">
-                        {inq.inquiryType}
-                      </span>
-                    </td>
-                    <td className="py-2.5 text-stone-800 dark:text-stone-200 max-w-xs truncate">
-                      {inq.subject}
-                    </td>
-                    <td className="py-2.5">
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                        inq.status === 'NEW' 
-                          ? 'bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300' 
-                          : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300'
-                      }`}>
-                        {inq.status}
-                      </span>
-                    </td>
-                    <td className="py-2.5 text-stone-500 font-mono text-[11px]">
-                      {new Date(inq.createdAt).toLocaleDateString()}
-                    </td>
+          <>
+            {/* Mobile Cards (Phones < 640px) */}
+            <div className="sm:hidden space-y-2.5">
+              {recentInquiries.slice(0, 5).map((inq: any) => (
+                <div
+                  key={inq.id}
+                  onClick={() => onNavigateSection('messages')}
+                  className="p-3 rounded-xl bg-stone-50/70 dark:bg-stone-900/60 border border-stone-200/70 dark:border-stone-800 space-y-1.5 cursor-pointer active:scale-98 transition-all"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-xs text-stone-900 dark:text-stone-100">
+                      {inq.name || inq.fullName}
+                    </span>
+                    <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold ${
+                      inq.status === 'NEW'
+                        ? 'bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300'
+                        : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300'
+                    }`}>
+                      {inq.status}
+                    </span>
+                  </div>
+                  <div className="text-xs text-stone-700 dark:text-stone-300 font-medium line-clamp-1">
+                    {inq.subject}
+                  </div>
+                  <div className="flex items-center justify-between text-[10px] text-stone-500 font-mono pt-0.5">
+                    <span className="truncate max-w-[170px]">{inq.email}</span>
+                    <span>{new Date(inq.createdAt).toLocaleDateString()}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop Table (Tablet/Desktop >= 640px) */}
+            <div className="hidden sm:block overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-stone-200 dark:border-stone-800 text-stone-400 font-semibold">
+                    <th className="pb-2">Sender</th>
+                    <th className="pb-2">Type</th>
+                    <th className="pb-2">Subject</th>
+                    <th className="pb-2">Status</th>
+                    <th className="pb-2">Received</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-stone-100 dark:divide-stone-800/60">
+                  {recentInquiries.slice(0, 5).map((inq: any) => (
+                    <tr key={inq.id} className="hover:bg-stone-50/50 dark:hover:bg-stone-900/50">
+                      <td className="py-2.5 font-medium text-stone-900 dark:text-stone-100">
+                        <div>{inq.name || inq.fullName}</div>
+                        <div className="text-[11px] text-stone-500 font-mono">{inq.email}</div>
+                      </td>
+                      <td className="py-2.5">
+                        <span className="px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-medium text-[11px]">
+                          {inq.inquiryType}
+                        </span>
+                      </td>
+                      <td className="py-2.5 text-stone-800 dark:text-stone-200 max-w-xs truncate">
+                        {inq.subject}
+                      </td>
+                      <td className="py-2.5">
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                          inq.status === 'NEW' 
+                            ? 'bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300' 
+                            : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300'
+                        }`}>
+                          {inq.status}
+                        </span>
+                      </td>
+                      <td className="py-2.5 text-stone-500 font-mono text-[11px]">
+                        {new Date(inq.createdAt).toLocaleDateString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </div>
     </div>
