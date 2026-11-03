@@ -3,7 +3,7 @@
  * Connects Frontend to Node.js / Express / Prisma / PostgreSQL Backend
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://portfolio-m96a.onrender.com/api/v1';
 
 // Token storage key
 const TOKEN_KEY = 'pranav_portfolio_admin_token';
