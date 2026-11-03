@@ -78,12 +78,13 @@ export const InitialLoader: React.FC<InitialLoaderProps> = ({ onComplete }) => {
           exit={{ opacity: 0, scale: 1.02 }}
           transition={{ duration: 0.4, ease: "easeInOut" }}
         >
-          {/* Fullscreen Cherry Blossom Mist Artwork (Desktop & Mobile) */}
+          {/* Fullscreen Cherry Blossom Mist Artwork (HD Desktop & QHD Mobile) */}
           <div
             className="hidden md:block absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-1000 scale-100"
             style={{
               backgroundImage: `url(${cherryBlossomMist})`,
               backgroundPosition: "center center",
+              imageRendering: "-webkit-optimize-contrast",
             }}
           />
           <div
@@ -91,6 +92,7 @@ export const InitialLoader: React.FC<InitialLoaderProps> = ({ onComplete }) => {
             style={{
               backgroundImage: `url(${cherryBlossomMistMobile})`,
               backgroundPosition: "top center",
+              imageRendering: "-webkit-optimize-contrast",
             }}
           />
 

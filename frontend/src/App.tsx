@@ -31,26 +31,38 @@ const GlobalBackground = () => {
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
-      {/* Light Mode Desktop */}
+      {/* Light Mode Desktop (HD 2560x1440) */}
       <div 
-        className="hidden md:block absolute inset-0 bg-cover bg-center bg-fixed opacity-95 dark:opacity-0 transition-opacity duration-300"
-        style={{ backgroundImage: `url(${cherryBlossomMist})` }}
+        className="hidden md:block absolute inset-0 bg-cover bg-center bg-fixed opacity-100 dark:opacity-0 transition-opacity duration-300"
+        style={{ 
+          backgroundImage: `url(${cherryBlossomMist})`,
+          imageRendering: '-webkit-optimize-contrast'
+        }}
       />
-      {/* Light Mode Mobile (Prominent sakura branch & Mount Fuji) */}
+      {/* Light Mode Mobile (QHD 1440x2560) */}
       <div 
-        className="block md:hidden absolute inset-0 bg-cover bg-top bg-fixed opacity-95 dark:opacity-0 transition-opacity duration-300"
-        style={{ backgroundImage: `url(${cherryBlossomMistMobile})` }}
+        className="block md:hidden absolute inset-0 bg-cover bg-top bg-fixed opacity-100 dark:opacity-0 transition-opacity duration-300"
+        style={{ 
+          backgroundImage: `url(${cherryBlossomMistMobile})`,
+          imageRendering: '-webkit-optimize-contrast'
+        }}
       />
 
-      {/* Dark Mode Desktop */}
+      {/* Dark Mode Desktop (HD 2560x1440) */}
       <div 
-        className="hidden md:block absolute inset-0 bg-cover bg-center bg-fixed opacity-0 dark:opacity-90 transition-opacity duration-300"
-        style={{ backgroundImage: `url(${cherryBlossomMistDark})` }}
+        className="hidden md:block absolute inset-0 bg-cover bg-center bg-fixed opacity-0 dark:opacity-100 transition-opacity duration-300"
+        style={{ 
+          backgroundImage: `url(${cherryBlossomMistDark})`,
+          imageRendering: '-webkit-optimize-contrast'
+        }}
       />
-      {/* Dark Mode Mobile */}
+      {/* Dark Mode Mobile (QHD 1440x2560) */}
       <div 
-        className="block md:hidden absolute inset-0 bg-cover bg-top bg-fixed opacity-0 dark:opacity-90 transition-opacity duration-300"
-        style={{ backgroundImage: `url(${cherryBlossomMistMobileDark})` }}
+        className="block md:hidden absolute inset-0 bg-cover bg-top bg-fixed opacity-0 dark:opacity-100 transition-opacity duration-300"
+        style={{ 
+          backgroundImage: `url(${cherryBlossomMistMobileDark})`,
+          imageRendering: '-webkit-optimize-contrast'
+        }}
       />
 
       <div className="absolute inset-0 bg-gradient-to-b from-stone-900/[0.02] via-transparent to-stone-900/[0.04] dark:from-black/40 dark:to-black/60" />
