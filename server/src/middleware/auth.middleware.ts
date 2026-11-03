@@ -18,21 +18,38 @@ export const authenticateAdmin = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    let token: string | undefined = req.cookies?.admin_token;
+    let token: string | undefined;
 
-    if (!token && req.headers.authorization?.startsWith('Bearer ')) {
+    // Prefer explicit Authorization: Bearer header from frontend client
+    if (req.headers.authorization?.startsWith('Bearer ')) {
       token = req.headers.authorization.split(' ')[1];
+    } else if (req.cookies?.admin_token) {
+      token = req.cookies.admin_token;
     }
 
     if (!token) {
       throw new AppError('Unauthorized access. Please login first.', 401);
     }
 
-    const decoded = jwt.verify(token, env.JWT_SECRET) as {
-      id: string;
-      email: string;
-      role: string;
-    };
+    let decoded: any;
+    try {
+      decoded = jwt.verify(token, env.JWT_SECRET) as {
+        id: string;
+        email: string;
+        role: string;
+      };
+    } catch (jwtErr: any) {
+      // If primary token failed, test cookie fallback if available
+      if (req.cookies?.admin_token && token !== req.cookies.admin_token) {
+        decoded = jwt.verify(req.cookies.admin_token, env.JWT_SECRET) as {
+          id: string;
+          email: string;
+          role: string;
+        };
+      } else {
+        throw jwtErr;
+      }
+    }
 
     // Verify admin is still active in database
     const admin = await prisma.admin.findUnique({
@@ -48,7 +65,7 @@ export const authenticateAdmin = async (
     next();
   } catch (error: any) {
     if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
-      next(new AppError('Invalid or expired authentication token.', 401));
+      next(new AppError('Invalid or expired authentication token. Please login again.', 401));
       return;
     }
     next(error);

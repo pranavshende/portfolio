@@ -6,7 +6,7 @@ import {
   Calendar, BarChart3, Globe, Settings, History, Shield, 
   LogOut, ExternalLink, Menu, X, Sun, Moon, Sparkles, ChevronRight 
 } from 'lucide-react';
-import { api, removeStoredToken } from '@/lib/api';
+import { api, getStoredToken, removeStoredToken } from '@/lib/api';
 import { useMode } from '@/contexts/ModeContext';
 
 // Import all 16 modular sections
@@ -62,12 +62,19 @@ export const AdminLayout: React.FC = () => {
 
   // Protected Auth Guard Check
   useEffect(() => {
+    const token = getStoredToken();
+    if (!token) {
+      navigate('/admin/login', { replace: true });
+      return;
+    }
+
     api.getAdminMe()
       .then((res: any) => {
         setAdminUser(res.admin || res.data || { name: 'Pranav Shende', email: 'pranavshende97@gmail.com', role: 'SUPER_ADMIN' });
       })
       .catch((err) => {
         console.warn('Admin authentication required:', err.message);
+        removeStoredToken();
         navigate('/admin/login', { replace: true });
       })
       .finally(() => setIsVerifying(false));
@@ -84,7 +91,7 @@ export const AdminLayout: React.FC = () => {
     }
   };
 
-  if (isVerifying) {
+  if (isVerifying || !adminUser) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#f7f2ea] dark:bg-[#0c0d10] text-stone-900 dark:text-stone-100 font-sans">
         <div className="flex flex-col items-center space-y-3">
