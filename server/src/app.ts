@@ -48,6 +48,18 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 
+// Root endpoint (for Render health check & root visitors)
+app.all('/', (_req, res) => {
+  res.status(200).json({
+    status: 'online',
+    name: 'Pranav Shende Portfolio API Server',
+    version: '1.0.0',
+    documentation: '/api/v1',
+    health: '/api/v1/health',
+    timestamp: new Date().toISOString(),
+  });
+});
+
 // Rate limiter for API
 app.use('/api', apiRateLimiter);
 
