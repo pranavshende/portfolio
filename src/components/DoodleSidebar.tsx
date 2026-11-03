@@ -278,31 +278,31 @@ export const DoodleSidebar: React.FC = () => {
       {/* ─────────────────────────────────────────────────────────────
           MOBILE TOP NAVBAR & DRAWER
       ────────────────────────────────────────────────────────────── */}
-      <header className="md:hidden sticky top-0 left-0 right-0 h-14 bg-[#f7f2ea]/85 dark:bg-[#0c0d10]/90 backdrop-blur-md border-b border-stone-800/10 dark:border-stone-700/30 px-4 flex items-center justify-between z-50 transition-colors">
+      <header className="md:hidden sticky top-0 left-0 right-0 h-14 bg-[#f7f2ea]/90 dark:bg-[#0c0d10]/90 backdrop-blur-md border-b border-stone-800/10 dark:border-stone-700/30 px-3 sm:px-4 flex items-center justify-between z-40 transition-colors">
         <button
           type="button"
           onClick={() => setProfileModalOpen(true)}
           className="flex items-center gap-2 text-left group cursor-pointer focus:outline-hidden"
           title="Click to view full profile details & bio"
         >
-          <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-zinc-900 dark:border-zinc-700 shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
+          <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-[#8b2323] shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
             <img
               src={profilePhoto}
               alt="Pranav Shende"
-              className="w-full h-full object-cover scale-[1.7] translate-y-1"
+              className="w-full h-full object-cover scale-[1.7] translate-y-0.5"
             />
           </div>
           <div>
-            <span className="font-bold text-base text-stone-950 dark:text-stone-50 leading-none block group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+            <span className="font-bold text-sm text-stone-950 dark:text-stone-50 leading-none block group-hover:text-[#8b2323] dark:group-hover:text-red-400 transition-colors">
               Pranav Shende
             </span>
             <span className="text-[10px] text-blue-700 dark:text-blue-300 font-semibold leading-none block mt-0.5">
-              Open to Work • Tap for details
+              Open to Work • Details
             </span>
           </div>
         </button>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1 sm:gap-1.5">
           <button
             type="button"
             onClick={toggleTheme}
@@ -310,17 +310,55 @@ export const DoodleSidebar: React.FC = () => {
             title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
             aria-label="Toggle dark mode"
           >
-            {isDark ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-stone-700" />}
+            {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-stone-700" />}
           </button>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-1.5 rounded-lg text-stone-800 dark:text-stone-200 hover:bg-stone-900/5 dark:hover:bg-white/5 focus:outline-none"
             aria-label="Toggle navigation menu"
           >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {mobileMenuOpen ? <X className="w-5 h-5 text-[#8b2323]" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </header>
+
+      {/* ─────────────────────────────────────────────────────────────
+          MOBILE FLOATING BOTTOM DOCK
+          Instant 1-tap access to Home, About, Art, Arcade
+      ────────────────────────────────────────────────────────────── */}
+      <nav 
+        aria-label="Mobile Navigation Dock"
+        className="md:hidden fixed bottom-3 inset-x-0 z-50 flex justify-center px-3 pointer-events-none"
+      >
+        <div className="pointer-events-auto flex items-center gap-1 p-1 rounded-full bg-[#fbf7f2]/95 dark:bg-[#14161d]/95 backdrop-blur-xl border border-stone-800/15 dark:border-stone-700/50 shadow-2xl">
+          {navItems.map((item) => {
+            const isActive =
+              item.path === '/'
+                ? location.pathname === '/'
+                : location.pathname.startsWith(item.path);
+
+            return (
+              <NavLink
+                key={item.name}
+                to={item.path}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${
+                  isActive
+                    ? '!bg-[#8b2323] !text-white shadow-xs'
+                    : 'text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white hover:bg-stone-200/50 dark:hover:bg-stone-800/50'
+                }`}
+                style={isActive ? { backgroundColor: '#8b2323', color: '#ffffff' } : undefined}
+              >
+                <span className="shrink-0 scale-90" style={isActive ? { color: '#ffffff' } : undefined}>
+                  {item.icon}
+                </span>
+                <span style={isActive ? { color: '#ffffff' } : undefined}>
+                  {item.name}
+                </span>
+              </NavLink>
+            );
+          })}
+        </div>
+      </nav>
 
       {/* Mobile Drawer Menu */}
       <AnimatePresence>

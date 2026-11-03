@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { DoodleSidebar } from './DoodleSidebar';
 import cherryBlossomMist from '@/photo/cherry_blossom_mist.jpg';
 import cherryBlossomMistDark from '@/photo/cherry_blossom_mist_dark.jpg';
+import cherryBlossomMistMobile from '@/photo/cherry_blossom_mist_mobile.jpg';
+import cherryBlossomMistMobileDark from '@/photo/cherry_blossom_mist_mobile_dark.jpg';
 
 interface DoodleLayoutProps {
   children: React.ReactNode;
@@ -25,30 +27,42 @@ export const DoodleLayout: React.FC<DoodleLayoutProps> = ({ children }) => {
 
   return (
     <div className="min-h-screen bg-[#f7f2ea] dark:bg-[#0c0d10] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-[#8b2323] selection:text-white relative transition-colors duration-200">
-      {/* ── Japanese Cherry Blossom Mist Background (Spans Entire Screen) ── */}
+      {/* ── Japanese Cherry Blossom Mist Background (Responsive Desktop & Mobile) ── */}
       <div 
         className="fixed inset-0 pointer-events-none z-0 overflow-hidden"
         aria-hidden="true"
       >
-        {/* Light mode: Cherry Blossom Mist */}
+        {/* Light Mode Desktop */}
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-fixed opacity-95 dark:opacity-0 transition-opacity duration-300"
+          className="hidden md:block absolute inset-0 bg-cover bg-center bg-fixed opacity-95 dark:opacity-0 transition-opacity duration-300"
           style={{ backgroundImage: `url(${cherryBlossomMist})` }}
         />
-        {/* Dark mode: Nocturnal Cherry Blossom Mist */}
+        {/* Light Mode Mobile (Prominent sakura branch & Mount Fuji) */}
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-fixed opacity-0 dark:opacity-90 transition-opacity duration-300"
+          className="block md:hidden absolute inset-0 bg-cover bg-top bg-fixed opacity-95 dark:opacity-0 transition-opacity duration-300"
+          style={{ backgroundImage: `url(${cherryBlossomMistMobile})` }}
+        />
+
+        {/* Dark Mode Desktop */}
+        <div 
+          className="hidden md:block absolute inset-0 bg-cover bg-center bg-fixed opacity-0 dark:opacity-90 transition-opacity duration-300"
           style={{ backgroundImage: `url(${cherryBlossomMistDark})` }}
         />
+        {/* Dark Mode Mobile */}
+        <div 
+          className="block md:hidden absolute inset-0 bg-cover bg-top bg-fixed opacity-0 dark:opacity-90 transition-opacity duration-300"
+          style={{ backgroundImage: `url(${cherryBlossomMistMobileDark})` }}
+        />
+
         {/* Soft atmospheric gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-stone-900/[0.02] via-transparent to-stone-900/[0.04] dark:from-black/40 dark:to-black/60" />
       </div>
 
       <DoodleSidebar />
 
-      {/* Main Content Area */}
-      <div className="md:pl-[268px] flex flex-col min-h-screen relative z-10">
-        <main className="flex-1 w-full max-w-[1420px] px-4 sm:px-8 lg:px-12 py-6 sm:py-8">
+      {/* Main Content Area - Generous width filling the screen without excessive right-side void */}
+      <div className="md:pl-[264px] flex flex-col min-h-screen relative z-10">
+        <main className="flex-1 w-full max-w-[1700px] px-4 sm:px-6 md:px-8 lg:px-10 xl:pr-14 py-6 sm:py-8 pb-24 md:pb-8">
           {children}
         </main>
       </div>

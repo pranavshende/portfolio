@@ -16,21 +16,35 @@ import PageSwitchSpinner from "./components/PageSwitchSpinner";
 import { AnimatePresence, motion } from "framer-motion";
 import cherryBlossomMist from "@/photo/cherry_blossom_mist.jpg";
 import cherryBlossomMistDark from "@/photo/cherry_blossom_mist_dark.jpg";
+import cherryBlossomMistMobile from "@/photo/cherry_blossom_mist_mobile.jpg";
+import cherryBlossomMistMobileDark from "@/photo/cherry_blossom_mist_mobile_dark.jpg";
 
 const queryClient = new QueryClient();
 
 const GlobalBackground = () => (
   <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
-    {/* Light Mode: Cherry Blossom Mist */}
+    {/* Light Mode Desktop */}
     <div 
-      className="absolute inset-0 bg-cover bg-center bg-fixed opacity-95 dark:opacity-0 transition-opacity duration-300"
+      className="hidden md:block absolute inset-0 bg-cover bg-center bg-fixed opacity-95 dark:opacity-0 transition-opacity duration-300"
       style={{ backgroundImage: `url(${cherryBlossomMist})` }}
     />
-    {/* Dark Mode: Nocturnal Cherry Blossom Mist */}
+    {/* Light Mode Mobile (Prominent sakura branch & Mount Fuji) */}
     <div 
-      className="absolute inset-0 bg-cover bg-center bg-fixed opacity-0 dark:opacity-90 transition-opacity duration-300"
+      className="block md:hidden absolute inset-0 bg-cover bg-top bg-fixed opacity-95 dark:opacity-0 transition-opacity duration-300"
+      style={{ backgroundImage: `url(${cherryBlossomMistMobile})` }}
+    />
+
+    {/* Dark Mode Desktop */}
+    <div 
+      className="hidden md:block absolute inset-0 bg-cover bg-center bg-fixed opacity-0 dark:opacity-90 transition-opacity duration-300"
       style={{ backgroundImage: `url(${cherryBlossomMistDark})` }}
     />
+    {/* Dark Mode Mobile */}
+    <div 
+      className="block md:hidden absolute inset-0 bg-cover bg-top bg-fixed opacity-0 dark:opacity-90 transition-opacity duration-300"
+      style={{ backgroundImage: `url(${cherryBlossomMistMobileDark})` }}
+    />
+
     <div className="absolute inset-0 bg-gradient-to-b from-stone-900/[0.02] via-transparent to-stone-900/[0.04] dark:from-black/40 dark:to-black/60" />
   </div>
 );

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import cherryBlossomMist from "@/photo/cherry_blossom_mist.jpg";
+import cherryBlossomMistMobile from "@/photo/cherry_blossom_mist_mobile.jpg";
 
 interface InitialLoaderProps {
   onComplete: () => void;
@@ -76,12 +77,19 @@ export const InitialLoader: React.FC<InitialLoaderProps> = ({ onComplete }) => {
           exit={{ opacity: 0, scale: 1.02 }}
           transition={{ duration: 0.4, ease: "easeInOut" }}
         >
-          {/* Fullscreen Cherry Blossom Mist Artwork */}
+          {/* Fullscreen Cherry Blossom Mist Artwork (Desktop & Mobile) */}
           <div
-            className="absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-1000 scale-100"
+            className="hidden md:block absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-1000 scale-100"
             style={{
               backgroundImage: `url(${cherryBlossomMist})`,
               backgroundPosition: "center center",
+            }}
+          />
+          <div
+            className="block md:hidden absolute inset-0 w-full h-full bg-cover bg-top transition-transform duration-1000 scale-100"
+            style={{
+              backgroundImage: `url(${cherryBlossomMistMobile})`,
+              backgroundPosition: "top center",
             }}
           />
 
