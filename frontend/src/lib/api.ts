@@ -90,6 +90,19 @@ export interface ContactPayload {
   attachmentUrl?: string;
 }
 
+const normalizeInquiryType = (val: string): string => {
+  const s = String(val || '').toUpperCase().replace(/[^A-Z]/g, '_');
+  if (s.includes('JOB')) return 'JOB_OPPORTUNITY';
+  if (s.includes('INTERN')) return 'INTERNSHIP';
+  if (s.includes('FREELANCE')) return 'FREELANCE';
+  if (s.includes('COLLAB')) return 'COLLABORATION';
+  if (s.includes('TECH')) return 'TECH_DISCUSSION';
+  if (s.includes('GENERAL')) return 'GENERAL';
+  const valid = ['JOB_OPPORTUNITY', 'INTERNSHIP', 'FREELANCE', 'COLLABORATION', 'TECH_DISCUSSION', 'GENERAL', 'OTHER'];
+  if (valid.includes(val)) return val;
+  return 'OTHER';
+};
+
 export const api = {
   // Public
   getProjects: (category?: string) => 
@@ -101,8 +114,9 @@ export const api = {
   submitContact: (payload: ContactPayload) => {
     const data = {
       ...payload,
-      fullName: payload.fullName || payload.name,
-      name: payload.name || payload.fullName,
+      fullName: (payload.fullName || payload.name || '').trim(),
+      name: (payload.name || payload.fullName || '').trim(),
+      inquiryType: normalizeInquiryType(payload.inquiryType),
       attachmentUrl: payload.attachmentUrl && payload.attachmentUrl.trim().length > 0 ? payload.attachmentUrl.trim() : undefined,
     };
     return apiRequest('/contact', { method: 'POST', data });
