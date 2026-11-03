@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageSquare, Send, X, Bot, Sparkles, User, Loader2, ArrowUpRight } from "lucide-react";
+import { api } from "@/lib/api";
 
 interface Message {
   sender: "user" | "bot";
@@ -191,70 +192,82 @@ const AskAIChatbot: React.FC<ChatbotProps> = ({ isOpen, onClose }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
 
-  const handleSendMessage = (text: string) => {
+  const handleSendMessage = async (text: string) => {
     if (!text.trim()) return;
 
     // Add user message
-    setMessages((prev) => [...prev, { sender: "user", text }]);
+    const userMsg: Message = { sender: "user", text };
+    setMessages((prev) => [...prev, userMsg]);
     setInputValue("");
     setIsTyping(true);
 
-    // Simulate typing delay
-    setTimeout(() => {
+    try {
+      // First attempt to call the backend RAG AI endpoint
+      const response = await api.chatAI(text);
       setIsTyping(false);
-      const answer = findBestAnswer(text);
 
-      if (answer === "__resume__") {
-        setMessages((prev) => [
-          ...prev,
-          {
-            sender: "bot",
-            text: "Here is Pranav's latest resume and documents hosted on Google Drive:",
-            isCustomNode: (
+      if (response && response.reply) {
+        setMessages((prev) => [...prev, { sender: "bot", text: response.reply }]);
+        return;
+      }
+    } catch {
+      // Fallback gracefully to offline verified knowledge base
+    }
+
+    // Offline / fallback response
+    setIsTyping(false);
+    const answer = findBestAnswer(text);
+
+    if (answer === "__resume__") {
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: "bot",
+          text: "Here is Pranav's latest resume and documents hosted on Google Drive:",
+          isCustomNode: (
+            <a
+              href="https://drive.google.com/drive/folders/1z3-tvjY5U1OP90Dls4IfLwV10E8e4qij?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 text-xs font-medium border border-emerald-500/30 transition-all active:scale-95"
+            >
+              <span>Download Resume</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </a>
+          ),
+        },
+      ]);
+    } else if (answer === "__contact__") {
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: "bot",
+          text: "You can reach Pranav via the following channels:",
+          isCustomNode: (
+            <div className="mt-2 flex flex-col gap-2">
               <a
-                href="https://drive.google.com/drive/folders/1z3-tvjY5U1OP90Dls4IfLwV10E8e4qij?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 text-xs font-medium border border-emerald-500/30 transition-all active:scale-95"
+                href="mailto:pranavshende97@gmail.com"
+                className="inline-flex items-center justify-between px-3 py-2 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-300 hover:text-white text-xs transition-all"
               >
-                <span>Download Resume</span>
+                <span>Email: pranavshende97@gmail.com</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
-            ),
-          },
-        ]);
-      } else if (answer === "__contact__") {
-        setMessages((prev) => [
-          ...prev,
-          {
-            sender: "bot",
-            text: "You can reach Pranav via the following channels:",
-            isCustomNode: (
-              <div className="mt-2 flex flex-col gap-2">
-                <a
-                  href="mailto:pranavshende97@gmail.com"
-                  className="inline-flex items-center justify-between px-3 py-2 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-300 hover:text-white text-xs transition-all"
-                >
-                  <span>Email: pranavshende97@gmail.com</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </a>
-                <a
-                  href="https://linkedin.com/in/pranavshende"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-between px-3 py-2 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-300 hover:text-white text-xs transition-all"
-                >
-                  <span>LinkedIn Profile</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </a>
-              </div>
-            ),
-          },
-        ]);
-      } else {
-        setMessages((prev) => [...prev, { sender: "bot", text: answer }]);
-      }
-    }, 600 + Math.random() * 400); // 600ms - 1000ms delay
+              <a
+                href="https://linkedin.com/in/pranavshende"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-between px-3 py-2 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-300 hover:text-white text-xs transition-all"
+              >
+                <span>LinkedIn Profile</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          ),
+        },
+      ]);
+    } else {
+      setMessages((prev) => [...prev, { sender: "bot", text: answer }]);
+    }
   };
 
   return (

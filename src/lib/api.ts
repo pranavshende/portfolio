@@ -1,0 +1,262 @@
+/**
+ * Client API Service for Pranav Shende Portfolio
+ * Connects Frontend to Node.js / Express / Prisma / PostgreSQL Backend
+ */
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1';
+
+// Token storage key
+const TOKEN_KEY = 'pranav_portfolio_admin_token';
+
+export const getStoredToken = (): string | null => {
+  return localStorage.getItem(TOKEN_KEY) || sessionStorage.getItem(TOKEN_KEY);
+};
+
+export const setStoredToken = (token: string, remember = true): void => {
+  if (remember) {
+    localStorage.setItem(TOKEN_KEY, token);
+  } else {
+    sessionStorage.setItem(TOKEN_KEY, token);
+  }
+};
+
+export const removeStoredToken = (): void => {
+  localStorage.removeItem(TOKEN_KEY);
+  sessionStorage.removeItem(TOKEN_KEY);
+};
+
+interface RequestOptions extends RequestInit {
+  data?: any;
+}
+
+export async function apiRequest<T = any>(endpoint: string, options: RequestOptions = {}): Promise<T> {
+  const url = `${API_BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+  
+  const headers = new Headers(options.headers || {});
+  headers.set('Content-Type', 'application/json');
+
+  const token = getStoredToken();
+  if (token) {
+    headers.set('Authorization', `Bearer ${token}`);
+  }
+
+  const config: RequestInit = {
+    ...options,
+    headers,
+    credentials: 'include', // Include HTTP-only cookies if present
+  };
+
+  if (options.data) {
+    config.body = JSON.stringify(options.data);
+  }
+
+  try {
+    const response = await fetch(url, config);
+    const result = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      const errorMessage = result.message || `Request failed with status ${response.status}`;
+      const error = new Error(errorMessage) as any;
+      error.status = response.status;
+      error.data = result;
+      throw error;
+    }
+
+    return result as T;
+  } catch (err: any) {
+    // If backend is not running, log gracefully
+    if (err.name === 'TypeError' && err.message.includes('fetch')) {
+      console.warn(`[API] Unable to reach backend server at ${API_BASE_URL}. Ensure backend is running.`);
+    }
+    throw err;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// PUBLIC ENDPOINTS
+// ─────────────────────────────────────────────────────────────
+
+export interface ContactPayload {
+  name: string;
+  email: string;
+  company?: string;
+  subject: string;
+  inquiryType: string;
+  message: string;
+  attachmentUrl?: string;
+}
+
+export const api = {
+  // Public
+  getProjects: (category?: string) => 
+    apiRequest(`/projects${category ? `?category=${category}` : ''}`),
+  
+  getProject: (idOrSlug: string) => 
+    apiRequest(`/projects/${idOrSlug}`),
+
+  submitContact: (payload: ContactPayload) => 
+    apiRequest('/contact', { method: 'POST', data: payload }),
+
+  trackResumeDownload: (version?: string) => 
+    apiRequest('/resume/track-download', { method: 'POST', data: { version } }),
+
+  getResume: () => 
+    apiRequest('/resume'),
+
+  recordAnalytics: (data: { eventType: string; pageUrl?: string; projectSlug?: string; referrer?: string; metadata?: any }) => 
+    apiRequest('/analytics/event', { method: 'POST', data }),
+
+  chatAI: (message: string, history?: Array<{ role: string; content: string }>) => 
+    apiRequest('/ai/chat', { method: 'POST', data: { message, history } }),
+
+  subscribeNewsletter: (email: string, name?: string) => 
+    apiRequest('/content/newsletter/subscribe', { method: 'POST', data: { email, name } }),
+
+  getContent: (type: 'experience' | 'skills' | 'achievements' | 'education' | 'testimonials' | 'blog' | 'settings') => 
+    apiRequest(`/content/${type}`),
+
+  submitTestimonial: (data: any) => 
+    apiRequest('/content/testimonials', { method: 'POST', data }),
+
+  requestBooking: (data: any) => 
+    apiRequest('/content/bookings', { method: 'POST', data }),
+
+  // ─────────────────────────────────────────────────────────────
+  // AUTH ENDPOINTS
+  // ─────────────────────────────────────────────────────────────
+  adminLogin: (data: { email: string; password: string }) => 
+    apiRequest('/auth/login', { method: 'POST', data }),
+
+  adminLogout: () => 
+    apiRequest('/auth/logout', { method: 'POST' }),
+
+  getAdminMe: () => 
+    apiRequest('/auth/me'),
+
+  changePassword: (data: { currentPassword: string; newPassword: string }) => 
+    apiRequest('/auth/change-password', { method: 'PUT', data }),
+
+  // ─────────────────────────────────────────────────────────────
+  // ADMIN DASHBOARD & CRUD ENDPOINTS
+  // ─────────────────────────────────────────────────────────────
+  getAnalyticsDashboard: (period = '30d') => 
+    apiRequest(`/analytics/dashboard?period=${period}`),
+
+  // Messages / Inquiries
+  getInquiries: (params: { page?: number; limit?: number; status?: string; inquiryType?: string; search?: string } = {}) => {
+    const query = new URLSearchParams();
+    if (params.page) query.set('page', String(params.page));
+    if (params.limit) query.set('limit', String(params.limit));
+    if (params.status && params.status !== 'ALL') query.set('status', params.status);
+    if (params.inquiryType && params.inquiryType !== 'ALL') query.set('inquiryType', params.inquiryType);
+    if (params.search) query.set('search', params.search);
+    return apiRequest(`/contact?${query.toString()}`);
+  },
+
+  updateInquiry: (id: string, data: { status?: string; adminNotes?: string; isRead?: boolean }) => 
+    apiRequest(`/contact/${id}`, { method: 'PATCH', data }),
+
+  deleteInquiry: (id: string) => 
+    apiRequest(`/contact/${id}`, { method: 'DELETE' }),
+
+  exportInquiriesCSV: () => 
+    apiRequest('/contact/export/csv'),
+
+  // Projects CMS
+  createProject: (data: any) => 
+    apiRequest('/projects', { method: 'POST', data }),
+
+  updateProject: (id: string, data: any) => 
+    apiRequest(`/projects/${id}`, { method: 'PUT', data }),
+
+  deleteProject: (id: string) => 
+    apiRequest(`/projects/${id}`, { method: 'DELETE' }),
+
+  // Experiences
+  createExperience: (data: any) => 
+    apiRequest('/content/experience', { method: 'POST', data }),
+
+  updateExperience: (id: string, data: any) => 
+    apiRequest(`/content/experience/${id}`, { method: 'PUT', data }),
+
+  deleteExperience: (id: string) => 
+    apiRequest(`/content/experience/${id}`, { method: 'DELETE' }),
+
+  // Skills
+  createSkill: (data: any) => 
+    apiRequest('/content/skills', { method: 'POST', data }),
+
+  updateSkill: (id: string, data: any) => 
+    apiRequest(`/content/skills/${id}`, { method: 'PUT', data }),
+
+  deleteSkill: (id: string) => 
+    apiRequest(`/content/skills/${id}`, { method: 'DELETE' }),
+
+  // Achievements
+  createAchievement: (data: any) => 
+    apiRequest('/content/achievements', { method: 'POST', data }),
+
+  updateAchievement: (id: string, data: any) => 
+    apiRequest(`/content/achievements/${id}`, { method: 'PUT', data }),
+
+  deleteAchievement: (id: string) => 
+    apiRequest(`/content/achievements/${id}`, { method: 'DELETE' }),
+
+  // Education
+  createEducation: (data: any) => 
+    apiRequest('/content/education', { method: 'POST', data }),
+
+  updateEducation: (id: string, data: any) => 
+    apiRequest(`/content/education/${id}`, { method: 'PUT', data }),
+
+  deleteEducation: (id: string) => 
+    apiRequest(`/content/education/${id}`, { method: 'DELETE' }),
+
+  // Testimonials moderation
+  moderateTestimonial: (id: string, data: { isApproved?: boolean; isFeatured?: boolean }) => 
+    apiRequest(`/content/testimonials/${id}`, { method: 'PATCH', data }),
+
+  deleteTestimonial: (id: string) => 
+    apiRequest(`/content/testimonials/${id}`, { method: 'DELETE' }),
+
+  // Blog CMS
+  createBlogPost: (data: any) => 
+    apiRequest('/content/blog', { method: 'POST', data }),
+
+  updateBlogPost: (id: string, data: any) => 
+    apiRequest(`/content/blog/${id}`, { method: 'PUT', data }),
+
+  deleteBlogPost: (id: string) => 
+    apiRequest(`/content/blog/${id}`, { method: 'DELETE' }),
+
+  // Newsletter
+  getSubscribers: () => 
+    apiRequest('/content/newsletter/subscribers'),
+
+  deleteSubscriber: (id: string) => 
+    apiRequest(`/content/newsletter/subscribers/${id}`, { method: 'DELETE' }),
+
+  // Bookings
+  getBookings: () => 
+    apiRequest('/content/bookings'),
+
+  updateBooking: (id: string, data: any) => 
+    apiRequest(`/content/bookings/${id}`, { method: 'PATCH', data }),
+
+  deleteBooking: (id: string) => 
+    apiRequest(`/content/bookings/${id}`, { method: 'DELETE' }),
+
+  // Resume Management
+  uploadResume: (data: { title: string; fileUrl: string; version?: string; isCurrent?: boolean }) => 
+    apiRequest('/resume', { method: 'POST', data }),
+
+  // Site Settings & SEO
+  updateSettings: (data: any) => 
+    apiRequest('/content/settings', { method: 'PUT', data }),
+
+  // Logs & Security
+  getActivityLogs: () => 
+    apiRequest('/analytics/logs'),
+};
+
+export default api;

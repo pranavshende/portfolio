@@ -1,0 +1,227 @@
+import { Request, Response, NextFunction } from 'express';
+import { z } from 'zod';
+import { prisma } from '../config/prisma.js';
+import { emailService } from '../services/email.service.js';
+import { AppError } from '../middleware/errorHandler.js';
+import { InquiryType, InquiryStatus } from '@prisma/client';
+
+export const createInquirySchema = z.object({
+  fullName: z.string().min(2, 'Full Name is required'),
+  email: z.string().email('Please enter a valid email address'),
+  company: z.string().optional().nullable(),
+  subject: z.string().min(3, 'Subject must be at least 3 characters'),
+  inquiryType: z.nativeEnum(InquiryType).default(InquiryType.GENERAL),
+  message: z.string().min(10, 'Message must be at least 10 characters'),
+  attachmentUrl: z.string().url().optional().nullable().or(z.literal('')),
+});
+
+export const updateStatusSchema = z.object({
+  status: z.nativeEnum(InquiryStatus),
+  adminNotes: z.string().optional(),
+});
+
+export const contactController = {
+  /**
+   * Public: Submit contact form
+   */
+  async submit(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const data = req.body;
+
+      // Generate human-friendly inquiry ticket number e.g. INQ-2026-0042
+      const year = new Date().getFullYear();
+      const count = await prisma.contactInquiry.count();
+      const inquiryNumber = `INQ-${year}-${String(count + 1).padStart(4, '0')}`;
+
+      const inquiry = await prisma.contactInquiry.create({
+        data: {
+          inquiryNumber,
+          fullName: data.fullName,
+          email: data.email.toLowerCase().trim(),
+          company: data.company || null,
+          subject: data.subject,
+          inquiryType: data.inquiryType,
+          message: data.message,
+          attachmentUrl: data.attachmentUrl || null,
+          ipAddress: req.ip || req.socket.remoteAddress,
+          userAgent: req.headers['user-agent'] || null,
+        },
+      });
+
+      // Send inbound email notification and confirmation in background
+      Promise.allSettled([
+        emailService.sendContactNotification(inquiry),
+        emailService.sendContactAcknowledgment(inquiry.email, inquiry.fullName, inquiry.inquiryNumber, inquiry.subject),
+      ]).catch(console.error);
+
+      res.status(201).json({
+        success: true,
+        message: 'Your inquiry has been submitted successfully. I will get back to you shortly.',
+        data: {
+          inquiryNumber: inquiry.inquiryNumber,
+          createdAt: inquiry.createdAt,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  /**
+   * Admin: List all inquiries with filtering & search
+   */
+  async getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { status, type, search, page = '1', limit = '20' } = req.query;
+
+      const pageNum = parseInt(page as string, 10) || 1;
+      const limitNum = parseInt(limit as string, 10) || 20;
+      const skip = (pageNum - 1) * limitNum;
+
+      const where: any = {};
+
+      if (status && typeof status === 'string' && status !== 'ALL') {
+        where.status = status as InquiryStatus;
+      }
+
+      if (type && typeof type === 'string' && type !== 'ALL') {
+        where.inquiryType = type as InquiryType;
+      }
+
+      if (search && typeof search === 'string') {
+        where.OR = [
+          { fullName: { contains: search, mode: 'insensitive' } },
+          { email: { contains: search, mode: 'insensitive' } },
+          { subject: { contains: search, mode: 'insensitive' } },
+          { inquiryNumber: { contains: search, mode: 'insensitive' } },
+        ];
+      }
+
+      const [inquiries, total] = await Promise.all([
+        prisma.contactInquiry.findMany({
+          where,
+          skip,
+          take: limitNum,
+          orderBy: { createdAt: 'desc' },
+        }),
+        prisma.contactInquiry.count({ where }),
+      ]);
+
+      res.status(200).json({
+        success: true,
+        data: inquiries,
+        pagination: {
+          page: pageNum,
+          limit: limitNum,
+          total,
+          pages: Math.ceil(total / limitNum),
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  /**
+   * Admin: Get single inquiry details
+   */
+  async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const id = String(req.params.id);
+
+      const inquiry = await prisma.contactInquiry.findUnique({
+        where: { id },
+      });
+
+      if (!inquiry) {
+        throw new AppError('Inquiry not found', 404);
+      }
+
+      res.status(200).json({
+        success: true,
+        data: inquiry,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  /**
+   * Admin: Update inquiry status and private notes
+   */
+  async updateStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const id = String(req.params.id);
+      const { status, adminNotes } = req.body;
+
+      const updated = await prisma.contactInquiry.update({
+        where: { id },
+        data: {
+          status,
+          ...(adminNotes !== undefined ? { adminNotes } : {}),
+        },
+      });
+
+      res.status(200).json({
+        success: true,
+        message: 'Status updated successfully',
+        data: updated,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  /**
+   * Admin: Delete inquiry
+   */
+  async delete(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const id = String(req.params.id);
+
+      await prisma.contactInquiry.delete({
+        where: { id },
+      });
+
+      res.status(200).json({
+        success: true,
+        message: 'Inquiry deleted successfully',
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  /**
+   * Admin: Export all inquiries as CSV
+   */
+  async exportCsv(_req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const inquiries = await prisma.contactInquiry.findMany({
+        orderBy: { createdAt: 'desc' },
+      });
+
+      const header = 'Inquiry Number,Full Name,Email,Company,Inquiry Type,Subject,Status,Created At\n';
+      const rows = inquiries
+        .map((i) =>
+          [
+            `"${i.inquiryNumber}"`,
+            `"${i.fullName.replace(/"/g, '""')}"`,
+            `"${i.email}"`,
+            `"${(i.company || '').replace(/"/g, '""')}"`,
+            `"${i.inquiryType}"`,
+            `"${i.subject.replace(/"/g, '""')}"`,
+            `"${i.status}"`,
+            `"${i.createdAt.toISOString()}"`,
+          ].join(',')
+        )
+        .join('\n');
+
+      res.setHeader('Content-Type', 'text/csv');
+      res.setHeader('Content-Disposition', 'attachment; filename="inquiries_export.csv"');
+      res.status(200).send(header + rows);
+    } catch (error) {
+      next(error);
+    }
+  },
+};

@@ -8,6 +8,8 @@ import Arcade from "@/pages/Arcade";
 import ProjectsPage from "@/pages/ProjectsPage";
 import NotFound from "@/pages/NotFound";
 import PlayGames from "@/pages/PlayGames";
+import AdminLogin from "@/pages/admin/AdminLogin";
+import AdminLayout from "@/pages/admin/AdminLayout";
 import { ModeProvider } from "@/contexts/ModeContext";
 
 import React, { useState, useEffect, useRef } from "react";
@@ -21,33 +23,40 @@ import cherryBlossomMistMobileDark from "@/photo/cherry_blossom_mist_mobile_dark
 
 const queryClient = new QueryClient();
 
-const GlobalBackground = () => (
-  <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
-    {/* Light Mode Desktop */}
-    <div 
-      className="hidden md:block absolute inset-0 bg-cover bg-center bg-fixed opacity-95 dark:opacity-0 transition-opacity duration-300"
-      style={{ backgroundImage: `url(${cherryBlossomMist})` }}
-    />
-    {/* Light Mode Mobile (Prominent sakura branch & Mount Fuji) */}
-    <div 
-      className="block md:hidden absolute inset-0 bg-cover bg-top bg-fixed opacity-95 dark:opacity-0 transition-opacity duration-300"
-      style={{ backgroundImage: `url(${cherryBlossomMistMobile})` }}
-    />
+const GlobalBackground = () => {
+  const { pathname } = useLocation();
+  if (pathname.startsWith('/admin')) {
+    return null;
+  }
 
-    {/* Dark Mode Desktop */}
-    <div 
-      className="hidden md:block absolute inset-0 bg-cover bg-center bg-fixed opacity-0 dark:opacity-90 transition-opacity duration-300"
-      style={{ backgroundImage: `url(${cherryBlossomMistDark})` }}
-    />
-    {/* Dark Mode Mobile */}
-    <div 
-      className="block md:hidden absolute inset-0 bg-cover bg-top bg-fixed opacity-0 dark:opacity-90 transition-opacity duration-300"
-      style={{ backgroundImage: `url(${cherryBlossomMistMobileDark})` }}
-    />
+  return (
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+      {/* Light Mode Desktop */}
+      <div 
+        className="hidden md:block absolute inset-0 bg-cover bg-center bg-fixed opacity-95 dark:opacity-0 transition-opacity duration-300"
+        style={{ backgroundImage: `url(${cherryBlossomMist})` }}
+      />
+      {/* Light Mode Mobile (Prominent sakura branch & Mount Fuji) */}
+      <div 
+        className="block md:hidden absolute inset-0 bg-cover bg-top bg-fixed opacity-95 dark:opacity-0 transition-opacity duration-300"
+        style={{ backgroundImage: `url(${cherryBlossomMistMobile})` }}
+      />
 
-    <div className="absolute inset-0 bg-gradient-to-b from-stone-900/[0.02] via-transparent to-stone-900/[0.04] dark:from-black/40 dark:to-black/60" />
-  </div>
-);
+      {/* Dark Mode Desktop */}
+      <div 
+        className="hidden md:block absolute inset-0 bg-cover bg-center bg-fixed opacity-0 dark:opacity-90 transition-opacity duration-300"
+        style={{ backgroundImage: `url(${cherryBlossomMistDark})` }}
+      />
+      {/* Dark Mode Mobile */}
+      <div 
+        className="block md:hidden absolute inset-0 bg-cover bg-top bg-fixed opacity-0 dark:opacity-90 transition-opacity duration-300"
+        style={{ backgroundImage: `url(${cherryBlossomMistMobileDark})` }}
+      />
+
+      <div className="absolute inset-0 bg-gradient-to-b from-stone-900/[0.02] via-transparent to-stone-900/[0.04] dark:from-black/40 dark:to-black/60" />
+    </div>
+  );
+};
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -125,6 +134,12 @@ const AnimatedRoutes = () => {
           <Route path="/arcade" element={<PageTransition><Arcade /></PageTransition>} />
           <Route path="/projects" element={<PageTransition><Index /></PageTransition>} />
           <Route path="/playgames" element={<PageTransition><PlayGames /></PageTransition>} />
+          
+          {/* Secure Admin Workspace Routes */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/*" element={<AdminLayout />} />
+          <Route path="/admin" element={<AdminLayout />} />
+
           <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
         </Routes>
       </AnimatePresence>

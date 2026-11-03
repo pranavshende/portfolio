@@ -6,6 +6,9 @@ import {
 } from 'lucide-react';
 import { DoodleLayout } from '@/components/DoodleLayout';
 import { Link } from 'react-router-dom';
+import { api } from '@/lib/api';
+import useAnalytics from '@/hooks/useAnalytics';
+import ContactModal from '@/components/ContactModal';
 
 import jansamparkPhoto from '../photo/jansampark.png';
 import solarAnalyticsPhoto from '../photo/solar_analytics.png';
@@ -159,9 +162,53 @@ const projects: Project[] = [
 ];
 
 export const Home: React.FC = () => {
+  useAnalytics();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [contactModalOpen, setContactModalOpen] = useState<boolean>(false);
+  const [projectList, setProjectList] = useState<Project[]>(projects);
   const [gitRepos, setGitRepos] = useState<any[]>([]);
   const [loadingRepos, setLoadingRepos] = useState<boolean>(true);
+
+  // Fetch dynamic projects from backend database with fallback to verified offline data
+  useEffect(() => {
+    const projectImages: Record<string, string> = {
+      electropathy: electropathyBanner,
+      tastifyy: tastifyyBanner,
+      attrition: attritionBanner,
+      jansampark: jansamparkPhoto,
+      solar: solarAnalyticsPhoto,
+      pashurakshak: pashurakshakPhoto,
+    };
+
+    api.getProjects()
+      .then((res: any) => {
+        if (res && res.data && Array.isArray(res.data) && res.data.length > 0) {
+          const mapped: Project[] = res.data.map((p: any) => ({
+            id: p.slug || p.id,
+            client: p.client || 'Engineering Platform',
+            category: p.category || 'Software Engineering',
+            year: p.year || '2026',
+            title: p.title,
+            subtitle: p.subtitle || p.title,
+            description: p.description,
+            tech: Array.isArray(p.techStack) ? p.techStack : [],
+            highlights: Array.isArray(p.keyFeatures) ? p.keyFeatures : [],
+            github: p.githubUrl,
+            demo: p.liveDemoUrl,
+            badge: p.badge || (p.isFeatured ? 'Featured' : undefined),
+            image: p.thumbnailUrl || projectImages[p.slug] || electropathyBanner,
+          }));
+          setProjectList(mapped);
+        }
+      })
+      .catch(() => {
+        // Silently preserve offline static projects
+      });
+  }, []);
+
+  const handleResumeDownload = () => {
+    api.trackResumeDownload().catch(() => {});
+  };
 
   // Fetch real repositories from Pranav's GitHub account
   useEffect(() => {
@@ -188,18 +235,21 @@ export const Home: React.FC = () => {
           href="/resume.pdf"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-semibold shadow-xs hover:shadow-md transition-all active:scale-95"
+          onClick={handleResumeDownload}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-semibold shadow-xs hover:shadow-md transition-all active:scale-95 cursor-pointer"
         >
           <Download className="w-4 h-4" />
           <span>Download Resume</span>
         </a>
-        <a
-          href="mailto:pranavshende25@gmail.com"
-          className="inline-flex items-center justify-center p-2.5 rounded-xl border border-stone-800/20 dark:border-stone-700/50 bg-white/70 dark:bg-[#14161d]/80 text-[#8b2323] hover:bg-[#8b2323] hover:text-white transition-all shadow-xs backdrop-blur-md active:scale-95"
-          aria-label="Send email"
+        <button
+          type="button"
+          onClick={() => setContactModalOpen(true)}
+          className="inline-flex items-center justify-center p-2.5 rounded-xl border border-stone-800/20 dark:border-stone-700/50 bg-white/70 dark:bg-[#14161d]/80 text-[#8b2323] hover:bg-[#8b2323] hover:text-white transition-all shadow-xs backdrop-blur-md active:scale-95 cursor-pointer"
+          aria-label="Send direct inquiry"
+          title="Send inquiry & receive instant confirmation email"
         >
           <Mail className="w-4 h-4" />
-        </a>
+        </button>
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
@@ -258,7 +308,7 @@ export const Home: React.FC = () => {
 
         {/* 2-Column Responsive Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-          {projects.map((proj) => (
+          {projectList.map((proj) => (
             <motion.div
               key={proj.id}
               whileHover={{ y: -4 }}
@@ -574,6 +624,9 @@ export const Home: React.FC = () => {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Direct Contact Modal with Instant Automated Confirmation Email */}
+      <ContactModal isOpen={contactModalOpen} onClose={() => setContactModalOpen(false)} />
     </DoodleLayout>
   );
 };

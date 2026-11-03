@@ -1,0 +1,403 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ─────────────────────────────────────────────────────────────
+// 1. ADMIN AUTHENTICATION & ACCESS CONTROL
+// ─────────────────────────────────────────────────────────────
+enum AdminRole {
+  SUPER_ADMIN
+  ADMIN
+}
+
+model Admin {
+  id            String        @id @default(uuid())
+  email         String        @unique
+  passwordHash  String
+  name          String        @default("Pranav Shende")
+  role          AdminRole     @default(SUPER_ADMIN)
+  lastLogin     DateTime?
+  loginAttempts Int           @default(0)
+  lockUntil     DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  activityLogs  ActivityLog[]
+
+  @@map("admins")
+}
+
+// ─────────────────────────────────────────────────────────────
+// 2. CONTACT INQUIRIES & MESSAGE MANAGEMENT
+// ─────────────────────────────────────────────────────────────
+enum InquiryType {
+  JOB_OPPORTUNITY
+  INTERNSHIP
+  FREELANCE
+  COLLABORATION
+  TECH_DISCUSSION
+  GENERAL
+  OTHER
+}
+
+enum InquiryStatus {
+  NEW
+  CONTACTED
+  IN_PROGRESS
+  RESOLVED
+  ARCHIVED
+}
+
+model ContactInquiry {
+  id            String        @id @default(uuid())
+  inquiryNumber String        @unique // e.g. INQ-2026-0001
+  fullName      String
+  email         String
+  company       String?
+  subject       String
+  inquiryType   InquiryType   @default(GENERAL)
+  message       String        @db.Text
+  attachmentUrl String?
+  status        InquiryStatus @default(NEW)
+  adminNotes    String?       @db.Text
+  ipAddress     String?
+  userAgent     String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+  @@map("contact_inquiries")
+}
+
+// ─────────────────────────────────────────────────────────────
+// 3. PROJECT CMS
+// ─────────────────────────────────────────────────────────────
+model Project {
+  id               String              @id @default(uuid())
+  slug             String              @unique
+  title            String
+  subtitle         String
+  client           String              @default("Independent")
+  category         String              @default("Full Stack & AI")
+  year             String              @default("2026")
+  description      String              @db.Text
+  problemStatement String?             @db.Text
+  solution         String?             @db.Text
+  architecture     String?             @db.Text
+  techStack        String[]            // Array of technologies
+  highlights       String[]            // Key bullet points
+  githubUrl        String?
+  demoUrl          String?
+  bannerUrl        String
+  badge            String?             // e.g. "Live Production"
+  featured         Boolean             @default(false)
+  orderIndex       Int                 @default(0)
+  published        Boolean             @default(true)
+  viewCount        Int                 @default(0)
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+  screenshots      ProjectScreenshot[]
+
+  @@index([featured])
+  @@index([orderIndex])
+  @@map("projects")
+}
+
+model ProjectScreenshot {
+  id         String   @id @default(uuid())
+  projectId  String
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  imageUrl   String
+  caption    String?
+  orderIndex Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  @@map("project_screenshots")
+}
+
+// ─────────────────────────────────────────────────────────────
+// 4. EXPERIENCE & CAREER TIMELINE
+// ─────────────────────────────────────────────────────────────
+enum ExperienceType {
+  FULL_TIME
+  INTERNSHIP
+  CONTRACT
+  FREELANCE
+}
+
+model Experience {
+  id               String         @id @default(uuid())
+  company          String
+  role             String
+  location         String         @default("Nagpur, India")
+  type             ExperienceType @default(INTERNSHIP)
+  startDate        DateTime
+  endDate          DateTime?
+  current          Boolean        @default(false)
+  description      String         @db.Text
+  responsibilities String[]
+  achievements     String[]
+  technologies     String[]
+  orderIndex       Int            @default(0)
+  published        Boolean        @default(true)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@index([orderIndex])
+  @@map("experiences")
+}
+
+// ─────────────────────────────────────────────────────────────
+// 5. SKILLS MANAGEMENT
+// ─────────────────────────────────────────────────────────────
+enum SkillCategory {
+  FRONTEND
+  BACKEND
+  DATABASE
+  DEVOPS_CLOUD
+  AI_ML
+  LANGUAGES
+  TOOLS
+}
+
+model Skill {
+  id          String        @id @default(uuid())
+  name        String        @unique
+  category    SkillCategory @default(BACKEND)
+  proficiency Int           @default(85) // 0-100 percentage
+  iconName    String?       // Lucide / DevIcon key
+  iconUrl     String?
+  orderIndex  Int           @default(0)
+  isFeatured  Boolean       @default(false)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([category])
+  @@index([orderIndex])
+  @@map("skills")
+}
+
+// ─────────────────────────────────────────────────────────────
+// 6. ACHIEVEMENTS & CERTIFICATIONS
+// ─────────────────────────────────────────────────────────────
+enum AchievementCategory {
+  HACKATHON
+  CERTIFICATION
+  AWARD
+  PUBLICATION
+  LEADERSHIP
+}
+
+model Achievement {
+  id             String              @id @default(uuid())
+  title          String
+  organization   String
+  date           String              // e.g. "May 2025"
+  category       AchievementCategory @default(AWARD)
+  description    String              @db.Text
+  certificateUrl String?
+  badge          String?             // e.g. "IEEE Otcon"
+  orderIndex     Int                 @default(0)
+  published      Boolean             @default(true)
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+
+  @@index([orderIndex])
+  @@map("achievements")
+}
+
+// ─────────────────────────────────────────────────────────────
+// 7. EDUCATION
+// ─────────────────────────────────────────────────────────────
+model Education {
+  id          String    @id @default(uuid())
+  institution String
+  degree      String
+  field       String
+  grade       String?   // CGPA or %
+  startDate   DateTime
+  endDate     DateTime?
+  activities  String[]
+  orderIndex  Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("education")
+}
+
+// ─────────────────────────────────────────────────────────────
+// 8. TESTIMONIALS & ENDORSEMENTS
+// ─────────────────────────────────────────────────────────────
+enum TestimonialStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Testimonial {
+  id        String            @id @default(uuid())
+  name      String
+  role      String
+  company   String
+  avatarUrl String?
+  content   String            @db.Text
+  rating    Int               @default(5)
+  status    TestimonialStatus @default(PENDING)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  @@index([status])
+  @@map("testimonials")
+}
+
+// ─────────────────────────────────────────────────────────────
+// 9. TECHNICAL BLOG
+// ─────────────────────────────────────────────────────────────
+model BlogPost {
+  id                 String    @id @default(uuid())
+  slug               String    @unique
+  title              String
+  excerpt            String    @db.Text
+  content            String    @db.Text // Markdown content
+  coverImageUrl      String?
+  tags               String[]
+  readingTimeMinutes Int       @default(5)
+  published          Boolean   @default(false)
+  publishedAt        DateTime?
+  viewCount          Int       @default(0)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  @@index([slug])
+  @@index([published])
+  @@map("blog_posts")
+}
+
+// ─────────────────────────────────────────────────────────────
+// 10. NEWSLETTER SUBSCRIBERS
+// ─────────────────────────────────────────────────────────────
+enum SubscriberStatus {
+  ACTIVE
+  UNSUBSCRIBED
+}
+
+model NewsletterSubscriber {
+  id         String           @id @default(uuid())
+  email      String           @unique
+  verified   Boolean          @default(false)
+  token      String           @unique @default(uuid())
+  status     SubscriberStatus @default(ACTIVE)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  @@map("newsletter_subscribers")
+}
+
+// ─────────────────────────────────────────────────────────────
+// 11. MEETING BOOKINGS
+// ─────────────────────────────────────────────────────────────
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+model Booking {
+  id           String        @id @default(uuid())
+  guestName    String
+  guestEmail   String
+  guestCompany String?
+  purpose      String
+  notes        String?       @db.Text
+  slotTime     DateTime
+  status       BookingStatus @default(PENDING)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([slotTime])
+  @@index([status])
+  @@map("bookings")
+}
+
+// ─────────────────────────────────────────────────────────────
+// 12. PORTFOLIO ANALYTICS
+// ─────────────────────────────────────────────────────────────
+enum EventType {
+  PAGE_VIEW
+  PROJECT_VIEW
+  RESUME_DOWNLOAD
+  CONTACT_SUBMIT
+}
+
+model AnalyticsEvent {
+  id          String    @id @default(uuid())
+  eventType   EventType @default(PAGE_VIEW)
+  path        String    // e.g. "/" or "/projects/electropathy"
+  projectSlug String?
+  visitorHash String    // Salted non-reversible hash for privacy
+  referrer    String?
+  deviceType  String?   // "desktop", "mobile", "tablet"
+  browser     String?   // "Chrome", "Safari", etc.
+  country     String?
+  timestamp   DateTime  @default(now())
+
+  @@index([eventType])
+  @@index([timestamp])
+  @@index([projectSlug])
+  @@map("analytics_events")
+}
+
+// ─────────────────────────────────────────────────────────────
+// 13. ACTIVITY LOGS & AUDITING
+// ─────────────────────────────────────────────────────────────
+model ActivityLog {
+  id           String   @id @default(uuid())
+  adminId      String?
+  admin        Admin?   @relation(fields: [adminId], references: [id], onDelete: SetNull)
+  action       String   // e.g. "PROJECT_CREATED", "STATUS_UPDATED"
+  targetEntity String   // e.g. "Project", "ContactInquiry"
+  entityId     String?
+  metadata     Json?
+  ipAddress    String?
+  createdAt    DateTime @default(now())
+
+  @@index([createdAt])
+  @@map("activity_logs")
+}
+
+// ─────────────────────────────────────────────────────────────
+// 14. RESUME VERSION CONTROL
+// ─────────────────────────────────────────────────────────────
+model Resume {
+  id            String   @id @default(uuid())
+  version       String   // e.g. "2026.1"
+  fileName      String   // e.g. "Pranav_Shende_Resume_2026.pdf"
+  fileUrl       String   // Supabase / Local storage URL
+  fileSizeBytes Int?
+  downloadCount Int      @default(0)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([isActive])
+  @@map("resumes")
+}
+
+// ─────────────────────────────────────────────────────────────
+// 15. SITE SETTINGS & CONFIGURATION
+// ─────────────────────────────────────────────────────────────
+model SiteSetting {
+  id          String   @id @default(uuid())
+  key         String   @unique // e.g. "HERO_HEADLINE", "ENABLE_AI_CHATBOT"
+  value       String   @db.Text
+  description String?
+  updatedAt   DateTime @updatedAt
+
+  @@map("site_settings")
+}
