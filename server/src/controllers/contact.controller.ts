@@ -5,14 +5,31 @@ import { emailService } from '../services/email.service.js';
 import { AppError } from '../middleware/errorHandler.js';
 import { InquiryType, InquiryStatus } from '@prisma/client';
 
+const normalizeInquiryType = (val: any): InquiryType => {
+  if (!val) return InquiryType.GENERAL;
+  const s = String(val).toUpperCase().replace(/[^A-Z]/g, '_');
+  if (s.includes('JOB')) return InquiryType.JOB_OPPORTUNITY;
+  if (s.includes('INTERN')) return InquiryType.INTERNSHIP;
+  if (s.includes('FREELANCE')) return InquiryType.FREELANCE;
+  if (s.includes('COLLAB')) return InquiryType.COLLABORATION;
+  if (s.includes('TECH')) return InquiryType.TECH_DISCUSSION;
+  if (s.includes('GENERAL')) return InquiryType.GENERAL;
+  if (Object.values(InquiryType).includes(val as InquiryType)) return val as InquiryType;
+  return InquiryType.OTHER;
+};
+
 export const createInquirySchema = z.object({
-  fullName: z.string().min(2, 'Full Name is required'),
+  fullName: z.string().optional(),
+  name: z.string().optional(),
   email: z.string().email('Please enter a valid email address'),
   company: z.string().optional().nullable(),
-  subject: z.string().min(3, 'Subject must be at least 3 characters'),
-  inquiryType: z.nativeEnum(InquiryType).default(InquiryType.GENERAL),
-  message: z.string().min(10, 'Message must be at least 10 characters'),
-  attachmentUrl: z.string().url().optional().nullable().or(z.literal('')),
+  subject: z.string().min(2, 'Subject must be at least 2 characters'),
+  inquiryType: z.any().optional(),
+  message: z.string().min(3, 'Message must be at least 3 characters'),
+  attachmentUrl: z.string().optional().nullable().or(z.literal('')),
+}).refine((data) => Boolean((data.fullName && data.fullName.trim().length > 0) || (data.name && data.name.trim().length > 0)), {
+  message: 'Full Name is required',
+  path: ['fullName'],
 });
 
 export const updateStatusSchema = z.object({
@@ -27,6 +44,8 @@ export const contactController = {
   async submit(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const data = req.body;
+      const resolvedFullName = (data.fullName || data.name || '').trim();
+      const resolvedInquiryType = normalizeInquiryType(data.inquiryType);
 
       // Generate human-friendly inquiry ticket number e.g. INQ-2026-0042
       const year = new Date().getFullYear();
@@ -36,13 +55,13 @@ export const contactController = {
       const inquiry = await prisma.contactInquiry.create({
         data: {
           inquiryNumber,
-          fullName: data.fullName,
+          fullName: resolvedFullName,
           email: data.email.toLowerCase().trim(),
           company: data.company || null,
           subject: data.subject,
-          inquiryType: data.inquiryType,
+          inquiryType: resolvedInquiryType,
           message: data.message,
-          attachmentUrl: data.attachmentUrl || null,
+          attachmentUrl: data.attachmentUrl ? String(data.attachmentUrl).trim() : null,
           ipAddress: req.ip || req.socket.remoteAddress,
           userAgent: req.headers['user-agent'] || null,
         },

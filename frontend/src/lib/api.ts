@@ -55,7 +55,10 @@ export async function apiRequest<T = any>(endpoint: string, options: RequestOpti
     const result = await response.json().catch(() => ({}));
 
     if (!response.ok) {
-      const errorMessage = result.message || `Request failed with status ${response.status}`;
+      let errorMessage = result.message || `Request failed with status ${response.status}`;
+      if (Array.isArray(result.errors) && result.errors.length > 0) {
+        errorMessage = result.errors.map((e: any) => e.message).join('. ');
+      }
       const error = new Error(errorMessage) as any;
       error.status = response.status;
       error.data = result;
@@ -78,6 +81,7 @@ export async function apiRequest<T = any>(endpoint: string, options: RequestOpti
 
 export interface ContactPayload {
   name: string;
+  fullName?: string;
   email: string;
   company?: string;
   subject: string;
@@ -94,8 +98,15 @@ export const api = {
   getProject: (idOrSlug: string) => 
     apiRequest(`/projects/${idOrSlug}`),
 
-  submitContact: (payload: ContactPayload) => 
-    apiRequest('/contact', { method: 'POST', data: payload }),
+  submitContact: (payload: ContactPayload) => {
+    const data = {
+      ...payload,
+      fullName: payload.fullName || payload.name,
+      name: payload.name || payload.fullName,
+      attachmentUrl: payload.attachmentUrl && payload.attachmentUrl.trim().length > 0 ? payload.attachmentUrl.trim() : undefined,
+    };
+    return apiRequest('/contact', { method: 'POST', data });
+  },
 
   trackResumeDownload: (version?: string) => 
     apiRequest('/resume/track-download', { method: 'POST', data: { version } }),
