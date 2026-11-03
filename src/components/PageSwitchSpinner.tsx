@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import profilePhoto from '@/photo/profile_photo_wide.png';
 
 interface PageSwitchSpinnerProps {
   isLoading: boolean;
@@ -18,12 +19,12 @@ export const PageSwitchSpinner: React.FC<PageSwitchSpinnerProps> = ({ isLoading 
           className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#f7f2ea]/70 dark:bg-[#0c0d10]/75 backdrop-blur-xs pointer-events-none select-none"
         >
           <div className="flex flex-col items-center space-y-3">
-            {/* Japanese Sumi-e Enso Ink Spinner */}
-            <div className="relative w-14 h-14 flex items-center justify-center">
+            {/* Japanese Sumi-e Enso Ink Spinner with Round Photo */}
+            <div className="relative w-16 h-16 flex items-center justify-center">
               {/* Outer rotating ink brush circle */}
               <svg
                 viewBox="0 0 100 100"
-                className="w-full h-full animate-[spin_1.2s_cubic-bezier(0.4,0,0.2,1)_infinite] text-[#8b2323] dark:text-rose-500 drop-shadow-xs"
+                className="w-full h-full animate-[spin_1.4s_cubic-bezier(0.4,0,0.2,1)_infinite] text-[#8b2323] dark:text-rose-500 drop-shadow-xs"
               >
                 <circle
                   cx="50"
@@ -37,16 +38,14 @@ export const PageSwitchSpinner: React.FC<PageSwitchSpinnerProps> = ({ isLoading 
                 />
               </svg>
 
-              {/* Inner Sakura Petal / Brush Core */}
-              <motion.div
-                animate={{ scale: [0.9, 1.1, 0.9], rotate: [0, 180, 360] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute inset-0 flex items-center justify-center text-[#8b2323] dark:text-rose-400"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" className="fill-current">
-                  <path d="M12 2C8.5 2 4 6.5 4 11c0 5 4.5 9 8 11 3.5-2 8-6 8-11 0-4.5-4.5-9-8-9z" />
-                </svg>
-              </motion.div>
+              {/* Inner Round Profile Photo with crimson border */}
+              <div className="absolute w-10 h-10 rounded-full overflow-hidden border-2 border-[#8b2323] shadow-xs bg-zinc-100 dark:bg-zinc-800 shrink-0">
+                <img
+                  src={profilePhoto}
+                  alt="Pranav Shende"
+                  className="w-full h-full object-cover scale-[1.7] translate-y-0.5"
+                />
+              </div>
             </div>
 
             {/* Subtle Sumi-e Ink Label */}

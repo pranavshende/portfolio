@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import cherryBlossomMist from "@/photo/cherry_blossom_mist.jpg";
 import cherryBlossomMistMobile from "@/photo/cherry_blossom_mist_mobile.jpg";
+import profilePhoto from "@/photo/profile_photo_wide.png";
 
 interface InitialLoaderProps {
   onComplete: () => void;
@@ -100,7 +101,7 @@ export const InitialLoader: React.FC<InitialLoaderProps> = ({ onComplete }) => {
 
           {/* Center Clean Japanese Sumi-e Spinner Box */}
           <div className="relative z-30 flex flex-col items-center space-y-4 px-4">
-            {/* Ink Circle (Enso) with Pencil Sketch */}
+            {/* Ink Circle (Enso) with Round Profile Photo */}
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -108,7 +109,7 @@ export const InitialLoader: React.FC<InitialLoaderProps> = ({ onComplete }) => {
               className="relative w-20 h-20 sm:w-22 sm:h-22 rounded-full flex items-center justify-center"
             >
               {/* Outer Enso Ink Ring */}
-              <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full animate-[spin_18s_linear_infinite] opacity-80 text-stone-900">
+              <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full animate-[spin_12s_linear_infinite] opacity-85 text-stone-900">
                 <circle
                   cx="50"
                   cy="50"
@@ -121,21 +122,13 @@ export const InitialLoader: React.FC<InitialLoaderProps> = ({ onComplete }) => {
                 />
               </svg>
 
-              {/* Inner Parchment Box with Pencil */}
-              <div className="w-12 h-12 rounded-xl bg-[#faecd8] border border-stone-800/30 shadow-xs flex items-center justify-center">
-                <svg
-                  viewBox="0 0 24 24"
-                  className="w-6 h-6 text-stone-900 -rotate-12"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                  <path d="m15 5 4 4" />
-                  <path d="M11 9l4 4" />
-                </svg>
+              {/* Inner Round Profile Photo with crimson border */}
+              <div className="relative w-13 h-13 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-[#8b2323] shadow-sm bg-zinc-100 dark:bg-zinc-800 shrink-0">
+                <img
+                  src={profilePhoto}
+                  alt="Pranav Shende"
+                  className="w-full h-full object-cover object-center scale-[1.7] translate-y-0.5"
+                />
               </div>
             </motion.div>
 
