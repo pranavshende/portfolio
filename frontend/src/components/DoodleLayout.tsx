@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { DoodleSidebar } from './DoodleSidebar';
-import cherryBlossomMist from '@/photo/cherry_blossom_mist.jpg';
-import cherryBlossomMistDark from '@/photo/cherry_blossom_mist_dark.jpg';
-import cherryBlossomMistMobile from '@/photo/cherry_blossom_mist_mobile.jpg';
-import cherryBlossomMistMobileDark from '@/photo/cherry_blossom_mist_mobile_dark.jpg';
+import cherryBlossomMist from '@/photo/cherry_blossom_mist.webp';
+import cherryBlossomMistDark from '@/photo/cherry_blossom_mist_dark.webp';
+import cherryBlossomMistMobile from '@/photo/cherry_blossom_mist_mobile.webp';
+import cherryBlossomMistMobileDark from '@/photo/cherry_blossom_mist_mobile_dark.webp';
 
 interface DoodleLayoutProps {
   children: React.ReactNode;

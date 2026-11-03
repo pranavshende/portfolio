@@ -10,12 +10,12 @@ import { api } from '@/lib/api';
 import useAnalytics from '@/hooks/useAnalytics';
 import ContactModal from '@/components/ContactModal';
 
-import jansamparkPhoto from '../photo/jansampark.png';
-import solarAnalyticsPhoto from '../photo/solar_analytics.png';
-import pashurakshakPhoto from '../photo/pashurakshak.png';
-import attritionBanner from '../photo/attrition_banner.png';
-import tastifyyBanner from '../photo/tastifyy_banner.png';
-import electropathyBanner from '../photo/electropathy_banner.png';
+import jansamparkPhoto from '../photo/jansampark.webp';
+import solarAnalyticsPhoto from '../photo/solar_analytics.webp';
+import pashurakshakPhoto from '../photo/pashurakshak.webp';
+import attritionBanner from '../photo/attrition_banner.webp';
+import tastifyyBanner from '../photo/tastifyy_banner.webp';
+import electropathyBanner from '../photo/electropathy_banner.webp';
 
 interface Project {
   id: string;
@@ -169,6 +169,13 @@ export const Home: React.FC = () => {
   const [gitRepos, setGitRepos] = useState<any[]>([]);
   const [loadingRepos, setLoadingRepos] = useState<boolean>(true);
 
+  // Global listener to open contact modal from sidebar, header, or CTA buttons
+  useEffect(() => {
+    const handleOpen = () => setContactModalOpen(true);
+    window.addEventListener('open-contact-modal', handleOpen);
+    return () => window.removeEventListener('open-contact-modal', handleOpen);
+  }, []);
+
   // Fetch dynamic projects from backend database with fallback to verified offline data
   useEffect(() => {
     const projectImages: Record<string, string> = {
@@ -228,7 +235,7 @@ export const Home: React.FC = () => {
   return (
     <DoodleLayout>
       {/* ─────────────────────────────────────────────────────────────
-          TOP ACTION BAR (Mockup match: Download Resume & Mail)
+          TOP ACTION BAR (Mockup match: Download Resume & Contact)
       ────────────────────────────────────────────────────────────── */}
       <div className="flex items-center justify-end gap-2.5 sm:gap-3 mb-6 sm:mb-8 pt-1">
         <a
@@ -236,26 +243,27 @@ export const Home: React.FC = () => {
           target="_blank"
           rel="noopener noreferrer"
           onClick={handleResumeDownload}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-semibold shadow-xs hover:shadow-md transition-all active:scale-95 cursor-pointer"
+          className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 text-xs sm:text-sm font-semibold shadow-xs hover:shadow-md transition-all active:scale-95 cursor-pointer"
         >
           <Download className="w-4 h-4" />
-          <span>Download Resume</span>
+          <span>Resume</span>
         </a>
         <button
           type="button"
           onClick={() => setContactModalOpen(true)}
-          className="inline-flex items-center justify-center p-2.5 rounded-xl border border-stone-800/20 dark:border-stone-700/50 bg-white/70 dark:bg-[#14161d]/80 text-[#8b2323] hover:bg-[#8b2323] hover:text-white transition-all shadow-xs backdrop-blur-md active:scale-95 cursor-pointer"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-semibold shadow-sm hover:shadow-md transition-all active:scale-95 cursor-pointer"
           aria-label="Send direct inquiry"
           title="Send inquiry & receive instant confirmation email"
         >
           <Mail className="w-4 h-4" />
+          <span>Contact Me</span>
         </button>
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
           HERO STATEMENT (Mockup match)
       ────────────────────────────────────────────────────────────── */}
-      <section className="mb-10 sm:mb-12">
+      <section className="mb-8 sm:mb-10">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium text-[#8b2323] bg-[#8b2323]/10 border border-[#8b2323]/25 mb-4">
           <span>&lt;//&gt;</span>
           <span>Welcome to my portfolio</span>
@@ -283,6 +291,51 @@ export const Home: React.FC = () => {
             <Target className="w-4 h-4 text-[#8b2323]" />
             <span>Building for Impact</span>
           </span>
+        </div>
+
+        {/* ── Prominent Contact & Opportunity Card below 'Hi there I'm Pranav' ── */}
+        <div className="mt-8 p-5 sm:p-6 rounded-2xl bg-white/85 dark:bg-[#14161d]/85 border-2 border-[#8b2323]/25 dark:border-[#8b2323]/35 shadow-sm hover:shadow-md backdrop-blur-md relative overflow-hidden transition-all">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#8b2323] via-[#b91c1c] to-[#8b2323]" />
+          
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+            <div className="space-y-1.5 max-w-xl">
+              <div className="flex items-center gap-2">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                </span>
+                <span className="text-xs font-semibold tracking-wider uppercase text-emerald-700 dark:text-emerald-400 font-mono">
+                  Available for Opportunities & Projects
+                </span>
+              </div>
+              <h2 className="text-lg sm:text-xl font-bold text-stone-900 dark:text-stone-100 tracking-tight">
+                Let's connect & build something impactful.
+              </h2>
+              <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
+                Open to full-time SWE roles, freelance software architecture, and technical collaborations. Inquiries submitted here are logged in the database and trigger an immediate email dispatch.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2.5 shrink-0 w-full sm:w-auto">
+              <button
+                type="button"
+                onClick={() => setContactModalOpen(true)}
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-bold shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer"
+              >
+                <Mail className="w-4 h-4" />
+                <span>Get In Touch</span>
+              </button>
+              <a
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=pranavshende97@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs sm:text-sm font-semibold transition-all active:scale-95"
+              >
+                <span>Gmail</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 

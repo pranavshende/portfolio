@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { DoodleLayout } from '@/components/DoodleLayout';
-import profilePhoto from '../photo/IMG_20240323_152847.jpg';
+import profilePhoto from '../photo/IMG_20240323_152847.webp';
 import { 
   FileText, ExternalLink, Code2, Database, Cloud, 
   Sparkles, GraduationCap, MapPin, Trophy, Award, Mail

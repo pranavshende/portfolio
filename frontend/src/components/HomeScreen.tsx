@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import profilePhoto from '../photo/profile_photo_wide.png';
-import bannerBg from '../photo/home_banner_bg.png';
+import profilePhoto from '../photo/profile_photo_wide.webp';
+import bannerBg from '../photo/home_banner_bg.webp';
 import SkillsMarquee from './SkillsMarquee';
 import { Github, Twitter, Linkedin, Mail, ArrowUpRight, X, Gamepad2, BadgeCheck, MapPin, Trophy, GraduationCap, Code } from 'lucide-react';
 import { Link } from 'react-router-dom';

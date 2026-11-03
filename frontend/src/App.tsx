@@ -16,10 +16,10 @@ import React, { useState, useEffect, useRef } from "react";
 import InitialLoader from "./components/InitialLoader";
 import PageSwitchSpinner from "./components/PageSwitchSpinner";
 import { AnimatePresence, motion } from "framer-motion";
-import cherryBlossomMist from "@/photo/cherry_blossom_mist.jpg";
-import cherryBlossomMistDark from "@/photo/cherry_blossom_mist_dark.jpg";
-import cherryBlossomMistMobile from "@/photo/cherry_blossom_mist_mobile.jpg";
-import cherryBlossomMistMobileDark from "@/photo/cherry_blossom_mist_mobile_dark.jpg";
+import cherryBlossomMist from "@/photo/cherry_blossom_mist.webp";
+import cherryBlossomMistDark from "@/photo/cherry_blossom_mist_dark.webp";
+import cherryBlossomMistMobile from "@/photo/cherry_blossom_mist_mobile.webp";
+import cherryBlossomMistMobileDark from "@/photo/cherry_blossom_mist_mobile_dark.webp";
 
 const queryClient = new QueryClient();
 

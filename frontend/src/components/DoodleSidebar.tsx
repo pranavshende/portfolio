@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Briefcase, MapPin, Menu, X, ExternalLink, GraduationCap, Sun, Moon } from 'lucide-react';
+import { Briefcase, MapPin, Menu, X, ExternalLink, GraduationCap, Sun, Moon, Lock, Send } from 'lucide-react';
 import { useMode } from '@/contexts/ModeContext';
-import profilePhoto from '../photo/profile_photo_wide.png';
+import profilePhoto from '../photo/profile_photo_wide.webp';
 
 // ── Hand-drawn outline doodle icons ──────────────────────────
 const DoodleHouse = () => (
@@ -217,6 +217,16 @@ export const DoodleSidebar: React.FC = () => {
               Contacts
             </span>
             <div className="flex flex-col space-y-0.5 pt-0.5">
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new CustomEvent('open-contact-modal'))}
+                className="group flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-sm font-bold text-[#8b2323] dark:text-rose-400 hover:text-white hover:bg-[#8b2323] dark:hover:bg-rose-900/60 transition-colors text-left cursor-pointer"
+                title="Send inquiry & receive instant confirmation email"
+              >
+                <Send className="w-4 h-4 shrink-0 text-[#8b2323] dark:text-rose-400 group-hover:text-white" />
+                <span className="pt-0.5">Contact Me</span>
+              </button>
+
               <a
                 href={emailUrl}
                 target="_blank"
@@ -263,7 +273,7 @@ export const DoodleSidebar: React.FC = () => {
           </div>
         </div>
 
-        {/* Clean Footer with Ink Mountain Silhouette */}
+        {/* Clean Footer with Ink Mountain Silhouette & Admin Portal */}
         <div className="pt-2 border-t border-stone-800/10 dark:border-stone-700/30 flex flex-col items-center text-center space-y-1">
           <svg viewBox="0 0 100 24" className="w-20 h-5 text-stone-600 dark:text-stone-400 opacity-60 fill-none stroke-current stroke-[1.4] stroke-linecap-round stroke-linejoin-round">
             <path d="M5 22 L25 10 L40 17 L62 4 L80 15 L95 8" />
@@ -272,6 +282,14 @@ export const DoodleSidebar: React.FC = () => {
           <span className="text-[10px] text-stone-500 dark:text-stone-400 font-medium tracking-wide">
             © Pranav Shende 2026
           </span>
+          <Link
+            to="/admin"
+            className="inline-flex items-center gap-1 text-[10px] font-mono text-stone-600 hover:text-[#8b2323] dark:text-stone-400 dark:hover:text-rose-400 transition-colors pt-0.5"
+            title="Administrator Login & CMS"
+          >
+            <Lock className="w-2.5 h-2.5" />
+            <span>Admin Portal</span>
+          </Link>
         </div>
       </aside>
 
@@ -446,8 +464,16 @@ export const DoodleSidebar: React.FC = () => {
               </div>
             </div>
 
-            <div className="text-[11px] text-zinc-400 dark:text-zinc-500 pt-2 border-t border-dashed border-zinc-200 dark:border-zinc-800">
-              © Pranav Shende 2026
+            <div className="text-[11px] text-zinc-400 dark:text-zinc-500 pt-2 border-t border-dashed border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
+              <span>© Pranav Shende 2026</span>
+              <Link
+                to="/admin"
+                onClick={() => setMobileOpen(false)}
+                className="inline-flex items-center gap-1 font-mono text-[10px] text-zinc-500 dark:text-zinc-400 hover:text-[#8b2323] transition-colors"
+              >
+                <Lock className="w-2.5 h-2.5" />
+                <span>Admin Portal</span>
+              </Link>
             </div>
           </motion.div>
         )}

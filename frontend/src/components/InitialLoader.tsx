@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import cherryBlossomMist from "@/photo/cherry_blossom_mist.jpg";
-import cherryBlossomMistMobile from "@/photo/cherry_blossom_mist_mobile.jpg";
-import profilePhoto from "@/photo/profile_photo_wide.png";
+import cherryBlossomMist from "@/photo/cherry_blossom_mist.webp";
+import cherryBlossomMistMobile from "@/photo/cherry_blossom_mist_mobile.webp";
+import profilePhoto from "@/photo/profile_photo_wide.webp";
 
 interface InitialLoaderProps {
   onComplete: () => void;

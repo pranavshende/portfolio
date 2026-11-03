@@ -4,12 +4,12 @@ import { ArrowUpRight, Github, Smartphone } from 'lucide-react';
 import { motion } from 'framer-motion';
 import SectionHeader from './SectionHeader';
 
-import jansamparkPhoto from '../photo/jansampark.png';
-import solarAnalyticsPhoto from '../photo/solar_analytics.png';
-import pashurakshakPhoto from '../photo/pashurakshak.png';
-import attritionBanner from '../photo/attrition_banner.png';
-import tastifyyBanner from '../photo/tastifyy_banner.png';
-import electropathyBanner from '../photo/electropathy_banner.png';
+import jansamparkPhoto from '../photo/jansampark.webp';
+import solarAnalyticsPhoto from '../photo/solar_analytics.webp';
+import pashurakshakPhoto from '../photo/pashurakshak.webp';
+import attritionBanner from '../photo/attrition_banner.webp';
+import tastifyyBanner from '../photo/tastifyy_banner.webp';
+import electropathyBanner from '../photo/electropathy_banner.webp';
 
 interface Project {
   title: string;

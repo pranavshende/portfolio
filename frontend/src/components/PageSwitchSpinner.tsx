@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import profilePhoto from '@/photo/profile_photo_wide.png';
+import profilePhoto from '@/photo/profile_photo_wide.webp';
 
 interface PageSwitchSpinnerProps {
   isLoading: boolean;
