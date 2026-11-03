@@ -57,11 +57,6 @@ export const AdminLogin: React.FC = () => {
     }
   };
 
-  const handleFillDemo = (adminEmail: string) => {
-    setEmail(adminEmail);
-    setPassword('Admin@2026!');
-  };
-
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4 bg-[#f7f2ea] dark:bg-[#0c0d10] text-stone-900 dark:text-stone-100 select-none relative overflow-hidden font-sans">
       {/* Background Japanese Enso Watermark */}
@@ -120,7 +115,7 @@ export const AdminLogin: React.FC = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="pranavshende25@gmail.com"
+                placeholder="xyz@gmail.com"
                 className="w-full pl-9 pr-3 py-2 rounded-xl border border-stone-300/80 dark:border-stone-700 bg-stone-50/50 dark:bg-[#1d1f27] text-stone-900 dark:text-stone-100 placeholder:text-stone-400 focus:outline-hidden focus:ring-2 focus:ring-[#8b2323]/40 text-xs sm:text-sm"
               />
             </div>
@@ -179,29 +174,6 @@ export const AdminLogin: React.FC = () => {
             )}
           </button>
         </form>
-
-        {/* Quick Autofill hint for Super Admin */}
-        <div className="pt-2 border-t border-stone-200/70 dark:border-stone-800 text-center space-y-2">
-          <p className="text-[11px] text-stone-500 dark:text-stone-400">
-            Initial Super Admin account configured:
-          </p>
-          <div className="flex items-center justify-center gap-2">
-            <button
-              type="button"
-              onClick={() => handleFillDemo('pranavshende25@gmail.com')}
-              className="px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 text-[11px] font-mono font-medium text-stone-700 dark:text-stone-300 transition-colors"
-            >
-              pranavshende25@gmail.com
-            </button>
-            <button
-              type="button"
-              onClick={() => handleFillDemo('pranavshende97@gmail.com')}
-              className="px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 text-[11px] font-mono font-medium text-stone-700 dark:text-stone-300 transition-colors"
-            >
-              pranavshende97@gmail.com
-            </button>
-          </div>
-        </div>
       </motion.div>
     </div>
   );

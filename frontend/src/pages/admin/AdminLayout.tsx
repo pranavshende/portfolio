@@ -64,7 +64,7 @@ export const AdminLayout: React.FC = () => {
   useEffect(() => {
     api.getAdminMe()
       .then((res: any) => {
-        setAdminUser(res.admin || { name: 'Pranav Shende', email: 'pranavshende25@gmail.com', role: 'SUPER_ADMIN' });
+        setAdminUser(res.admin || { name: 'Pranav Shende', email: 'pranavshende97@gmail.com', role: 'SUPER_ADMIN' });
       })
       .catch((err) => {
         console.warn('Admin authentication required:', err.message);
@@ -167,7 +167,7 @@ export const AdminLayout: React.FC = () => {
               </span>
             </div>
             <p className="text-[11px] text-stone-500 font-mono truncate">
-              {adminUser?.email || 'pranavshende25@gmail.com'}
+              {adminUser?.email || 'pranavshende97@gmail.com'}
             </p>
           </div>
 

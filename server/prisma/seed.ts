@@ -7,8 +7,8 @@ async function main() {
   console.log('🌱 Starting comprehensive portfolio database seeding...');
 
   // 1. SEED SUPER ADMIN
-  const adminEmail = process.env.ADMIN_EMAIL || 'pranavshende25@gmail.com';
-  const adminPassword = process.env.ADMIN_INITIAL_PASSWORD || 'Admin@Pranav2026!';
+  const adminEmail = process.env.ADMIN_EMAIL || 'pranavshende97@gmail.com';
+  const adminPassword = process.env.ADMIN_INITIAL_PASSWORD || '2241@PROnity';
   const passwordHash = await bcrypt.hash(adminPassword, 12);
 
   const admin = await prisma.admin.upsert({

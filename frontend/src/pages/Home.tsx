@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  ExternalLink, Github, ArrowUpRight, ArrowRight, X, Star, BookOpen, 
+  ExternalLink, Github, Linkedin, ArrowUpRight, ArrowRight, X, Star, BookOpen, 
   Lock, CheckCircle2, Download, Mail, GraduationCap, Layers, Target 
 } from 'lucide-react';
 import { DoodleLayout } from '@/components/DoodleLayout';
@@ -235,7 +235,7 @@ export const Home: React.FC = () => {
   return (
     <DoodleLayout>
       {/* ─────────────────────────────────────────────────────────────
-          TOP ACTION BAR (Mockup match: Download Resume & Contact)
+          TOP ACTION BAR (Mockup match: Download Resume)
       ────────────────────────────────────────────────────────────── */}
       <div className="flex items-center justify-end gap-2.5 sm:gap-3 mb-6 sm:mb-8 pt-1">
         <a
@@ -249,16 +249,6 @@ export const Home: React.FC = () => {
           <Download className="w-4 h-4" />
           <span>Resume</span>
         </a>
-        <button
-          type="button"
-          onClick={() => setContactModalOpen(true)}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-semibold shadow-sm hover:shadow-md transition-all active:scale-95 cursor-pointer"
-          aria-label="Send direct inquiry"
-          title="Send inquiry & receive instant confirmation email"
-        >
-          <Mail className="w-4 h-4" />
-          <span>Contact Me</span>
-        </button>
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
@@ -327,13 +317,34 @@ export const Home: React.FC = () => {
                 <span>Get In Touch</span>
               </button>
               <a
+                href="https://linkedin.com/in/pranavshende"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs sm:text-sm font-semibold transition-all active:scale-95"
+                title="Connect on LinkedIn"
+              >
+                <Linkedin className="w-4 h-4 text-[#0077b5]" />
+                <span>LinkedIn</span>
+              </a>
+              <a
+                href="https://github.com/PranavShende"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs sm:text-sm font-semibold transition-all active:scale-95"
+                title="View GitHub Profile"
+              >
+                <Github className="w-4 h-4" />
+                <span>GitHub</span>
+              </a>
+              <a
                 href="https://mail.google.com/mail/?view=cm&fs=1&to=pranavshende97@gmail.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs sm:text-sm font-semibold transition-all active:scale-95"
+                className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs sm:text-sm font-semibold transition-all active:scale-95"
+                title="Direct Gmail"
               >
+                <Mail className="w-4 h-4 text-[#ea4335]" />
                 <span>Gmail</span>
-                <ArrowRight className="w-3.5 h-3.5" />
               </a>
             </div>
           </div>
