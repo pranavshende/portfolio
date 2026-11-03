@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Briefcase, MapPin, Menu, X, ExternalLink, GraduationCap, Sun, Moon, Lock, Send } from 'lucide-react';
+import { Briefcase, MapPin, Menu, X, ExternalLink, GraduationCap, Sun, Moon, Lock, Send, Download } from 'lucide-react';
 import { useMode } from '@/contexts/ModeContext';
 import profilePhoto from '../photo/profile_photo_wide.webp';
 
@@ -186,6 +186,19 @@ export const DoodleSidebar: React.FC = () => {
                   </NavLink>
                 );
               })}
+
+              {/* Resume Navigation Item */}
+              <a
+                href={resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-xs font-bold text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-all duration-150 group cursor-pointer"
+                title="Open Pranav's Resume on Google Drive"
+              >
+                <span className="shrink-0"><DoodleResume /></span>
+                <span className="leading-none pt-0.5">Resume</span>
+                <ExternalLink className="w-3 h-3 text-stone-400 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+              </a>
             </nav>
           </div>
 
@@ -321,6 +334,18 @@ export const DoodleSidebar: React.FC = () => {
         </button>
 
         <div className="flex items-center gap-1 sm:gap-1.5">
+          {/* Resume Quick Action in Mobile Top Nav */}
+          <a
+            href={resumeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 text-xs font-bold shadow-2xs hover:opacity-90 active:scale-95 transition-all cursor-pointer"
+            title="Open Pranav's Resume on Google Drive"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span>Resume</span>
+          </a>
+
           <button
             type="button"
             onClick={toggleTheme}
@@ -359,7 +384,7 @@ export const DoodleSidebar: React.FC = () => {
               <NavLink
                 key={item.name}
                 to={item.path}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${
+                className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${
                   isActive
                     ? '!bg-[#8b2323] !text-white shadow-xs'
                     : 'text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white hover:bg-stone-200/50 dark:hover:bg-stone-800/50'
@@ -375,6 +400,18 @@ export const DoodleSidebar: React.FC = () => {
               </NavLink>
             );
           })}
+
+          {/* Resume in Mobile Floating Dock */}
+          <a
+            href={resumeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-bold text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-all duration-200 cursor-pointer"
+            title="Open Pranav's Resume on Google Drive"
+          >
+            <span className="shrink-0 scale-90"><DoodleResume /></span>
+            <span>Resume</span>
+          </a>
         </div>
       </nav>
 
