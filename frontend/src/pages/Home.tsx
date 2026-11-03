@@ -239,11 +239,12 @@ export const Home: React.FC = () => {
       ────────────────────────────────────────────────────────────── */}
       <div className="flex items-center justify-end gap-2.5 sm:gap-3 mb-6 sm:mb-8 pt-1">
         <a
-          href="/resume.pdf"
+          href="https://drive.google.com/drive/folders/1z3-tvjY5U1OP90Dls4IfLwV10E8e4qij?usp=sharing"
           target="_blank"
           rel="noopener noreferrer"
           onClick={handleResumeDownload}
           className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 text-xs sm:text-sm font-semibold shadow-xs hover:shadow-md transition-all active:scale-95 cursor-pointer"
+          title="Open Pranav's Resume on Google Drive"
         >
           <Download className="w-4 h-4" />
           <span>Resume</span>
