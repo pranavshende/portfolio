@@ -41,8 +41,9 @@ export const AdminLogin: React.FC = () => {
 
     try {
       const res = await api.adminLogin({ email: email.trim(), password });
-      if (res && res.token) {
-        setStoredToken(res.token, rememberMe);
+      const authToken = res?.token || res?.data?.token;
+      if (authToken) {
+        setStoredToken(authToken, rememberMe);
       }
       navigate('/admin', { replace: true });
     } catch (err: any) {

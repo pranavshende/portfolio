@@ -71,7 +71,15 @@ export const contactController = {
       Promise.allSettled([
         emailService.sendContactNotification(inquiry),
         emailService.sendContactAcknowledgment(inquiry.email, inquiry.fullName, inquiry.inquiryNumber, inquiry.subject),
-      ]).catch(console.error);
+      ]).then((results) => {
+        results.forEach((r, idx) => {
+          if (r.status === 'rejected') {
+            console.error(`[Email Error - ${idx === 0 ? 'Admin Alert' : 'User Acknowledgment'}]:`, r.reason);
+          } else {
+            console.log(`[Email Sent - ${idx === 0 ? 'Admin Alert' : 'User Acknowledgment'}]`);
+          }
+        });
+      });
 
       res.status(201).json({
         success: true,

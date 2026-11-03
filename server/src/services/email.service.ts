@@ -3,18 +3,31 @@ import { env } from '../config/env.js';
 
 let transporter: nodemailer.Transporter | null = null;
 
-if (env.SMTP_USER && env.SMTP_PASS) {
-  const cleanPass = env.SMTP_PASS.replace(/\s+/g, '');
-  transporter = nodemailer.createTransport({
-    host: env.SMTP_HOST || 'smtp.gmail.com',
-    port: env.SMTP_PORT || 465,
-    secure: (env.SMTP_PORT || 465) === 465,
-    auth: {
-      user: env.SMTP_USER,
-      pass: cleanPass,
-    },
-  });
-}
+const initTransporter = () => {
+  const user = env.SMTP_USER || 'pranavshende97@gmail.com';
+  const pass = (env.SMTP_PASS || 'uqpb iduk bkvh crxj').replace(/\s+/g, '');
+
+  if (user && pass) {
+    const port = Number(env.SMTP_PORT) || 465;
+    transporter = nodemailer.createTransport({
+      host: env.SMTP_HOST || 'smtp.gmail.com',
+      port,
+      secure: port === 465,
+      auth: {
+        user,
+        pass,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+    console.log(`[EmailService] SMTP transporter active for ${user} (Port: ${port})`);
+  } else {
+    console.warn('[EmailService] SMTP credentials missing. Inbound emails will be simulated.');
+  }
+};
+
+initTransporter();
 
 export const emailService = {
   /**
