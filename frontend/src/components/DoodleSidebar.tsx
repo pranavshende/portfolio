@@ -384,7 +384,7 @@ export const DoodleSidebar: React.FC = () => {
               <NavLink
                 key={item.name}
                 to={item.path}
-                className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${
                   isActive
                     ? '!bg-[#8b2323] !text-white shadow-xs'
                     : 'text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white hover:bg-stone-200/50 dark:hover:bg-stone-800/50'
@@ -400,18 +400,6 @@ export const DoodleSidebar: React.FC = () => {
               </NavLink>
             );
           })}
-
-          {/* Resume in Mobile Floating Dock */}
-          <a
-            href={resumeUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-bold text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-all duration-200 cursor-pointer"
-            title="Open Pranav's Resume on Google Drive"
-          >
-            <span className="shrink-0 scale-90"><DoodleResume /></span>
-            <span>Resume</span>
-          </a>
         </div>
       </nav>
 

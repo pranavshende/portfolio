@@ -244,7 +244,7 @@ export const Home: React.FC = () => {
         </div>
 
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 dark:text-stone-50 tracking-tight leading-tight select-text">
-          Hi there! I'm <span className="font-serif italic text-[#8b2323]">Pranav</span> 👋
+          Hi there! I'm <span className="font-serif italic text-[#8b2323] dark:text-white">Pranav</span> 👋
         </h1>
 
         <p className="text-base sm:text-lg text-stone-700 dark:text-stone-300 mt-3 font-normal leading-relaxed max-w-3xl">
@@ -267,68 +267,72 @@ export const Home: React.FC = () => {
           </span>
         </div>
 
-        {/* ── Prominent Contact & Opportunity Card below 'Hi there I'm Pranav' ── */}
-        <div className="mt-8 p-5 sm:p-6 rounded-2xl bg-white/85 dark:bg-[#14161d]/85 border-2 border-[#8b2323]/25 dark:border-[#8b2323]/35 shadow-sm hover:shadow-md backdrop-blur-md relative overflow-hidden transition-all">
+        {/* ── Slim Contact & Opportunity Card below 'Hi there I'm Pranav' ── */}
+        <div className="mt-5 p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-white/85 dark:bg-[#14161d]/85 border border-[#8b2323]/30 dark:border-[#8b2323]/40 shadow-xs backdrop-blur-md relative overflow-hidden transition-all">
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#8b2323] via-[#b91c1c] to-[#8b2323]" />
           
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
-            <div className="space-y-1.5 max-w-xl">
-              <div className="flex items-center gap-2">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-                </span>
-                <span className="text-xs font-semibold tracking-wider uppercase text-emerald-700 dark:text-emerald-400 font-mono">
-                  Available for Opportunities & Projects
-                </span>
-              </div>
-              <h2 className="text-lg sm:text-xl font-bold text-stone-900 dark:text-stone-100 tracking-tight">
-                Let's connect & build something impactful.
-              </h2>
-              <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
-                Open to full-time SWE roles, freelance software architecture, and technical collaborations. Inquiries submitted here are logged in the database and trigger an immediate email dispatch.
-              </p>
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase text-emerald-700 dark:text-emerald-400 font-mono">
+                Available for Opportunities & Projects
+              </span>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2.5 shrink-0 w-full sm:w-auto">
-              <button
-                type="button"
-                onClick={() => setContactModalOpen(true)}
-                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-bold shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer"
-              >
-                <Mail className="w-4 h-4" />
-                <span>Get In Touch</span>
-              </button>
-              <a
-                href="https://linkedin.com/in/pranavshende"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs sm:text-sm font-semibold transition-all active:scale-95"
-                title="Connect on LinkedIn"
-              >
-                <Linkedin className="w-4 h-4 text-[#0077b5]" />
-                <span>LinkedIn</span>
-              </a>
-              <a
-                href="https://github.com/PranavShende"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs sm:text-sm font-semibold transition-all active:scale-95"
-                title="View GitHub Profile"
-              >
-                <Github className="w-4 h-4" />
-                <span>GitHub</span>
-              </a>
-              <a
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=pranavshende97@gmail.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs sm:text-sm font-semibold transition-all active:scale-95"
-                title="Direct Gmail"
-              >
-                <Mail className="w-4 h-4 text-[#ea4335]" />
-                <span>Gmail</span>
-              </a>
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pt-0.5">
+              <div>
+                <h2 className="text-base sm:text-lg font-bold text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
+                  Let's connect & build something impactful.
+                </h2>
+                <p className="text-xs text-stone-600 dark:text-stone-300 leading-snug">
+                  Open to full-time SWE roles, freelance software architecture, and technical collaborations.
+                </p>
+              </div>
+
+              {/* All 4 action buttons strictly in the SAME line */}
+              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5 shrink-0 flex-nowrap">
+                <button
+                  type="button"
+                  onClick={() => setContactModalOpen(true)}
+                  className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold shadow-xs transition-all active:scale-95 shrink-0 whitespace-nowrap cursor-pointer"
+                >
+                  <Mail className="w-3.5 h-3.5" />
+                  <span>Get In Touch</span>
+                </button>
+                <a
+                  href="https://linkedin.com/in/pranavshende"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-semibold transition-all active:scale-95 shrink-0 whitespace-nowrap"
+                  title="Connect on LinkedIn"
+                >
+                  <Linkedin className="w-3.5 h-3.5 text-[#0077b5]" />
+                  <span>LinkedIn</span>
+                </a>
+                <a
+                  href="https://github.com/PranavShende"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-semibold transition-all active:scale-95 shrink-0 whitespace-nowrap"
+                  title="View GitHub Profile"
+                >
+                  <Github className="w-3.5 h-3.5" />
+                  <span>GitHub</span>
+                </a>
+                <a
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=pranavshende97@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-semibold transition-all active:scale-95 shrink-0 whitespace-nowrap"
+                  title="Direct Gmail"
+                >
+                  <Mail className="w-3.5 h-3.5 text-[#ea4335]" />
+                  <span>Gmail</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -362,10 +366,10 @@ export const Home: React.FC = () => {
               whileHover={{ y: -4 }}
               transition={{ duration: 0.2 }}
               onClick={() => setSelectedProject(proj)}
-              className="group cursor-pointer rounded-2xl border border-stone-800/15 dark:border-stone-700/40 bg-white/85 dark:bg-[#14161d]/85 backdrop-blur-md shadow-xs hover:shadow-md transition-all overflow-hidden flex flex-col p-3.5 sm:p-4"
+              className="group cursor-pointer rounded-2xl border border-black dark:border-stone-700 bg-white/85 dark:bg-[#14161d]/85 backdrop-blur-md shadow-xs hover:shadow-md transition-all overflow-hidden flex flex-col p-3.5 sm:p-4"
             >
               {/* Banner with badge */}
-              <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 shadow-2xs">
+              <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-900 border border-black/35 dark:border-stone-800 shadow-2xs">
                 <img
                   src={proj.image}
                   alt={proj.title}
