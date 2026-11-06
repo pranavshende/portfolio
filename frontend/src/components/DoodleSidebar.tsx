@@ -79,6 +79,13 @@ const DoodleResume = () => (
   </svg>
 );
 
+const DoodleFolder = () => (
+  <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] text-current fill-none stroke-current stroke-[2.2] stroke-linecap-round stroke-linejoin-round">
+    <path d="M3 7v13a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1h-8.5l-2-2.5H4a1 1 0 0 0-1 1z" />
+    <path d="M3 11h18" />
+  </svg>
+);
+
 interface NavItem {
   name: string;
   path: string;
@@ -87,6 +94,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { name: 'Home', path: '/', icon: <DoodleHouse /> },
+  { name: 'Projects', path: '/projects', icon: <DoodleFolder /> },
   { name: 'About', path: '/about', icon: <DoodleSmiley /> },
   { name: 'Arcade', path: '/arcade', icon: <DoodleGamepad /> },
 ];

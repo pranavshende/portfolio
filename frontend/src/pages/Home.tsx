@@ -409,14 +409,14 @@ export const Home: React.FC = () => {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          SELECTED PROJECTS (Mockup match: Red Accent Bar & Cards)
+          FEATURED PROJECTS (Mockup match: Red Accent Bar & Cards)
       ────────────────────────────────────────────────────────────── */}
       <section className="space-y-6 mb-16">
         <div className="flex items-center justify-between pb-1">
           <div className="flex items-center gap-2.5">
             <div className="w-1.5 h-5 bg-[#8b2323] rounded-full" />
             <h2 className="text-lg sm:text-xl font-bold text-stone-900 dark:text-stone-100 font-sans tracking-tight">
-              Selected Projects
+              Featured Projects
             </h2>
           </div>
           <Link

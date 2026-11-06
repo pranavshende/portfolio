@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import FloatingHeader from '@/components/FloatingHeader';
-import FloatingDock from '@/components/FloatingDock';
-import FloatingCodeBackground from '@/components/FloatingCodeBackground';
-import { Github, Smartphone, ArrowUpRight, Star, GitFork } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Github, ExternalLink, Star, GitFork, ArrowUpRight, Search, 
+  Layers, Sparkles, Code2, Terminal, Filter, CheckCircle2, Lock, Smartphone
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
-
+import { DoodleLayout } from '@/components/DoodleLayout';
+import useAnalytics from '@/hooks/useAnalytics';
 
 import jansamparkPhoto from '../photo/jansampark.webp';
 import solarAnalyticsPhoto from '../photo/solar_analytics.webp';
@@ -14,491 +15,695 @@ import attritionBanner from '../photo/attrition_banner.webp';
 import tastifyyBanner from '../photo/tastifyy_banner.webp';
 import electropathyBanner from '../photo/electropathy_banner.webp';
 
-interface Project {
-  title: string;
-  subtitle: string;
+interface RepoMeta {
+  title?: string;
+  category: string;
+  tier: 1 | 2 | 3; // 1 = Flagship / Best, 2 = Core / Specialized, 3 = Educational / Utility
   description: string;
   tech: string[];
-  highlights: string[];
-  github?: string;
-  demo?: string;
   badge?: string;
-  gradient: string;
-  image: string;
+  demoUrl?: string;
+  image?: string;
 }
 
-const projects: Project[] = [
-  {
-    title: "Electropathy AI",
-    subtitle: "Agentic Clinical RAG Copilot & pgvector Knowledge Engine",
-    description: "Clinical decision-support and medical RAG platform built for Dr. Ashish Wandhare. Integrates verified medical literature embeddings with zero hallucinations, pgvector semantic search, and multilingual consultation in English, Hindi, and Marathi.",
-    tech: ["Agentic RAG", "Multilingual NLP", "pgvector", "Prisma ORM", "TypeScript", "Node.js", "Supabase", "Tailwind CSS"],
-    highlights: [
-      "Option A RAG Knowledge Assistant grounded in verified clinical datasets",
-      "pgvector semantic search enabling multilingual clinical queries",
-      "Multi-step intake wizard covering patient history, lifestyle & constitution",
-      "Production deployment with mobile OTP auth via BlackSMS",
-    ],
-    badge: "Live Production",
-    github: "https://github.com/pranavshende/Electropathy_AI",
-    demo: "https://client-raprax.vercel.app",
-    gradient: "from-indigo-600 to-violet-800",
-    image: electropathyBanner
+// Curated enrichment dictionary for Pranav's GitHub repositories
+const REPO_REGISTRY: Record<string, RepoMeta> = {
+  Electropathy_AI: {
+    title: 'Electropathy AI Clinical Engine',
+    category: 'Agentic AI & Healthcare',
+    tier: 1,
+    description: 'Agentic clinical decision-support & medical knowledge engine with pgvector semantic search and multilingual RAG copilot in English, Hindi & Marathi. Zero hallucination retrieval grounding.',
+    tech: ['Agentic RAG', 'pgvector', 'TypeScript', 'Node.js', 'Supabase', 'Prisma ORM'],
+    badge: 'Live Production',
+    demoUrl: 'https://client-raprax.vercel.app',
+    image: electropathyBanner,
   },
-  {
-    title: "Tastifyy",
-    subtitle: "Distributed Logistics Engine with Kafka Streaming & Redis Geospatial",
-    description: "On-demand food delivery platform featuring dual client surfaces (React 19 Web + Expo App), Kafka event-driven dispatch pipelines, Redis geospatial caching, Express + TypeScript backend, Prisma ORM with Supabase PostgreSQL, and live Socket.io tracking.",
-    tech: ["Kafka Streams", "Redis Geospatial", "WebSockets (Socket.io)", "Distributed Systems", "React 19", "React Native", "TypeScript", "Prisma"],
-    highlights: [
-      "Dual client interfaces: React 19 web portal & React Native (Expo) app",
-      "Kafka event queue & Redis geospatial cache for delivery logistics",
-      "4-role architecture: Customer, Restaurant, Delivery Driver, Admin",
-      "Real-time event dispatching & live driver tracking with Socket.io",
-    ],
-    badge: "Production Shipped",
-    github: "https://github.com/pranavshende/tastifyy",
-    demo: "https://www.tastifyy.in",
-    gradient: "from-orange-500 to-amber-600",
-    image: tastifyyBanner
+  tastifyy: {
+    title: 'Tastifyy Delivery Ecosystem',
+    category: 'Distributed Logistics',
+    tier: 1,
+    description: 'On-demand multi-role food delivery platform featuring Kafka event-driven dispatch pipelines, Redis geospatial caching, React 19 web portal, Expo mobile app, and live Socket.io tracking.',
+    tech: ['Kafka Streams', 'Redis Geospatial', 'React 19', 'React Native', 'TypeScript', 'Socket.io'],
+    badge: 'Production Shipped',
+    demoUrl: 'https://www.tastifyy.in',
+    image: tastifyyBanner,
   },
-  {
-    title: "Employee Attrition AI",
-    subtitle: "Predictive HR Intelligence Platform & Gemini 2.5 Copilot",
-    description: "End-to-end predictive HR workforce intelligence platform and conversational copilot with instant dynamic CSV dataset ingestion, Redis caching, 11 interactive visualizations, and Gemini 2.5 Flash copilot.",
-    tech: ["Google Gemini 2.5", "Predictive ML", "Dynamic ETL", "Python (Pandas)", "Flask REST APIs", "React 19", "Chart.js"],
-    highlights: [
-      "Instant dynamic CSV ingestion with automatic column detection",
-      "11 interactive Chart.js visualizations & root-cause driver ranking",
-      "High-risk employee watchlist table with composite flight risk scores",
-      "Conversational AI copilot querying dataset metrics with zero hallucinations",
-    ],
-    badge: "Gemini 2.5 Flash",
-    github: "https://github.com/pranavshende/EmployeeAttritionSystem",
-    gradient: "from-emerald-500 to-teal-700",
-    image: attritionBanner
+  EmployeeAttritionSystem: {
+    title: 'Employee Attrition AI',
+    category: 'Predictive ML & Analytics',
+    tier: 1,
+    description: 'End-to-end workforce risk intelligence platform with instant dynamic CSV dataset ingestion, 11 interactive Chart.js visualizations, and an intelligent Gemini 2.5 Flash copilot.',
+    tech: ['Google Gemini 2.5', 'Predictive ML', 'Python (Flask)', 'React 19', 'Chart.js', 'Redis'],
+    badge: 'Gemini 2.5 Flash',
+    image: attritionBanner,
   },
-  {
-    title: "JanSampark",
-    subtitle: "Enterprise Civic Governance Platform with 25+ React Native Modules",
-    description: "Enterprise civic governance platform bridging citizens and administration. Built 25+ frontend modules in React Native with offline geo-tagging, JWT + RBAC security for 4 roles, and high-concurrency Node.js RESTful APIs.",
-    tech: ["Enterprise Architecture", "React Native", "RBAC Security", "Node.js", "PostgreSQL", "High-Concurrency APIs", "JWT"],
-    highlights: [
-      "25+ frontend modules built in React Native with offline geo-tagging",
-      "JWT + RBAC framework safeguarding citizen records across 4 administrative roles",
-      "40+ RESTful APIs handling high-concurrency complaint submissions",
-      "Sub-15ms database query execution with indexed PostgreSQL schemas",
-    ],
-    github: "private",
-    demo: "/arcade?folder=projects_folder",
-    gradient: "from-blue-500 to-indigo-600",
-    image: jansamparkPhoto
+  PashuRakshak: {
+    title: 'PashuRakshak Diagnostics',
+    category: 'Edge Computing & Computer Vision',
+    tier: 1,
+    description: 'Offline-first Edge AI veterinary diagnostics system with quantized TensorFlow Lite CNNs (INT8) for sub-120ms livestock disease detection in zero-connectivity rural farms. Published at IEEE.',
+    tech: ['Edge Computing', 'TensorFlow Lite INT8', 'Computer Vision', 'React Native', 'IEEE Research'],
+    badge: 'IEEE Published',
+    image: pashurakshakPhoto,
   },
-  {
-    title: "Solar Intelligence",
-    subtitle: "CleanTech Big Data Pipeline & Geospatial GIS Heatmaps",
-    description: "CleanTech big data analytics platform evaluating 10+ years (2014–2024) of nationwide solar metrics across 36+ Indian states/UTs covering 81.8+ GW with automated ETL pipelines, GIS heatmaps, and polynomial regression forecasting to 2030.",
-    tech: ["CleanTech Big Data", "Time-Series Forecasting", "Geospatial GIS", "Python", "PostgreSQL", "Polynomial Regression", "Recharts"],
-    highlights: [
-      "10+ years (2014–2024) of solar time-series data & automated ETL pipelines",
-      "81.8+ GW of installed capacity evaluated across 36+ states/UTs",
-      "Multi-decadal polynomial regression forecasting up to 2030",
-      "Interactive GIS choropleth heatmaps mapping nationwide solar adoption",
-    ],
-    github: "https://github.com/pranavshende/SolarSalesAnalysis",
-    demo: "/arcade?folder=projects_folder",
-    gradient: "from-amber-400 to-orange-500",
-    image: solarAnalyticsPhoto
+  'HackNation_SKB-F17_SKB_P2': {
+    title: 'PashuRakshak Edge Mobile Pipeline',
+    category: 'Edge Computing & IoT',
+    tier: 1,
+    description: 'Core mobile client and on-device INT8 quantized inference engine for PashuRakshak, featuring offline telemetry queuing, SQLite local storage, and veterinary dispatch routing.',
+    tech: ['TensorFlow Lite', 'React Native', 'Offline-First', 'SQLite', 'IEEE OTCON'],
+    badge: 'IEEE Published',
+    image: pashurakshakPhoto,
   },
-  {
-    title: "PashuRakshak",
-    subtitle: "Edge Computing Livestock Pathology Classifier & Offline-First IoT",
-    description: "An Edge AI livestock healthcare platform with 5+ modules using quantized convolutional neural networks (TensorFlow Lite INT8) for offline disease detection and telemetry sync queuing. Presented and published at IEEE OPJU conference.",
-    tech: ["Edge Computing", "Quantized CNNs", "TensorFlow Lite", "Offline-First IoT", "Computer Vision", "React Native", "IEEE Research"],
-    highlights: [
-      "Sub-120ms on-device quantized CNN inference with 94%+ diagnostic accuracy",
-      "Offline-first IoT architecture designed for zero-connectivity rural livestock farms",
-      "Local caching queue buffering diagnostic telemetry until network reconnect",
-      "Presented and published at IEEE OPJU International Conference (OTCON)",
-    ],
-    badge: "IEEE Published",
-    github: "https://github.com/pranavshende/HackNation_SKB-F17_SKB_P2",
-    demo: "/arcade?folder=projects_folder",
-    gradient: "from-emerald-400 to-teal-600",
-    image: pashurakshakPhoto
-  }
-];
+  SolarSalesAnalysis: {
+    title: 'Solar Intelligence Platform',
+    category: 'CleanTech Big Data & GIS',
+    tier: 1,
+    description: 'CleanTech big data intelligence platform analyzing 10+ years (2014–2024) of solar energy across 36+ states/UTs covering 81.8+ GW with automated ETL pipelines, GIS heatmaps, and polynomial forecasting to 2030.',
+    tech: ['CleanTech Big Data', 'Geospatial GIS', 'Python', 'PostgreSQL', 'Polynomial Regression', 'Recharts'],
+    badge: 'CleanTech Big Data',
+    image: solarAnalyticsPhoto,
+  },
+  citywidecamersur: {
+    title: 'Citywide Camera Surveillance System',
+    category: 'Computer Vision & Smart City',
+    tier: 1,
+    description: 'Distributed urban video surveillance and camera intelligence network with real-time video stream monitoring, incident alerting, and geo-spatial camera mapping.',
+    tech: ['Computer Vision', 'Video Streaming', 'TypeScript', 'Node.js', 'PostgreSQL'],
+    badge: 'Smart City Vision',
+  },
+  TruliaCare_Appathon: {
+    title: 'TruliaCare Telehealth Platform',
+    category: 'Digital Healthcare',
+    tier: 1,
+    description: 'Telehealth consultation and patient monitoring application featuring real-time doctor-patient workflows, medical prescription generation, and appointment triage.',
+    tech: ['React Native', 'TypeScript', 'Node.js', 'REST APIs', 'Healthcare Telemetry'],
+    badge: 'Healthcare App',
+  },
+  'Credit-Score-Invisibility-Farmer': {
+    title: 'Farmer Alternative Credit Scoring',
+    category: 'FinTech & Agricultural Inclusion',
+    tier: 1,
+    description: 'Alternative credit scoring platform evaluating agricultural risk and seasonal yield metrics to overcome credit invisibility for unbanked rural farmers.',
+    tech: ['FinTech', 'Predictive Scoring', 'TypeScript', 'Data Science', 'Financial Inclusion'],
+    badge: 'FinTech AI',
+  },
+  StockMarketIntelligence: {
+    title: 'Stock Market Intelligence Engine',
+    category: 'Quantitative Finance & Analytics',
+    tier: 2,
+    description: 'Financial market analytics engine calculating technical indicators, volatility forecasts, and historical price momentum for portfolio risk assessment.',
+    tech: ['Financial Analytics', 'Python', 'Time Series', 'Technical Analysis'],
+    badge: 'Quant Analytics',
+  },
+  portfolio: {
+    title: 'Full-Stack Portfolio Engine v2',
+    category: 'Web Engineering & Architecture',
+    tier: 2,
+    description: 'High-performance developer portfolio built with React 19, TypeScript, Express API gateway, Prisma ORM, Supabase PostgreSQL, and live analytics telemetry.',
+    tech: ['React 19', 'TypeScript', 'Express', 'Prisma', 'Supabase', 'Tailwind CSS'],
+    badge: 'Production V2',
+  },
+  'GHG-Emission': {
+    title: 'GHG Emission Analytics Dashboard',
+    category: 'Environmental Data Science',
+    tier: 2,
+    description: 'Greenhouse gas emission analytics dashboard aggregating industrial carbon footprints and regional emissions data with visual compliance benchmarks.',
+    tech: ['Data Analytics', 'HTML5', 'CSS3', 'JavaScript', 'Charts'],
+    badge: 'Sustainability',
+  },
+  DSAQUESTIONS: {
+    title: 'Data Structures & Algorithms Repository',
+    category: 'Algorithms & Problem Solving',
+    tier: 2,
+    description: 'Comprehensive repository of LeetCode and competitive programming solutions covering trees, dynamic programming, graphs, sliding windows, and bit manipulation.',
+    tech: ['C++', 'Java', 'Python', 'Data Structures', 'Algorithms'],
+    badge: 'Problem Solving',
+  },
+  Topic_Wise_Java: {
+    title: 'Topic-Wise Java Engineering Suite',
+    category: 'Core Computer Science',
+    tier: 2,
+    description: 'Curated Java engineering solutions covering Object-Oriented Design, multi-threading, JVM memory models, generics, collections, and modular design patterns.',
+    tech: ['Java', 'OOP', 'Concurrency', 'Design Patterns'],
+    badge: 'Core Java',
+  },
+  Topic_Wise_Python: {
+    title: 'Topic-Wise Python Problem Solving',
+    category: 'Core Computer Science',
+    tier: 2,
+    description: 'Topic-wise Python master repository from beginner to advanced: decorators, generators, OOP, complex algorithmic problems, and interview challenges.',
+    tech: ['Python', 'OOP', 'Data Structures', 'Functional Programming'],
+    badge: 'Core Python',
+  },
+  LeetCode: {
+    title: 'LeetCode Algorithmic Practice',
+    category: 'Competitive Programming',
+    tier: 2,
+    description: 'Collection of solved LeetCode challenges with optimized space and time complexity analyses in Java.',
+    tech: ['Java', 'Algorithms', 'Competitive Programming'],
+    badge: 'Algorithms',
+  },
+  demofrontend: {
+    title: 'Frontend UI Sandbox Prototype',
+    category: 'Experimental Prototype',
+    tier: 3,
+    description: 'Interactive client prototype experimenting with responsive layout components and modern web user flows.',
+    tech: ['JavaScript', 'HTML5', 'CSS3', 'UI Prototype'],
+    badge: 'Sandbox Prototype',
+  },
+  pathway: {
+    title: 'Pathway (Open-Source Fork)',
+    category: 'Stream Processing Fork',
+    tier: 3,
+    description: 'Python ETL framework for stream processing, real-time analytics, LLM pipelines, and RAG.',
+    tech: ['Python', 'ETL', 'Stream Processing', 'Fork'],
+    badge: 'Open-Source Fork',
+  },
+  hyperswitch: {
+    title: 'Hyperswitch (Open-Source Fork)',
+    category: 'Payment Systems Fork',
+    tier: 3,
+    description: 'An open source payments switch written in Rust to make payments fast, reliable and affordable.',
+    tech: ['Rust', 'FinTech', 'Payments', 'Fork'],
+    badge: 'Open-Source Fork',
+  },
+  'llm-app': {
+    title: 'LLM App Templates (Open-Source Fork)',
+    category: 'AI Templates Fork',
+    tier: 3,
+    description: 'Ready-to-run cloud templates for RAG, AI pipelines, and enterprise search with live data.',
+    tech: ['Python', 'Docker', 'RAG', 'Fork'],
+    badge: 'Open-Source Fork',
+  },
+  forge: {
+    title: 'Forge AI Pair Programmer (Fork)',
+    category: 'Developer Tools Fork',
+    tier: 3,
+    description: 'AI enabled pair programmer for Claude, GPT, Grok, DeepSeek, and Gemini models.',
+    tech: ['AI Tools', 'Developer Utilities', 'Fork'],
+    badge: 'Open-Source Fork',
+  },
+};
 
-const ProjectsPage = () => {
-  const [gitRepos, setGitRepos] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [isExpanded, setIsExpanded] = useState(false);
+interface ProjectItem {
+  id: string | number;
+  name: string;
+  title: string;
+  category: string;
+  tier: 1 | 2 | 3;
+  description: string;
+  tech: string[];
+  badge?: string;
+  demoUrl?: string;
+  githubUrl: string;
+  image?: string;
+  stars: number;
+  forks: number;
+  language: string;
+  updatedAt: string;
+  isFork: boolean;
+}
+
+export const ProjectsPage: React.FC = () => {
+  useAnalytics();
+  const [repos, setRepos] = useState<ProjectItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [selectedFilter, setSelectedFilter] = useState<'all' | 'flagship' | 'ai' | 'algorithms'>('all');
 
   useEffect(() => {
-    fetch("https://api.github.com/users/pranavshende/repos?sort=updated&per_page=100")
-      .then(res => res.json())
-      .then(data => {
+    fetch('https://api.github.com/users/pranavshende/repos?per_page=100&sort=updated')
+      .then((res) => res.json())
+      .then((data) => {
         if (Array.isArray(data)) {
-          // Filter out forks and the repos that are already featured
-          const featuredNames = ["SolarSalesAnalysis", "HackNation_SKB-F17_SKB_P2", "EmployeeAttritionSystem", "tastifyy"];
-          const filtered = data.filter((repo: any) => !repo.fork && !featuredNames.includes(repo.name));
-          setGitRepos(filtered);
+          const items: ProjectItem[] = data
+            .filter((r: any) => r.name !== 'pranavshende') // Hide GitHub profile README repo
+            .map((r: any) => {
+              const meta = REPO_REGISTRY[r.name] || {
+                title: r.name,
+                category: r.fork ? 'Open-Source Fork' : 'Software Repository',
+                tier: r.fork ? 3 : 2,
+                description: r.description || 'Public software engineering repository on GitHub.',
+                tech: [r.language || 'Code'].filter(Boolean),
+                badge: r.fork ? 'Forked Repo' : (r.stargazers_count > 0 ? 'Starred' : undefined),
+              };
+
+              return {
+                id: r.id,
+                name: r.name,
+                title: meta.title || r.name,
+                category: meta.category,
+                tier: meta.tier,
+                description: meta.description || r.description || 'Public engineering repository on GitHub.',
+                tech: meta.tech && meta.tech.length > 0 ? meta.tech : [r.language || 'Code'],
+                badge: meta.badge,
+                demoUrl: meta.demoUrl,
+                githubUrl: r.html_url,
+                image: meta.image,
+                stars: r.stargazers_count || 0,
+                forks: r.forks_count || 0,
+                language: r.language || 'TypeScript',
+                updatedAt: r.pushed_at,
+                isFork: r.fork,
+              };
+            });
+
+          // Sort strictly: Tier 1 (Best/God projects) -> Tier 2 (Core/Algorithms) -> Tier 3 (Forks/Utilities)
+          items.sort((a, b) => {
+            if (a.tier !== b.tier) return a.tier - b.tier;
+            return b.stars - a.stars;
+          });
+
+          setRepos(items);
         }
       })
-      .catch(err => console.error(err))
+      .catch((err) => {
+        console.error('Failed to fetch dynamic repos:', err);
+        // Fallback to static registry items if offline
+        const fallbackItems: ProjectItem[] = Object.entries(REPO_REGISTRY).map(([name, meta], idx) => ({
+          id: idx,
+          name,
+          title: meta.title || name,
+          category: meta.category,
+          tier: meta.tier,
+          description: meta.description,
+          tech: meta.tech,
+          badge: meta.badge,
+          demoUrl: meta.demoUrl,
+          githubUrl: `https://github.com/pranavshende/${name}`,
+          image: meta.image,
+          stars: 1,
+          forks: 0,
+          language: meta.tech[0] || 'TypeScript',
+          updatedAt: '2026-11-06',
+          isFork: meta.category.includes('Fork'),
+        }));
+        fallbackItems.sort((a, b) => a.tier - b.tier);
+        setRepos(fallbackItems);
+      })
       .finally(() => setLoading(false));
   }, []);
 
+  // Filtered repositories based on search and category tab
+  const filteredRepos = useMemo(() => {
+    return repos.filter((repo) => {
+      // Search matching
+      const matchesSearch =
+        repo.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        repo.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        repo.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        repo.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        repo.tech.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
+
+      if (!matchesSearch) return false;
+
+      // Category filter matching
+      if (selectedFilter === 'flagship') {
+        return repo.tier === 1;
+      }
+      if (selectedFilter === 'ai') {
+        return (
+          repo.category.toLowerCase().includes('ai') ||
+          repo.tech.some((t) => t.toLowerCase().includes('ai') || t.toLowerCase().includes('rag') || t.toLowerCase().includes('gemini') || t.toLowerCase().includes('vision'))
+        );
+      }
+      if (selectedFilter === 'algorithms') {
+        return (
+          repo.category.toLowerCase().includes('algorithm') ||
+          repo.category.toLowerCase().includes('science') ||
+          repo.name.toLowerCase().includes('dsa') ||
+          repo.name.toLowerCase().includes('leetcode') ||
+          repo.name.toLowerCase().includes('topic')
+        );
+      }
+
+      return true;
+    });
+  }, [repos, searchQuery, selectedFilter]);
+
+  // Group by Tiers for clear visual hierarchy
+  const tier1Projects = useMemo(() => filteredRepos.filter((r) => r.tier === 1), [filteredRepos]);
+  const tier2Projects = useMemo(() => filteredRepos.filter((r) => r.tier === 2), [filteredRepos]);
+  const tier3Projects = useMemo(() => filteredRepos.filter((r) => r.tier === 3), [filteredRepos]);
+
   return (
-    <div className="relative min-h-screen bg-black text-white selection:bg-emerald-500/30 pb-24">
-      <FloatingCodeBackground />
-      <FloatingHeader />
-      
-      <main className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 pt-28 space-y-16">
-        <section className="text-center space-y-4 mb-16">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-4xl sm:text-[56px] leading-[1.1] font-bold tracking-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
-          >
-            My <span className="text-custom-primary">Projects</span>
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-custom-muted max-w-2xl mx-auto text-[16px] sm:text-[18px] font-medium"
-          >
-            A collection of my work, ranging from scalable backend architectures and AI-driven applications to comprehensive full-stack platforms.
-          </motion.p>
-        </section>
-
-        {/* Featured Projects List */}
-        <div className="space-y-6">
-          <div className="border-b border-white/[0.06] pb-4">
-            <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
-              Featured Work
-            </h2>
-          </div>
-          
-          {/* Desktop View */}
-          <div className="hidden sm:block space-y-4">
-            {projects.map((project, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="group flex flex-col sm:flex-row rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-all overflow-hidden"
-              >
-                {/* Image Banner Left Side */}
-                <div className="relative w-full sm:w-48 overflow-hidden bg-zinc-950 border-b sm:border-b-0 sm:border-r border-zinc-800/80 flex-shrink-0">
-                  <img 
-                    src={project.image} 
-                    alt={project.title} 
-                    loading="lazy" 
-                    className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${
-                      project.title === 'JanSampark' ? 'object-left' : 'object-center'
-                    }`}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/60 to-transparent pointer-events-none" />
-                </div>
-
-                <div className="flex-grow p-5 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1 pr-4">
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <h3 className="text-sm font-semibold text-white group-hover:text-emerald-400 transition-colors">{project.title}</h3>
-                          {project.badge && (
-                            <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[10px] font-medium text-emerald-400">
-                              {project.badge}
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-xs text-zinc-500 mt-0.5">{project.subtitle}</p>
-                      </div>
-                    </div>
-                    
-                    <p className="mt-3 text-xs text-zinc-400 leading-relaxed">
-                      {project.description}
-                    </p>
-
-                    <ul className="mt-3 space-y-1">
-                      {project.highlights.map((h, j) => (
-                        <li key={j} className="text-[11px] text-zinc-500 flex gap-1.5 items-start">
-                          <span className="text-emerald-500 flex-shrink-0 mt-0.5">•</span>
-                          <span className="leading-relaxed">{h}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  
-                  <div className="mt-5 space-y-4">
-                    <div className="flex flex-wrap gap-1.5">
-                      {project.tech.map((t, idx) => (
-                        <span key={idx} className="px-2 py-0.5 rounded-full bg-zinc-950 border border-zinc-800 text-[10px] font-medium text-zinc-400">
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-
-                    <div className="flex gap-3 pt-4 border-t border-zinc-800">
-                      {project.github && project.github !== "private" && (
-                        <a 
-                          href={project.github} 
-                          target="_blank" 
-                          rel="noopener noreferrer" 
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white text-[11px] font-medium transition-colors border border-zinc-700"
-                        >
-                          <Github className="w-3.5 h-3.5" />
-                          GitHub Source
-                        </a>
-                      )}
-                      {project.github === "private" && (
-                        <div 
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800/50 text-zinc-500 text-[11px] font-medium border border-zinc-800 cursor-not-allowed"
-                          title="Currently this repo is private"
-                        >
-                          <Github className="w-3.5 h-3.5" />
-                          Private Repository
-                        </div>
-                      )}
-                      {project.demo && (
-                        <Link 
-                          to={project.demo} 
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-[11px] font-medium transition-colors border border-emerald-500/30"
-                        >
-                          <Smartphone className="w-3.5 h-3.5" />
-                          View Demo
-                          <ArrowUpRight className="w-3 h-3 ml-0.5 opacity-70" />
-                        </Link>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Mobile View (Sliding Overlapping Cards with Top Banners) */}
-          <div className="sm:hidden">
-            <div 
-              className="relative w-full overflow-x-auto no-scrollbar py-8 -my-4 px-2 -mx-2"
-              onMouseEnter={() => setIsExpanded(true)}
-              onMouseLeave={() => setIsExpanded(false)}
-              onTouchStart={() => setIsExpanded(true)}
-            >
-              <div className="flex items-stretch min-w-max px-2 py-4">
-                {projects.map((project, i) => (
-                  <motion.div 
-                    key={i} 
-                    animate={{
-                      marginLeft: isExpanded ? (i === 0 ? 0 : 16) : (i === 0 ? 0 : -220),
-                      rotate: isExpanded ? 0 : (i * 3),
-                      y: isExpanded ? 0 : (i * 8),
-                    }}
-                    transition={{ 
-                      type: "spring", 
-                      stiffness: 250, 
-                      damping: 25, 
-                      delay: isExpanded ? i * 0.05 : (projects.length - i) * 0.05 
-                    }}
-                    className="flex-shrink-0 w-[280px] flex flex-col overflow-hidden rounded-xl bg-zinc-900 border border-zinc-800 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] transition-colors min-h-[460px]"
-                    style={{ 
-                      zIndex: projects.length - i,
-                    }}
-                  >
-                    {/* Image Banner */}
-                    <div className="relative w-full aspect-[16/9] overflow-hidden bg-zinc-950 border-b border-zinc-800/80">
-                      <img 
-                        src={project.image} 
-                        alt={project.title} 
-                        loading="lazy" 
-                        className={`w-full h-full object-cover ${
-                          project.title === 'JanSampark' ? 'object-left' : 'object-center'
-                        }`}
-                      />
-                    </div>
-
-                    <div className="flex-grow p-4 flex flex-col justify-between">
-                      <div>
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1 pr-4">
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <h3 className="text-sm font-semibold text-white">{project.title}</h3>
-                              {project.badge && (
-                                <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[10px] font-medium text-emerald-400">
-                                  {project.badge}
-                                </span>
-                              )}
-                            </div>
-                            <p className="text-[10px] text-zinc-500 mt-0.5">{project.subtitle}</p>
-                          </div>
-                        </div>
-                        
-                        <p className="mt-2 text-xs text-zinc-400 leading-relaxed">
-                          {project.description}
-                        </p>
-
-                        <ul className="mt-2 space-y-1">
-                          {project.highlights.map((h, j) => (
-                            <li key={j} className="text-[10px] text-zinc-500 flex gap-1.5">
-                              <span className="text-emerald-500 flex-shrink-0">•</span>
-                              <span className="line-clamp-2">{h}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      
-                      <div className="mt-3 space-y-3">
-                        <div className="flex flex-wrap gap-1.5">
-                          {project.tech.map((t, idx) => (
-                            <span key={idx} className="px-2 py-0.5 rounded-full bg-zinc-950 border border-zinc-800 text-[9px] font-medium text-zinc-400">
-                          {t}
-                        </span>
-                          ))}
-                        </div>
-
-                        <div className="flex gap-2 pt-3 border-t border-zinc-800">
-                          {project.github && project.github !== "private" && (
-                            <a 
-                              href={project.github} 
-                              target="_blank" 
-                              rel="noopener noreferrer" 
-                              className="flex flex-1 items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white text-[11px] font-medium transition-colors border border-zinc-700"
-                            >
-                              <Github className="w-3.5 h-3.5" />
-                              Code
-                            </a>
-                          )}
-                          {project.github === "private" && (
-                            <div 
-                              className="flex flex-1 items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-zinc-800/50 text-zinc-500 text-[11px] font-medium border border-zinc-800 cursor-not-allowed"
-                              title="Currently this repo is private"
-                            >
-                              <Github className="w-3.5 h-3.5" />
-                              Private
-                            </div>
-                          )}
-                          {project.demo && (
-                            <Link 
-                              to={project.demo} 
-                              className="flex flex-1 items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-[11px] font-medium transition-colors border border-emerald-500/30"
-                            >
-                              <Smartphone className="w-3.5 h-3.5" />
-                              Arcade
-                              <ArrowUpRight className="w-3 h-3 ml-0.5 opacity-70" />
-                            </Link>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex justify-center mt-2">
-              <p className="text-[10px] text-zinc-500 flex items-center gap-1 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800">
-                <span>Swipe to expand cards horizontally</span>
-                <ArrowUpRight className="w-3 h-3 ml-1 opacity-70" />
-              </p>
-            </div>
-          </div>
+    <DoodleLayout>
+      {/* ─────────────────────────────────────────────────────────────
+          PAGE HEADER
+      ────────────────────────────────────────────────────────────── */}
+      <section className="mb-8 sm:mb-10">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium text-[#8b2323] bg-[#8b2323]/10 border border-[#8b2323]/25 mb-4">
+          <span>&lt;//&gt;</span>
+          <span>GitHub Code Catalog</span>
         </div>
 
-        {/* Dynamic GitHub Repositories Grid */}
-        <section className="space-y-6 pt-6">
-          <div className="border-b border-white/[0.06] pb-4">
-            <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
-              Other Noteworthy Repositories
-            </h2>
-            <p className="text-xs text-zinc-500 mt-1">
-              Dynamically loaded public repositories from my GitHub.
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 dark:text-stone-50 tracking-tight leading-tight select-text">
+              All <span className="font-serif italic text-[#8b2323] dark:text-white">Projects</span> & Repositories
+            </h1>
+            <p className="text-base sm:text-lg text-stone-700 dark:text-stone-300 mt-2.5 font-normal leading-relaxed max-w-2xl">
+              Curated catalog of software engineering systems scanned live from GitHub — organized with flagship production architectures at the top.
             </p>
           </div>
 
-          {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[1, 2, 3].map(i => (
-                <div key={i} className="h-40 rounded-xl bg-zinc-900 border border-zinc-800 animate-pulse" />
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {gitRepos.map((repo, i) => (
-                <motion.div
-                  key={repo.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: (i % 3) * 0.1 }}
-                  className="group flex flex-col p-4 rounded-xl bg-zinc-950 border border-white/[0.06] hover:border-zinc-800 transition-all shadow-sm"
-                >
-                  <div className="flex-1 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest">Repository</span>
+          <a
+            href="https://github.com/pranavshende?tab=repositories"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 text-xs font-bold shadow-xs hover:bg-stone-800 dark:hover:bg-stone-200 transition-all self-start md:self-auto shrink-0"
+          >
+            <Github className="w-4 h-4" />
+            <span>View All on GitHub</span>
+            <ExternalLink className="w-3 h-3 ml-0.5 opacity-70" />
+          </a>
+        </div>
+
+        {/* ── Search & Filter Bar ── */}
+        <div className="mt-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          {/* Search Input */}
+          <div className="relative flex-1">
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search projects by name, language, architecture..."
+              className="w-full pl-9 pr-4 py-2 text-xs sm:text-sm rounded-xl bg-white/80 dark:bg-[#14161d]/80 border border-stone-300 dark:border-stone-700 text-stone-900 dark:text-stone-100 placeholder:text-stone-400 focus:outline-hidden focus:border-[#8b2323] transition-colors"
+            />
+          </div>
+
+          {/* Filter Pills */}
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 shrink-0">
+            {[
+              { id: 'all', label: 'All Projects' },
+              { id: 'flagship', label: 'Flagship Systems' },
+              { id: 'ai', label: 'AI & ML' },
+              { id: 'algorithms', label: 'Algorithms & DSA' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setSelectedFilter(tab.id as any)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                  selectedFilter === tab.id
+                    ? 'bg-[#8b2323] text-white shadow-xs'
+                    : 'bg-white/80 dark:bg-[#14161d]/80 border border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Loading Skeleton */}
+      {loading ? (
+        <div className="space-y-6">
+          <div className="h-6 w-48 bg-stone-200 dark:bg-stone-800 rounded-md animate-pulse" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="h-64 rounded-2xl bg-stone-100 dark:bg-stone-800/40 border border-stone-200 dark:border-stone-800 animate-pulse" />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-12">
+          {/* ─────────────────────────────────────────────────────────────
+              TIER 1: FLAGSHIP PRODUCTION ARCHITECTURES (TOP)
+          ────────────────────────────────────────────────────────────── */}
+          {tier1Projects.length > 0 && (
+            <section className="space-y-5">
+              <div className="flex items-center justify-between pb-1 border-b border-stone-200/80 dark:border-stone-800">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-5 bg-[#8b2323] rounded-full" />
+                  <h2 className="text-base sm:text-lg font-bold text-stone-900 dark:text-stone-100 tracking-tight">
+                    Flagship Systems & Production Architectures
+                  </h2>
+                </div>
+                <span className="text-xs font-mono text-stone-500">
+                  {tier1Projects.length} Flagship {tier1Projects.length === 1 ? 'Project' : 'Projects'}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {tier1Projects.map((p) => (
+                  <div
+                    key={p.name}
+                    className="group rounded-2xl border border-stone-200/80 dark:border-stone-800 bg-white/85 dark:bg-[#14161d]/85 backdrop-blur-md p-4 sm:p-5 flex flex-col justify-between shadow-xs hover:shadow-md transition-all hover:border-stone-400 dark:hover:border-stone-700"
+                  >
+                    <div className="space-y-3">
+                      {/* Image Thumbnail Banner if available */}
+                      {p.image && (
+                        <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800">
+                          <img
+                            src={p.image}
+                            alt={p.title}
+                            className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
+                          />
+                          {p.badge && (
+                            <div className="absolute top-2.5 right-2.5 bg-white/95 dark:bg-stone-900/90 text-stone-900 dark:text-stone-100 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-stone-300 dark:border-stone-700 shadow-xs">
+                              {p.badge}
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      <div>
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-[10px] font-mono font-semibold uppercase text-[#8b2323] dark:text-rose-400 tracking-wider">
+                            {p.category}
+                          </span>
+                          {!p.image && p.badge && (
+                            <span className="bg-[#8b2323]/10 text-[#8b2323] dark:text-rose-400 text-[10px] font-bold px-2 py-0.5 rounded-full border border-[#8b2323]/20">
+                              {p.badge}
+                            </span>
+                          )}
+                        </div>
+
+                        <h3 className="text-base sm:text-lg font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors mt-0.5">
+                          {p.title}
+                        </h3>
+
+                        <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed mt-2 line-clamp-3">
+                          {p.description}
+                        </p>
+                      </div>
+
+                      {/* Tech stack pills */}
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {p.tech.map((t, idx) => (
+                          <span
+                            key={idx}
+                            className="px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800/80 text-stone-700 dark:text-stone-300 font-mono text-[11px] border border-stone-200 dark:border-stone-700/80"
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Action buttons */}
+                    <div className="pt-4 mt-4 border-t border-stone-200/80 dark:border-stone-800 flex items-center justify-between">
+                      <div className="flex items-center gap-3 text-xs text-stone-500">
+                        {p.stars > 0 && (
+                          <span className="flex items-center gap-1 font-mono">
+                            <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                            {p.stars}
+                          </span>
+                        )}
+                        <span className="font-mono text-[11px]">{p.language}</span>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        {p.demoUrl && (
+                          <a
+                            href={p.demoUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#8b2323] text-white text-xs font-bold hover:bg-[#721c1c] shadow-2xs transition-colors"
+                          >
+                            <ExternalLink className="w-3 h-3" />
+                            <span>Live Demo</span>
+                          </a>
+                        )}
+                        <a
+                          href={p.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-semibold transition-colors"
+                        >
+                          <Github className="w-3.5 h-3.5" />
+                          <span>Code</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* ─────────────────────────────────────────────────────────────
+              TIER 2: SPECIALIZED ENGINES & CORE REPOSITORIES (MIDDLE)
+          ────────────────────────────────────────────────────────────── */}
+          {tier2Projects.length > 0 && (
+            <section className="space-y-5">
+              <div className="flex items-center justify-between pb-1 border-b border-stone-200/80 dark:border-stone-800">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-5 bg-blue-600 rounded-full" />
+                  <h2 className="text-base sm:text-lg font-bold text-stone-900 dark:text-stone-100 tracking-tight">
+                    Specialized Engineering & Algorithmic Solutions
+                  </h2>
+                </div>
+                <span className="text-xs font-mono text-stone-500">
+                  {tier2Projects.length} Repositories
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {tier2Projects.map((p) => (
+                  <div
+                    key={p.name}
+                    className="rounded-2xl border border-stone-200/80 dark:border-stone-800 bg-white/80 dark:bg-[#14161d]/80 p-4 flex flex-col justify-between shadow-2xs hover:shadow-xs transition-all hover:border-stone-400 dark:hover:border-stone-700"
+                  >
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-mono uppercase text-blue-600 dark:text-blue-400 font-semibold tracking-wider">
+                          {p.category}
+                        </span>
+                        {p.stars > 0 && (
+                          <span className="flex items-center gap-1 text-[11px] font-mono text-stone-500">
+                            <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
+                            {p.stars}
+                          </span>
+                        )}
+                      </div>
+
+                      <h3 className="text-sm font-bold text-stone-900 dark:text-stone-100 line-clamp-1">
+                        {p.title}
+                      </h3>
+
+                      <p className="text-xs text-stone-600 dark:text-stone-400 line-clamp-3 leading-relaxed">
+                        {p.description}
+                      </p>
+
+                      <div className="flex flex-wrap gap-1 pt-1">
+                        {p.tech.slice(0, 3).map((t, idx) => (
+                          <span
+                            key={idx}
+                            className="px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 font-mono text-[10px]"
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="pt-3 mt-3 border-t border-stone-200/80 dark:border-stone-800 flex items-center justify-between text-xs">
+                      <span className="font-mono text-[11px] text-stone-500">{p.language}</span>
                       <a
-                        href={repo.html_url}
+                        href={p.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-zinc-500 hover:text-emerald-400 transition-colors"
+                        className="inline-flex items-center gap-1 text-xs font-semibold text-[#8b2323] dark:text-rose-400 hover:underline"
                       >
+                        <span>GitHub Repo</span>
                         <ArrowUpRight className="w-3.5 h-3.5" />
                       </a>
                     </div>
-                    
-                    <h3 className="text-sm font-semibold text-white group-hover:text-emerald-400 transition-colors truncate">
-                      {repo.name}
-                    </h3>
-                    
-                    <p className="text-xs text-zinc-400 leading-relaxed line-clamp-3">
-                      {repo.description || "No description provided."}
-                    </p>
                   </div>
-                  
-                  <div className="pt-3 mt-3 border-t border-white/[0.06] flex items-center justify-between text-[11px] text-zinc-500">
-                    <div className="flex items-center gap-2">
-                      {repo.language && (
-                        <span className="flex items-center gap-1">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                          {repo.language}
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* ─────────────────────────────────────────────────────────────
+              TIER 3: OPEN-SOURCE UTILITIES & FORKS (BOTTOM)
+          ────────────────────────────────────────────────────────────── */}
+          {tier3Projects.length > 0 && (
+            <section className="space-y-5">
+              <div className="flex items-center justify-between pb-1 border-b border-stone-200/80 dark:border-stone-800">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-5 bg-stone-400 rounded-full" />
+                  <h2 className="text-base sm:text-lg font-bold text-stone-900 dark:text-stone-100 tracking-tight">
+                    Open-Source Contributions & Utilities
+                  </h2>
+                </div>
+                <span className="text-xs font-mono text-stone-500">
+                  {tier3Projects.length} Repositories
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                {tier3Projects.map((p) => (
+                  <div
+                    key={p.name}
+                    className="p-3.5 rounded-xl border border-stone-200/70 dark:border-stone-800/80 bg-white/60 dark:bg-[#14161d]/60 flex flex-col justify-between"
+                  >
+                    <div className="space-y-1.5">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-mono text-stone-400 uppercase">
+                          {p.badge || 'Fork / Sandbox'}
                         </span>
-                      )}
-                      {repo.stargazers_count > 0 && (
-                        <span className="flex items-center gap-1">
-                          <Star className="w-3 h-3 text-zinc-600" />
-                          {repo.stargazers_count}
-                        </span>
-                      )}
-                      {repo.forks_count > 0 && (
-                        <span className="flex items-center gap-1">
-                          <GitFork className="w-3 h-3 text-zinc-600" />
-                          {repo.forks_count}
-                        </span>
-                      )}
+                        <a
+                          href={p.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors"
+                        >
+                          <ArrowUpRight className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
+
+                      <h4 className="text-xs sm:text-sm font-bold text-stone-800 dark:text-stone-200 truncate">
+                        {p.title}
+                      </h4>
+
+                      <p className="text-[11px] text-stone-500 dark:text-stone-400 line-clamp-2 leading-relaxed">
+                        {p.description}
+                      </p>
                     </div>
-                    <a
-                      href={repo.html_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 px-2 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-[10px] font-semibold text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors"
-                    >
-                      <Github className="w-3 h-3" />
-                      Code
-                    </a>
+
+                    <div className="pt-2 mt-2 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-[11px] font-mono text-stone-400">
+                      <span>{p.language}</span>
+                      <a
+                        href={p.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:underline text-stone-600 dark:text-stone-300"
+                      >
+                        Code →
+                      </a>
+                    </div>
                   </div>
-                </motion.div>
-              ))}
+                ))}
+              </div>
+            </section>
+          )}
+
+          {filteredRepos.length === 0 && (
+            <div className="text-center py-16 space-y-2">
+              <p className="text-sm font-semibold text-stone-700 dark:text-stone-300">
+                No repositories matched your search query.
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchQuery('');
+                  setSelectedFilter('all');
+                }}
+                className="text-xs text-[#8b2323] dark:text-rose-400 underline font-semibold cursor-pointer"
+              >
+                Clear all filters
+              </button>
             </div>
           )}
-        </section>
-      </main>
-
-      <FloatingDock />
-    </div>
+        </div>
+      )}
+    </DoodleLayout>
   );
 };
 

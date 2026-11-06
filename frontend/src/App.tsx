@@ -143,7 +143,7 @@ const AnimatedRoutes = () => {
           <Route path="/about" element={<PageTransition><About /></PageTransition>} />
           <Route path="/art" element={<Navigate to="/" replace />} />
           <Route path="/arcade" element={<PageTransition><Arcade /></PageTransition>} />
-          <Route path="/projects" element={<PageTransition><Index /></PageTransition>} />
+          <Route path="/projects" element={<PageTransition><ProjectsPage /></PageTransition>} />
           <Route path="/playgames" element={<PageTransition><PlayGames /></PageTransition>} />
           
           {/* Secure Admin Workspace Routes */}
