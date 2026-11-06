@@ -84,23 +84,22 @@ for y in range(H):
     b = int(6 + 8 * ratio)
     d2.line([(0, y), (W, y)], fill=(r, g, b))
 
-d2.rounded_rectangle([70, 50, 310, 92], radius=21, fill='#7c2d12', outline='#f97316', width=2)
-d2.text((95, 60), 'ON-DEMAND FOOD PLATFORM', fill='#fdba74', font=font_badge)
+# Category Badge with centered text
+top_text = 'ON-DEMAND FOOD PLATFORM'
+tb_box = d2.textbbox((0, 0), top_text, font=font_badge)
+tb_w = tb_box[2] - tb_box[0]
+tb_h = tb_box[3] - tb_box[1]
+tb_pad_h = 22
+tb_pad_v = 10
+tb_x1 = 70
+tb_y1 = 50
+tb_x2 = tb_x1 + tb_w + tb_pad_h * 2
+tb_y2 = tb_y1 + tb_h + tb_pad_v * 2
+d2.rounded_rectangle([tb_x1, tb_y1, tb_x2, tb_y2], radius=20, fill='#7c2d12', outline='#f97316', width=2)
+d2.text((tb_x1 + tb_pad_h - tb_box[0], tb_y1 + tb_pad_v - tb_box[1]), top_text, fill='#fdba74', font=font_badge)
 
 d2.text((70, 110), 'Tastifyy Delivery Ecosystem', fill='#ffffff', font=font_title)
 d2.text((70, 168), 'Multi-Role Food Delivery Platform (Web + Mobile App)', fill='#fed7aa', font=font_subtitle)
-
-# Try pasting official tastifyy icon
-if os.path.exists('src/photo/tastifyy_icon.png'):
-    try:
-        t_icon = Image.open('src/photo/tastifyy_icon.png').convert('RGBA')
-        t_icon = t_icon.resize((100, 100), Image.Resampling.LANCZOS)
-        # Create rounded mask
-        mask = Image.new('L', (100, 100), 0)
-        ImageDraw.Draw(mask).rounded_rectangle([0, 0, 100, 100], radius=22, fill=255)
-        im2.paste(t_icon, (1030, 80), mask)
-    except Exception as e:
-        print('Error embedding icon:', e)
 
 card2_x, card2_y, card2_w, card2_h = 70, 220, 1060, 470
 d2.rounded_rectangle([card2_x, card2_y, card2_x + card2_w, card2_y + card2_h], radius=24, fill='#23170c', outline='#432818', width=2)
@@ -118,12 +117,36 @@ for i, (title, sub, desc, col) in enumerate(pillars):
     pw, ph = 485, 175
     d2.rounded_rectangle([px, py, px + pw, py + ph], radius=18, fill='#2e1f13', outline='#4a3321', width=1)
     
-    # Pillar color pill
-    d2.rounded_rectangle([px + 20, py + 20, px + 170, py + 48], radius=10, fill='#3f2818', outline=col, width=1)
-    d2.text((px + 30, py + 26), sub, fill=col, font=font_badge)
+    # Calculate exact text dimensions for dynamic pill sizing
+    bbox = d2.textbbox((0, 0), sub, font=font_badge)
+    tw = bbox[2] - bbox[0]
+    th = bbox[3] - bbox[1]
     
-    d2.text((px + 20, py + 62), title, fill='#ffffff', font=font_bold)
-    d2.text((px + 20, py + 115), desc, fill='#fed7aa', font=font_kpi_lbl)
+    pad_h = 16
+    pad_v = 7
+    pill_w = tw + pad_h * 2
+    pill_h = th + pad_v * 2
+    
+    pill_x1 = px + 22
+    pill_y1 = py + 20
+    pill_x2 = pill_x1 + pill_w
+    pill_y2 = pill_y1 + pill_h
+    
+    # Perfectly fitted pill container
+    d2.rounded_rectangle([pill_x1, pill_y1, pill_x2, pill_y2], radius=10, fill='#3f2818', outline=col, width=1)
+    
+    # Vertically and horizontally centered pill label
+    tx = pill_x1 + pad_h - bbox[0]
+    ty = pill_y1 + pad_v - bbox[1]
+    d2.text((tx, ty), sub, fill=col, font=font_badge)
+    
+    # Title & description with clean spacing
+    d2.text((px + 22, py + 66), title, fill='#ffffff', font=font_bold)
+    d2.text((px + 22, py + 118), desc, fill='#fed7aa', font=font_kpi_lbl)
 
-im2.save('src/photo/tastifyy_banner.png', 'PNG')
-print('tastifyy_banner.png saved!')
+im2.save('frontend/src/photo/tastifyy_banner.png', 'PNG')
+im2.save('frontend/src/photo/tastifyy_banner.webp', 'WEBP', quality=95)
+if os.path.exists('src/photo'):
+    im2.save('src/photo/tastifyy_banner.png', 'PNG')
+    im2.save('src/photo/tastifyy_banner.webp', 'WEBP', quality=95)
+print('tastifyy_banner.png and .webp saved with dynamic alignment!')
