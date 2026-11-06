@@ -427,20 +427,6 @@ export const DoodleSidebar: React.FC = () => {
               </NavLink>
             );
           })}
-
-          {/* Quick Resume Download/View button in Mobile Downbar */}
-          <a
-            href={resumeUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => api.trackResumeDownload().catch(() => {})}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white hover:bg-stone-200/50 dark:hover:bg-stone-800/50 active:scale-95 transition-all duration-200"
-          >
-            <span className="shrink-0 scale-90 text-[#8b2323] dark:text-rose-400">
-              <DoodleResume />
-            </span>
-            <span>Resume</span>
-          </a>
         </div>
       </nav>
 
