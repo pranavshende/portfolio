@@ -108,7 +108,7 @@ for k, (spec, col) in enumerate(city_specs):
 save_dual(im_city, 'citywide_surveillance')
 
 # ══════════════════════════════════════════════════════════════════
-# 2. TRULIACARE TELEHEALTH PLATFORM
+# 2. TRULIACARE TELEHEALTH & AUTOMATED ESCALATION PLATFORM
 # ══════════════════════════════════════════════════════════════════
 im_trulia = Image.new('RGB', (W, H), color='#041517')
 d_trulia = ImageDraw.Draw(im_trulia)
@@ -120,53 +120,53 @@ for y in range(H):
     b = int(23 + 28 * ratio)
     d_trulia.line([(0, y), (W, y)], fill=(r, g, b))
 
-d_trulia.rounded_rectangle([70, 50, 400, 92], radius=21, fill='#064e3b', outline='#10b981', width=2)
-d_trulia.text((95, 60), 'DIGITAL HEALTHCARE & TELEMEDICINE', fill='#34d399', font=font_badge)
+d_trulia.rounded_rectangle([70, 50, 430, 92], radius=21, fill='#064e3b', outline='#10b981', width=2)
+d_trulia.text((95, 60), 'HEALTHCARE SLA & AUTOMATED ESCALATION', fill='#34d399', font=font_badge)
 
-d_trulia.text((70, 110), 'TruliaCare Telehealth Platform', fill='#ffffff', font=font_title)
-d_trulia.text((70, 168), 'Doctor-Patient Teleconsultation, Digital Rx Prescriptions & Remote Vitals Intake', fill='#94a3b8', font=font_subtitle)
+d_trulia.text((70, 110), 'TruliaCare: Healthcare & SLA Escalation Engine', fill='#ffffff', font=font_title)
+d_trulia.text((70, 168), 'Dual-Tier SLA Escalation Engine, Background Cron Breach Guards & Real-Time Telehealth Triage', fill='#94a3b8', font=font_subtitle)
 
 d_trulia.rounded_rectangle([card_x, card_y, card_x + card_w, card_y + card_h], radius=24, fill='#061d20', outline='#114b4f', width=2)
 
 trulia_kpis = [
-    ('Workflow Mode', 'End-to-End Care', '#2dd4bf'),
-    ('Prescription', 'Digital Rx & PDF', '#38bdf8'),
-    ('Security Guard', 'RBAC & Auth', '#facc15'),
-    ('Target Reach', 'Urban + Rural', '#f43f5e'),
+    ('Escalation Engine', 'Automated SLA Cron', '#2dd4bf'),
+    ('Time-to-Accept', '< 60s Acceptance', '#38bdf8'),
+    ('Atomic Breach Guard', 'Prisma $transaction', '#facc15'),
+    ('Resolution SLAs', 'Critical / High / Med', '#f43f5e'),
 ]
 
 for i, (lbl, val, col) in enumerate(trulia_kpis):
     draw_kpi(d_trulia, card_x, card_y, i, lbl, val, col, bg='#0b2c30', border='#165b61')
 
-# Left Panel: Clinical Workflow Steps
+# Left Panel: Dual-Tier SLA Escalation Matrix
 cx1, cy1, cw1, ch1 = card_x + 35, card_y + 180, 500, 250
 d_trulia.rounded_rectangle([cx1, cy1, cx1 + cw1, cy1 + ch1], radius=16, fill='#0b2c30', outline='#165b61', width=1)
-d_trulia.text((cx1 + 25, cy1 + 20), 'Clinical Telemedicine Workflow', fill='#cbd5e1', font=font_badge)
+d_trulia.text((cx1 + 25, cy1 + 20), 'Dual-Tier SLA Escalation & Breach Matrix', fill='#cbd5e1', font=font_badge)
 
 steps = [
-    ('Step 1: Patient Registration & Mobile Auth', 'OTP Verified', '#2dd4bf'),
-    ('Step 2: Remote Symptoms Matrix & Vitals', 'Recorded', '#38bdf8'),
-    ('Step 3: Real-Time Doctor Consultation Triage', 'Active Call', '#facc15'),
-    ('Step 4: Digital Prescription & Dosage Dispatch', 'Delivered', '#4ade80'),
+    ('Pending Request Acceptance SLA (60s Threshold)', 'Auto-Escalate', '#f87171'),
+    ('Critical Priority Resolution SLA (15s Target)', 'Breach Alert', '#fb923c'),
+    ('High Priority Resolution SLA (30s Target)', 'Monitored', '#facc15'),
+    ('Medium / Low Resolution SLA (60s - 120s Target)', 'Tracking', '#4ade80'),
 ]
 
 for j, (name, status, col) in enumerate(steps):
     yy = cy1 + 65 + j * 42
     d_trulia.text((cx1 + 25, yy), name, fill='#e2e8f0', font=font_small)
     d_trulia.rounded_rectangle([cx1 + 375, yy - 2, cx1 + 475, yy + 20], radius=6, fill='#114b4f')
-    d_trulia.text((cx1 + 383, yy + 1), status, fill=col, font=font_small)
+    d_trulia.text((cx1 + 382, yy + 1), status, fill=col, font=font_small)
 
-# Right Panel: Architecture
+# Right Panel: Architecture & Incident Dispatch
 cx2, cy2, cw2, ch2 = card_x + 560, card_y + 180, 465, 250
 d_trulia.rounded_rectangle([cx2, cy2, cx2 + cw2, cy2 + ch2], radius=16, fill='#0b2c30', outline='#165b61', width=1)
-d_trulia.text((cx2 + 25, cy2 + 20), 'Healthcare Architecture & Telemetry', fill='#5eead4', font=font_badge)
+d_trulia.text((cx2 + 25, cy2 + 20), 'Escalation Architecture & Incident Dispatch', fill='#5eead4', font=font_badge)
 
 trulia_specs = [
-    ('Cross-Platform React Native Mobile Interface', '#2dd4bf'),
-    ('Secure Node.js & RESTful Healthcare Micro-Endpoints', '#38bdf8'),
-    ('Role-Based Access for Patients, Doctors & Admins', '#facc15'),
-    ('Instant SMS & WhatsApp Notification Gateways', '#4ade80'),
-    ('Hackathon Finalist Healthcare Architecture', '#fed7aa'),
+    ('Atomic Status Update via tx.updateMany Concurrency Guard', '#2dd4bf'),
+    ('Structured Audit Trail via tx.escalationLog.create', '#38bdf8'),
+    ('Multi-Channel Dispatch: Automated Email & Push Alerts', '#facc15'),
+    ('Live Frontend SlaTimer Countdown & Timeline Trace Modal', '#4ade80'),
+    ('Cross-Platform Mobile Client in React Native (Expo)', '#fed7aa'),
 ]
 
 for k, (spec, col) in enumerate(trulia_specs):

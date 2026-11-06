@@ -97,12 +97,12 @@ const REPO_REGISTRY: Record<string, RepoMeta> = {
     image: citywidePhoto,
   },
   TruliaCare_Appathon: {
-    title: 'TruliaCare Telehealth Platform',
-    category: 'Digital Healthcare',
+    title: 'TruliaCare: Telehealth & Automated SLA Escalation Engine',
+    category: 'Healthcare & SLA Escalation',
     tier: 1,
-    description: 'Telehealth consultation and patient monitoring application featuring real-time doctor-patient workflows, medical prescription generation, and appointment triage.',
-    tech: ['React Native', 'TypeScript', 'Node.js', 'REST APIs', 'Healthcare Telemetry'],
-    badge: 'Healthcare App',
+    description: 'Telehealth and emergency response platform featuring an automated dual-tier SLA escalation engine. Runs background cron breach jobs, atomic Prisma $transactions with optimistic concurrency guards, multi-channel email/push dispatch, and live SlaTimer countdown widgets.',
+    tech: ['Dual-Tier SLA Engine', 'Background Cron Jobs', 'Prisma Transactions', 'React Native (Expo)', 'Node.js', 'Audit Logging'],
+    badge: 'Automated Escalation',
     image: truliacarePhoto,
   },
   'Credit-Score-Invisibility-Farmer': {
