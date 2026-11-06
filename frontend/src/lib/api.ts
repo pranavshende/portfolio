@@ -128,8 +128,17 @@ export const api = {
   getResume: () => 
     apiRequest('/resume'),
 
-  recordAnalytics: (data: { eventType: string; pageUrl?: string; projectSlug?: string; referrer?: string; metadata?: any }) => 
-    apiRequest('/analytics/event', { method: 'POST', data }),
+  recordAnalytics: (data: { eventType: string; pageUrl?: string; path?: string; projectSlug?: string; referrer?: string; visitorName?: string; metadata?: any }) => {
+    const visitorName = data.visitorName || (typeof localStorage !== 'undefined' ? localStorage.getItem('portfolio_visitor_name') || undefined : undefined);
+    return apiRequest('/analytics/event', { 
+      method: 'POST', 
+      data: {
+        ...data,
+        path: data.path || data.pageUrl || '/',
+        visitorName,
+      } 
+    });
+  },
 
   chatAI: (message: string, history?: Array<{ role: string; content: string }>) => 
     apiRequest('/ai/chat', { method: 'POST', data: { message, history } }),
@@ -157,6 +166,9 @@ export const api = {
 
   getAdminMe: () => 
     apiRequest('/auth/me'),
+
+  updateAdminProfile: (data: { name: string; email: string }) => 
+    apiRequest('/auth/profile', { method: 'PUT', data }),
 
   changePassword: (data: { currentPassword: string; newPassword: string }) => 
     apiRequest('/auth/change-password', { method: 'PUT', data }),
@@ -276,6 +288,9 @@ export const api = {
     apiRequest('/resume', { method: 'POST', data }),
 
   // Site Settings & SEO
+  getSettings: () => 
+    apiRequest('/content/settings'),
+
   updateSettings: (data: any) => 
     apiRequest('/content/settings', { method: 'PUT', data }),
 

@@ -66,11 +66,12 @@ d1.rounded_rectangle([cx2 + 20, cy2 + 60, cx2 + cw2 - 20, cy2 + 145], radius=12,
 d1.text((cx2 + 30, cy2 + 75), 'Ask: "Predict flight risk for Sales Reps', fill='#e2e8f0', font=font_kpi_lbl)
 d1.text((cx2 + 30, cy2 + 102), 'with overtime > 15 hours..."', fill='#e2e8f0', font=font_kpi_lbl)
 
-d1.text((cx2 + 25, cy2 + 165), '✓ Grounded in Verified Cohort Data', fill='#34d399', font=font_kpi_lbl)
-d1.text((cx2 + 25, cy2 + 198), '✓ Individual Lookup by Employee ID', fill='#38bdf8', font=font_kpi_lbl)
+d1.text((cx2 + 25, cy2 + 165), 'Grounded in Verified Cohort Data', fill='#34d399', font=font_kpi_lbl)
+d1.text((cx2 + 25, cy2 + 198), 'Individual Lookup by Employee ID', fill='#38bdf8', font=font_kpi_lbl)
 
-im1.save('src/photo/attrition_banner.png', 'PNG')
-print('attrition_banner.png saved!')
+im1.save('frontend/src/photo/attrition_banner.png', 'PNG')
+im1.save('frontend/src/photo/attrition_banner.webp', 'WEBP', quality=95)
+print('attrition_banner.png and .webp saved!')
 
 # ── 2. TASTIFYY BANNER ───────────────────────────────────────
 im2 = Image.new('RGB', (W, H), color='#150e06')

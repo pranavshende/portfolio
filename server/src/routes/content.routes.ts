@@ -54,4 +54,8 @@ router.post('/bookings', contentController.createBooking);
 router.get('/bookings', authenticateAdmin, contentController.adminGetBookings);
 router.patch('/bookings/:id/status', authenticateAdmin, contentController.updateBookingStatus);
 
+// Website Settings & Profiles
+router.get('/settings', contentController.getSettings);
+router.put('/settings', authenticateAdmin, contentController.updateSettings);
+
 export default router;

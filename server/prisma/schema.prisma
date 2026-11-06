@@ -345,6 +345,7 @@ model AnalyticsEvent {
   deviceType  String?   // "desktop", "mobile", "tablet"
   browser     String?   // "Chrome", "Safari", etc.
   country     String?
+  visitorName String?
   timestamp   DateTime  @default(now())
 
   @@index([eventType])

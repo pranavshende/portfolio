@@ -7,6 +7,8 @@ import resumeRoutes from './resume.routes.js';
 import contentRoutes from './content.routes.js';
 import aiRoutes from './ai.routes.js';
 
+import { prisma } from '../config/prisma.js';
+
 const router = Router();
 
 router.use('/auth', authRoutes);
@@ -17,9 +19,27 @@ router.use('/resume', resumeRoutes);
 router.use('/content', contentRoutes);
 router.use('/ai', aiRoutes);
 
-// Health check
-router.get('/health', (_req, res) => {
-  res.status(200).json({ status: 'ok', timestamp: new Date() });
+// Health check endpoint for Uptime monitoring & Render warmup
+router.get('/health', async (_req, res) => {
+  try {
+    await prisma.$queryRawUnsafe('SELECT 1');
+    res.status(200).json({
+      status: 'healthy',
+      server: 'operational',
+      database: 'connected',
+      uptimeSeconds: Math.floor(process.uptime()),
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error: any) {
+    res.status(200).json({
+      status: 'degraded',
+      server: 'operational',
+      database: 'reconnecting',
+      error: error.message,
+      uptimeSeconds: Math.floor(process.uptime()),
+      timestamp: new Date().toISOString(),
+    });
+  }
 });
 
 export default router;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, FolderGit2, User, Bot } from 'lucide-react';
+import { Home, FolderGit2, User, Bot, FileText } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useMode } from '../contexts/ModeContext';
 import AskAIChatbot from './AskAIChatbot';
@@ -60,6 +60,14 @@ const FloatingDock = () => {
       label: 'Projects',
       action: () => handleNavigation('/projects'),
       type: 'scroll',
+    },
+    {
+      icon: <FileText className="w-3.5 h-3.5 sm:w-[16px] sm:h-[16px]" />,
+      label: 'Resume',
+      action: () => {
+        window.open('https://drive.google.com/drive/folders/1z3-tvjY5U1OP90Dls4IfLwV10E8e4qij?usp=sharing', '_blank');
+      },
+      type: 'action',
     },
   ];
 

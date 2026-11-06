@@ -66,6 +66,9 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
 
     try {
       await api.submitContact(formData);
+      try {
+        localStorage.setItem('portfolio_visitor_name', formData.name.trim());
+      } catch {}
       setSuccess(true);
     } catch (err: any) {
       console.error('Contact submission error:', err);

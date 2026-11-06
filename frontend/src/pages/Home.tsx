@@ -383,35 +383,15 @@ export const Home: React.FC = () => {
                 )}
               </div>
 
-              {/* Footer row matching Image 2 */}
+              {/* Footer row */}
               <div className="flex items-center justify-between gap-3 pt-3.5">
-                <div className="flex items-center gap-3 min-w-0">
-                  {/* Category Icon pill/square */}
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#8b2323]/10 text-[#8b2323] flex items-center justify-center shrink-0 border border-[#8b2323]/20">
-                    {proj.id === 'electropathy' ? (
-                      <span className="text-base sm:text-lg">🌿</span>
-                    ) : proj.id === 'tastifyy' ? (
-                      <span className="text-base sm:text-lg">🍴</span>
-                    ) : proj.id === 'attrition' ? (
-                      <span className="text-base sm:text-lg">📊</span>
-                    ) : proj.id === 'jansampark' ? (
-                      <span className="text-base sm:text-lg">🏛️</span>
-                    ) : proj.id === 'solar' ? (
-                      <span className="text-base sm:text-lg">⚡</span>
-                    ) : (
-                      <span className="text-base sm:text-lg">🐾</span>
-                    )}
-                  </div>
-
-                  {/* Title & subtitle */}
-                  <div className="min-w-0">
-                    <h3 className="text-sm sm:text-base font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] transition-colors truncate">
-                      {proj.title}
-                    </h3>
-                    <p className="text-[11px] sm:text-xs text-stone-500 dark:text-stone-400 truncate">
-                      {proj.client} • {proj.category} • {proj.year}
-                    </p>
-                  </div>
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-sm sm:text-base font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] transition-colors truncate">
+                    {proj.title}
+                  </h3>
+                  <p className="text-[11px] sm:text-xs text-stone-500 dark:text-stone-400 truncate mt-0.5">
+                    {proj.client} • {proj.category} • {proj.year}
+                  </p>
                 </div>
 
                 {/* Circular arrow button */}

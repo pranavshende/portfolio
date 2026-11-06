@@ -5,6 +5,7 @@ import { authenticateAdmin } from '../middleware/auth.middleware.js';
 const router = Router();
 
 // Public
+router.get('/', resumeController.getActive);
 router.get('/active', resumeController.getActive);
 router.post('/track-download', resumeController.trackDownload);
 

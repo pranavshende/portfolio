@@ -1,9 +1,8 @@
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
 import About from "@/pages/About";
-import Art from "@/pages/Art";
 import Arcade from "@/pages/Arcade";
 import ProjectsPage from "@/pages/ProjectsPage";
 import NotFound from "@/pages/NotFound";
@@ -142,7 +141,7 @@ const AnimatedRoutes = () => {
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<PageTransition><Index /></PageTransition>} />
           <Route path="/about" element={<PageTransition><About /></PageTransition>} />
-          <Route path="/art" element={<PageTransition><Art /></PageTransition>} />
+          <Route path="/art" element={<Navigate to="/" replace />} />
           <Route path="/arcade" element={<PageTransition><Arcade /></PageTransition>} />
           <Route path="/projects" element={<PageTransition><Index /></PageTransition>} />
           <Route path="/playgames" element={<PageTransition><PlayGames /></PageTransition>} />

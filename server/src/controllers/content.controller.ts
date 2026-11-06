@@ -381,4 +381,55 @@ export const contentController = {
       next(e);
     }
   },
+
+  // ── WEBSITE SETTINGS & PROFILES ──
+  async getSettings(_req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const rows = await prisma.siteSetting.findMany();
+      const settings: Record<string, any> = {
+        siteName: 'Pranav Shende Portfolio',
+        heroGreeting: "Hi there! I'm Pranav 👋",
+        heroBio: 'An aspiring forward deployed engineer dedicated to building scalable backend architectures and AI solutions.',
+        contactEmail: 'pranavshende97@gmail.com',
+        githubUrl: 'https://github.com/PranavShende',
+        linkedinUrl: 'https://linkedin.com/in/pranavshende',
+        resumeDriveUrl: 'https://drive.google.com/drive/folders/1z3-tvjY5U1OP90Dls4IfLwV10E8e4qij?usp=sharing',
+        maintenanceMode: false,
+      };
+
+      for (const row of rows) {
+        try {
+          settings[row.key] = JSON.parse(row.value);
+        } catch {
+          settings[row.key] = row.value;
+        }
+      }
+
+      res.status(200).json({ success: true, data: settings });
+    } catch (e) {
+      next(e);
+    }
+  },
+
+  async updateSettings(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const updates = req.body;
+      if (!updates || typeof updates !== 'object') {
+        throw new AppError('Invalid settings payload', 400);
+      }
+
+      for (const [key, val] of Object.entries(updates)) {
+        const valString = typeof val === 'string' ? val : JSON.stringify(val);
+        await prisma.siteSetting.upsert({
+          where: { key },
+          update: { value: valString },
+          create: { key, value: valString },
+        });
+      }
+
+      res.status(200).json({ success: true, message: 'Website settings saved successfully' });
+    } catch (e) {
+      next(e);
+    }
+  },
 };

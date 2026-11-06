@@ -206,4 +206,44 @@ export const authController = {
       next(error);
     }
   },
+
+  /**
+   * Update Admin Profile (name, email)
+   */
+  async updateProfile(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.admin) {
+        throw new AppError('Not authenticated', 401);
+      }
+
+      const { name, email } = req.body;
+      if (!name || !email) {
+        throw new AppError('Name and email are required', 400);
+      }
+
+      const updated = await prisma.admin.update({
+        where: { id: req.admin.id },
+        data: {
+          name: name.trim(),
+          email: email.toLowerCase().trim(),
+        },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          role: true,
+          lastLogin: true,
+          updatedAt: true,
+        },
+      });
+
+      res.status(200).json({
+        success: true,
+        message: 'Admin profile updated successfully',
+        data: updated,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
 };

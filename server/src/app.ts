@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import { env } from './config/env.js';
+import { prisma } from './config/prisma.js';
 import routes from './routes/index.js';
 import { errorHandler, AppError } from './middleware/errorHandler.js';
 import { apiRateLimiter } from './middleware/rateLimiter.js';
@@ -56,8 +57,33 @@ app.all('/', (_req, res) => {
     version: '1.0.0',
     documentation: '/api/v1',
     health: '/api/v1/health',
+    rootHealth: '/health',
     timestamp: new Date().toISOString(),
   });
+});
+
+// Dedicated Fast Health Check endpoint for UptimeRobot (no rate-limit)
+app.get('/health', async (_req, res) => {
+  try {
+    // Keep database pool warm on Supabase
+    await prisma.$queryRawUnsafe('SELECT 1');
+    res.status(200).json({
+      status: 'healthy',
+      server: 'operational',
+      database: 'connected',
+      uptimeSeconds: Math.floor(process.uptime()),
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error: any) {
+    res.status(200).json({
+      status: 'degraded',
+      server: 'operational',
+      database: 'reconnecting',
+      error: error.message,
+      uptimeSeconds: Math.floor(process.uptime()),
+      timestamp: new Date().toISOString(),
+    });
+  }
 });
 
 // Rate limiter for API

@@ -18,8 +18,8 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({ onNavigateSect
 
   useEffect(() => {
     api.getAnalyticsDashboard('30d')
-      .then((res) => {
-        setData(res);
+      .then((res: any) => {
+        setData(res?.data || res);
       })
       .catch((err) => {
         console.error('Failed to load overview data:', err);
@@ -34,7 +34,7 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({ onNavigateSect
   const resumeDownloads = data?.resumeDownloads ?? data?.kpis?.resumeDownloads ?? 0;
   const subscribers = data?.subscribers ?? 0;
 
-  // Real or fallback visitor trend data
+  // Real visitor trend data
   const rawTrends = data?.visitorTrend || data?.visitorTrends || [];
   const visitorTrend = rawTrends.length > 0 
     ? rawTrends.map((t: any) => ({
@@ -42,15 +42,11 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({ onNavigateSect
         count: t.count ?? t.views ?? 0,
       }))
     : [
-        { date: 'Day 1', count: 12 },
-        { date: 'Day 5', count: 18 },
-        { date: 'Day 10', count: 24 },
-        { date: 'Day 15', count: 35 },
-        { date: 'Day 20', count: 29 },
-        { date: 'Day 25', count: 42 },
-        { date: 'Today', count: 58 },
+        { date: 'Past', count: 0 },
+        { date: 'Today', count: projectViews },
       ];
 
+  const identifiedVisitors = data?.identifiedVisitors || data?.recentInquiries || [];
   const recentInquiries = data?.recentInquiries || [];
 
   return (
@@ -278,53 +274,61 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({ onNavigateSect
         </div>
       </div>
 
-      {/* ── Bottom Row: Recent Inquiries Preview ── */}
+      {/* ── Bottom Row: Identified Visitors & Leads by Name ── */}
       <div className="p-4 sm:p-5 rounded-3xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h3 className="text-base font-bold text-stone-900 dark:text-stone-100">
-              Recent Inquiries & Leads
+            <h3 className="text-base font-bold text-stone-900 dark:text-stone-100 flex items-center gap-2">
+              <Users className="w-4 h-4 text-[#8b2323]" />
+              <span>Who Visited My Website (Identified Leads & Visitors)</span>
             </h3>
             <p className="text-xs text-stone-500">
-              Latest inquiries received through the public contact system
+              Real-time records of individuals, recruiters, and collaborators who explored and contacted your portfolio
             </p>
           </div>
           <button
             onClick={() => onNavigateSection('messages')}
             className="self-start sm:self-auto px-3.5 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-semibold transition-colors cursor-pointer active:scale-95 shadow-xs"
           >
-            Open All Messages
+            Manage All Messages & Leads
           </button>
         </div>
 
-        {recentInquiries.length === 0 ? (
+        {identifiedVisitors.length === 0 ? (
           <div className="text-center py-8 text-stone-400 text-xs">
-            No inquiries received yet. When visitors send a message, they will appear here and trigger automated dual emails.
+            No identified visitors yet. When recruiters, peers, or clients interact with the contact system or book meetings, their identity will be listed here.
           </div>
         ) : (
           <>
             {/* Mobile Cards (Phones < 640px) */}
             <div className="sm:hidden space-y-2.5">
-              {recentInquiries.slice(0, 5).map((inq: any) => (
+              {identifiedVisitors.slice(0, 8).map((inq: any) => (
                 <div
                   key={inq.id}
                   onClick={() => onNavigateSection('messages')}
                   className="p-3 rounded-xl bg-stone-50/70 dark:bg-stone-900/60 border border-stone-200/70 dark:border-stone-800 space-y-1.5 cursor-pointer active:scale-98 transition-all"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-xs text-stone-900 dark:text-stone-100">
-                      {inq.name || inq.fullName}
-                    </span>
+                    <div>
+                      <span className="font-bold text-xs text-stone-900 dark:text-stone-100 block">
+                        {inq.name || inq.fullName}
+                      </span>
+                      {inq.company && inq.company !== 'Direct Visitor' && (
+                        <span className="text-[10px] text-stone-500 font-mono">
+                          {inq.company}
+                        </span>
+                      )}
+                    </div>
                     <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold ${
                       inq.status === 'NEW'
                         ? 'bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300'
                         : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300'
                     }`}>
-                      {inq.status}
+                      {inq.status || 'LOGGED'}
                     </span>
                   </div>
                   <div className="text-xs text-stone-700 dark:text-stone-300 font-medium line-clamp-1">
-                    {inq.subject}
+                    {inq.subject || inq.message}
                   </div>
                   <div className="flex items-center justify-between text-[10px] text-stone-500 font-mono pt-0.5">
                     <span className="truncate max-w-[170px]">{inq.email}</span>
@@ -339,27 +343,35 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({ onNavigateSect
               <table className="w-full text-left text-xs">
                 <thead>
                   <tr className="border-b border-stone-200 dark:border-stone-800 text-stone-400 font-semibold">
-                    <th className="pb-2">Sender</th>
-                    <th className="pb-2">Type</th>
-                    <th className="pb-2">Subject</th>
+                    <th className="pb-2">Visitor Name</th>
+                    <th className="pb-2">Organization / Company</th>
+                    <th className="pb-2">Interaction Type</th>
+                    <th className="pb-2">Subject / Note</th>
+                    <th className="pb-2">Device</th>
                     <th className="pb-2">Status</th>
-                    <th className="pb-2">Received</th>
+                    <th className="pb-2">Timestamp</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-stone-100 dark:divide-stone-800/60">
-                  {recentInquiries.slice(0, 5).map((inq: any) => (
+                  {identifiedVisitors.slice(0, 8).map((inq: any) => (
                     <tr key={inq.id} className="hover:bg-stone-50/50 dark:hover:bg-stone-900/50">
                       <td className="py-2.5 font-medium text-stone-900 dark:text-stone-100">
-                        <div>{inq.name || inq.fullName}</div>
+                        <div className="font-bold">{inq.name || inq.fullName}</div>
                         <div className="text-[11px] text-stone-500 font-mono">{inq.email}</div>
+                      </td>
+                      <td className="py-2.5 text-stone-600 dark:text-stone-400">
+                        {inq.company || '—'}
                       </td>
                       <td className="py-2.5">
                         <span className="px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-medium text-[11px]">
-                          {inq.inquiryType}
+                          {inq.type || inq.inquiryType || 'Direct Inquiry'}
                         </span>
                       </td>
-                      <td className="py-2.5 text-stone-800 dark:text-stone-200 max-w-xs truncate">
-                        {inq.subject}
+                      <td className="py-2.5 text-stone-800 dark:text-stone-200 max-w-xs truncate" title={inq.message}>
+                        {inq.subject || inq.message}
+                      </td>
+                      <td className="py-2.5 text-stone-500 font-mono text-[11px]">
+                        {inq.device || 'Desktop'}
                       </td>
                       <td className="py-2.5">
                         <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
@@ -367,11 +379,11 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({ onNavigateSect
                             ? 'bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300' 
                             : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300'
                         }`}>
-                          {inq.status}
+                          {inq.status || 'RECORDED'}
                         </span>
                       </td>
                       <td className="py-2.5 text-stone-500 font-mono text-[11px]">
-                        {new Date(inq.createdAt).toLocaleDateString()}
+                        {new Date(inq.createdAt).toLocaleDateString()} {new Date(inq.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </td>
                     </tr>
                   ))}
