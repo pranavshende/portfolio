@@ -9,6 +9,17 @@ import { Link } from 'react-router-dom';
 import { api } from '@/lib/api';
 import useAnalytics from '@/hooks/useAnalytics';
 import ContactModal from '@/components/ContactModal';
+import { GitHubCalendar } from 'react-github-calendar';
+import { useMode } from '@/contexts/ModeContext';
+
+const ghDarkTheme = {
+  light: ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'],
+  dark: ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'],
+};
+const ghLightTheme = {
+  light: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
+  dark: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
+};
 
 import jansamparkPhoto from '../photo/jansampark.webp';
 import solarAnalyticsPhoto from '../photo/solar_analytics.webp';
@@ -163,6 +174,7 @@ const projects: Project[] = [
 
 export const Home: React.FC = () => {
   useAnalytics();
+  const { isDark } = useMode();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [contactModalOpen, setContactModalOpen] = useState<boolean>(false);
   const [projectList, setProjectList] = useState<Project[]>(projects);
@@ -595,6 +607,65 @@ export const Home: React.FC = () => {
             ))}
           </div>
         )}
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────────
+          GITHUB CONTRIBUTION CALENDAR
+      ────────────────────────────────────────────────────────────── */}
+      <section className="space-y-4 mb-12 pt-2">
+        <div className="border-b border-zinc-200/80 dark:border-zinc-800/80 pb-3 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Github className="w-4 h-4 text-[#8b2323] dark:text-rose-400" />
+            <h2 className="text-xs sm:text-sm font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider font-sans">
+              GitHub Contribution Heatmap
+            </h2>
+          </div>
+          <a
+            href={siteSettings.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+          >
+            <span>@{siteSettings.githubUrl?.split('/').filter(Boolean).pop() || 'PranavShende'}</span>
+            <ExternalLink className="w-3 h-3" />
+          </a>
+        </div>
+
+        <div className="rounded-2xl border border-stone-200/80 dark:border-zinc-800 bg-white/85 dark:bg-[#14161d]/85 p-4 sm:p-6 backdrop-blur-md shadow-xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+            <div>
+              <h3 className="text-sm font-bold text-stone-900 dark:text-stone-100">
+                Live Open-Source & Personal Commits
+              </h3>
+              <p className="text-xs text-stone-500 dark:text-stone-400">
+                Continuous integration & build contributions across repositories
+              </p>
+            </div>
+            <div className="flex items-center gap-2 text-[11px] font-mono text-stone-500 dark:text-stone-400">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Live GitHub Sync</span>
+            </div>
+          </div>
+
+          <div
+            className="w-full overflow-x-auto pb-2 pt-2 flex justify-center no-scrollbar rounded-xl p-3 sm:p-4 bg-stone-50/70 dark:bg-[#0d1117] border border-stone-200/70 dark:border-stone-800"
+          >
+            <GitHubCalendar
+              username={siteSettings.githubUrl?.split('/').filter(Boolean).pop() || 'PranavShende'}
+              theme={isDark ? ghDarkTheme : ghLightTheme}
+              colorScheme={isDark ? 'dark' : 'light'}
+              fontSize={12}
+              blockSize={12}
+              blockMargin={4}
+              style={{
+                color: isDark ? '#c9d1d9' : '#24292f',
+              }}
+              labels={{
+                totalCount: '{{count}} contributions in the last year',
+              }}
+            />
+          </div>
+        </div>
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
