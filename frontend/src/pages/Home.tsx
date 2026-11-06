@@ -169,6 +169,64 @@ export const Home: React.FC = () => {
   const [gitRepos, setGitRepos] = useState<any[]>([]);
   const [loadingRepos, setLoadingRepos] = useState<boolean>(true);
 
+  // Dynamic Site Settings (Hero Greeting, Bio, Social destinations)
+  const [siteSettings, setSiteSettings] = useState(() => {
+    try {
+      const cached = localStorage.getItem('site_settings');
+      if (cached) {
+        return JSON.parse(cached);
+      }
+    } catch {}
+    return {
+      siteName: 'Pranav Shende Portfolio',
+      heroGreeting: "Hi there! I'm Pranav 👋",
+      heroBio: 'An aspiring forward deployed engineer dedicated to building scalable backend architectures and AI solutions.',
+      contactEmail: 'pranavshende97@gmail.com',
+      githubUrl: 'https://github.com/PranavShende',
+      linkedinUrl: 'https://linkedin.com/in/pranavshende',
+    };
+  });
+
+  // Fetch dynamic settings from database
+  useEffect(() => {
+    api.getSettings()
+      .then((res: any) => {
+        const s = res?.data || res;
+        if (s && typeof s === 'object') {
+          setSiteSettings((prev: any) => {
+            const nextSettings = {
+              ...prev,
+              heroGreeting: s.heroGreeting ?? prev.heroGreeting,
+              heroBio: s.heroBio ?? prev.heroBio,
+              contactEmail: s.contactEmail ?? prev.contactEmail,
+              githubUrl: s.githubUrl ?? prev.githubUrl,
+              linkedinUrl: s.linkedinUrl ?? prev.linkedinUrl,
+            };
+            try {
+              localStorage.setItem('site_settings', JSON.stringify(nextSettings));
+            } catch {}
+            return nextSettings;
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const renderHeroGreeting = (greeting: string) => {
+    if (!greeting) return null;
+    if (greeting.includes('Pranav')) {
+      const parts = greeting.split('Pranav');
+      return (
+        <>
+          {parts[0]}
+          <span className="font-serif italic text-[#8b2323] dark:text-white">Pranav</span>
+          {parts.slice(1).join('Pranav')}
+        </>
+      );
+    }
+    return greeting;
+  };
+
   // Global listener to open contact modal from sidebar, header, or CTA buttons
   useEffect(() => {
     const handleOpen = () => setContactModalOpen(true);
@@ -244,11 +302,11 @@ export const Home: React.FC = () => {
         </div>
 
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 dark:text-stone-50 tracking-tight leading-tight select-text">
-          Hi there! I'm <span className="font-serif italic text-[#8b2323] dark:text-white">Pranav</span> 👋
+          {renderHeroGreeting(siteSettings.heroGreeting)}
         </h1>
 
         <p className="text-base sm:text-lg text-stone-700 dark:text-stone-300 mt-3 font-normal leading-relaxed max-w-3xl">
-          An aspiring forward deployed engineer dedicated to building scalable backend architectures and AI solutions.
+          {siteSettings.heroBio}
         </p>
 
         {/* Hero Tag Pills */}
@@ -303,7 +361,7 @@ export const Home: React.FC = () => {
                   <span>Get In Touch</span>
                 </button>
                 <a
-                  href="https://linkedin.com/in/pranavshende"
+                  href={siteSettings.linkedinUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-semibold transition-all active:scale-95 shrink-0 whitespace-nowrap"
@@ -313,7 +371,7 @@ export const Home: React.FC = () => {
                   <span>LinkedIn</span>
                 </a>
                 <a
-                  href="https://github.com/PranavShende"
+                  href={siteSettings.githubUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-semibold transition-all active:scale-95 shrink-0 whitespace-nowrap"
@@ -323,7 +381,7 @@ export const Home: React.FC = () => {
                   <span>GitHub</span>
                 </a>
                 <a
-                  href="https://mail.google.com/mail/?view=cm&fs=1&to=pranavshende97@gmail.com"
+                  href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(siteSettings.contactEmail)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-semibold transition-all active:scale-95 shrink-0 whitespace-nowrap"
@@ -480,7 +538,7 @@ export const Home: React.FC = () => {
             Other Noteworthy Repositories
           </h2>
           <a
-            href="https://github.com/PranavShende"
+            href={siteSettings.githubUrl}
             target="_blank"
             rel="noreferrer"
             className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline"

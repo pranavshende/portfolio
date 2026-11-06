@@ -97,11 +97,30 @@ export const DoodleSidebar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileModalOpen, setProfileModalOpen] = useState(false);
 
-  // Exact links from previous website
-  const emailUrl = "https://mail.google.com/mail/?view=cm&fs=1&to=pranavshende97@gmail.com";
-  const resumeUrl = "https://drive.google.com/drive/folders/1z3-tvjY5U1OP90Dls4IfLwV10E8e4qij?usp=sharing";
-  const linkedInUrl = "https://linkedin.com/in/pranavshende";
-  const githubUrl = "https://github.com/PranavShende";
+  // Dynamic links from website settings
+  const [socialLinks, setSocialLinks] = useState({
+    emailUrl: "https://mail.google.com/mail/?view=cm&fs=1&to=pranavshende97@gmail.com",
+    resumeUrl: "https://drive.google.com/drive/folders/1z3-tvjY5U1OP90Dls4IfLwV10E8e4qij?usp=sharing",
+    linkedInUrl: "https://linkedin.com/in/pranavshende",
+    githubUrl: "https://github.com/PranavShende",
+  });
+
+  useEffect(() => {
+    try {
+      const cached = localStorage.getItem('site_settings');
+      if (cached) {
+        const s = JSON.parse(cached);
+        setSocialLinks({
+          emailUrl: s.contactEmail ? `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(s.contactEmail)}` : "https://mail.google.com/mail/?view=cm&fs=1&to=pranavshende97@gmail.com",
+          resumeUrl: s.resumeDriveUrl || "https://drive.google.com/drive/folders/1z3-tvjY5U1OP90Dls4IfLwV10E8e4qij?usp=sharing",
+          linkedInUrl: s.linkedinUrl || "https://linkedin.com/in/pranavshende",
+          githubUrl: s.githubUrl || "https://github.com/PranavShende",
+        });
+      }
+    } catch {}
+  }, []);
+
+  const { emailUrl, resumeUrl, linkedInUrl, githubUrl } = socialLinks;
 
   return (
     <>

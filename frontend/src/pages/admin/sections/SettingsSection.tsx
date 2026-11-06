@@ -68,6 +68,10 @@ export const SettingsSection: React.FC = () => {
       // 1. Update Website Settings
       await api.updateSettings(formData);
 
+      try {
+        localStorage.setItem('site_settings', JSON.stringify(formData));
+      } catch {}
+
       // 2. Update Admin Profile
       await api.updateAdminProfile({
         name: profileData.name,
