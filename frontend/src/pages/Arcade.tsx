@@ -930,28 +930,10 @@ const ScratchToWin: React.FC = () => {
    MAIN ARCADE PAGE
 ───────────────────────────────────────────────────────────────────────────── */
 export const Arcade: React.FC = () => {
-  const [surpriseOpen, setSurpriseOpen] = useState<boolean>(false);
-  const [surprisePrize, setSurprisePrize] = useState<string>('');
-
-  const surprises = [
-    '☕ You unlocked free virtual coffee! Keep building awesome things!',
-    '🌟 High five! You have discovered the secret builder level.',
-    '🚀 May your code run smoothly and your ideas ship fast!',
-    '🎨 True craft is doing what feels playful and purposeful.',
-    '🕹️ You are a certified Arcade Champion!',
-  ];
-
-  const handleSurpriseClick = () => {
-    const random = surprises[Math.floor(Math.random() * surprises.length)];
-    setSurprisePrize(random);
-    setSurpriseOpen(true);
-    triggerConfetti(0.85, 0.2);
-  };
-
   return (
     <DoodleLayout>
       {/* ─────────────────────────────────────────────────────────────
-          HEADER ROW WITH TOP-RIGHT SURPRISE BOX
+          HEADER ROW
       ────────────────────────────────────────────────────────────── */}
       <section className="relative flex flex-col sm:flex-row items-start justify-between gap-6 mb-8 sm:mb-10">
         <div className="flex-1 max-w-xl">
@@ -961,25 +943,6 @@ export const Arcade: React.FC = () => {
           <p className="text-base sm:text-lg text-zinc-600 mt-2 font-medium">
             Step right up! Everything here is interactive and made with code & love.
           </p>
-        </div>
-
-        {/* Top-Right Surprise Box */}
-        <div className="self-end sm:self-start flex flex-col items-center">
-          <div className="px-3 py-1 rounded-full bg-white border-2 border-zinc-900 text-sm font-bold text-zinc-800 shadow-xs mb-1.5">
-            Click for a nice surprise!
-          </div>
-
-          <button
-            onClick={handleSurpriseClick}
-            className="group relative focus:outline-none hover:scale-105 active:scale-95 transition-transform"
-            title="Open surprise!"
-          >
-            <div className="w-16 h-14 bg-[#fef08a] border-2 border-zinc-900 rounded-xl shadow-md flex items-center justify-center relative overflow-hidden group-hover:bg-[#fde047]">
-              <div className="w-full h-2.5 bg-amber-400 border-y border-zinc-900" />
-              <div className="h-full w-2.5 bg-amber-400 border-x border-zinc-900 absolute" />
-              <span className="absolute z-10 text-xl group-hover:animate-bounce">🎁</span>
-            </div>
-          </button>
         </div>
       </section>
 
@@ -1009,45 +972,6 @@ export const Arcade: React.FC = () => {
           <ScratchToWin />
         </div>
       </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          SURPRISE MODAL
-      ────────────────────────────────────────────────────────────── */}
-      <AnimatePresence>
-        {surpriseOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              className="relative w-full max-w-sm bg-white rounded-2xl border-2 border-zinc-900 p-6 text-center shadow-2xl space-y-4"
-            >
-              <div className="w-16 h-16 rounded-full bg-amber-100 border-2 border-zinc-900 mx-auto flex items-center justify-center text-3xl shadow-sm animate-bounce">
-                🎁
-              </div>
-
-              <div className="space-y-1">
-                <span className="text-xs font-bold text-amber-600 uppercase tracking-wider">
-                  Special Surprise!
-                </span>
-                <h3 className="text-xl font-bold text-zinc-900">
-                  You Unlocked a Treat!
-                </h3>
-                <p className="text-base text-zinc-700 font-medium leading-relaxed pt-2">
-                  {surprisePrize}
-                </p>
-              </div>
-
-              <button
-                onClick={() => setSurpriseOpen(false)}
-                className="w-full py-2.5 bg-[#fef08a] border-2 border-zinc-900 rounded-xl font-bold text-base text-zinc-900 hover:bg-[#fde047] shadow-xs"
-              >
-                Yay, thank you! 🎉
-              </button>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </DoodleLayout>
   );
 };
