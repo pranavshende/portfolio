@@ -14,6 +14,9 @@ import pashurakshakPhoto from '../photo/pashurakshak.webp';
 import attritionBanner from '../photo/attrition_banner.webp';
 import tastifyyBanner from '../photo/tastifyy_banner.webp';
 import electropathyBanner from '../photo/electropathy_banner.webp';
+import citywidePhoto from '../photo/citywide_surveillance.webp';
+import truliacarePhoto from '../photo/truliacare_telehealth.webp';
+import farmerCreditPhoto from '../photo/farmer_credit.webp';
 
 interface RepoMeta {
   title?: string;
@@ -91,6 +94,7 @@ const REPO_REGISTRY: Record<string, RepoMeta> = {
     description: 'Distributed urban video surveillance and camera intelligence network with real-time video stream monitoring, incident alerting, and geo-spatial camera mapping.',
     tech: ['Computer Vision', 'Video Streaming', 'TypeScript', 'Node.js', 'PostgreSQL'],
     badge: 'Smart City Vision',
+    image: citywidePhoto,
   },
   TruliaCare_Appathon: {
     title: 'TruliaCare Telehealth Platform',
@@ -99,6 +103,7 @@ const REPO_REGISTRY: Record<string, RepoMeta> = {
     description: 'Telehealth consultation and patient monitoring application featuring real-time doctor-patient workflows, medical prescription generation, and appointment triage.',
     tech: ['React Native', 'TypeScript', 'Node.js', 'REST APIs', 'Healthcare Telemetry'],
     badge: 'Healthcare App',
+    image: truliacarePhoto,
   },
   'Credit-Score-Invisibility-Farmer': {
     title: 'Farmer Alternative Credit Scoring',
@@ -107,6 +112,17 @@ const REPO_REGISTRY: Record<string, RepoMeta> = {
     description: 'Alternative credit scoring platform evaluating agricultural risk and seasonal yield metrics to overcome credit invisibility for unbanked rural farmers.',
     tech: ['FinTech', 'Predictive Scoring', 'TypeScript', 'Data Science', 'Financial Inclusion'],
     badge: 'FinTech AI',
+    image: farmerCreditPhoto,
+  },
+  jansampark: {
+    title: 'JanSampark Civic Governance Platform',
+    category: 'Civic Enterprise & Mobile Systems',
+    tier: 1,
+    description: 'Enterprise civic governance platform bridging citizens and administration with 25+ React Native modules, offline geo-tagging, JWT + RBAC security across 4 administrative roles, and high-concurrency Node.js REST APIs.',
+    tech: ['Enterprise Architecture', 'React Native', 'Node.js', 'PostgreSQL', 'RBAC Security', 'JWT'],
+    badge: 'Civic Enterprise',
+    demoUrl: '/arcade?folder=projects_folder',
+    image: jansamparkPhoto,
   },
   StockMarketIntelligence: {
     title: 'Stock Market Intelligence Engine',
@@ -268,6 +284,29 @@ export const ProjectsPage: React.FC = () => {
                 isFork: r.fork,
               };
             });
+
+          // Ensure JanSampark flagship is included even if private on GitHub
+          if (!items.some((x) => x.name.toLowerCase() === 'jansampark')) {
+            const js = REPO_REGISTRY['jansampark'];
+            items.push({
+              id: 'jansampark-flagship',
+              name: 'jansampark',
+              title: js.title || 'JanSampark Civic Governance Platform',
+              category: js.category,
+              tier: 1,
+              description: js.description,
+              tech: js.tech,
+              badge: js.badge,
+              demoUrl: js.demoUrl,
+              githubUrl: 'https://github.com/pranavshende',
+              image: js.image,
+              stars: 1,
+              forks: 0,
+              language: 'React Native',
+              updatedAt: '2026-11-06',
+              isFork: false,
+            });
+          }
 
           // Sort strictly: Tier 1 (Best/God projects) -> Tier 2 (Core/Algorithms) -> Tier 3 (Forks/Utilities)
           items.sort((a, b) => {
