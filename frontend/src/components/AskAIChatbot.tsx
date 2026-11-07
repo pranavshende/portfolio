@@ -59,7 +59,11 @@ const qaDatabase = [
   },
   {
     keywords: ["best", "project", "favorite", "flagship"],
-    answer: "PashuRakshak—an AI-powered livestock disease detection platform that combines image analysis with location-based veterinary assistance."
+    answer: "Jarvis AI (https://jarvis.pranavshende.online)—an enterprise intelligence platform connecting ERP, WMS, and finance systems with official Model Context Protocol (MCP) streaming, deterministic SQL analytics, and Gemini 2.5 Pro; along with Electropathy AI and PashuRakshak."
+  },
+  {
+    keywords: ["jarvis", "mcp", "meridian", "supply chain"],
+    answer: "Jarvis AI is an autonomous enterprise intelligence platform running live at https://jarvis.pranavshende.online. It connects fragmented business systems into a centralized intelligence layer using official Model Context Protocol (MCP v1.0.4) streaming, zero-hallucination deterministic SQL calculations across 35 tables, hybrid pgvector RAG (749+ chunks), and Google Gemini 2.5 Pro reasoning."
   },
   {
     keywords: ["pashurakshak", "livestock", "cow", "disease", "farmers"],

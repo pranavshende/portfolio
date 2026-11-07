@@ -14,6 +14,32 @@ interface CreativeItem {
 
 const creativeItems: CreativeItem[] = [
   {
+    id: 'jarvis-mcp',
+    category: 'Research',
+    title: 'Jarvis 1.0 Enterprise AI Platform & Model Context Protocol (MCP) Stream',
+    organization: 'Meridian Supply Chain',
+    description:
+      'Autonomous enterprise intelligence architecture featuring official MCP streamable HTTP transports, deterministic star-schema SQL calculations, pgvector hybrid RAG, and Gemini 2.5 Pro multi-tier model routing.',
+    preview: (
+      <div className="w-full h-full min-h-[220px] bg-gradient-to-br from-emerald-50 to-teal-100 rounded-xl flex flex-col items-center justify-center p-4 border border-emerald-200">
+        <div className="w-44 bg-white border-2 border-zinc-900 rounded-2xl shadow-sm p-3 flex flex-col space-y-2">
+          <div className="flex items-center justify-between border-b border-zinc-200 pb-1">
+            <span className="font-doodle text-xs font-bold text-emerald-700">Jarvis AI 1.0</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+          </div>
+          <div className="w-full h-16 bg-emerald-50 rounded-lg border border-emerald-200 flex flex-col items-center justify-center p-1 text-center">
+            <span className="text-xl">⚡🤖</span>
+            <span className="font-doodle text-[10px] text-emerald-950 font-bold">MCP Stream & RAG</span>
+          </div>
+          <div className="flex justify-between text-[9px] font-mono text-zinc-500">
+            <span>Gemini 2.5 Pro</span>
+            <span>749 Chunks</span>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+  {
     id: 'electropathy-rag',
     category: 'Research',
     title: 'Electropathy AI Clinical Decision Wizard & Multilingual RAG Engine',
