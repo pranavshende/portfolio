@@ -14,6 +14,7 @@ import pashurakshakPhoto from '../photo/pashurakshak.webp';
 import attritionBanner from '../photo/attrition_banner.webp';
 import tastifyyBanner from '../photo/tastifyy_banner.webp';
 import electropathyBanner from '../photo/electropathy_banner.webp';
+import jarvisBanner from '../photo/jarvis_banner.webp';
 import citywidePhoto from '../photo/citywide_surveillance.webp';
 import truliacarePhoto from '../photo/truliacare_telehealth.webp';
 import farmerCreditPhoto from '../photo/farmer_credit.webp';
@@ -31,6 +32,26 @@ interface RepoMeta {
 
 // Curated enrichment dictionary for Pranav's GitHub repositories
 const REPO_REGISTRY: Record<string, RepoMeta> = {
+  'jarvis-mcp-multipleDBs': {
+    title: 'Jarvis 1.0 Enterprise AI Platform',
+    category: 'Enterprise AI & MCP Architecture',
+    tier: 1,
+    description: 'Autonomous enterprise intelligence platform with official Model Context Protocol (MCP v1.0.4) streaming, deterministic star-schema SQL calculations across 35 tables, pgvector hybrid RAG with 749+ chunks, and Google Gemini 2.5 Pro/Flash dynamic model routing.',
+    tech: ['Google Gemini 2.5 Pro', 'Model Context Protocol (MCP)', 'Fastify Gateway', 'pgvector RAG', 'Deterministic SQL', 'Supabase', 'BullMQ'],
+    badge: 'Live Enterprise',
+    demoUrl: 'https://jarvis.pranavshende.online/',
+    image: jarvisBanner,
+  },
+  jarvis: {
+    title: 'Jarvis 1.0 Enterprise AI Platform',
+    category: 'Enterprise AI & MCP Architecture',
+    tier: 1,
+    description: 'Autonomous enterprise intelligence platform with official Model Context Protocol (MCP v1.0.4) streaming, deterministic star-schema SQL calculations across 35 tables, pgvector hybrid RAG with 749+ chunks, and Google Gemini 2.5 Pro/Flash dynamic model routing.',
+    tech: ['Google Gemini 2.5 Pro', 'Model Context Protocol (MCP)', 'Fastify Gateway', 'pgvector RAG', 'Deterministic SQL', 'Supabase', 'BullMQ'],
+    badge: 'Live Enterprise',
+    demoUrl: 'https://jarvis.pranavshende.online/',
+    image: jarvisBanner,
+  },
   Electropathy_AI: {
     title: 'Electropathy AI Clinical Engine',
     category: 'Agentic AI & Healthcare',
@@ -285,6 +306,29 @@ export const ProjectsPage: React.FC = () => {
               };
             });
 
+          // Ensure Jarvis flagship is included even if private or named differently on GitHub
+          if (!items.some((x) => x.name.toLowerCase() === 'jarvis-mcp-multipledbs' || x.name.toLowerCase() === 'jarvis')) {
+            const jv = REPO_REGISTRY['jarvis-mcp-multipleDBs'];
+            items.push({
+              id: 'jarvis-flagship',
+              name: 'jarvis-mcp-multipleDBs',
+              title: jv.title || 'Jarvis 1.0 Enterprise AI Platform',
+              category: jv.category,
+              tier: 1,
+              description: jv.description,
+              tech: jv.tech,
+              badge: jv.badge,
+              demoUrl: jv.demoUrl,
+              githubUrl: 'https://github.com/pranavshende/jarvis-mcp-multipleDBs',
+              image: jv.image,
+              stars: 1,
+              forks: 0,
+              language: 'TypeScript',
+              updatedAt: '2026-11-07',
+              isFork: false,
+            });
+          }
+
           // Ensure JanSampark flagship is included even if private on GitHub
           if (!items.some((x) => x.name.toLowerCase() === 'jansampark')) {
             const js = REPO_REGISTRY['jansampark'];
@@ -308,8 +352,12 @@ export const ProjectsPage: React.FC = () => {
             });
           }
 
-          // Sort strictly: Tier 1 (Best/God projects) -> Tier 2 (Core/Algorithms) -> Tier 3 (Forks/Utilities)
+          // Sort strictly: Jarvis at #1 -> Tier 1 (Best/God projects) -> Tier 2 (Core/Algorithms) -> Tier 3 (Forks/Utilities)
           items.sort((a, b) => {
+            const isJarvisA = a.name.toLowerCase().includes('jarvis');
+            const isJarvisB = b.name.toLowerCase().includes('jarvis');
+            if (isJarvisA && !isJarvisB) return -1;
+            if (!isJarvisA && isJarvisB) return 1;
             if (a.tier !== b.tier) return a.tier - b.tier;
             return b.stars - a.stars;
           });
@@ -335,10 +383,16 @@ export const ProjectsPage: React.FC = () => {
           stars: 1,
           forks: 0,
           language: meta.tech[0] || 'TypeScript',
-          updatedAt: '2026-11-06',
+          updatedAt: '2026-11-07',
           isFork: meta.category.includes('Fork'),
         }));
-        fallbackItems.sort((a, b) => a.tier - b.tier);
+        fallbackItems.sort((a, b) => {
+          const isJarvisA = a.name.toLowerCase().includes('jarvis');
+          const isJarvisB = b.name.toLowerCase().includes('jarvis');
+          if (isJarvisA && !isJarvisB) return -1;
+          if (!isJarvisA && isJarvisB) return 1;
+          return a.tier - b.tier;
+        });
         setRepos(fallbackItems);
       })
       .finally(() => setLoading(false));

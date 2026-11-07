@@ -27,6 +27,7 @@ import pashurakshakPhoto from '../photo/pashurakshak.webp';
 import attritionBanner from '../photo/attrition_banner.webp';
 import tastifyyBanner from '../photo/tastifyy_banner.webp';
 import electropathyBanner from '../photo/electropathy_banner.webp';
+import jarvisBanner from '../photo/jarvis_banner.webp';
 
 interface Project {
   id: string;
@@ -45,6 +46,28 @@ interface Project {
 }
 
 const projects: Project[] = [
+  {
+    id: 'jarvis',
+    client: 'Meridian Supply Chain',
+    category: 'Enterprise AI & MCP Architecture',
+    year: 'Production 2026',
+    title: 'Jarvis AI: Enterprise Intelligence Platform, Official Model Context Protocol (MCP) & Google Gemini 2.5 Pro Engine',
+    subtitle: 'Autonomous Enterprise Intelligence • MCP Protocol & Deterministic SQL',
+    description:
+      'Autonomous enterprise intelligence platform unifying fragmented operations across ERP, WMS, and finance systems into a centralized intelligence layer. Features official Model Context Protocol (MCP v1.0.4) streamable HTTP and stdio transports, zero-hallucination deterministic SQL analytics across a 35-table PostgreSQL star schema, hybrid pgvector RAG with 749+ operational knowledge chunks, dynamic Google Gemini 2.5 Pro/Flash model routing, BullMQ dead-letter queues, and RBAC-controlled action workflows with human-in-the-loop approvals.',
+    tech: ['Google Gemini 2.5 Pro', 'Model Context Protocol (MCP)', 'Fastify Gateway', 'pgvector RAG', 'Deterministic SQL', 'Supabase', 'Redis (BullMQ)', 'TypeScript', 'React 18'],
+    highlights: [
+      'Official Model Context Protocol (MCP v1.0.4) integration supporting Streamable HTTP (/mcp/stream) and stdio transports',
+      'Deterministic star-schema SQL calculation engine delivering zero-hallucination metrics on inventory, revenue, and credit exposure',
+      'Hybrid pgvector RAG knowledge assistant with 749+ verified operational chunks and strict document citations',
+      'Dynamic dual-tier LLM routing (Gemini 2.5 Pro for deep reasoning & Flash for rapid execution) with token budget governance',
+      'Enterprise resilience with 0.07ms authorization-aware semantic cache, BullMQ Dead-Letter Queues (DLQ), and 100% prompt injection red-team defense',
+    ],
+    github: 'https://github.com/pranavshende/jarvis-mcp-multipleDBs',
+    demo: 'https://jarvis.pranavshende.online/',
+    badge: 'Live Enterprise',
+    image: jarvisBanner,
+  },
   {
     id: 'electropathy',
     client: 'Dr. Ashish Wandhare',
@@ -249,6 +272,7 @@ export const Home: React.FC = () => {
   // Fetch dynamic projects from backend database with fallback to verified offline data
   useEffect(() => {
     const projectImages: Record<string, string> = {
+      jarvis: jarvisBanner,
       electropathy: electropathyBanner,
       tastifyy: tastifyyBanner,
       attrition: attritionBanner,
@@ -273,8 +297,17 @@ export const Home: React.FC = () => {
             github: p.githubUrl,
             demo: p.liveDemoUrl,
             badge: p.badge || (p.isFeatured ? 'Featured' : undefined),
-            image: p.thumbnailUrl || projectImages[p.slug] || electropathyBanner,
+            image: p.thumbnailUrl || projectImages[p.slug] || jarvisBanner,
           }));
+          if (!mapped.some(p => p.id === 'jarvis')) {
+            mapped.unshift(projects[0]);
+          } else {
+            mapped.sort((a, b) => {
+              if (a.id === 'jarvis') return -1;
+              if (b.id === 'jarvis') return 1;
+              return 0;
+            });
+          }
           setProjectList(mapped);
         }
       })

@@ -49,6 +49,7 @@ export const AnalyticsSection: React.FC = () => {
         views: p.views ?? p.viewCount ?? 0,
       }))
     : [
+        { name: 'Jarvis AI Enterprise', views: 0 },
         { name: 'Electropathy AI', views: 0 },
         { name: 'Tastifyy Delivery', views: 0 },
         { name: 'Employee Attrition AI', views: 0 },

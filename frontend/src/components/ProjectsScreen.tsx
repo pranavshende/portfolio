@@ -10,6 +10,7 @@ import pashurakshakPhoto from '../photo/pashurakshak.webp';
 import attritionBanner from '../photo/attrition_banner.webp';
 import tastifyyBanner from '../photo/tastifyy_banner.webp';
 import electropathyBanner from '../photo/electropathy_banner.webp';
+import jarvisBanner from '../photo/jarvis_banner.webp';
 
 interface Project {
   title: string;
@@ -24,6 +25,23 @@ interface Project {
 }
 
 const projects: Project[] = [
+  {
+    title: "Jarvis AI",
+    subtitle: "Enterprise Intelligence Layer • MCP Protocol, pgvector RAG & Deterministic SQL",
+    description: "Autonomous enterprise intelligence platform unifying fragmented operations across ERP, WMS, and finance systems into a centralized intelligence layer. Features official Model Context Protocol (MCP v1.0.4) streaming, zero-hallucination deterministic SQL calculations across a 35-table PostgreSQL star schema, hybrid pgvector RAG with 749+ chunks, and Google Gemini 2.5 Pro reasoning.",
+    tech: ["Google Gemini 2.5 Pro", "Model Context Protocol", "Fastify Gateway", "pgvector RAG", "Deterministic SQL", "Supabase", "Redis (BullMQ)", "TypeScript", "React 18"],
+    highlights: [
+      "Official MCP protocol integration supporting Streamable HTTP (/mcp/stream) and stdio transports",
+      "Deterministic star-schema SQL calculation engine delivering zero-hallucination operational metrics",
+      "Hybrid pgvector RAG assistant grounded in 749+ verified operational knowledge chunks",
+      "Dynamic dual-tier LLM routing (Gemini 2.5 Pro & Flash) with token spend governance",
+      "Enterprise resilience with 0.07ms semantic cache, BullMQ Dead-Letter Queues & 100% prompt injection defense",
+    ],
+    badge: "Live Enterprise",
+    github: "https://github.com/pranavshende/jarvis-mcp-multipleDBs",
+    demo: "https://jarvis.pranavshende.online/",
+    image: jarvisBanner
+  },
   {
     title: "Electropathy AI",
     subtitle: "Agentic Clinical RAG Copilot & pgvector Knowledge Engine",
@@ -205,14 +223,26 @@ export const ProjectsScreen = () => {
                     </div>
                   )}
                   {project.demo && (
-                    <Link 
-                      to={project.demo} 
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-[11px] font-medium transition-colors border border-emerald-500/30"
-                    >
-                      <Smartphone className="w-3.5 h-3.5" />
-                      View in Arcade
-                      <ArrowUpRight className="w-3 h-3 ml-0.5 opacity-70" />
-                    </Link>
+                    project.demo.startsWith('http') ? (
+                      <a 
+                        href={project.demo} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-[11px] font-medium transition-colors border border-emerald-500/30"
+                      >
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                        Live Platform
+                      </a>
+                    ) : (
+                      <Link 
+                        to={project.demo} 
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-[11px] font-medium transition-colors border border-emerald-500/30"
+                      >
+                        <Smartphone className="w-3.5 h-3.5" />
+                        View in Arcade
+                        <ArrowUpRight className="w-3 h-3 ml-0.5 opacity-70" />
+                      </Link>
+                    )
                   )}
                 </div>
               </div>
@@ -318,14 +348,26 @@ export const ProjectsScreen = () => {
                         </div>
                       )}
                       {project.demo && (
-                        <Link 
-                          to={project.demo} 
-                          className="flex flex-1 items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-[11px] font-medium transition-colors border border-emerald-500/30"
-                        >
-                          <Smartphone className="w-3.5 h-3.5" />
-                          Arcade
-                          <ArrowUpRight className="w-3 h-3 ml-0.5 opacity-70" />
-                        </Link>
+                        project.demo.startsWith('http') ? (
+                          <a 
+                            href={project.demo} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="flex flex-1 items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-[11px] font-medium transition-colors border border-emerald-500/30"
+                          >
+                            <ArrowUpRight className="w-3.5 h-3.5" />
+                            Live Demo
+                          </a>
+                        ) : (
+                          <Link 
+                            to={project.demo} 
+                            className="flex flex-1 items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-[11px] font-medium transition-colors border border-emerald-500/30"
+                          >
+                            <Smartphone className="w-3.5 h-3.5" />
+                            Arcade
+                            <ArrowUpRight className="w-3 h-3 ml-0.5 opacity-70" />
+                          </Link>
+                        )
                       )}
                     </div>
                   </div>

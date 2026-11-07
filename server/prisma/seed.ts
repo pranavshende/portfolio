@@ -26,6 +26,46 @@ async function main() {
   // 2. SEED SHOWCASE PROJECTS
   const projectsData = [
     {
+      slug: 'jarvis',
+      title: 'Jarvis AI: Enterprise Intelligence Platform, Official Model Context Protocol (MCP) & Google Gemini 2.5 Pro Engine',
+      subtitle: 'Autonomous Enterprise Intelligence • MCP Protocol & Deterministic SQL',
+      client: 'Meridian Supply Chain',
+      category: 'Enterprise AI & MCP Architecture',
+      year: 'Production 2026',
+      description:
+        'Autonomous enterprise intelligence platform unifying fragmented operations across ERP, WMS, and finance systems into a centralized intelligence layer. Features official Model Context Protocol (MCP v1.0.4) streamable HTTP and stdio transports, zero-hallucination deterministic SQL analytics across a 35-table PostgreSQL star schema, hybrid pgvector RAG with 749+ operational knowledge chunks, dynamic Google Gemini 2.5 Pro/Flash model routing, BullMQ dead-letter queues, and RBAC-controlled action workflows with human-in-the-loop approvals.',
+      problemStatement:
+        'Operations, inventory, and financial data were scattered across disconnected ERP, WMS, and seller platforms, causing hours of manual data reconciliation, hidden credit breaches, and inaccurate decision-making.',
+      solution:
+        'Built an enterprise intelligence layer with zero production write risks, deterministic SQL calculations, official Model Context Protocol (MCP) streaming, pgvector knowledge retrieval, and dual-tier Gemini 2.5 Pro/Flash orchestration.',
+      architecture:
+        'React 18 Vite Client -> Fastify Gateway (Port 4000, MCP, Semantic Cache, DLQ) -> Flask Analytics & RAG Engine -> Supabase PostgreSQL (Star Schema + pgvector) -> Redis / BullMQ -> Google Gemini 2.5 Pro / Flash',
+      techStack: [
+        'Google Gemini 2.5 Pro',
+        'Model Context Protocol (MCP)',
+        'Fastify Gateway',
+        'pgvector RAG',
+        'Deterministic SQL',
+        'Supabase',
+        'Redis (BullMQ)',
+        'TypeScript',
+        'React 18',
+      ],
+      highlights: [
+        'Official Model Context Protocol (MCP v1.0.4) integration supporting Streamable HTTP (/mcp/stream) and stdio transports',
+        'Deterministic star-schema SQL calculation engine delivering zero-hallucination metrics on inventory, revenue, and credit exposure',
+        'Hybrid pgvector RAG knowledge assistant with 749+ verified operational chunks and strict document citations',
+        'Dynamic dual-tier LLM routing (Gemini 2.5 Pro for deep reasoning & Flash for rapid execution) with token budget governance',
+        'Enterprise resilience with 0.07ms authorization-aware semantic cache, BullMQ Dead-Letter Queues (DLQ), and 100% prompt injection red-team defense',
+      ],
+      githubUrl: 'https://github.com/pranavshende/jarvis-mcp-multipleDBs',
+      demoUrl: 'https://jarvis.pranavshende.online/',
+      bannerUrl: '/src/photo/jarvis_banner.png',
+      badge: 'Live Enterprise',
+      featured: true,
+      orderIndex: 1,
+    },
+    {
       slug: 'electropathy',
       title: 'Electropathy AI: Agentic Clinical RAG Copilot & Multilingual Knowledge Engine with pgvector Semantic Search',
       subtitle: 'Agentic RAG Copilot • pgvector & Multilingual Clinical Engine',
@@ -61,7 +101,7 @@ async function main() {
       bannerUrl: '/src/photo/electropathy_banner.png',
       badge: 'Live Production',
       featured: true,
-      orderIndex: 1,
+      orderIndex: 2,
     },
     {
       slug: 'tastifyy',
@@ -99,7 +139,7 @@ async function main() {
       bannerUrl: '/src/photo/tastifyy_banner.png',
       badge: 'Production Shipped',
       featured: true,
-      orderIndex: 2,
+      orderIndex: 3,
     },
     {
       slug: 'attrition',
@@ -137,7 +177,7 @@ async function main() {
       bannerUrl: '/src/photo/attrition_banner.png',
       badge: 'Live Production',
       featured: true,
-      orderIndex: 3,
+      orderIndex: 4,
     },
     {
       slug: 'jansampark',
@@ -175,7 +215,7 @@ async function main() {
       bannerUrl: '/src/photo/jansampark.png',
       badge: 'Civic Platform',
       featured: true,
-      orderIndex: 4,
+      orderIndex: 5,
     },
     {
       slug: 'solar',
@@ -213,7 +253,7 @@ async function main() {
       bannerUrl: '/src/photo/solar_analytics.png',
       badge: 'Renewable Analytics',
       featured: true,
-      orderIndex: 5,
+      orderIndex: 6,
     },
     {
       slug: 'pashurakshak',
@@ -251,7 +291,7 @@ async function main() {
       bannerUrl: '/src/photo/pashurakshak.png',
       badge: 'IEEE Published',
       featured: true,
-      orderIndex: 6,
+      orderIndex: 7,
     },
   ];
 
