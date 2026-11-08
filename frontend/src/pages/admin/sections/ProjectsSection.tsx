@@ -419,6 +419,9 @@ export const ProjectsSection: React.FC = () => {
                         <img 
                           src={banner} 
                           alt={proj.title}
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=400&q=80';
+                          }}
                           className="w-16 h-12 rounded-lg object-cover bg-stone-100 border border-stone-200 dark:border-stone-700 shrink-0" 
                         />
                       )}
@@ -538,6 +541,9 @@ export const ProjectsSection: React.FC = () => {
                               <img 
                                 src={banner} 
                                 alt={proj.title}
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=400&q=80';
+                                }}
                                 className="w-12 h-9 rounded-md object-cover bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 shrink-0" 
                               />
                             ) : (

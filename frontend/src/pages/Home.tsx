@@ -461,6 +461,18 @@ export const Home: React.FC = () => {
                   <span>GitHub</span>
                 </a>
                 <a
+                  href="https://medium.com/@pranavshende97"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-semibold transition-all active:scale-95 shrink-0 whitespace-nowrap"
+                  title="Read on Medium"
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5 text-stone-900 dark:text-stone-100">
+                    <path d="M13.54 12a6.8 6.8 0 0 1-6.77 6.82A6.8 6.8 0 0 1 0 12a6.8 6.8 0 0 1 6.77-6.82A6.8 6.8 0 0 1 13.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
+                  </svg>
+                  <span>Medium</span>
+                </a>
+                <a
                   href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(siteSettings.contactEmail)}`}
                   target="_blank"
                   rel="noopener noreferrer"

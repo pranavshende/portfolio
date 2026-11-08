@@ -155,6 +155,28 @@ export const ProjectsScreen = () => {
       pashurakshak: pashurakshakPhoto,
     };
 
+    const resolveProjectThumbnail = (p: any): string => {
+      const slug = String(p.slug || p.id || p.title || '').toLowerCase();
+      
+      for (const [key, asset] of Object.entries(projectImages)) {
+        if (slug.includes(key) || key.includes(slug)) {
+          return asset;
+        }
+      }
+
+      const raw = p.bannerUrl || p.thumbnailUrl;
+      if (raw && typeof raw === 'string') {
+        if (raw.startsWith('data:image/') || raw.startsWith('http://') || raw.startsWith('https://')) {
+          return raw;
+        }
+        if (raw.startsWith('/photo/')) {
+          return raw;
+        }
+      }
+
+      return jarvisBanner;
+    };
+
     api.getProjects()
       .then((res: any) => {
         if (res && res.data && Array.isArray(res.data) && res.data.length > 0) {
@@ -169,7 +191,7 @@ export const ProjectsScreen = () => {
             github: p.githubUrl,
             demo: p.demoUrl || p.liveDemoUrl,
             badge: p.badge || (p.featured || p.isFeatured ? 'Featured' : undefined),
-            image: p.bannerUrl || p.thumbnailUrl || projectImages[p.slug] || jarvisBanner,
+            image: resolveProjectThumbnail(p),
           }));
           setProjectList(mapped);
         }
@@ -195,6 +217,9 @@ export const ProjectsScreen = () => {
                   src={project.image} 
                   alt={project.title} 
                   loading="lazy" 
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = jarvisBanner;
+                  }}
                   className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${
                     project.title === 'JanSampark' ? 'object-left' : 'object-center'
                   }`}
@@ -321,6 +346,9 @@ export const ProjectsScreen = () => {
                       src={project.image} 
                       alt={project.title} 
                       loading="lazy" 
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = jarvisBanner;
+                      }}
                       className={`w-full h-full object-cover ${
                         project.title === 'JanSampark' ? 'object-left' : 'object-center'
                       }`}

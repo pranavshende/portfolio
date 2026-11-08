@@ -79,6 +79,12 @@ const DoodleResume = () => (
   </svg>
 );
 
+const DoodleMedium = () => (
+  <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] text-current fill-current">
+    <path d="M13.54 12a6.8 6.8 0 0 1-6.77 6.82A6.8 6.8 0 0 1 0 12a6.8 6.8 0 0 1 6.77-6.82A6.8 6.8 0 0 1 13.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
+  </svg>
+);
+
 const DoodleFolder = () => (
   <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] text-current fill-none stroke-current stroke-[2.2] stroke-linecap-round stroke-linejoin-round">
     <path d="M3 7v13a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1h-8.5l-2-2.5H4a1 1 0 0 0-1 1z" />
@@ -309,6 +315,18 @@ export const DoodleSidebar: React.FC = () => {
               </a>
 
               <a
+                href="https://medium.com/@pranavshende97"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-sm font-bold text-stone-800 dark:text-stone-200 hover:text-stone-950 dark:hover:text-stone-50 hover:bg-stone-900/5 dark:hover:bg-white/5 transition-colors"
+                title="Read Pranav's Articles on Medium"
+              >
+                <DoodleMedium />
+                <span className="pt-0.5">Medium</span>
+                <ExternalLink className="w-3 h-3 text-stone-400 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+              </a>
+
+              <a
                 href={resumeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -521,6 +539,16 @@ export const DoodleSidebar: React.FC = () => {
                     aria-label="GitHub"
                   >
                     <DoodleGitHub />
+                  </a>
+                  <a
+                    href="https://medium.com/@pranavshende97"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white"
+                    aria-label="Medium"
+                    title="Medium Articles"
+                  >
+                    <DoodleMedium />
                   </a>
                 </div>
               </div>
