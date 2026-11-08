@@ -411,83 +411,80 @@ export const Home: React.FC = () => {
         </div>
 
         {/* ── Slim Contact & Opportunity Card (Paper Block) ── */}
-        <div className="mt-5 p-4 sm:p-5 rounded-3xl bg-white/95 dark:bg-[#181920]/95 border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917] dark:shadow-[4px_4px_0px_#000000] relative overflow-hidden transition-all">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#8b2323] via-[#b91c1c] to-[#8b2323]" />
+        <div className="mt-5 p-4 sm:p-5 lg:p-6 rounded-2xl bg-white/95 dark:bg-[#181920]/95 border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917] dark:shadow-[4px_4px_0px_#000000] relative transition-all">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#8b2323] via-[#b91c1c] to-[#8b2323] rounded-t-2xl" />
           
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span className="text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase text-emerald-700 dark:text-emerald-400 font-mono">
-                Available for Opportunities & Projects
-              </span>
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="space-y-1.5 max-w-xl">
+              <div className="flex items-center gap-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span className="text-[10px] sm:text-[11px] font-bold tracking-wider uppercase text-emerald-700 dark:text-emerald-400 font-mono">
+                  Available for Opportunities & Projects
+                </span>
+              </div>
+              <h2 className="text-base sm:text-lg font-bold text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
+                Let's connect & build something impactful.
+              </h2>
+              <p className="text-xs text-stone-600 dark:text-stone-300 leading-snug">
+                Open to full-time SWE roles, freelance software architecture, and technical collaborations.
+              </p>
             </div>
 
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pt-0.5">
-              <div>
-                <h2 className="text-base sm:text-lg font-bold text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
-                  Let's connect & build something impactful.
-                </h2>
-                <p className="text-xs text-stone-600 dark:text-stone-300 leading-snug">
-                  Open to full-time SWE roles, freelance software architecture, and technical collaborations.
-                </p>
-              </div>
-
-              {/* All 4 action buttons strictly in the SAME line */}
-              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5 shrink-0 flex-nowrap">
-                <button
-                  type="button"
-                  onClick={() => setContactModalOpen(true)}
-                  className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all active:scale-95 shrink-0 whitespace-nowrap cursor-pointer"
-                >
-                  <Mail className="w-3.5 h-3.5" />
-                  <span>Get In Touch</span>
-                </button>
-                <a
-                  href={siteSettings.linkedinUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-xs font-bold shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all active:scale-95 shrink-0 whitespace-nowrap"
-                  title="Connect on LinkedIn"
-                >
-                  <Linkedin className="w-3.5 h-3.5 text-[#0077b5]" />
-                  <span>LinkedIn</span>
-                </a>
-                <a
-                  href={siteSettings.githubUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-xs font-bold shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all active:scale-95 shrink-0 whitespace-nowrap"
-                  title="View GitHub Profile"
-                >
-                  <Github className="w-3.5 h-3.5" />
-                  <span>GitHub</span>
-                </a>
-                <a
-                  href="https://medium.com/@pranavshende97"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-xs font-bold shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all active:scale-95 shrink-0 whitespace-nowrap"
-                  title="Read on Medium"
-                >
-                  <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5 text-stone-900 dark:text-stone-100">
-                    <path d="M13.54 12a6.8 6.8 0 0 1-6.77 6.82A6.8 6.8 0 0 1 0 12a6.8 6.8 0 0 1 6.77-6.82A6.8 6.8 0 0 1 13.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
-                  </svg>
-                  <span>Medium</span>
-                </a>
-                <a
-                  href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(siteSettings.contactEmail)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-xs font-bold shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all active:scale-95 shrink-0 whitespace-nowrap"
-                  title="Direct Gmail"
-                >
-                  <Mail className="w-3.5 h-3.5 text-[#ea4335]" />
-                  <span>Gmail</span>
-                </a>
-              </div>
+            {/* All action buttons with generous breathing room and natural wrap */}
+            <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 shrink-0 pt-1 lg:pt-0">
+              <button
+                type="button"
+                onClick={() => setContactModalOpen(true)}
+                className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all active:scale-95 shrink-0 whitespace-nowrap cursor-pointer"
+              >
+                <Mail className="w-3.5 h-3.5" />
+                <span>Get In Touch</span>
+              </button>
+              <a
+                href={siteSettings.linkedinUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-xs font-bold shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all active:scale-95 shrink-0 whitespace-nowrap"
+                title="Connect on LinkedIn"
+              >
+                <Linkedin className="w-3.5 h-3.5 text-[#0077b5]" />
+                <span>LinkedIn</span>
+              </a>
+              <a
+                href={siteSettings.githubUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-xs font-bold shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all active:scale-95 shrink-0 whitespace-nowrap"
+                title="View GitHub Profile"
+              >
+                <Github className="w-3.5 h-3.5" />
+                <span>GitHub</span>
+              </a>
+              <a
+                href="https://medium.com/@pranavshende97"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-xs font-bold shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all active:scale-95 shrink-0 whitespace-nowrap"
+                title="Read on Medium"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5 text-stone-900 dark:text-stone-100">
+                  <path d="M13.54 12a6.8 6.8 0 0 1-6.77 6.82A6.8 6.8 0 0 1 0 12a6.8 6.8 0 0 1 6.77-6.82A6.8 6.8 0 0 1 13.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
+                </svg>
+                <span>Medium</span>
+              </a>
+              <a
+                href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(siteSettings.contactEmail)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-xs font-bold shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all active:scale-95 shrink-0 whitespace-nowrap"
+                title="Direct Gmail"
+              >
+                <Mail className="w-3.5 h-3.5 text-[#ea4335]" />
+                <span>Gmail</span>
+              </a>
             </div>
           </div>
         </div>
