@@ -5,7 +5,7 @@
     "category": "System Design & AI",
     "author": "Pranav Shende",
     "excerpt": "How I engineered Jarvis AI — a centralized enterprise intelligence platform connecting ERP, warehouse management, and finance systems into an operational copilot with official Model Context Protocol (MCP v1.0.4) streaming and deterministic SQL reasoning.",
-    "coverImageUrl": "/src/photo/jarvis_banner.webp",
+    "coverImageUrl": "/photo/jarvis_banner.webp",
     "tags": [
       "AI Agents",
       "Model Context Protocol",
@@ -28,7 +28,7 @@
     "category": "AI & Machine Learning",
     "author": "Pranav Shende",
     "excerpt": "A comprehensive technical deep-dive into how Large Language Models work internally, context window constraints, high-dimensional vector search, and engineering zero-hallucination RAG pipelines.",
-    "coverImageUrl": "/src/photo/electropathy_banner.webp",
+    "coverImageUrl": "/photo/electropathy_banner.webp",
     "tags": [
       "RAG",
       "Vector Search",
@@ -50,7 +50,7 @@
     "category": "Data Science & ML",
     "author": "Pranav Shende",
     "excerpt": "Developing a predictive HR workforce intelligence platform with dynamic CSV dataset ingestion, SHAP explainable AI attribution, 11 interactive Chart.js visualizations, and a Gemini 2.5 Flash copilot.",
-    "coverImageUrl": "/src/photo/attrition_banner.webp",
+    "coverImageUrl": "/photo/attrition_banner.webp",
     "tags": [
       "Machine Learning",
       "Python",
@@ -73,7 +73,7 @@
     "category": "Data Science & Big Data",
     "author": "Pranav Shende",
     "excerpt": "Evaluating 10+ years (2014–2024) of nationwide solar time-series data across 36+ Indian states/UTs covering 81.8+ GW with polynomial regression forecasting and interactive GIS choropleth mapping.",
-    "coverImageUrl": "/src/photo/solar_analytics.webp",
+    "coverImageUrl": "/photo/solar_analytics.webp",
     "tags": [
       "Big Data",
       "CleanTech",
@@ -96,7 +96,7 @@
     "category": "System Design & AI",
     "author": "Pranav Shende",
     "excerpt": "Architecting an AI database copilot that translates natural language inquiries into verified read-only SQL queries, explains multi-table joins, and displays live step-by-step reasoning workflows.",
-    "coverImageUrl": "/src/photo/jarvis_banner.webp",
+    "coverImageUrl": "/photo/jarvis_banner.webp",
     "tags": [
       "Database Architecture",
       "Text-to-SQL",
@@ -117,7 +117,7 @@
     "category": "Web Engineering",
     "author": "Pranav Shende",
     "excerpt": "Real-world lessons from designing high-concurrency Node.js and Fastify backend architectures, Prisma connection pooling, Redis caching, and reactive React 19 interfaces.",
-    "coverImageUrl": "/src/photo/tastifyy_banner.webp",
+    "coverImageUrl": "/photo/tastifyy_banner.webp",
     "tags": [
       "System Design",
       "Fastify",
@@ -141,7 +141,7 @@
     "category": "Mobile & Civic Tech",
     "author": "Pranav Shende",
     "excerpt": "Building an enterprise civic CRM and governance platform for municipal administration featuring 25+ React Native screens, GPS geo-tagging, 4-role RBAC security, and automated SLA timers.",
-    "coverImageUrl": "/src/photo/jansampark.webp",
+    "coverImageUrl": "/photo/jansampark.webp",
     "tags": [
       "React Native",
       "Expo",
@@ -164,7 +164,7 @@
     "category": "Distributed Systems",
     "author": "Pranav Shende",
     "excerpt": "Designing a high-throughput multi-role food delivery platform with Apache Kafka event-driven order state machines, Redis geospatial driver proximity dispatch, and Socket.io live tracking.",
-    "coverImageUrl": "/src/photo/tastifyy_banner.webp",
+    "coverImageUrl": "/photo/tastifyy_banner.webp",
     "tags": [
       "Kafka",
       "Redis Geospatial",
@@ -186,7 +186,7 @@
     "category": "Edge AI & Research",
     "author": "Pranav Shende",
     "excerpt": "Engineering PashuRakshak: an offline-first Edge AI livestock pathology platform using quantized TensorFlow Lite CNNs for sub-120ms veterinary diagnostics in zero-connectivity rural farms. Published at IEEE OTCON.",
-    "coverImageUrl": "/src/photo/pashurakshak.webp",
+    "coverImageUrl": "/photo/pashurakshak.webp",
     "tags": [
       "Edge AI",
       "Computer Vision",
@@ -208,7 +208,7 @@
     "category": "Leadership & Career",
     "author": "Pranav Shende",
     "excerpt": "Key takeaways, architectural lessons, and personal reflections from winning 3rd Prize at Technex 2025, 2nd at Codetronics, mentoring for GirlScript Summer of Code, and serving as CSI Technical Head.",
-    "coverImageUrl": "/src/photo/jansampark.webp",
+    "coverImageUrl": "/photo/jansampark.webp",
     "tags": [
       "Hackathons",
       "Leadership",

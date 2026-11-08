@@ -11,6 +11,34 @@ import { api } from '@/lib/api';
 import useAnalytics from '@/hooks/useAnalytics';
 import profilePhoto from '@/photo/profile_photo_wide.webp';
 
+import jarvisBanner from '@/photo/jarvis_banner.webp';
+import electropathyBanner from '@/photo/electropathy_banner.webp';
+import tastifyyBanner from '@/photo/tastifyy_banner.webp';
+import attritionBanner from '@/photo/attrition_banner.webp';
+import jansamparkBanner from '@/photo/jansampark.webp';
+import solarBanner from '@/photo/solar_analytics.webp';
+import pashurakshakBanner from '@/photo/pashurakshak.webp';
+
+const resolveBlogCover = (url?: string, slug?: string): string => {
+  if (!url && !slug) return jarvisBanner;
+  if (url && (url.startsWith('data:image/') || url.startsWith('http://') || url.startsWith('https://'))) {
+    return url;
+  }
+  const target = (url || slug || '').toLowerCase();
+  if (target.includes('forgerag') || target.includes('electropathy')) return electropathyBanner;
+  if (target.includes('attrition') || target.includes('workforce')) return attritionBanner;
+  if (target.includes('solar')) return solarBanner;
+  if (target.includes('tastifyy') || target.includes('fullstack') || target.includes('scalable')) return tastifyyBanner;
+  if (target.includes('jansampark') || target.includes('civic') || target.includes('hackathon')) return jansamparkBanner;
+  if (target.includes('pashu') || target.includes('agriculture')) return pashurakshakBanner;
+  if (target.includes('jarvis')) return jarvisBanner;
+
+  if (url && url.startsWith('/src/photo/')) {
+    return url.replace('/src/photo/', '/photo/');
+  }
+  return url || jarvisBanner;
+};
+
 interface BlogPost {
   id: string;
   title: string;
@@ -298,15 +326,16 @@ export const BlogPostPage: React.FC = () => {
         </header>
 
         {/* Cover Banner */}
-        {post.coverImageUrl && (
-          <div className="rounded-3xl overflow-hidden border border-stone-200 dark:border-stone-800 shadow-md">
-            <img
-              src={post.coverImageUrl}
-              alt={post.title}
-              className="w-full max-h-[460px] object-cover bg-stone-100 dark:bg-stone-900"
-            />
-          </div>
-        )}
+        <div className="rounded-3xl overflow-hidden border border-stone-200 dark:border-stone-800 shadow-md">
+          <img
+            src={resolveBlogCover(post.coverImageUrl, post.slug)}
+            alt={post.title}
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = jarvisBanner;
+            }}
+            className="w-full max-h-[460px] object-cover bg-stone-100 dark:bg-stone-900"
+          />
+        </div>
 
         {/* Article Body Rendered in Markdown */}
         <main className="prose prose-stone dark:prose-invert max-w-none text-stone-800 dark:text-stone-200 text-sm sm:text-base leading-relaxed py-2">

@@ -9,6 +9,34 @@ import { DoodleLayout } from '@/components/DoodleLayout';
 import { api } from '@/lib/api';
 import useAnalytics from '@/hooks/useAnalytics';
 
+import jarvisBanner from '@/photo/jarvis_banner.webp';
+import electropathyBanner from '@/photo/electropathy_banner.webp';
+import tastifyyBanner from '@/photo/tastifyy_banner.webp';
+import attritionBanner from '@/photo/attrition_banner.webp';
+import jansamparkBanner from '@/photo/jansampark.webp';
+import solarBanner from '@/photo/solar_analytics.webp';
+import pashurakshakBanner from '@/photo/pashurakshak.webp';
+
+const resolveBlogCover = (url?: string, slug?: string): string => {
+  if (!url && !slug) return jarvisBanner;
+  if (url && (url.startsWith('data:image/') || url.startsWith('http://') || url.startsWith('https://'))) {
+    return url;
+  }
+  const target = (url || slug || '').toLowerCase();
+  if (target.includes('forgerag') || target.includes('electropathy')) return electropathyBanner;
+  if (target.includes('attrition') || target.includes('workforce')) return attritionBanner;
+  if (target.includes('solar')) return solarBanner;
+  if (target.includes('tastifyy') || target.includes('fullstack') || target.includes('scalable')) return tastifyyBanner;
+  if (target.includes('jansampark') || target.includes('civic') || target.includes('hackathon')) return jansamparkBanner;
+  if (target.includes('pashu') || target.includes('agriculture')) return pashurakshakBanner;
+  if (target.includes('jarvis')) return jarvisBanner;
+
+  if (url && url.startsWith('/src/photo/')) {
+    return url.replace('/src/photo/', '/photo/');
+  }
+  return url || jarvisBanner;
+};
+
 interface BlogPost {
   id: string;
   title: string;
@@ -191,9 +219,12 @@ export const BlogPage: React.FC = () => {
                   {/* Cover Image */}
                   <Link to={`/blog/${post.slug}`} className="block relative aspect-16/10 overflow-hidden bg-stone-100 dark:bg-stone-900">
                     <img
-                      src={post.coverImageUrl || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80'}
+                      src={resolveBlogCover(post.coverImageUrl, post.slug)}
                       alt={post.title}
                       loading="lazy"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = jarvisBanner;
+                      }}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute top-3 left-3">
