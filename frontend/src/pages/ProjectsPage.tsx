@@ -446,15 +446,15 @@ export const ProjectsPage: React.FC = () => {
           PAGE HEADER
       ────────────────────────────────────────────────────────────── */}
       <section className="mb-8 sm:mb-10">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium text-[#8b2323] bg-[#8b2323]/10 border border-[#8b2323]/25 mb-4">
-          <span>&lt;//&gt;</span>
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xs text-xs font-serif font-bold text-[#8b2323] dark:text-rose-400 bg-[#8b2323]/5 border border-[#8b2323] tracking-widest mb-4 shadow-[1.5px_1.5px_0px_#1c1917]">
+          <span>[カタログ]</span>
           <span>GitHub Code Catalog</span>
         </div>
 
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 dark:text-stone-50 tracking-tight leading-tight select-text">
-              All <span className="font-serif italic text-[#8b2323] dark:text-white">Projects</span> & Repositories
+              All <span className="font-serif italic text-[#8b2323] dark:text-rose-400">Projects</span> & Repositories
             </h1>
             <p className="text-base sm:text-lg text-stone-700 dark:text-stone-300 mt-2.5 font-normal leading-relaxed max-w-2xl">
               Curated catalog of software engineering systems scanned live from GitHub — organized with flagship production architectures at the top.
@@ -465,7 +465,7 @@ export const ProjectsPage: React.FC = () => {
             href="https://github.com/pranavshende?tab=repositories"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 text-xs font-bold shadow-xs hover:bg-stone-800 dark:hover:bg-stone-200 transition-all self-start md:self-auto shrink-0"
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-stone-100 dark:hover:bg-stone-200 dark:text-stone-900 text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all self-start md:self-auto shrink-0"
           >
             <Github className="w-4 h-4" />
             <span>View All on GitHub</span>
@@ -483,7 +483,7 @@ export const ProjectsPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search projects by name, language, architecture..."
-              className="w-full pl-9 pr-4 py-2 text-xs sm:text-sm rounded-xl bg-white/80 dark:bg-[#14161d]/80 border border-stone-300 dark:border-stone-700 text-stone-900 dark:text-stone-100 placeholder:text-stone-400 focus:outline-hidden focus:border-[#8b2323] transition-colors"
+              className="w-full pl-9 pr-4 py-2.5 text-xs sm:text-sm rounded-xl bg-white dark:bg-[#181920] border-2 border-stone-900 dark:border-stone-700 text-stone-900 dark:text-stone-100 placeholder:text-stone-400 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] focus:outline-hidden transition-all"
             />
           </div>
 
@@ -499,10 +499,10 @@ export const ProjectsPage: React.FC = () => {
                 key={tab.id}
                 type="button"
                 onClick={() => setSelectedFilter(tab.id as any)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer border-2 border-stone-900 dark:border-stone-700 ${
                   selectedFilter === tab.id
-                    ? 'bg-[#8b2323] text-white shadow-xs'
-                    : 'bg-white/80 dark:bg-[#14161d]/80 border border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800'
+                    ? 'bg-[#8b2323] text-white shadow-[2px_2px_0px_#1c1917]'
+                    : 'bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 shadow-[2px_2px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_#1c1917]'
                 }`}
               >
                 {tab.label}
@@ -518,7 +518,7 @@ export const ProjectsPage: React.FC = () => {
           <div className="h-6 w-48 bg-stone-200 dark:bg-stone-800 rounded-md animate-pulse" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-64 rounded-2xl bg-stone-100 dark:bg-stone-800/40 border border-stone-200 dark:border-stone-800 animate-pulse" />
+              <div key={i} className="h-64 rounded-3xl bg-stone-100 dark:bg-stone-800/40 border-2 border-stone-900/30 dark:border-stone-800 animate-pulse" />
             ))}
           </div>
         </div>
@@ -529,14 +529,14 @@ export const ProjectsPage: React.FC = () => {
           ────────────────────────────────────────────────────────────── */}
           {tier1Projects.length > 0 && (
             <section className="space-y-5">
-              <div className="flex items-center justify-between pb-1 border-b border-stone-200/80 dark:border-stone-800">
+              <div className="flex items-center justify-between pb-1 border-b-2 border-stone-900/20 dark:border-stone-800">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-5 bg-[#8b2323] rounded-full" />
                   <h2 className="text-base sm:text-lg font-bold text-stone-900 dark:text-stone-100 tracking-tight">
                     Flagship Systems & Production Architectures
                   </h2>
                 </div>
-                <span className="text-xs font-mono text-stone-500">
+                <span className="text-xs font-mono font-bold text-stone-600 dark:text-stone-400">
                   {tier1Projects.length} Flagship {tier1Projects.length === 1 ? 'Project' : 'Projects'}
                 </span>
               </div>
@@ -545,12 +545,12 @@ export const ProjectsPage: React.FC = () => {
                 {tier1Projects.map((p) => (
                   <div
                     key={p.name}
-                    className="group rounded-2xl border border-stone-200/80 dark:border-stone-800 bg-white/85 dark:bg-[#14161d]/85 backdrop-blur-md p-4 sm:p-5 flex flex-col justify-between shadow-xs hover:shadow-md transition-all hover:border-stone-400 dark:hover:border-stone-700"
+                    className="group rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 p-4 sm:p-5 flex flex-col justify-between shadow-[4px_4px_0px_#1c1917] dark:shadow-[4px_4px_0px_#000000] hover:shadow-[2px_2px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
                   >
                     <div className="space-y-3">
                       {/* Image Thumbnail Banner if available */}
                       {p.image && (
-                        <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800">
+                        <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-900 border-2 border-stone-900 dark:border-stone-700 shadow-[2px_2px_0px_#1c1917]">
                           <img
                             src={p.image}
                             alt={p.title}
@@ -560,7 +560,7 @@ export const ProjectsPage: React.FC = () => {
                             className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
                           />
                           {p.badge && (
-                            <div className="absolute top-2.5 right-2.5 bg-white/95 dark:bg-stone-900/90 text-stone-900 dark:text-stone-100 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-stone-300 dark:border-stone-700 shadow-xs">
+                            <div className="absolute top-2.5 right-2.5 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full border-2 border-stone-900 shadow-[1.5px_1.5px_0px_#1c1917]">
                               {p.badge}
                             </div>
                           )}
@@ -569,7 +569,7 @@ export const ProjectsPage: React.FC = () => {
 
                       <div>
                         <div className="flex items-center justify-between gap-2">
-                          <span className="text-[10px] font-mono font-semibold uppercase text-[#8b2323] dark:text-rose-400 tracking-wider">
+                          <span className="text-[10px] font-serif font-bold uppercase text-[#8b2323] dark:text-rose-400 tracking-wider px-2 py-0.5 rounded-xs border border-[#8b2323] bg-[#8b2323]/5">
                             {p.category}
                           </span>
                           {!p.image && p.badge && (
@@ -579,7 +579,7 @@ export const ProjectsPage: React.FC = () => {
                           )}
                         </div>
 
-                        <h3 className="text-base sm:text-lg font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors mt-0.5">
+                        <h3 className="text-base sm:text-lg font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors mt-1.5">
                           {p.title}
                         </h3>
 
@@ -593,7 +593,7 @@ export const ProjectsPage: React.FC = () => {
                         {p.tech.map((t, idx) => (
                           <span
                             key={idx}
-                            className="px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800/80 text-stone-700 dark:text-stone-300 font-mono text-[11px] border border-stone-200 dark:border-stone-700/80"
+                            className="px-2 py-0.5 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 font-mono text-[11px] border border-stone-900/40 dark:border-stone-700"
                           >
                             {t}
                           </span>
@@ -602,15 +602,15 @@ export const ProjectsPage: React.FC = () => {
                     </div>
 
                     {/* Action buttons */}
-                    <div className="pt-4 mt-4 border-t border-stone-200/80 dark:border-stone-800 flex items-center justify-between">
-                      <div className="flex items-center gap-3 text-xs text-stone-500">
+                    <div className="pt-4 mt-4 border-t-2 border-stone-900/15 dark:border-stone-800 flex items-center justify-between">
+                      <div className="flex items-center gap-3 text-xs text-stone-600 dark:text-stone-400">
                         {p.stars > 0 && (
-                          <span className="flex items-center gap-1 font-mono">
+                          <span className="flex items-center gap-1 font-mono font-bold">
                             <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
                             {p.stars}
                           </span>
                         )}
-                        <span className="font-mono text-[11px]">{p.language}</span>
+                        <span className="font-mono text-[11px] font-bold">{p.language}</span>
                       </div>
 
                       <div className="flex items-center gap-2">
@@ -619,7 +619,7 @@ export const ProjectsPage: React.FC = () => {
                             href={p.demoUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#8b2323] text-white text-xs font-bold hover:bg-[#721c1c] shadow-2xs transition-colors"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
                           >
                             <ExternalLink className="w-3 h-3" />
                             <span>Live Demo</span>
@@ -629,7 +629,7 @@ export const ProjectsPage: React.FC = () => {
                           href={p.githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-semibold transition-colors"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700 text-stone-900 dark:text-stone-100 text-xs font-bold shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
                         >
                           <Github className="w-3.5 h-3.5" />
                           <span>Code</span>
@@ -647,14 +647,14 @@ export const ProjectsPage: React.FC = () => {
           ────────────────────────────────────────────────────────────── */}
           {tier2Projects.length > 0 && (
             <section className="space-y-5">
-              <div className="flex items-center justify-between pb-1 border-b border-stone-200/80 dark:border-stone-800">
+              <div className="flex items-center justify-between pb-1 border-b-2 border-stone-900/20 dark:border-stone-800">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-5 bg-blue-600 rounded-full" />
                   <h2 className="text-base sm:text-lg font-bold text-stone-900 dark:text-stone-100 tracking-tight">
                     Specialized Engineering & Algorithmic Solutions
                   </h2>
                 </div>
-                <span className="text-xs font-mono text-stone-500">
+                <span className="text-xs font-mono font-bold text-stone-600 dark:text-stone-400">
                   {tier2Projects.length} Repositories
                 </span>
               </div>
@@ -663,15 +663,15 @@ export const ProjectsPage: React.FC = () => {
                 {tier2Projects.map((p) => (
                   <div
                     key={p.name}
-                    className="rounded-2xl border border-stone-200/80 dark:border-stone-800 bg-white/80 dark:bg-[#14161d]/80 p-4 flex flex-col justify-between shadow-2xs hover:shadow-xs transition-all hover:border-stone-400 dark:hover:border-stone-700"
+                    className="rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 p-4 flex flex-col justify-between shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
                   >
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-mono uppercase text-blue-600 dark:text-blue-400 font-semibold tracking-wider">
+                        <span className="text-[10px] font-serif font-bold uppercase text-blue-700 dark:text-blue-400 tracking-wider px-2 py-0.5 rounded-xs border border-blue-600/40 bg-blue-50 dark:bg-blue-950/30">
                           {p.category}
                         </span>
                         {p.stars > 0 && (
-                          <span className="flex items-center gap-1 text-[11px] font-mono text-stone-500">
+                          <span className="flex items-center gap-1 text-[11px] font-mono font-bold text-stone-600 dark:text-stone-400">
                             <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
                             {p.stars}
                           </span>
@@ -690,7 +690,7 @@ export const ProjectsPage: React.FC = () => {
                         {p.tech.slice(0, 3).map((t, idx) => (
                           <span
                             key={idx}
-                            className="px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 font-mono text-[10px]"
+                            className="px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-mono text-[10px] border border-stone-900/30 dark:border-stone-700"
                           >
                             {t}
                           </span>
@@ -698,13 +698,13 @@ export const ProjectsPage: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="pt-3 mt-3 border-t border-stone-200/80 dark:border-stone-800 flex items-center justify-between text-xs">
-                      <span className="font-mono text-[11px] text-stone-500">{p.language}</span>
+                    <div className="pt-3 mt-3 border-t-2 border-stone-900/15 dark:border-stone-800 flex items-center justify-between text-xs">
+                      <span className="font-mono text-[11px] font-bold text-stone-600 dark:text-stone-400">{p.language}</span>
                       <a
                         href={p.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-xs font-semibold text-[#8b2323] dark:text-rose-400 hover:underline"
+                        className="inline-flex items-center gap-1 text-xs font-bold text-[#8b2323] dark:text-rose-400 hover:underline"
                       >
                         <span>GitHub Repo</span>
                         <ArrowUpRight className="w-3.5 h-3.5" />
@@ -721,14 +721,14 @@ export const ProjectsPage: React.FC = () => {
           ────────────────────────────────────────────────────────────── */}
           {tier3Projects.length > 0 && (
             <section className="space-y-5">
-              <div className="flex items-center justify-between pb-1 border-b border-stone-200/80 dark:border-stone-800">
+              <div className="flex items-center justify-between pb-1 border-b-2 border-stone-900/20 dark:border-stone-800">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-5 bg-stone-400 rounded-full" />
+                  <div className="w-2 h-5 bg-stone-500 rounded-full" />
                   <h2 className="text-base sm:text-lg font-bold text-stone-900 dark:text-stone-100 tracking-tight">
                     Open-Source Contributions & Utilities
                   </h2>
                 </div>
-                <span className="text-xs font-mono text-stone-500">
+                <span className="text-xs font-mono font-bold text-stone-600 dark:text-stone-400">
                   {tier3Projects.length} Repositories
                 </span>
               </div>
@@ -737,39 +737,39 @@ export const ProjectsPage: React.FC = () => {
                 {tier3Projects.map((p) => (
                   <div
                     key={p.name}
-                    className="p-3.5 rounded-xl border border-stone-200/70 dark:border-stone-800/80 bg-white/60 dark:bg-[#14161d]/60 flex flex-col justify-between"
+                    className="p-3.5 rounded-2xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 flex flex-col justify-between shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
                   >
                     <div className="space-y-1.5">
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-mono text-stone-400 uppercase">
+                        <span className="text-[10px] font-mono text-stone-500 font-bold uppercase">
                           {p.badge || 'Fork / Sandbox'}
                         </span>
                         <a
                           href={p.githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors"
+                          className="text-stone-600 hover:text-stone-900 dark:hover:text-stone-100 transition-colors"
                         >
                           <ArrowUpRight className="w-3.5 h-3.5" />
                         </a>
                       </div>
 
-                      <h4 className="text-xs sm:text-sm font-bold text-stone-800 dark:text-stone-200 truncate">
+                      <h4 className="text-xs sm:text-sm font-bold text-stone-900 dark:text-stone-100 truncate">
                         {p.title}
                       </h4>
 
-                      <p className="text-[11px] text-stone-500 dark:text-stone-400 line-clamp-2 leading-relaxed">
+                      <p className="text-[11px] text-stone-600 dark:text-stone-400 line-clamp-2 leading-relaxed">
                         {p.description}
                       </p>
                     </div>
 
-                    <div className="pt-2 mt-2 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-[11px] font-mono text-stone-400">
+                    <div className="pt-2 mt-2 border-t-2 border-stone-900/15 dark:border-stone-800 flex items-center justify-between text-[11px] font-mono font-bold text-stone-500">
                       <span>{p.language}</span>
                       <a
                         href={p.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="hover:underline text-stone-600 dark:text-stone-300"
+                        className="hover:underline text-stone-800 dark:text-stone-200"
                       >
                         Code →
                       </a>

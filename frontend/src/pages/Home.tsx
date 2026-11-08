@@ -376,9 +376,14 @@ export const Home: React.FC = () => {
           HERO STATEMENT (Mockup match)
       ────────────────────────────────────────────────────────────── */}
       <section className="mb-8 sm:mb-10">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium text-[#8b2323] bg-[#8b2323]/10 border border-[#8b2323]/25 mb-4">
-          <span>&lt;//&gt;</span>
-          <span>Welcome to my portfolio</span>
+        <div className="flex items-center gap-2 mb-4">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold text-stone-900 dark:text-stone-100 bg-white dark:bg-stone-800 border-2 border-stone-900 dark:border-stone-700 shadow-[2px_2px_0px_#1c1917]">
+            <span>&lt;//&gt;</span>
+            <span>Welcome to my portfolio</span>
+          </div>
+          <div className="px-1.5 py-0.5 rounded-xs border border-[#8b2323] text-[#8b2323] text-[10px] font-serif font-bold tracking-widest bg-[#8b2323]/5">
+            開発者
+          </div>
         </div>
 
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 dark:text-stone-50 tracking-tight leading-tight select-text">
@@ -389,24 +394,24 @@ export const Home: React.FC = () => {
           {siteSettings.heroBio}
         </p>
 
-        {/* Hero Tag Pills */}
+        {/* Hero Tag Pills - Paper Theme */}
         <div className="flex flex-wrap items-center gap-2.5 mt-5">
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium bg-white/70 dark:bg-[#14161d]/70 border border-stone-300/80 dark:border-stone-700/80 text-stone-800 dark:text-stone-200 shadow-2xs backdrop-blur-xs">
+          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-white dark:bg-stone-800 border-2 border-stone-900 dark:border-stone-700 text-stone-900 dark:text-stone-100 shadow-[2px_2px_0px_#1c1917]">
             <GraduationCap className="w-4 h-4 text-[#8b2323]" />
             <span>B.Tech IT @ SVPCET</span>
           </span>
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium bg-white/70 dark:bg-[#14161d]/70 border border-stone-300/80 dark:border-stone-700/80 text-stone-800 dark:text-stone-200 shadow-2xs backdrop-blur-xs">
+          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-white dark:bg-stone-800 border-2 border-stone-900 dark:border-stone-700 text-stone-900 dark:text-stone-100 shadow-[2px_2px_0px_#1c1917]">
             <Layers className="w-4 h-4 text-[#8b2323]" />
             <span>Backend & AI</span>
           </span>
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium bg-white/70 dark:bg-[#14161d]/70 border border-stone-300/80 dark:border-stone-700/80 text-stone-800 dark:text-stone-200 shadow-2xs backdrop-blur-xs">
+          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-white dark:bg-stone-800 border-2 border-stone-900 dark:border-stone-700 text-stone-900 dark:text-stone-100 shadow-[2px_2px_0px_#1c1917]">
             <Target className="w-4 h-4 text-[#8b2323]" />
             <span>Building for Impact</span>
           </span>
         </div>
 
-        {/* ── Slim Contact & Opportunity Card below 'Hi there I'm Pranav' ── */}
-        <div className="mt-5 p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-white/85 dark:bg-[#14161d]/85 border border-[#8b2323]/30 dark:border-[#8b2323]/40 shadow-xs backdrop-blur-md relative overflow-hidden transition-all">
+        {/* ── Slim Contact & Opportunity Card (Paper Block) ── */}
+        <div className="mt-5 p-4 sm:p-5 rounded-3xl bg-white/95 dark:bg-[#181920]/95 border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917] dark:shadow-[4px_4px_0px_#000000] relative overflow-hidden transition-all">
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#8b2323] via-[#b91c1c] to-[#8b2323]" />
           
           <div className="space-y-1">
@@ -435,7 +440,7 @@ export const Home: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setContactModalOpen(true)}
-                  className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold shadow-xs transition-all active:scale-95 shrink-0 whitespace-nowrap cursor-pointer"
+                  className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all active:scale-95 shrink-0 whitespace-nowrap cursor-pointer"
                 >
                   <Mail className="w-3.5 h-3.5" />
                   <span>Get In Touch</span>
@@ -444,7 +449,7 @@ export const Home: React.FC = () => {
                   href={siteSettings.linkedinUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-semibold transition-all active:scale-95 shrink-0 whitespace-nowrap"
+                  className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-xs font-bold shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all active:scale-95 shrink-0 whitespace-nowrap"
                   title="Connect on LinkedIn"
                 >
                   <Linkedin className="w-3.5 h-3.5 text-[#0077b5]" />
@@ -454,7 +459,7 @@ export const Home: React.FC = () => {
                   href={siteSettings.githubUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-semibold transition-all active:scale-95 shrink-0 whitespace-nowrap"
+                  className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-xs font-bold shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all active:scale-95 shrink-0 whitespace-nowrap"
                   title="View GitHub Profile"
                 >
                   <Github className="w-3.5 h-3.5" />
@@ -464,7 +469,7 @@ export const Home: React.FC = () => {
                   href="https://medium.com/@pranavshende97"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-semibold transition-all active:scale-95 shrink-0 whitespace-nowrap"
+                  className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-xs font-bold shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all active:scale-95 shrink-0 whitespace-nowrap"
                   title="Read on Medium"
                 >
                   <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5 text-stone-900 dark:text-stone-100">
@@ -476,7 +481,7 @@ export const Home: React.FC = () => {
                   href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(siteSettings.contactEmail)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-semibold transition-all active:scale-95 shrink-0 whitespace-nowrap"
+                  className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-xs font-bold shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all active:scale-95 shrink-0 whitespace-nowrap"
                   title="Direct Gmail"
                 >
                   <Mail className="w-3.5 h-3.5 text-[#ea4335]" />
@@ -513,13 +518,13 @@ export const Home: React.FC = () => {
           {projectList.map((proj) => (
             <motion.div
               key={proj.id}
-              whileHover={{ y: -4 }}
-              transition={{ duration: 0.2 }}
+              whileHover={{ y: -2 }}
+              transition={{ duration: 0.15 }}
               onClick={() => setSelectedProject(proj)}
-              className="group cursor-pointer rounded-2xl border border-black dark:border-stone-700 bg-white/85 dark:bg-[#14161d]/85 backdrop-blur-md shadow-xs hover:shadow-md transition-all overflow-hidden flex flex-col p-3.5 sm:p-4"
+              className="group cursor-pointer rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[4px_4px_0px_#1c1917] dark:shadow-[4px_4px_0px_#000000] hover:shadow-[2px_2px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all overflow-hidden flex flex-col p-3.5 sm:p-4"
             >
               {/* Banner with badge */}
-              <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-900 border border-black/35 dark:border-stone-800 shadow-2xs">
+              <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-900 border-2 border-stone-900 dark:border-stone-700 shadow-[2px_2px_0px_#1c1917]">
                 <img
                   src={proj.image}
                   alt={proj.title}
@@ -530,7 +535,7 @@ export const Home: React.FC = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
                 {proj.badge && (
-                  <div className="absolute top-2.5 right-2.5 bg-white/95 dark:bg-stone-900/90 backdrop-blur-xs text-stone-900 dark:text-stone-100 border border-stone-300 dark:border-stone-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-xs">
+                  <div className="absolute top-2.5 right-2.5 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 border-2 border-stone-900 font-mono font-bold text-[10px] px-2.5 py-0.5 rounded-full shadow-[1.5px_1.5px_0px_#1c1917]">
                     {proj.badge}
                   </div>
                 )}
@@ -548,7 +553,7 @@ export const Home: React.FC = () => {
                 </div>
 
                 {/* Circular arrow button */}
-                <div className="w-8 h-8 rounded-full border border-stone-300 dark:border-stone-700 flex items-center justify-center text-stone-600 dark:text-stone-400 group-hover:border-[#8b2323] group-hover:text-[#8b2323] group-hover:bg-[#8b2323]/10 transition-colors shrink-0">
+                <div className="w-8 h-8 rounded-full border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 flex items-center justify-center text-stone-900 dark:text-stone-100 shadow-[1.5px_1.5px_0px_#1c1917] group-hover:bg-[#8b2323] group-hover:text-white transition-all shrink-0">
                   <ArrowRight className="w-3.5 h-3.5" />
                 </div>
               </div>
@@ -577,7 +582,7 @@ export const Home: React.FC = () => {
           </div>
           <Link
             to="/blog"
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-semibold shadow-xs transition-colors"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer"
           >
             <BookOpen className="w-3.5 h-3.5" />
             <span>Read All Articles</span>
@@ -586,8 +591,8 @@ export const Home: React.FC = () => {
         </div>
 
         {recentBlogs.length === 0 ? (
-          <div className="p-6 rounded-2xl border border-stone-200 dark:border-stone-800 bg-white/70 dark:bg-[#14161d]/70 text-center">
-            <p className="text-xs text-stone-500">
+          <div className="p-6 rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3.5px_3.5px_0px_#1c1917] text-center">
+            <p className="text-xs text-stone-600 dark:text-stone-300">
               Explore recent architectural deep-dives and engineering breakdowns by visiting the{' '}
               <Link to="/blog" className="text-[#8b2323] dark:text-rose-400 font-semibold underline">
                 Blog
@@ -600,20 +605,20 @@ export const Home: React.FC = () => {
               <Link
                 key={post.id || post.slug}
                 to={`/blog/${post.slug}`}
-                className="group p-5 rounded-2xl border border-stone-200/90 dark:border-stone-800 bg-white/85 dark:bg-[#14161d]/85 backdrop-blur-md shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-3"
+                className="group p-5 rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all flex flex-col justify-between space-y-3"
               >
                 <div className="space-y-2">
-                  <span className="px-2 py-0.5 rounded-md bg-[#8b2323]/10 text-[#8b2323] dark:text-rose-400 font-semibold text-[10px]">
+                  <span className="px-2 py-0.5 rounded-xs border border-[#8b2323] bg-[#8b2323]/5 text-[#8b2323] dark:text-rose-400 font-serif font-bold text-[10px] tracking-wider inline-block">
                     {post.category || (post.tags && post.tags[0]) || 'Architecture'}
                   </span>
                   <h3 className="text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors line-clamp-2">
                     {post.title}
                   </h3>
-                  <p className="text-xs text-stone-500 line-clamp-2">
+                  <p className="text-xs text-stone-600 dark:text-stone-400 line-clamp-2">
                     {post.excerpt}
                   </p>
                 </div>
-                <div className="flex items-center justify-between text-[11px] text-stone-400 font-mono pt-2 border-t border-stone-100 dark:border-stone-800">
+                <div className="flex items-center justify-between text-[11px] text-stone-500 font-mono pt-2 border-t border-stone-200 dark:border-stone-800">
                   <span>{post.readingTimeMinutes || 5} min read</span>
                   <span className="text-[#8b2323] dark:text-rose-400 font-bold group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5">
                     Read <ArrowRight className="w-3 h-3" />
@@ -629,10 +634,10 @@ export const Home: React.FC = () => {
           RESEARCH PUBLICATIONS SECTION
       ────────────────────────────────────────────────────────────── */}
       <section className="space-y-4 mb-16 pt-2">
-        <div className="border-b border-zinc-200/80 dark:border-zinc-800/80 pb-3 flex items-center justify-between">
+        <div className="border-b-2 border-stone-900/20 dark:border-stone-800 pb-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <BookOpen className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            <h2 className="text-xs sm:text-sm font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider font-sans">
+            <BookOpen className="w-4 h-4 text-[#8b2323] dark:text-rose-400" />
+            <h2 className="text-xs sm:text-sm font-bold text-stone-900 dark:text-stone-100 uppercase tracking-wider font-sans">
               Research Publications
             </h2>
           </div>
@@ -640,21 +645,21 @@ export const Home: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-1">
           {/* Publication 1 */}
-          <div className="p-5 rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-white dark:bg-[#151619] shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-all space-y-2">
-            <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-[10px] font-bold text-emerald-700 dark:text-emerald-300 uppercase font-mono">
+          <div className="p-5 rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all space-y-2">
+            <span className="px-2.5 py-0.5 rounded-xs border border-emerald-800 text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 text-[10px] font-bold uppercase font-mono">
               IEEE Conference
             </span>
-            <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100 leading-snug">
+            <h3 className="text-base font-bold text-stone-900 dark:text-stone-100 leading-snug">
               CNN Based Classification of Lumpy Skin Disease
             </h3>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+            <p className="text-xs text-stone-600 dark:text-stone-300 leading-relaxed">
               Presented at the 2025 4th OPJU International Conference on Technology and Management (IEEE). Explores quantized lightweight convolutional networks for rural veterinary disease diagnostics.
             </p>
             <a
               href="https://doi.org/10.1109/OTCON65728.2025.11070341"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-semibold pt-1 font-mono"
+              className="inline-flex items-center gap-1 text-xs text-[#8b2323] dark:text-rose-400 hover:underline font-bold pt-1 font-mono"
             >
               <span>doi: 10.1109/OTCON65728.2025.11070341</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -662,21 +667,21 @@ export const Home: React.FC = () => {
           </div>
 
           {/* Publication 2 */}
-          <div className="p-5 rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-white dark:bg-[#151619] shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-all space-y-2">
-            <span className="px-2.5 py-0.5 rounded-full bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800/60 text-[10px] font-bold text-teal-700 dark:text-teal-300 uppercase font-mono">
+          <div className="p-5 rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all space-y-2">
+            <span className="px-2.5 py-0.5 rounded-xs border border-teal-800 text-teal-800 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/40 text-[10px] font-bold uppercase font-mono">
               IJACTE Journal
             </span>
-            <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100 leading-snug">
+            <h3 className="text-base font-bold text-stone-900 dark:text-stone-100 leading-snug">
               Intelligent Platform to Interconnect Alumni and Student for Educational Institutes
             </h3>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+            <p className="text-xs text-stone-600 dark:text-stone-300 leading-relaxed">
               Published in the International Journal on Advanced Computer Theory and Engineering, 14(1): 193–197, May 2025. Mentorship and career matchmaking platform connecting alumni with undergraduate students.
             </p>
             <a
               href="https://doi.org/10.65521/ijacte.v14i1.388"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-xs text-teal-600 dark:text-teal-400 hover:text-teal-800 dark:hover:text-teal-300 font-semibold pt-1 font-mono"
+              className="inline-flex items-center gap-1 text-xs text-[#8b2323] dark:text-rose-400 hover:underline font-bold pt-1 font-mono"
             >
               <span>doi: 10.65521/ijacte.v14i1.388</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -689,15 +694,15 @@ export const Home: React.FC = () => {
           DYNAMIC GITHUB REPOSITORIES
       ────────────────────────────────────────────────────────────── */}
       <section className="space-y-4 mb-10 pt-2">
-        <div className="border-b border-zinc-200/80 dark:border-zinc-800/80 pb-3 flex items-center justify-between">
-          <h2 className="text-xs sm:text-sm font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider font-sans">
+        <div className="border-b-2 border-stone-900/20 dark:border-stone-800 pb-3 flex items-center justify-between">
+          <h2 className="text-xs sm:text-sm font-bold text-stone-900 dark:text-stone-100 uppercase tracking-wider font-sans">
             Other Noteworthy Repositories
           </h2>
           <a
             href={siteSettings.githubUrl}
             target="_blank"
             rel="noreferrer"
-            className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline"
+            className="text-xs font-bold text-[#8b2323] dark:text-rose-400 hover:underline"
           >
             View all on GitHub →
           </a>
@@ -706,7 +711,7 @@ export const Home: React.FC = () => {
         {loadingRepos ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-32 rounded-xl bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-800 animate-pulse" />
+              <div key={i} className="h-32 rounded-2xl bg-stone-200 dark:bg-stone-800/50 border-2 border-stone-900 dark:border-stone-700 animate-pulse" />
             ))}
           </div>
         ) : (
@@ -717,31 +722,31 @@ export const Home: React.FC = () => {
                 href={repo.html_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col justify-between p-4 rounded-xl border border-zinc-200/80 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 bg-white dark:bg-[#151619] transition-all shadow-2xs hover:shadow-xs"
+                className="group flex flex-col justify-between p-4 rounded-2xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
               >
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-mono text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+                    <span className="text-[10px] font-mono text-stone-500 uppercase tracking-wider font-bold">
                       Repo
                     </span>
-                    <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors" />
+                    <ArrowUpRight className="w-3.5 h-3.5 text-stone-500 group-hover:text-stone-900 dark:group-hover:text-white transition-colors" />
                   </div>
-                  <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 truncate">
+                  <h3 className="text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 truncate">
                     {repo.name}
                   </h3>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-stone-600 dark:text-stone-400 line-clamp-2 leading-relaxed">
                     {repo.description || 'Public repository on GitHub.'}
                   </p>
                 </div>
 
-                <div className="pt-3 mt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+                <div className="pt-3 mt-3 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between text-xs text-stone-500">
                   {repo.language && (
-                    <span className="font-mono text-[11px] font-medium text-zinc-600 dark:text-zinc-400">
+                    <span className="font-mono text-[11px] font-bold text-stone-700 dark:text-stone-300">
                       {repo.language}
                     </span>
                   )}
                   {repo.stargazers_count > 0 && (
-                    <span className="flex items-center gap-1 text-[11px] font-mono">
+                    <span className="flex items-center gap-1 text-[11px] font-mono font-bold">
                       <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
                       {repo.stargazers_count}
                     </span>
@@ -757,10 +762,10 @@ export const Home: React.FC = () => {
           GITHUB CONTRIBUTION CALENDAR
       ────────────────────────────────────────────────────────────── */}
       <section className="space-y-4 mb-12 pt-2">
-        <div className="border-b border-zinc-200/80 dark:border-zinc-800/80 pb-3 flex items-center justify-between">
+        <div className="border-b-2 border-stone-900/20 dark:border-stone-800 pb-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Github className="w-4 h-4 text-[#8b2323] dark:text-rose-400" />
-            <h2 className="text-xs sm:text-sm font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider font-sans">
+            <h2 className="text-xs sm:text-sm font-bold text-stone-900 dark:text-stone-100 uppercase tracking-wider font-sans">
               GitHub Contribution Heatmap
             </h2>
           </div>
@@ -768,31 +773,31 @@ export const Home: React.FC = () => {
             href={siteSettings.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+            className="text-xs font-bold text-[#8b2323] dark:text-rose-400 hover:underline flex items-center gap-1"
           >
             <span>@{siteSettings.githubUrl?.split('/').filter(Boolean).pop() || 'PranavShende'}</span>
             <ExternalLink className="w-3 h-3" />
           </a>
         </div>
 
-        <div className="rounded-2xl border border-stone-200/80 dark:border-zinc-800 bg-white/85 dark:bg-[#14161d]/85 p-4 sm:p-6 backdrop-blur-md shadow-xs">
+        <div className="rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 p-4 sm:p-6 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000]">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
             <div>
               <h3 className="text-sm font-bold text-stone-900 dark:text-stone-100">
                 Live Open-Source & Personal Commits
               </h3>
-              <p className="text-xs text-stone-500 dark:text-stone-400">
+              <p className="text-xs text-stone-600 dark:text-stone-400">
                 Continuous integration & build contributions across repositories
               </p>
             </div>
-            <div className="flex items-center gap-2 text-[11px] font-mono text-stone-500 dark:text-stone-400">
+            <div className="flex items-center gap-2 text-[11px] font-mono text-stone-600 dark:text-stone-400">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span>Live GitHub Sync</span>
             </div>
           </div>
 
           <div
-            className="w-full overflow-x-auto pb-2 pt-2 flex justify-center no-scrollbar rounded-xl p-3 sm:p-4 bg-stone-50/70 dark:bg-[#0d1117] border border-stone-200/70 dark:border-stone-800"
+            className="w-full overflow-x-auto pb-2 pt-2 flex justify-center no-scrollbar rounded-2xl p-3 sm:p-4 bg-stone-50/70 dark:bg-[#0d1117] border-2 border-stone-900/40 dark:border-stone-800"
           >
             <GitHubCalendar
               username={siteSettings.githubUrl?.split('/').filter(Boolean).pop() || 'PranavShende'}
@@ -822,29 +827,29 @@ export const Home: React.FC = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto bg-white dark:bg-[#16171b] rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 sm:p-8 space-y-5 shadow-2xl"
+              className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto bg-[#faf7f0] dark:bg-[#16171b] rounded-3xl border-2 border-stone-900 dark:border-stone-700 p-6 sm:p-8 space-y-5 shadow-[6px_6px_0px_#1c1917] dark:shadow-[6px_6px_0px_#000000]"
             >
               <button
                 onClick={() => setSelectedProject(null)}
-                className="absolute top-5 right-5 p-2 rounded-full text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                className="absolute top-5 right-5 p-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer"
                 aria-label="Close modal"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
 
-              <div className="space-y-1 pr-6">
-                <span className="font-mono text-xs font-semibold uppercase text-blue-600 dark:text-blue-400 tracking-wider">
+              <div className="space-y-1 pr-10">
+                <span className="font-mono text-xs font-bold uppercase text-[#8b2323] dark:text-rose-400 tracking-wider">
                   {selectedProject.client} • {selectedProject.category}
                 </span>
-                <h2 className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100 leading-snug">
+                <h2 className="text-xl sm:text-2xl font-bold text-stone-900 dark:text-stone-100 leading-snug">
                   {selectedProject.subtitle}
                 </h2>
-                <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 font-medium">
+                <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 font-medium">
                   {selectedProject.title}
                 </p>
               </div>
 
-              <div className="w-full aspect-[16/10] rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-800">
+              <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden border-2 border-stone-900 dark:border-stone-700 bg-stone-100 dark:bg-stone-800 shadow-[3px_3px_0px_#1c1917]">
                 <img
                   src={selectedProject.image}
                   alt={selectedProject.title}
@@ -855,18 +860,18 @@ export const Home: React.FC = () => {
                 />
               </div>
 
-              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
+              <p className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed font-sans">
                 {selectedProject.description}
               </p>
 
               <div className="space-y-2">
-                <h4 className="text-xs font-semibold uppercase text-zinc-400 dark:text-zinc-500 tracking-wider">
+                <h4 className="text-xs font-bold uppercase text-stone-900 dark:text-stone-100 tracking-wider">
                   Key Achievements
                 </h4>
-                <div className="space-y-1.5 text-xs sm:text-sm text-zinc-700 dark:text-zinc-300">
+                <div className="space-y-1.5 text-xs sm:text-sm text-stone-700 dark:text-stone-300">
                   {selectedProject.highlights.map((h, i) => (
                     <div key={i} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                       <span>{h}</span>
                     </div>
                   ))}
@@ -874,14 +879,14 @@ export const Home: React.FC = () => {
               </div>
 
               <div className="space-y-2 pt-1">
-                <h4 className="text-xs font-semibold uppercase text-zinc-400 dark:text-zinc-500 tracking-wider">
+                <h4 className="text-xs font-bold uppercase text-stone-900 dark:text-stone-100 tracking-wider">
                   Technologies
                 </h4>
                 <div className="flex flex-wrap gap-1.5">
                   {selectedProject.tech.map((t, idx) => (
                     <span
                       key={idx}
-                      className="px-2.5 py-1 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-mono text-xs border border-zinc-200/80 dark:border-zinc-700"
+                      className="px-2.5 py-1 rounded-xl bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 font-mono text-xs border-2 border-stone-900 dark:border-stone-700 shadow-[1.5px_1.5px_0px_#1c1917]"
                     >
                       {t}
                     </span>
@@ -889,19 +894,19 @@ export const Home: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 pt-3 border-t border-zinc-100 dark:border-zinc-800">
+              <div className="flex items-center gap-3 pt-3 border-t-2 border-stone-900/20 dark:border-stone-800">
                 {selectedProject.github && selectedProject.github !== 'private' ? (
                   <a
                     href={selectedProject.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs sm:text-sm font-semibold hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-stone-100 dark:hover:bg-stone-200 dark:text-stone-900 text-xs sm:text-sm font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
                   >
                     <Github className="w-4 h-4" />
                     <span>View GitHub Repo</span>
                   </a>
                 ) : (
-                  <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 text-xs sm:text-sm font-medium border border-zinc-200 dark:border-zinc-700">
+                  <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 text-xs sm:text-sm font-medium border-2 border-stone-400 dark:border-stone-700">
                     <Lock className="w-4 h-4" />
                     <span>Private Repository</span>
                   </div>
@@ -912,7 +917,7 @@ export const Home: React.FC = () => {
                       href={selectedProject.demo}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#fef08a] text-zinc-900 border border-zinc-900/10 text-xs sm:text-sm font-semibold hover:bg-[#fde047] transition-colors"
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
                     >
                       <ExternalLink className="w-4 h-4" />
                       <span>Visit Live Platform</span>
@@ -920,7 +925,7 @@ export const Home: React.FC = () => {
                   ) : (
                     <Link
                       to={selectedProject.demo}
-                      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#fef08a] text-zinc-900 border border-zinc-900/10 text-xs sm:text-sm font-semibold hover:bg-[#fde047] transition-colors"
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
                     >
                       <ExternalLink className="w-4 h-4" />
                       <span>Launch in Arcade</span>

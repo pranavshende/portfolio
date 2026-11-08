@@ -315,15 +315,15 @@ export const Art: React.FC = () => {
       {/* ─────────────────────────────────────────────────────────────
           FILTER PILLS
       ────────────────────────────────────────────────────────────── */}
-      <div className="flex flex-wrap gap-2 mb-8 border-b-2 border-dashed border-zinc-200 dark:border-zinc-800 pb-4">
+      <div className="flex flex-wrap gap-2 mb-8 border-b-2 border-stone-900/20 dark:border-stone-800 pb-4">
         {filters.map((f) => (
           <button
             key={f}
             onClick={() => setActiveFilter(f)}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border-2 border-stone-900 dark:border-stone-700 ${
               activeFilter === f
-                ? 'bg-[#fef08a] text-zinc-900 border-2 border-zinc-900 shadow-2xs'
-                : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200/80 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700'
+                ? 'bg-[#8b2323] text-white shadow-[2px_2px_0px_#1c1917]'
+                : 'bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-200 shadow-[2px_2px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_#1c1917]'
             }`}
           >
             {f}
@@ -343,25 +343,25 @@ export const Art: React.FC = () => {
             className="group cursor-pointer flex flex-col space-y-2.5"
           >
             {/* Visual Preview Box */}
-            <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-zinc-50 dark:bg-zinc-900 border-2 border-zinc-900 dark:border-zinc-700 shadow-xs flex items-center justify-center">
+            <div className="relative aspect-square w-full rounded-3xl overflow-hidden bg-white/95 dark:bg-[#181920]/95 border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all flex items-center justify-center">
               {item.preview}
 
               {/* Hover Zoom pill */}
-              <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity bg-white/95 dark:bg-zinc-800/95 p-2 rounded-full border border-zinc-900 dark:border-zinc-700 shadow-sm text-zinc-800 dark:text-zinc-200">
+              <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity bg-white dark:bg-stone-800 p-2 rounded-xl border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] text-stone-900 dark:text-stone-100">
                 <ZoomIn className="w-4 h-4" />
               </div>
             </div>
 
             {/* Metadata */}
-            <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400 font-semibold pt-1">
-              <span className="text-zinc-800 dark:text-zinc-300">{item.organization}</span>
-              <span className="px-2 py-0.5 rounded-full bg-[#fef08a] text-xs font-bold text-zinc-900 border border-zinc-900">
+            <div className="flex items-center justify-between text-xs text-stone-600 dark:text-stone-400 font-bold pt-1">
+              <span className="text-stone-900 dark:text-stone-200 truncate pr-2">{item.organization}</span>
+              <span className="px-2 py-0.5 rounded-xs border border-[#8b2323] text-[#8b2323] dark:text-rose-400 bg-[#8b2323]/5 font-serif font-bold text-[10px] tracking-wider shrink-0">
                 {item.category}
               </span>
             </div>
 
             {/* Bold Title */}
-            <h3 className="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 dark:group-hover:text-amber-400 transition-colors leading-snug">
+            <h3 className="text-sm sm:text-base font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors leading-snug">
               {item.title}
             </h3>
           </motion.div>
@@ -378,31 +378,31 @@ export const Art: React.FC = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="relative w-full max-w-lg bg-white dark:bg-[#16171b] rounded-2xl border-2 border-zinc-900 dark:border-zinc-700 shadow-2xl p-6 space-y-4"
+              className="relative w-full max-w-lg bg-[#faf7f0] dark:bg-[#16171b] rounded-3xl border-2 border-stone-900 dark:border-stone-700 shadow-[6px_6px_0px_#1c1917] dark:shadow-[6px_6px_0px_#000000] p-6 space-y-4"
             >
               <button
                 onClick={() => setSelectedItem(null)}
-                className="absolute top-4 right-4 p-2 rounded-full text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                className="absolute top-4 right-4 p-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer"
                 aria-label="Close modal"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
 
-              <div className="w-full aspect-square rounded-xl overflow-hidden border-2 border-zinc-900 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900">
+              <div className="w-full aspect-square rounded-2xl overflow-hidden border-2 border-stone-900 dark:border-stone-700 bg-stone-100 dark:bg-stone-800 shadow-[2px_2px_0px_#1c1917]">
                 {selectedItem.preview}
               </div>
 
               <div className="space-y-1">
-                <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400 font-semibold">
+                <div className="flex items-center justify-between text-xs text-stone-600 dark:text-stone-400 font-bold">
                   <span>{selectedItem.organization}</span>
-                  <span className="px-2 py-0.5 rounded-full bg-[#fef08a] text-xs font-bold text-zinc-900 border border-zinc-900">
+                  <span className="px-2 py-0.5 rounded-xs border border-[#8b2323] text-[#8b2323] dark:text-rose-400 bg-[#8b2323]/5 font-serif font-bold text-[10px] tracking-wider">
                     {selectedItem.category}
                   </span>
                 </div>
-                <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
+                <h3 className="text-lg font-bold text-stone-900 dark:text-stone-100">
                   {selectedItem.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 font-sans leading-relaxed pt-1">
+                <p className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 font-sans leading-relaxed pt-1">
                   {selectedItem.description}
                 </p>
               </div>

@@ -132,8 +132,8 @@ export const BlogPage: React.FC = () => {
 
         {/* Hero Section */}
         <div className="space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8b2323]/10 text-[#8b2323] dark:text-rose-400 text-xs font-semibold">
-            <Sparkles className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-xs bg-[#8b2323]/5 text-[#8b2323] dark:text-rose-400 border border-[#8b2323] text-xs font-serif font-bold tracking-widest shadow-[1.5px_1.5px_0px_#1c1917]">
+            <span>[技術誌]</span>
             <span>Architecture & Systems Engineering Journal</span>
           </div>
 
@@ -157,7 +157,7 @@ export const BlogPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by topic, architecture, keyword (e.g., Fastify, RAG, Kafka, Gemini)..."
-              className="w-full pl-11 pr-4 py-3 rounded-2xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-[#16171d] text-xs sm:text-sm text-stone-900 dark:text-stone-100 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#8b2323]/30 transition-all shadow-xs"
+              className="w-full pl-11 pr-4 py-3 rounded-2xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-[#181920] text-xs sm:text-sm text-stone-900 dark:text-stone-100 placeholder:text-stone-400 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] focus:outline-hidden transition-all"
             />
           </div>
 
@@ -169,10 +169,10 @@ export const BlogPage: React.FC = () => {
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`px-3.5 py-1.5 rounded-full font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                  className={`px-3.5 py-1.5 rounded-xl font-bold whitespace-nowrap transition-all cursor-pointer border-2 border-stone-900 dark:border-stone-700 ${
                     active
-                      ? 'bg-[#8b2323] text-white shadow-xs'
-                      : 'bg-stone-100 dark:bg-stone-800/80 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
+                      ? 'bg-[#8b2323] text-white shadow-[2px_2px_0px_#1c1917]'
+                      : 'bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-200 shadow-[2px_2px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_#1c1917]'
                   }`}
                 >
                   {cat}
@@ -189,7 +189,7 @@ export const BlogPage: React.FC = () => {
             <p className="text-xs text-stone-500 font-mono">Fetching published engineering articles...</p>
           </div>
         ) : filteredPosts.length === 0 ? (
-          <div className="py-24 text-center space-y-3 rounded-3xl bg-white dark:bg-[#16171d] border border-stone-200 dark:border-stone-800 p-8">
+          <div className="py-24 text-center space-y-3 rounded-3xl bg-white dark:bg-[#181920] border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917] p-8">
             <BookOpen className="w-10 h-10 mx-auto text-stone-400 opacity-60" />
             <h3 className="text-base font-bold text-stone-800 dark:text-stone-200">No Articles Match Your Search</h3>
             <p className="text-xs text-stone-500 max-w-sm mx-auto">
@@ -214,10 +214,10 @@ export const BlogPage: React.FC = () => {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.04 }}
-                  className="group rounded-3xl bg-white dark:bg-[#16171d] border border-stone-200/90 dark:border-stone-800/90 hover:border-stone-400 dark:hover:border-stone-600 transition-all duration-300 overflow-hidden flex flex-col shadow-xs hover:shadow-lg"
+                  className="group rounded-3xl bg-white/95 dark:bg-[#181920]/95 border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917] dark:shadow-[4px_4px_0px_#000000] hover:shadow-[2px_2px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all duration-200 overflow-hidden flex flex-col"
                 >
                   {/* Cover Image */}
-                  <Link to={`/blog/${post.slug}`} className="block relative aspect-16/10 overflow-hidden bg-stone-100 dark:bg-stone-900">
+                  <Link to={`/blog/${post.slug}`} className="block relative aspect-16/10 overflow-hidden bg-stone-100 dark:bg-stone-900 border-b-2 border-stone-900 dark:border-stone-700">
                     <img
                       src={resolveBlogCover(post.coverImageUrl, post.slug)}
                       alt={post.title}
@@ -228,7 +228,7 @@ export const BlogPage: React.FC = () => {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute top-3 left-3">
-                      <span className="px-2.5 py-1 rounded-full bg-stone-900/80 backdrop-blur-md text-white font-semibold text-[10px] tracking-wide">
+                      <span className="px-2.5 py-0.5 rounded-xs bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 border border-stone-900 font-bold font-serif text-[10px] tracking-wide shadow-[1.5px_1.5px_0px_#1c1917]">
                         {post.category || (post.tags && post.tags[0]) || 'Engineering'}
                       </span>
                     </div>
@@ -261,8 +261,8 @@ export const BlogPage: React.FC = () => {
                     </div>
 
                     {/* Footer */}
-                    <div className="pt-4 border-t border-stone-100 dark:border-stone-800/80 flex items-center justify-between">
-                      <div className="flex items-center gap-1.5 text-xs text-stone-700 dark:text-stone-300 font-medium">
+                    <div className="pt-4 border-t-2 border-stone-900/15 dark:border-stone-800 flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 text-xs text-stone-700 dark:text-stone-300 font-bold">
                         <User className="w-3.5 h-3.5 text-[#8b2323]" />
                         <span>{post.author || 'Pranav Shende'}</span>
                       </div>

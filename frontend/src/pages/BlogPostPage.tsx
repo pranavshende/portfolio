@@ -255,7 +255,7 @@ export const BlogPostPage: React.FC = () => {
         {/* Header Block */}
         <header className="space-y-4">
           {post.category && (
-            <span className="inline-block px-3 py-1 rounded-full bg-[#8b2323]/10 text-[#8b2323] dark:text-rose-400 font-semibold text-xs">
+            <span className="inline-block px-3 py-1 rounded-xs border border-[#8b2323] text-[#8b2323] dark:text-rose-400 bg-[#8b2323]/5 font-serif font-bold text-xs tracking-wider shadow-[1.5px_1.5px_0px_#1c1917]">
               {post.category}
             </span>
           )}
@@ -264,16 +264,16 @@ export const BlogPostPage: React.FC = () => {
             {post.title}
           </h1>
 
-          <p className="text-sm sm:text-base text-stone-600 dark:text-stone-300 leading-relaxed italic">
+          <p className="text-sm sm:text-base text-stone-700 dark:text-stone-300 leading-relaxed italic">
             {post.excerpt}
           </p>
 
           {/* Meta & Share bar */}
-          <div className="pt-2 pb-4 border-b border-stone-200 dark:border-stone-800 flex flex-wrap items-center justify-between gap-4">
-            <div className="flex flex-wrap items-center gap-4 text-xs text-stone-500 font-mono">
-              <div className="flex items-center gap-1.5">
+          <div className="pt-2 pb-4 border-b-2 border-stone-900/15 dark:border-stone-800 flex flex-wrap items-center justify-between gap-4">
+            <div className="flex flex-wrap items-center gap-4 text-xs text-stone-600 dark:text-stone-400 font-mono">
+              <div className="flex items-center gap-1.5 font-bold text-stone-900 dark:text-stone-100">
                 <User className="w-3.5 h-3.5 text-[#8b2323]" />
-                <span className="font-semibold text-stone-800 dark:text-stone-200">{post.author || 'Pranav Shende'}</span>
+                <span>{post.author || 'Pranav Shende'}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <Calendar className="w-3.5 h-3.5 text-stone-400" />
@@ -286,11 +286,11 @@ export const BlogPostPage: React.FC = () => {
             </div>
 
             {/* Social Share Pills */}
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={shareOnTwitter}
-                className="p-2 rounded-xl bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-600 dark:text-stone-300 transition-colors cursor-pointer"
+                className="p-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer"
                 title="Share on X / Twitter"
               >
                 <Twitter className="w-3.5 h-3.5" />
@@ -298,7 +298,7 @@ export const BlogPostPage: React.FC = () => {
               <button
                 type="button"
                 onClick={shareOnLinkedIn}
-                className="p-2 rounded-xl bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-600 dark:text-stone-300 transition-colors cursor-pointer"
+                className="p-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer"
                 title="Share on LinkedIn"
               >
                 <Linkedin className="w-3.5 h-3.5" />
@@ -306,13 +306,13 @@ export const BlogPostPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleCopyLink}
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 text-xs font-semibold transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-xs font-bold shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer"
                 title="Copy article link"
               >
                 {copied ? (
                   <>
-                    <Check className="w-3.5 h-3.5 text-emerald-500" />
-                    <span className="text-emerald-600 dark:text-emerald-400">Copied!</span>
+                    <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                    <span className="text-emerald-700 dark:text-emerald-400">Copied!</span>
                   </>
                 ) : (
                   <>
@@ -326,7 +326,7 @@ export const BlogPostPage: React.FC = () => {
         </header>
 
         {/* Cover Banner */}
-        <div className="rounded-3xl overflow-hidden border border-stone-200 dark:border-stone-800 shadow-md">
+        <div className="rounded-3xl overflow-hidden border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917] dark:shadow-[4px_4px_0px_#000000]">
           <img
             src={resolveBlogCover(post.coverImageUrl, post.slug)}
             alt={post.title}
@@ -337,89 +337,95 @@ export const BlogPostPage: React.FC = () => {
           />
         </div>
 
-        {/* Article Body Rendered in Markdown */}
-        <main className="prose prose-stone dark:prose-invert max-w-none text-stone-800 dark:text-stone-200 text-sm sm:text-base leading-relaxed py-2">
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            components={{
-              h1: ({ node, ...props }) => <h1 className="text-2xl sm:text-3xl font-serif font-bold mt-8 mb-4 text-stone-900 dark:text-stone-100" {...props} />,
-              h2: ({ node, ...props }) => <h2 className="text-xl sm:text-2xl font-serif font-bold mt-7 mb-3 text-stone-900 dark:text-stone-100 border-b border-stone-200/60 dark:border-stone-800 pb-2" {...props} />,
-              h3: ({ node, ...props }) => <h3 className="text-lg sm:text-xl font-serif font-bold mt-6 mb-2 text-stone-900 dark:text-stone-100" {...props} />,
-              p: ({ node, ...props }) => <p className="mb-4 text-stone-700 dark:text-stone-300 leading-relaxed" {...props} />,
-              ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1 mb-4 text-stone-700 dark:text-stone-300" {...props} />,
-              ol: ({ node, ...props }) => <ol className="list-decimal list-inside space-y-1 mb-4 text-stone-700 dark:text-stone-300" {...props} />,
-              blockquote: ({ node, ...props }) => (
-                <blockquote className="border-l-4 border-[#8b2323] pl-4 italic my-4 text-stone-600 dark:text-stone-400 bg-stone-100/50 dark:bg-stone-900/40 p-3 rounded-r-xl" {...props} />
-              ),
-              code: ({ node, className, children, ...props }: any) => {
-                const isInline = !className;
-                if (isInline) {
+        {/* Article Body Container */}
+        <div className="rounded-3xl bg-white/95 dark:bg-[#181920]/95 border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917] dark:shadow-[4px_4px_0px_#000000] p-6 sm:p-10">
+          <main className="prose prose-stone dark:prose-invert max-w-none text-stone-800 dark:text-stone-200 text-sm sm:text-base leading-relaxed py-2">
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                h1: ({ node, ...props }) => <h1 className="text-2xl sm:text-3xl font-serif font-bold mt-8 mb-4 text-stone-900 dark:text-stone-100" {...props} />,
+                h2: ({ node, ...props }) => <h2 className="text-xl sm:text-2xl font-serif font-bold mt-7 mb-3 text-stone-900 dark:text-stone-100 border-b-2 border-stone-900/15 dark:border-stone-800 pb-2" {...props} />,
+                h3: ({ node, ...props }) => <h3 className="text-lg sm:text-xl font-serif font-bold mt-6 mb-2 text-stone-900 dark:text-stone-100" {...props} />,
+                p: ({ node, ...props }) => <p className="mb-4 text-stone-700 dark:text-stone-300 leading-relaxed font-sans" {...props} />,
+                ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1 mb-4 text-stone-700 dark:text-stone-300" {...props} />,
+                ol: ({ node, ...props }) => <ol className="list-decimal list-inside space-y-1 mb-4 text-stone-700 dark:text-stone-300" {...props} />,
+                blockquote: ({ node, ...props }) => (
+                  <blockquote className="border-l-4 border-[#8b2323] pl-4 italic my-4 text-stone-800 dark:text-stone-300 bg-[#8b2323]/5 p-3 rounded-r-xl border-2 border-stone-900/20" {...props} />
+                ),
+                code: ({ node, className, children, ...props }: any) => {
+                  const isInline = !className;
+                  if (isInline) {
+                    return (
+                      <code className="px-1.5 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 border border-stone-900/30 font-mono text-xs text-[#8b2323] dark:text-rose-400 font-bold" {...props}>
+                        {children}
+                      </code>
+                    );
+                  }
                   return (
-                    <code className="px-1.5 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 font-mono text-xs text-[#8b2323] dark:text-rose-400" {...props}>
-                      {children}
-                    </code>
+                    <pre className="p-4 rounded-2xl bg-stone-900 text-stone-100 dark:bg-[#121318] border-2 border-stone-900 dark:border-stone-700 overflow-x-auto text-xs font-mono my-4 shadow-[2px_2px_0px_#1c1917]">
+                      <code {...props}>{children}</code>
+                    </pre>
                   );
-                }
-                return (
-                  <pre className="p-4 rounded-2xl bg-stone-900 text-stone-100 dark:bg-[#121318] border border-stone-800 overflow-x-auto text-xs font-mono my-4">
-                    <code {...props}>{children}</code>
-                  </pre>
-                );
-              },
-              a: ({ node, ...props }) => (
-                <a className="text-[#8b2323] dark:text-rose-400 font-semibold underline underline-offset-2 hover:opacity-80" target="_blank" rel="noreferrer" {...props} />
-              ),
-            }}
-          >
-            {post.content}
-          </ReactMarkdown>
-        </main>
+                },
+                a: ({ node, ...props }) => (
+                  <a className="text-[#8b2323] dark:text-rose-400 font-bold underline underline-offset-2 hover:opacity-80" target="_blank" rel="noreferrer" {...props} />
+                ),
+              }}
+            >
+              {post.content}
+            </ReactMarkdown>
+          </main>
 
-        {/* Tags */}
-        {post.tags && post.tags.length > 0 && (
-          <div className="pt-4 border-t border-stone-200 dark:border-stone-800 flex flex-wrap items-center gap-2">
-            <span className="text-xs text-stone-500 font-semibold flex items-center gap-1">
-              <Tag className="w-3.5 h-3.5" />
-              <span>Tags:</span>
-            </span>
-            {post.tags.map((tag) => (
-              <span
-                key={tag}
-                className="px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800/80 text-stone-700 dark:text-stone-300 text-xs font-mono"
-              >
-                #{tag}
+          {/* Tags */}
+          {post.tags && post.tags.length > 0 && (
+            <div className="pt-4 mt-6 border-t-2 border-stone-900/15 dark:border-stone-800 flex flex-wrap items-center gap-2">
+              <span className="text-xs text-stone-700 dark:text-stone-300 font-bold flex items-center gap-1 font-mono">
+                <Tag className="w-3.5 h-3.5" />
+                <span>Tags:</span>
               </span>
-            ))}
-          </div>
-        )}
+              {post.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-xs font-mono border border-stone-900/30 dark:border-stone-700"
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* Author Attribution Card */}
-        <div className="p-6 rounded-3xl bg-white dark:bg-[#16171d] border border-stone-200 dark:border-stone-800 shadow-sm flex flex-col sm:flex-row items-center sm:items-start gap-4">
+        <div className="p-6 sm:p-7 rounded-3xl bg-white/95 dark:bg-[#181920]/95 border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917] dark:shadow-[4px_4px_0px_#000000] flex flex-col sm:flex-row items-center sm:items-start gap-4">
           <img
             src={profilePhoto}
             alt="Pranav Shende"
-            className="w-16 h-16 rounded-full object-cover border-2 border-[#8b2323] shrink-0"
+            className="w-16 h-16 rounded-full object-cover border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] shrink-0"
           />
           <div className="space-y-1.5 text-center sm:text-left">
             <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
               <h3 className="font-bold text-base font-serif text-stone-900 dark:text-stone-100">
                 Pranav Shende
               </h3>
-              <span className="text-xs text-stone-500 font-mono">
+              <span className="text-xs text-stone-600 dark:text-stone-400 font-mono font-bold">
                 Full-Stack Software Engineer & IEEE Researcher
               </span>
             </div>
-            <p className="text-xs text-stone-600 dark:text-stone-300 leading-relaxed">
+            <p className="text-xs text-stone-600 dark:text-stone-300 leading-relaxed font-sans">
               Specializing in scalable backend architectures, Model Context Protocol (MCP), agentic RAG engines, 
               and distributed systems. Building real-world intelligence solutions from Nagpur, India.
             </p>
-            <div className="pt-1 flex items-center justify-center sm:justify-start gap-3 text-xs font-semibold text-[#8b2323] dark:text-rose-400">
+            <div className="pt-1 flex items-center justify-center sm:justify-start gap-3 text-xs font-bold text-[#8b2323] dark:text-rose-400">
               <a href="https://github.com/pranavshende" target="_blank" rel="noreferrer" className="hover:underline">
                 GitHub
               </a>
               <span>•</span>
               <a href="https://linkedin.com/in/pranavshende" target="_blank" rel="noreferrer" className="hover:underline">
                 LinkedIn
+              </a>
+              <span>•</span>
+              <a href="https://medium.com/@pranavshende97" target="_blank" rel="noreferrer" className="hover:underline">
+                Medium
               </a>
               <span>•</span>
               <Link to="/projects" className="hover:underline">
@@ -430,41 +436,41 @@ export const BlogPostPage: React.FC = () => {
         </div>
 
         {/* Related Projects Showcase */}
-        <div className="pt-6 border-t border-stone-200 dark:border-stone-800 space-y-4">
+        <div className="pt-6 border-t-2 border-stone-900/15 dark:border-stone-800 space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="font-bold text-sm font-serif text-stone-900 dark:text-stone-100">
               Related Engineering Projects
             </h3>
-            <Link to="/projects" className="text-xs font-semibold text-[#8b2323] dark:text-rose-400 flex items-center gap-1 hover:underline">
+            <Link to="/projects" className="text-xs font-bold text-[#8b2323] dark:text-rose-400 flex items-center gap-1 hover:underline">
               <span>View All</span>
               <ChevronRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border border-stone-200 dark:border-stone-800 space-y-2">
+            <div className="p-4 sm:p-5 rounded-3xl bg-white/95 dark:bg-[#181920]/95 border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#8b2323]/10 text-[#8b2323] dark:text-rose-400">
+                <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full border-2 border-stone-900 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 shadow-[1px_1px_0px_#1c1917]">
                   Rank #1 Flagship
                 </span>
-                <a href="https://jarvis.pranavshende.online/" target="_blank" rel="noreferrer" className="text-stone-400 hover:text-stone-900 dark:hover:text-white">
+                <a href="https://jarvis.pranavshende.online/" target="_blank" rel="noreferrer" className="text-stone-600 hover:text-stone-900 dark:hover:text-white">
                   <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               </div>
               <h4 className="font-bold text-xs sm:text-sm text-stone-900 dark:text-stone-100">
                 Jarvis 1.0 Enterprise AI Platform
               </h4>
-              <p className="text-[11px] text-stone-500 line-clamp-2">
+              <p className="text-[11px] text-stone-600 dark:text-stone-400 line-clamp-2">
                 Autonomous enterprise intelligence with Model Context Protocol (MCP), pgvector RAG, and deterministic SQL calculations.
               </p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border border-stone-200 dark:border-stone-800 space-y-2">
+            <div className="p-4 sm:p-5 rounded-3xl bg-white/95 dark:bg-[#181920]/95 border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
+                <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full border-2 border-stone-900 bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 shadow-[1px_1px_0px_#1c1917]">
                   Live Production
                 </span>
-                <a href="https://client-raprax.vercel.app" target="_blank" rel="noreferrer" className="text-stone-400 hover:text-stone-900 dark:hover:text-white">
+                <a href="https://client-raprax.vercel.app" target="_blank" rel="noreferrer" className="text-stone-600 hover:text-stone-900 dark:hover:text-white">
                   <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               </div>

@@ -26,40 +26,45 @@ export const DoodleLayout: React.FC<DoodleLayoutProps> = ({ children }) => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#f7f2ea] dark:bg-[#0c0d10] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-[#8b2323] selection:text-white relative transition-colors duration-200">
-      {/* ── Japanese Cherry Blossom Mist Background (Responsive Desktop & Mobile) ── */}
+    <div className="min-h-screen bg-[#faf7f0] dark:bg-[#121316] text-stone-900 dark:text-stone-100 font-sans selection:bg-[#8b2323] selection:text-white relative transition-colors duration-200">
+      {/* ── Japanese Paper & Dot-Grid Canvas Background ── */}
       <div 
         className="fixed inset-0 pointer-events-none z-0 overflow-hidden"
         aria-hidden="true"
       >
-        {/* Light Mode Desktop (HD 2560x1440) */}
+        {/* Crisp Paper Dot-Grid Pattern */}
         <div 
-          className="hidden md:block absolute inset-0 bg-cover bg-center bg-fixed opacity-100 dark:opacity-0 transition-opacity duration-300"
+          className="absolute inset-0 bg-[radial-gradient(#d6cec0_1.25px,transparent_1.25px)] dark:bg-[radial-gradient(#2b2e38_1.25px,transparent_1.25px)] [background-size:18px_18px] opacity-75 dark:opacity-60 pointer-events-none" 
+        />
+
+        {/* Light Mode Desktop Watercolor Mist (Subtle atmospheric wash) */}
+        <div 
+          className="hidden md:block absolute inset-0 bg-cover bg-center bg-fixed opacity-30 dark:opacity-0 mix-blend-multiply transition-opacity duration-300"
           style={{ 
             backgroundImage: `url(${cherryBlossomMist})`,
             imageRendering: '-webkit-optimize-contrast'
           }}
         />
-        {/* Light Mode Mobile (QHD 1440x2560) */}
+        {/* Light Mode Mobile Watercolor Mist */}
         <div 
-          className="block md:hidden absolute inset-0 bg-cover bg-top bg-fixed opacity-100 dark:opacity-0 transition-opacity duration-300"
+          className="block md:hidden absolute inset-0 bg-cover bg-top bg-fixed opacity-35 dark:opacity-0 mix-blend-multiply transition-opacity duration-300"
           style={{ 
             backgroundImage: `url(${cherryBlossomMistMobile})`,
             imageRendering: '-webkit-optimize-contrast'
           }}
         />
 
-        {/* Dark Mode Desktop (HD 2560x1440) */}
+        {/* Dark Mode Desktop Mist */}
         <div 
-          className="hidden md:block absolute inset-0 bg-cover bg-center bg-fixed opacity-0 dark:opacity-100 transition-opacity duration-300"
+          className="hidden md:block absolute inset-0 bg-cover bg-center bg-fixed opacity-0 dark:opacity-20 transition-opacity duration-300"
           style={{ 
             backgroundImage: `url(${cherryBlossomMistDark})`,
             imageRendering: '-webkit-optimize-contrast'
           }}
         />
-        {/* Dark Mode Mobile (QHD 1440x2560) */}
+        {/* Dark Mode Mobile Mist */}
         <div 
-          className="block md:hidden absolute inset-0 bg-cover bg-top bg-fixed opacity-0 dark:opacity-100 transition-opacity duration-300"
+          className="block md:hidden absolute inset-0 bg-cover bg-top bg-fixed opacity-0 dark:opacity-25 transition-opacity duration-300"
           style={{ 
             backgroundImage: `url(${cherryBlossomMistMobileDark})`,
             imageRendering: '-webkit-optimize-contrast'
@@ -67,7 +72,7 @@ export const DoodleLayout: React.FC<DoodleLayoutProps> = ({ children }) => {
         />
 
         {/* Soft atmospheric gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-stone-900/[0.02] via-transparent to-stone-900/[0.04] dark:from-black/40 dark:to-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-b from-stone-900/[0.015] via-transparent to-stone-900/[0.03] dark:from-black/30 dark:to-black/50" />
       </div>
 
       <DoodleSidebar />

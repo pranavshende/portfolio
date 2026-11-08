@@ -111,13 +111,13 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={{ duration: 0.22, ease: 'easeOut' }}
-            className="relative z-10 w-full max-w-lg max-h-[90dvh] flex flex-col bg-[#faf6f0] dark:bg-[#16171c] rounded-2xl sm:rounded-3xl border border-stone-800/20 dark:border-stone-700/60 shadow-2xl overflow-hidden"
+            className="relative z-10 w-full max-w-lg max-h-[90dvh] flex flex-col bg-[#faf7f0] dark:bg-[#15161c] rounded-3xl border-2 border-stone-900 dark:border-stone-700 shadow-[6px_6px_0px_#1c1917] dark:shadow-[6px_6px_0px_#000000] overflow-hidden"
           >
             {/* Modal Header */}
-            <div className="p-4 sm:p-6 pb-2 sm:pb-3 flex items-start justify-between border-b border-stone-800/10 dark:border-stone-700/30 shrink-0 bg-[#faf6f0]/95 dark:bg-[#16171c]/95 backdrop-blur-xs">
+            <div className="p-4 sm:p-6 pb-2 sm:pb-3 flex items-start justify-between border-b-2 border-stone-900/15 dark:border-stone-800 shrink-0 bg-[#faf7f0]/95 dark:bg-[#15161c]/95 backdrop-blur-xs">
               <div className="space-y-1 pr-4">
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-medium text-[#8b2323] bg-[#8b2323]/10 border border-[#8b2323]/25">
-                  <span>⛩</span>
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs text-[10px] font-serif font-bold text-[#8b2323] bg-[#8b2323]/5 border border-[#8b2323] tracking-wider shadow-[1px_1px_0px_#1c1917]">
+                  <span>[連絡]</span>
                   <span>Direct Communication</span>
                 </div>
                 <h2 className="text-xl sm:text-2xl font-bold font-serif text-stone-900 dark:text-stone-100 tracking-tight">
@@ -132,10 +132,10 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
               <button
                 type="button"
                 onClick={handleReset}
-                className="p-1.5 rounded-full text-stone-500 hover:text-stone-900 dark:hover:text-white hover:bg-stone-200/60 dark:hover:bg-stone-800 transition-colors cursor-pointer shrink-0"
+                className="p-1.5 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer shrink-0"
                 aria-label="Close modal"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
@@ -143,7 +143,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
             <div className="overflow-y-auto p-4 sm:p-6 pt-3 space-y-4 flex-1 overscroll-contain">
               {success ? (
                 <div className="text-center py-6 sm:py-8 space-y-4">
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-full bg-emerald-100 dark:bg-emerald-950/50 border border-emerald-300 dark:border-emerald-700 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shadow-sm">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-full bg-emerald-100 dark:bg-emerald-950/50 border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] flex items-center justify-center text-emerald-700 dark:text-emerald-400">
                     <CheckCircle2 className="w-8 h-8 sm:w-9 sm:h-9" />
                   </div>
                   <h3 className="text-xl sm:text-2xl font-serif font-bold text-stone-900 dark:text-stone-100">
@@ -152,7 +152,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                   <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 max-w-md mx-auto leading-relaxed">
                     Thank you, <span className="font-semibold text-stone-900 dark:text-stone-100">{formData.name}</span>! Your inquiry has been sent to Pranav.
                   </p>
-                  <div className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200/80 dark:border-amber-900/40 text-xs text-amber-900 dark:text-amber-200 space-y-1">
+                  <div className="p-3.5 sm:p-4 rounded-2xl bg-amber-50/70 dark:bg-amber-950/20 border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] text-xs text-amber-900 dark:text-amber-200 space-y-1">
                     <p className="font-semibold flex items-center justify-center gap-1.5">
                       <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                       Automated Confirmation Sent
@@ -165,7 +165,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                     <button
                       type="button"
                       onClick={handleReset}
-                      className="px-6 py-2.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-semibold transition-all shadow-xs cursor-pointer active:scale-95"
+                      className="px-6 py-2.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer"
                     >
                       Done
                     </button>
@@ -174,7 +174,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
               ) : (
                 <>
                   {error && (
-                    <div className="flex items-start gap-2.5 p-3 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-700 dark:text-red-300 text-xs animate-in fade-in">
+                    <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-red-50 dark:bg-red-950/40 border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] text-red-700 dark:text-red-300 text-xs animate-in fade-in">
                       <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-600" />
                       <p className="leading-relaxed">{error}</p>
                     </div>
@@ -185,7 +185,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                     {/* Name & Email Row */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div className="space-y-1">
-                        <label className="block text-xs font-bold text-stone-700 dark:text-stone-300">
+                        <label className="block text-xs font-bold text-stone-800 dark:text-stone-200">
                           Full Name <span className="text-red-500">*</span>
                         </label>
                         <div className="relative">
@@ -197,13 +197,13 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                             value={formData.name}
                             onChange={handleChange}
                             placeholder="e.g. John Doe"
-                            className="w-full pl-9 pr-3 py-2 rounded-xl border border-stone-300/80 dark:border-stone-700 bg-white dark:bg-[#1a1c23] text-stone-900 dark:text-stone-100 placeholder:text-stone-400 focus:outline-hidden focus:ring-2 focus:ring-[#8b2323]/40 text-xs sm:text-sm shadow-2xs"
+                            className="w-full pl-9 pr-3 py-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 placeholder:text-stone-400 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] focus:outline-hidden text-xs sm:text-sm"
                           />
                         </div>
                       </div>
 
                       <div className="space-y-1">
-                        <label className="block text-xs font-bold text-stone-700 dark:text-stone-300">
+                        <label className="block text-xs font-bold text-stone-800 dark:text-stone-200">
                           Email Address <span className="text-red-500">*</span>
                         </label>
                         <div className="relative">
@@ -215,7 +215,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                             value={formData.email}
                             onChange={handleChange}
                             placeholder="xyz@gmail.com"
-                            className="w-full pl-9 pr-3 py-2 rounded-xl border border-stone-300/80 dark:border-stone-700 bg-white dark:bg-[#1a1c23] text-stone-900 dark:text-stone-100 placeholder:text-stone-400 focus:outline-hidden focus:ring-2 focus:ring-[#8b2323]/40 text-xs sm:text-sm shadow-2xs"
+                            className="w-full pl-9 pr-3 py-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 placeholder:text-stone-400 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] focus:outline-hidden text-xs sm:text-sm"
                           />
                         </div>
                       </div>
@@ -224,7 +224,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                     {/* Company & Inquiry Type Row */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div className="space-y-1">
-                        <label className="block text-xs font-bold text-stone-700 dark:text-stone-300">
+                        <label className="block text-xs font-bold text-stone-800 dark:text-stone-200">
                           Company / Organization <span className="text-stone-400 font-normal">(Optional)</span>
                         </label>
                         <div className="relative">
@@ -235,13 +235,13 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                             value={formData.company}
                             onChange={handleChange}
                             placeholder="Company or Team"
-                            className="w-full pl-9 pr-3 py-2 rounded-xl border border-stone-300/80 dark:border-stone-700 bg-white dark:bg-[#1a1c23] text-stone-900 dark:text-stone-100 placeholder:text-stone-400 focus:outline-hidden focus:ring-2 focus:ring-[#8b2323]/40 text-xs sm:text-sm shadow-2xs"
+                            className="w-full pl-9 pr-3 py-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 placeholder:text-stone-400 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] focus:outline-hidden text-xs sm:text-sm"
                           />
                         </div>
                       </div>
 
                       <div className="space-y-1">
-                        <label className="block text-xs font-bold text-stone-700 dark:text-stone-300">
+                        <label className="block text-xs font-bold text-stone-800 dark:text-stone-200">
                           Inquiry Type <span className="text-red-500">*</span>
                         </label>
                         <div className="relative">
@@ -250,7 +250,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                             name="inquiryType"
                             value={formData.inquiryType}
                             onChange={handleChange}
-                            className="w-full pl-9 pr-8 py-2 rounded-xl border border-stone-300/80 dark:border-stone-700 bg-white dark:bg-[#1a1c23] text-stone-900 dark:text-stone-100 focus:outline-hidden focus:ring-2 focus:ring-[#8b2323]/40 text-xs sm:text-sm appearance-none cursor-pointer shadow-2xs"
+                            className="w-full pl-9 pr-8 py-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden text-xs sm:text-sm appearance-none cursor-pointer shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                           >
                             {INQUIRY_TYPES.map((type) => (
                               <option key={type.value} value={type.value}>
@@ -264,7 +264,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
 
                     {/* Subject */}
                     <div className="space-y-1">
-                      <label className="block text-xs font-bold text-stone-700 dark:text-stone-300">
+                      <label className="block text-xs font-bold text-stone-800 dark:text-stone-200">
                         Subject <span className="text-red-500">*</span>
                       </label>
                       <div className="relative">
@@ -276,14 +276,14 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                           value={formData.subject}
                           onChange={handleChange}
                           placeholder="Project, Opportunity, or Question"
-                          className="w-full pl-9 pr-3 py-2 rounded-xl border border-stone-300/80 dark:border-stone-700 bg-white dark:bg-[#1a1c23] text-stone-900 dark:text-stone-100 placeholder:text-stone-400 focus:outline-hidden focus:ring-2 focus:ring-[#8b2323]/40 text-xs sm:text-sm shadow-2xs"
+                          className="w-full pl-9 pr-3 py-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 placeholder:text-stone-400 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] focus:outline-hidden text-xs sm:text-sm"
                         />
                       </div>
                     </div>
 
                     {/* Message Body */}
                     <div className="space-y-1">
-                      <label className="block text-xs font-bold text-stone-700 dark:text-stone-300">
+                      <label className="block text-xs font-bold text-stone-800 dark:text-stone-200">
                         Message <span className="text-red-500">*</span>
                       </label>
                       <textarea
@@ -293,13 +293,13 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                         value={formData.message}
                         onChange={handleChange}
                         placeholder="Tell me about your project, timeline, or inquiry..."
-                        className="w-full p-3 rounded-xl border border-stone-300/80 dark:border-stone-700 bg-white dark:bg-[#1a1c23] text-stone-900 dark:text-stone-100 placeholder:text-stone-400 focus:outline-hidden focus:ring-2 focus:ring-[#8b2323]/40 text-xs sm:text-sm resize-y min-h-[75px] shadow-2xs"
+                        className="w-full p-3 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 placeholder:text-stone-400 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] focus:outline-hidden text-xs sm:text-sm resize-y min-h-[75px]"
                       />
                     </div>
 
                     {/* Attachment / Link (Optional) */}
                     <div className="space-y-1">
-                      <label className="block text-xs font-bold text-stone-700 dark:text-stone-300">
+                      <label className="block text-xs font-bold text-stone-800 dark:text-stone-200">
                         Attachment or Link <span className="text-stone-400 font-normal">(Optional)</span>
                       </label>
                       <div className="relative">
@@ -310,20 +310,20 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                           value={formData.attachmentUrl}
                           onChange={handleChange}
                           placeholder="https://drive.google.com/... or github.com/..."
-                          className="w-full pl-9 pr-3 py-2 rounded-xl border border-stone-300/80 dark:border-stone-700 bg-white dark:bg-[#1a1c23] text-stone-900 dark:text-stone-100 placeholder:text-stone-400 focus:outline-hidden focus:ring-2 focus:ring-[#8b2323]/40 text-xs sm:text-sm shadow-2xs"
+                          className="w-full pl-9 pr-3 py-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 placeholder:text-stone-400 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] focus:outline-hidden text-xs sm:text-sm"
                         />
                       </div>
                     </div>
 
                     {/* Submit Button Row with Safe Bottom Clearance */}
-                    <div className="pt-2 pb-3 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-stone-800/10 dark:border-stone-700/20">
-                      <span className="text-[10px] text-stone-500 dark:text-stone-400 text-center sm:text-left order-2 sm:order-1">
-                        🔒 Protected by rate limiting & spam prevention
+                    <div className="pt-2 pb-3 flex flex-col sm:flex-row items-center justify-between gap-3 border-t-2 border-stone-900/15 dark:border-stone-800">
+                      <span className="text-[10px] font-mono font-bold text-stone-600 dark:text-stone-400 text-center sm:text-left order-2 sm:order-1">
+                        🔒 Rate-limited & spam protected
                       </span>
                       <button
                         type="submit"
                         disabled={loading}
-                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-semibold transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95 order-1 sm:order-2"
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-bold border-2 border-stone-900 shadow-[2.5px_2.5px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer order-1 sm:order-2"
                       >
                         {loading ? (
                           <>

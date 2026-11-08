@@ -152,7 +152,7 @@ export const DoodleSidebar: React.FC = () => {
           DESKTOP FIXED SIDEBAR
           Clean, perfectly proportioned, 100% fixed with zero scrollbar
       ────────────────────────────────────────────────────────────── */}
-      <aside className="hidden md:flex flex-col justify-between w-[240px] h-[calc(100vh-2rem)] fixed left-4 top-4 rounded-3xl bg-[#fbf7f2]/90 dark:bg-[#14161d]/90 backdrop-blur-md border border-stone-800/15 dark:border-stone-700/40 px-4 py-4 z-40 select-none overflow-y-auto scrollbar-none font-sans transition-colors duration-200 shadow-sm">
+      <aside className="hidden md:flex flex-col justify-between w-[240px] h-[calc(100vh-2rem)] fixed left-4 top-4 rounded-3xl bg-[#faf7f0]/95 dark:bg-[#15161c]/95 backdrop-blur-md border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] px-4 py-4 z-40 select-none overflow-y-auto scrollbar-none font-sans transition-colors duration-200">
         <div className="flex flex-col space-y-2.5">
           {/* Profile Header */}
           <div className="flex flex-col items-center text-center">
@@ -219,7 +219,7 @@ export const DoodleSidebar: React.FC = () => {
                     to={item.path}
                     className={`relative flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all duration-150 ${
                       isActive
-                        ? '!bg-[#8b2323] !text-white shadow-xs'
+                        ? '!bg-[#8b2323] !text-white border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917]'
                         : 'text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white hover:bg-stone-200/50 dark:hover:bg-stone-800/50'
                     }`}
                     style={isActive ? { backgroundColor: '#8b2323', color: '#ffffff' } : undefined}
@@ -250,7 +250,7 @@ export const DoodleSidebar: React.FC = () => {
             <button
               type="button"
               onClick={toggleTheme}
-              className="w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all duration-200 cursor-pointer bg-stone-100/80 hover:bg-stone-200/70 border-stone-300/70 text-stone-700 dark:bg-stone-800/60 dark:hover:bg-stone-800 dark:border-stone-700 dark:text-stone-300 shadow-2xs"
+              className="w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-bold border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer"
               title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
             >
               <div className="flex items-center gap-2">
@@ -364,14 +364,14 @@ export const DoodleSidebar: React.FC = () => {
       {/* ─────────────────────────────────────────────────────────────
           MOBILE TOP NAVBAR & DRAWER
       ────────────────────────────────────────────────────────────── */}
-      <header className="md:hidden sticky top-0 left-0 right-0 h-14 bg-[#f7f2ea]/90 dark:bg-[#0c0d10]/90 backdrop-blur-md border-b border-stone-800/10 dark:border-stone-700/30 px-3 sm:px-4 flex items-center justify-between z-40 transition-colors">
+      <header className="md:hidden sticky top-0 left-0 right-0 h-14 bg-[#faf7f0]/95 dark:bg-[#15161c]/95 backdrop-blur-xl border-b-2 border-stone-900 dark:border-stone-700 shadow-[0_2px_0px_#1c1917] dark:shadow-[0_2px_0px_#000000] px-3 sm:px-4 flex items-center justify-between z-40 transition-colors">
         <button
           type="button"
           onClick={() => setProfileModalOpen(true)}
           className="flex items-center gap-2 text-left group cursor-pointer focus:outline-hidden"
           title="Click to view full profile details & bio"
         >
-          <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-[#8b2323] shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
+          <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-[#8b2323] shrink-0 group-hover:scale-105 transition-transform shadow-[1.5px_1.5px_0px_#1c1917]">
             <img
               src={profilePhoto}
               alt="Pranav Shende"
@@ -382,7 +382,7 @@ export const DoodleSidebar: React.FC = () => {
             <span className="font-bold text-sm text-stone-950 dark:text-stone-50 leading-none block group-hover:text-[#8b2323] dark:group-hover:text-red-400 transition-colors">
               Pranav Shende
             </span>
-            <span className="text-[10px] text-blue-700 dark:text-blue-300 font-semibold leading-none block mt-0.5">
+            <span className="text-[10px] text-blue-700 dark:text-blue-300 font-semibold leading-none block mt-0.5 font-mono">
               Open to Work • Details
             </span>
           </div>
@@ -394,7 +394,7 @@ export const DoodleSidebar: React.FC = () => {
             href={resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 text-xs font-bold shadow-2xs hover:opacity-90 active:scale-95 transition-all cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:opacity-90 active:scale-95 transition-all cursor-pointer font-mono"
             title="Open Pranav's Resume on Google Drive"
           >
             <Download className="w-3.5 h-3.5" />
@@ -422,13 +422,13 @@ export const DoodleSidebar: React.FC = () => {
 
       {/* ─────────────────────────────────────────────────────────────
           MOBILE FLOATING BOTTOM DOCK
-          Compact & Resized 5-item Navigation Dock
+          Compact & Resized 5-item Navigation Dock (Paper Block)
       ────────────────────────────────────────────────────────────── */}
       <nav 
         aria-label="Mobile Navigation Dock"
         className="md:hidden fixed bottom-2.5 inset-x-0 z-50 flex justify-center px-2 pointer-events-none"
       >
-        <div className="pointer-events-auto flex items-center gap-0.5 p-1 rounded-full bg-[#fbf7f2]/95 dark:bg-[#14161d]/95 backdrop-blur-xl border border-stone-800/15 dark:border-stone-700/50 shadow-xl max-w-fit">
+        <div className="pointer-events-auto flex items-center gap-0.5 p-1 rounded-full bg-[#faf7f0]/95 dark:bg-[#15161c]/95 backdrop-blur-xl border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] max-w-fit">
           {navItems.map((item) => {
             const isActive =
               item.path === '/'
@@ -441,7 +441,7 @@ export const DoodleSidebar: React.FC = () => {
                 to={item.path}
                 className={`flex items-center gap-1 px-2 py-1 sm:px-2.5 sm:py-1 rounded-full text-[11px] font-bold transition-all duration-150 ${
                   isActive
-                    ? '!bg-[#8b2323] !text-white shadow-xs'
+                    ? '!bg-[#8b2323] !text-white border border-stone-900 shadow-[1px_1px_0px_#1c1917]'
                     : 'text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white hover:bg-stone-200/50 dark:hover:bg-stone-800/50'
                 }`}
                 style={isActive ? { backgroundColor: '#8b2323', color: '#ffffff' } : undefined}
@@ -465,7 +465,7 @@ export const DoodleSidebar: React.FC = () => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="md:hidden fixed inset-x-0 top-14 bg-[#f7f2ea]/95 dark:bg-[#0c0d10]/95 backdrop-blur-md border-b border-stone-800/15 dark:border-stone-700/40 px-5 py-5 shadow-xl z-50 flex flex-col space-y-4 transition-colors"
+            className="md:hidden fixed inset-x-0 top-14 bg-[#faf7f0]/98 dark:bg-[#15161c]/98 backdrop-blur-md border-b-2 border-stone-900 dark:border-stone-700 shadow-[0_6px_0px_#1c1917] px-5 py-5 z-50 flex flex-col space-y-4 transition-colors"
           >
             <div className="flex flex-col space-y-1">
               <span className="text-[10px] font-bold tracking-widest text-stone-500 dark:text-stone-400 uppercase">
