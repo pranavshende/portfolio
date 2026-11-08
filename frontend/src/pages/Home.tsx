@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ExternalLink, Github, Linkedin, ArrowUpRight, ArrowRight, X, Star, BookOpen, 
@@ -204,6 +205,21 @@ export const Home: React.FC = () => {
   const [gitRepos, setGitRepos] = useState<any[]>([]);
   const [loadingRepos, setLoadingRepos] = useState<boolean>(true);
   const [recentBlogs, setRecentBlogs] = useState<any[]>([]);
+
+  // Lock body scroll and close on Escape key when project modal is active
+  useEffect(() => {
+    if (selectedProject) {
+      document.body.style.overflow = 'hidden';
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setSelectedProject(null);
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.body.style.overflow = '';
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [selectedProject]);
 
   // Dynamic Site Settings (Hero Greeting, Bio, Social destinations)
   const [siteSettings, setSiteSettings] = useState(() => {
@@ -815,125 +831,145 @@ export const Home: React.FC = () => {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          PROJECT DETAIL MODAL
+          PROJECT DETAIL MODAL (Portal to document.body, z-[99999])
       ────────────────────────────────────────────────────────────── */}
-      <AnimatePresence>
-        {selectedProject && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-xs">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto bg-[#faf7f0] dark:bg-[#16171b] rounded-3xl border-2 border-stone-900 dark:border-stone-700 p-6 sm:p-8 space-y-5 shadow-[6px_6px_0px_#1c1917] dark:shadow-[6px_6px_0px_#000000]"
-            >
-              <button
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {selectedProject && (
+            <div className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-xs select-auto">
+              {/* Fullscreen Backdrop Click to Close */}
+              <div
+                className="absolute inset-0 bg-transparent"
                 onClick={() => setSelectedProject(null)}
-                className="absolute top-5 right-5 p-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer"
-                aria-label="Close modal"
+                aria-hidden="true"
+              />
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 12 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 12 }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
+                onClick={(e) => e.stopPropagation()}
+                className="relative z-10 w-full max-w-xl max-h-[85dvh] sm:max-h-[88dvh] flex flex-col bg-[#faf7f0] dark:bg-[#16171b] rounded-3xl border-2 border-stone-900 dark:border-stone-700 shadow-[6px_6px_0px_#1c1917] dark:shadow-[6px_6px_0px_#000000] overflow-hidden"
               >
-                <X className="w-4 h-4" />
-              </button>
-
-              <div className="space-y-1 pr-10">
-                <span className="font-mono text-xs font-bold uppercase text-[#8b2323] dark:text-rose-400 tracking-wider">
-                  {selectedProject.client} • {selectedProject.category}
-                </span>
-                <h2 className="text-xl sm:text-2xl font-bold text-stone-900 dark:text-stone-100 leading-snug">
-                  {selectedProject.subtitle}
-                </h2>
-                <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 font-medium">
-                  {selectedProject.title}
-                </p>
-              </div>
-
-              <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden border-2 border-stone-900 dark:border-stone-700 bg-stone-100 dark:bg-stone-800 shadow-[3px_3px_0px_#1c1917]">
-                <img
-                  src={selectedProject.image}
-                  alt={selectedProject.title}
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = jarvisBanner;
-                  }}
-                  className="w-full h-full object-cover object-center"
-                />
-              </div>
-
-              <p className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed font-sans">
-                {selectedProject.description}
-              </p>
-
-              <div className="space-y-2">
-                <h4 className="text-xs font-bold uppercase text-stone-900 dark:text-stone-100 tracking-wider">
-                  Key Achievements
-                </h4>
-                <div className="space-y-1.5 text-xs sm:text-sm text-stone-700 dark:text-stone-300">
-                  {selectedProject.highlights.map((h, i) => (
-                    <div key={i} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                      <span>{h}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-2 pt-1">
-                <h4 className="text-xs font-bold uppercase text-stone-900 dark:text-stone-100 tracking-wider">
-                  Technologies
-                </h4>
-                <div className="flex flex-wrap gap-1.5">
-                  {selectedProject.tech.map((t, idx) => (
-                    <span
-                      key={idx}
-                      className="px-2.5 py-1 rounded-xl bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 font-mono text-xs border-2 border-stone-900 dark:border-stone-700 shadow-[1.5px_1.5px_0px_#1c1917]"
-                    >
-                      {t}
+                {/* Pinned Modal Header */}
+                <div className="p-4 sm:p-6 pb-3 sm:pb-3 flex items-start justify-between border-b-2 border-stone-900/15 dark:border-stone-800 shrink-0 bg-[#faf7f0]/95 dark:bg-[#16171b]/95 backdrop-blur-xs">
+                  <div className="space-y-0.5 pr-3">
+                    <span className="font-mono text-[11px] font-bold uppercase text-[#8b2323] dark:text-rose-400 tracking-wider">
+                      {selectedProject.client} • {selectedProject.category}
                     </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 pt-3 border-t-2 border-stone-900/20 dark:border-stone-800">
-                {selectedProject.github && selectedProject.github !== 'private' ? (
-                  <a
-                    href={selectedProject.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-stone-100 dark:hover:bg-stone-200 dark:text-stone-900 text-xs sm:text-sm font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
-                  >
-                    <Github className="w-4 h-4" />
-                    <span>View GitHub Repo</span>
-                  </a>
-                ) : (
-                  <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 text-xs sm:text-sm font-medium border-2 border-stone-400 dark:border-stone-700">
-                    <Lock className="w-4 h-4" />
-                    <span>Private Repository</span>
+                    <h2 className="text-lg sm:text-xl font-bold text-stone-900 dark:text-stone-100 leading-snug">
+                      {selectedProject.subtitle}
+                    </h2>
+                    <p className="text-xs text-stone-600 dark:text-stone-400 font-medium">
+                      {selectedProject.title}
+                    </p>
                   </div>
-                )}
-                {selectedProject.demo && (
-                  selectedProject.demo.startsWith('http') ? (
-                    <a
-                      href={selectedProject.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                      <span>Visit Live Platform</span>
-                    </a>
-                  ) : (
-                    <Link
-                      to={selectedProject.demo}
-                      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                      <span>Launch in Arcade</span>
-                    </Link>
-                  )
-                )}
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+
+                  <button
+                    type="button"
+                    onClick={() => setSelectedProject(null)}
+                    className="p-1.5 sm:p-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer shrink-0"
+                    aria-label="Close modal"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Scrollable Modal Content */}
+                <div className="overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-5 flex-1 overscroll-contain">
+                  <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden border-2 border-stone-900 dark:border-stone-700 bg-stone-100 dark:bg-stone-800 shadow-[3px_3px_0px_#1c1917]">
+                    <img
+                      src={selectedProject.image}
+                      alt={selectedProject.title}
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = jarvisBanner;
+                      }}
+                      className="w-full h-full object-cover object-center"
+                    />
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed font-sans">
+                    {selectedProject.description}
+                  </p>
+
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-bold uppercase text-stone-900 dark:text-stone-100 tracking-wider">
+                      Key Achievements
+                    </h4>
+                    <div className="space-y-1.5 text-xs sm:text-sm text-stone-700 dark:text-stone-300">
+                      {selectedProject.highlights.map((h, i) => (
+                        <div key={i} className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                          <span>{h}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 pt-1">
+                    <h4 className="text-xs font-bold uppercase text-stone-900 dark:text-stone-100 tracking-wider">
+                      Technologies
+                    </h4>
+                    <div className="flex flex-wrap gap-1.5">
+                      {selectedProject.tech.map((t, idx) => (
+                        <span
+                          key={idx}
+                          className="px-2.5 py-1 rounded-xl bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 font-mono text-xs border-2 border-stone-900 dark:border-stone-700 shadow-[1.5px_1.5px_0px_#1c1917]"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Actions (Full width stacked on mobile, row on tablet/desktop) */}
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 pt-3 border-t-2 border-stone-900/20 dark:border-stone-800">
+                    {selectedProject.github && selectedProject.github !== 'private' ? (
+                      <a
+                        href={selectedProject.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-stone-100 dark:hover:bg-stone-200 dark:text-stone-900 text-xs sm:text-sm font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
+                      >
+                        <Github className="w-4 h-4" />
+                        <span>View GitHub Repo</span>
+                      </a>
+                    ) : (
+                      <div className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 text-xs sm:text-sm font-medium border-2 border-stone-400 dark:border-stone-700">
+                        <Lock className="w-4 h-4" />
+                        <span>Private Repository</span>
+                      </div>
+                    )}
+                    {selectedProject.demo && (
+                      selectedProject.demo.startsWith('http') ? (
+                        <a
+                          href={selectedProject.demo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          <span>Visit Live Platform</span>
+                        </a>
+                      ) : (
+                        <Link
+                          to={selectedProject.demo}
+                          className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          <span>Launch in Arcade</span>
+                        </Link>
+                      )
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
 
       {/* Direct Contact Modal with Instant Automated Confirmation Email */}
       <ContactModal isOpen={contactModalOpen} onClose={() => setContactModalOpen(false)} />

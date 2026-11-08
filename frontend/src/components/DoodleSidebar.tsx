@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Briefcase, MapPin, Menu, X, ExternalLink, GraduationCap, Sun, Moon, Lock, Send, Download } from 'lucide-react';
@@ -120,6 +121,21 @@ export const DoodleSidebar: React.FC = () => {
   const { isDark, toggleTheme } = useMode();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileModalOpen, setProfileModalOpen] = useState(false);
+
+  // Prevent background scrolling and handle Escape key when profile modal is open
+  useEffect(() => {
+    if (profileModalOpen) {
+      document.body.style.overflow = 'hidden';
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setProfileModalOpen(false);
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.body.style.overflow = '';
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [profileModalOpen]);
 
   // Dynamic links from website settings
   const [socialLinks, setSocialLinks] = useState({
@@ -426,7 +442,7 @@ export const DoodleSidebar: React.FC = () => {
       ────────────────────────────────────────────────────────────── */}
       <nav 
         aria-label="Mobile Navigation Dock"
-        className="md:hidden fixed bottom-2.5 inset-x-0 z-50 flex justify-center px-2 pointer-events-none"
+        className="md:hidden fixed bottom-2.5 inset-x-0 z-40 flex justify-center px-2 pointer-events-none"
       >
         <div className="pointer-events-auto flex items-center gap-0.5 p-1 rounded-full bg-[#faf7f0]/95 dark:bg-[#15161c]/95 backdrop-blur-xl border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] max-w-fit">
           {navItems.map((item) => {
@@ -570,168 +586,179 @@ export const DoodleSidebar: React.FC = () => {
       </AnimatePresence>
 
       {/* ─────────────────────────────────────────────────────────────
-          PROFILE DETAILS & PHOTO MODAL (Light-box Dialog)
+          PROFILE DETAILS & PHOTO MODAL (Light-box Dialog - Portal)
           Opens on clicking the sidebar profile photo or name
       ────────────────────────────────────────────────────────────── */}
-      <AnimatePresence>
-        {profileModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs select-auto">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.94, y: 12 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.94, y: 12 }}
-              transition={{ duration: 0.2 }}
-              className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white dark:bg-[#16171b] rounded-3xl border-2 border-zinc-900 dark:border-zinc-700 shadow-2xl p-6 sm:p-8 space-y-5"
-            >
-              {/* Close Button */}
-              <button
-                type="button"
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {profileModalOpen && (
+            <div className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-xs select-auto">
+              {/* Fullscreen Backdrop Click to Close */}
+              <div 
+                className="absolute inset-0 bg-transparent"
                 onClick={() => setProfileModalOpen(false)}
-                className="absolute top-5 right-5 p-2 rounded-full text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-                aria-label="Close profile modal"
+                aria-hidden="true"
+              />
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.94, y: 12 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.94, y: 12 }}
+                transition={{ duration: 0.2 }}
+                onClick={(e) => e.stopPropagation()}
+                className="relative z-10 w-full max-w-lg max-h-[85dvh] sm:max-h-[88dvh] overflow-y-auto bg-[#faf7f0] dark:bg-[#16171b] rounded-3xl border-2 border-stone-900 dark:border-stone-700 shadow-[6px_6px_0px_#1c1917] dark:shadow-[6px_6px_0px_#000000] p-5 sm:p-8 space-y-5 overscroll-contain"
               >
-                <X className="w-5 h-5" />
-              </button>
+                {/* Close Button */}
+                <button
+                  type="button"
+                  onClick={() => setProfileModalOpen(false)}
+                  className="absolute top-4 right-4 p-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer"
+                  aria-label="Close profile modal"
+                >
+                  <X className="w-5 h-5" />
+                </button>
 
-              {/* Profile Card Header */}
-              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5 pt-1">
-                {/* Large High-Res Photo View */}
-                <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border-2 border-zinc-900 dark:border-zinc-700 shadow-sm bg-zinc-100 dark:bg-zinc-800 shrink-0">
-                  <img
-                    src={profilePhoto}
-                    alt="Pranav Shende"
-                    className="w-full h-full object-cover object-center scale-[1.7] translate-y-1"
-                  />
-                </div>
-
-                <div className="flex flex-col items-center sm:items-start text-center sm:text-left space-y-1.5 flex-1 pr-6">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 text-xs font-bold border border-blue-200/70 dark:border-blue-800/60 shadow-2xs">
-                    <Briefcase className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
-                    <span>Open to Work • 2026</span>
+                {/* Profile Card Header */}
+                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5 pt-1">
+                  {/* Large High-Res Photo View */}
+                  <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border-2 border-stone-900 dark:border-stone-700 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000] bg-stone-100 dark:bg-stone-800 shrink-0">
+                    <img
+                      src={profilePhoto}
+                      alt="Pranav Shende"
+                      className="w-full h-full object-cover object-center scale-[1.7] translate-y-1"
+                    />
                   </div>
 
-                  <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-zinc-100 tracking-tight leading-tight">
-                    Pranav Shende
-                  </h2>
+                  <div className="flex flex-col items-center sm:items-start text-center sm:text-left space-y-1.5 flex-1 pr-6">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 text-xs font-bold border border-blue-200/70 dark:border-blue-800/60 shadow-2xs">
+                      <Briefcase className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
+                      <span>Open to Work • 2026</span>
+                    </div>
 
-                  <p className="text-sm font-semibold text-zinc-600 dark:text-zinc-400 leading-tight">
-                    Full Stack Developer & AI Engineer
-                  </p>
+                    <h2 className="text-2xl sm:text-3xl font-extrabold text-stone-900 dark:text-stone-100 tracking-tight leading-tight font-serif">
+                      Pranav Shende
+                    </h2>
 
-                  <p className="inline-flex items-center gap-1 text-xs text-zinc-500 dark:text-zinc-400 font-medium">
-                    <MapPin className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
-                    <span>Nagpur, Maharashtra, India</span>
+                    <p className="text-sm font-semibold text-stone-600 dark:text-stone-400 leading-tight">
+                      Full Stack Developer & AI Engineer
+                    </p>
+
+                    <p className="inline-flex items-center gap-1 text-xs text-stone-500 dark:text-stone-400 font-medium">
+                      <MapPin className="w-3.5 h-3.5 text-stone-400 shrink-0" />
+                      <span>Nagpur, Maharashtra, India</span>
+                    </p>
+                  </div>
+                </div>
+
+                {/* Bio / Summary */}
+                <div className="space-y-1.5 border-t-2 border-stone-900/15 dark:border-stone-800 pt-3.5">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 font-mono">
+                    About Me
+                  </h3>
+                  <p className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed font-sans">
+                    Full-stack software engineer and IEEE-published researcher passionate about building scalable backend architectures, high-performance web systems, edge AI applications, and intuitive mobile solutions.
                   </p>
                 </div>
-              </div>
 
-              {/* Bio / Summary */}
-              <div className="space-y-1.5 border-t border-zinc-100 dark:border-zinc-800 pt-3.5">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-                  About Me
-                </h3>
-                <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed">
-                  Full-stack software engineer and IEEE-published researcher passionate about building scalable backend architectures, high-performance web systems, edge AI applications, and intuitive mobile solutions.
-                </p>
-              </div>
+                {/* Education */}
+                <div className="space-y-1.5 border-t-2 border-stone-900/15 dark:border-stone-800 pt-3.5">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 font-mono">
+                    Education
+                  </h3>
+                  <div className="p-3 rounded-xl bg-white dark:bg-stone-800 border-2 border-stone-900 dark:border-stone-700 shadow-[2px_2px_0px_#1c1917] space-y-0.5">
+                    <div className="flex items-center gap-2">
+                      <GraduationCap className="w-4 h-4 text-[#8b2323] shrink-0" />
+                      <span className="text-xs sm:text-sm font-bold text-stone-900 dark:text-stone-100">
+                        St. Vincent Pallotti College of Engineering and Technology
+                      </span>
+                    </div>
+                    <p className="text-xs text-stone-600 dark:text-stone-400 pl-6">
+                      B.Tech in Information Technology • Nagpur (2022 – 2026)
+                    </p>
+                  </div>
+                </div>
 
-              {/* Education */}
-              <div className="space-y-1.5 border-t border-zinc-100 dark:border-zinc-800 pt-3.5">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-                  Education
-                </h3>
-                <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200/80 dark:border-zinc-700/80 space-y-0.5">
+                {/* Core Technical Expertise */}
+                <div className="space-y-2 border-t-2 border-stone-900/15 dark:border-stone-800 pt-3.5">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 font-mono">
+                    Core Skills
+                  </h3>
+                  <div className="flex flex-wrap gap-1.5">
+                    {[
+                      'RAG & GenAI',
+                      'Kafka Event Streams',
+                      'Redis Caching',
+                      'Full-Stack Systems',
+                      'React 19 & Next.js',
+                      'React Native & Expo',
+                      'Node.js & Express',
+                      'Python & Flask',
+                      'PostgreSQL & Prisma',
+                      'Google Gemini 2.5',
+                      'TensorFlow Lite Edge AI',
+                    ].map((skill) => (
+                      <span
+                        key={skill}
+                        className="px-2.5 py-1 rounded-xl bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 font-mono text-xs border-2 border-stone-900 dark:border-stone-700 shadow-[1.5px_1.5px_0px_#1c1917]"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Actions & Links */}
+                <div className="flex flex-wrap items-center gap-2.5 pt-3.5 border-t-2 border-stone-900/15 dark:border-stone-800">
+                  <a
+                    href={resumeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#fef08a] text-zinc-900 border-2 border-stone-900 text-xs sm:text-sm font-bold hover:bg-[#fde047] transition-all shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px]"
+                  >
+                    <DoodleResume />
+                    <span>View Resume</span>
+                    <ExternalLink className="w-3.5 h-3.5 opacity-60" />
+                  </a>
+
+                  <a
+                    href={emailUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 text-xs sm:text-sm font-bold hover:bg-stone-800 dark:hover:bg-stone-200 border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
+                  >
+                    <DoodleEmail />
+                    <span>Send Email</span>
+                  </a>
+
                   <div className="flex items-center gap-2">
-                    <GraduationCap className="w-4 h-4 text-zinc-700 dark:text-zinc-300 shrink-0" />
-                    <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100">
-                      St. Vincent Pallotti College of Engineering and Technology
-                    </span>
-                  </div>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-400 pl-6">
-                    B.Tech in Information Technology • Nagpur (2022 – 2026)
-                  </p>
-                </div>
-              </div>
-
-              {/* Core Technical Expertise */}
-              <div className="space-y-2 border-t border-zinc-100 dark:border-zinc-800 pt-3.5">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-                  Core Skills
-                </h3>
-                <div className="flex flex-wrap gap-1.5">
-                  {[
-                    'RAG & GenAI',
-                    'Kafka Event Streams',
-                    'Redis Caching',
-                    'Full-Stack Systems',
-                    'React 19 & Next.js',
-                    'React Native & Expo',
-                    'Node.js & Express',
-                    'Python & Flask',
-                    'PostgreSQL & Prisma',
-                    'Google Gemini 2.5',
-                    'TensorFlow Lite Edge AI',
-                  ].map((skill) => (
-                    <span
-                      key={skill}
-                      className="px-2.5 py-1 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 text-xs font-semibold border border-zinc-200/80 dark:border-zinc-700"
+                    <a
+                      href={linkedInUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="p-2.5 rounded-xl bg-white dark:bg-stone-800 hover:bg-stone-100 text-stone-700 dark:text-stone-300 transition-colors flex items-center justify-center border-2 border-stone-900 dark:border-stone-700 shadow-[2px_2px_0px_#1c1917]"
+                      title="LinkedIn Profile"
+                      aria-label="LinkedIn"
                     >
-                      {skill}
-                    </span>
-                  ))}
+                      <DoodleLinkedIn />
+                    </a>
+                    <a
+                      href={githubUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="p-2.5 rounded-xl bg-white dark:bg-stone-800 hover:bg-stone-100 text-stone-700 dark:text-stone-300 transition-colors flex items-center justify-center border-2 border-stone-900 dark:border-stone-700 shadow-[2px_2px_0px_#1c1917]"
+                      title="GitHub Profile"
+                      aria-label="GitHub"
+                    >
+                      <DoodleGitHub />
+                    </a>
+                  </div>
                 </div>
-              </div>
-
-              {/* Actions & Links */}
-              <div className="flex flex-wrap items-center gap-2.5 pt-3.5 border-t border-zinc-100 dark:border-zinc-800">
-                <a
-                  href={resumeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#fef08a] text-zinc-900 border border-zinc-900/15 text-xs sm:text-sm font-bold hover:bg-[#fde047] transition-all shadow-xs"
-                >
-                  <DoodleResume />
-                  <span>View Resume</span>
-                  <ExternalLink className="w-3.5 h-3.5 opacity-60" />
-                </a>
-
-                <a
-                  href={emailUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs sm:text-sm font-bold hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all shadow-xs"
-                >
-                  <DoodleEmail />
-                  <span>Send Email</span>
-                </a>
-
-                <div className="flex items-center gap-2">
-                  <a
-                    href={linkedInUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="p-2.5 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 transition-colors flex items-center justify-center border border-zinc-200 dark:border-zinc-700"
-                    title="LinkedIn Profile"
-                    aria-label="LinkedIn"
-                  >
-                    <DoodleLinkedIn />
-                  </a>
-                  <a
-                    href={githubUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="p-2.5 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 transition-colors flex items-center justify-center border border-zinc-200 dark:border-zinc-700"
-                    title="GitHub Profile"
-                    aria-label="GitHub"
-                  >
-                    <DoodleGitHub />
-                  </a>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </>
   );
 };

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DoodleLayout } from '@/components/DoodleLayout';
 import { X, ZoomIn, Award, Sparkles, BookOpen, Layers } from 'lucide-react';
@@ -291,6 +292,21 @@ export const Art: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<string>('All');
   const [selectedItem, setSelectedItem] = useState<CreativeItem | null>(null);
 
+  // Prevent background scrolling and handle Escape key when lightbox modal is open
+  useEffect(() => {
+    if (selectedItem) {
+      document.body.style.overflow = 'hidden';
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setSelectedItem(null);
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.body.style.overflow = '';
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [selectedItem]);
+
   const filters = ['All', 'Mobile UI', 'Research', 'Analytics', 'Branding', 'Badges'];
 
   const filteredItems =
@@ -369,47 +385,60 @@ export const Art: React.FC = () => {
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          LIGHTBOX MODAL
+          LIGHTBOX MODAL (Portal to document.body, z-[99999])
       ────────────────────────────────────────────────────────────── */}
-      <AnimatePresence>
-        {selectedItem && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-xs">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="relative w-full max-w-lg bg-[#faf7f0] dark:bg-[#16171b] rounded-3xl border-2 border-stone-900 dark:border-stone-700 shadow-[6px_6px_0px_#1c1917] dark:shadow-[6px_6px_0px_#000000] p-6 space-y-4"
-            >
-              <button
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {selectedItem && (
+            <div className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-xs select-auto">
+              {/* Fullscreen Backdrop Click to Close */}
+              <div
+                className="absolute inset-0 bg-transparent"
                 onClick={() => setSelectedItem(null)}
-                className="absolute top-4 right-4 p-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer"
-                aria-label="Close modal"
+                aria-hidden="true"
+              />
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 12 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 12 }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
+                onClick={(e) => e.stopPropagation()}
+                className="relative z-10 w-full max-w-lg max-h-[85dvh] sm:max-h-[88dvh] overflow-y-auto bg-[#faf7f0] dark:bg-[#16171b] rounded-3xl border-2 border-stone-900 dark:border-stone-700 shadow-[6px_6px_0px_#1c1917] dark:shadow-[6px_6px_0px_#000000] p-5 sm:p-6 space-y-4 overscroll-contain"
               >
-                <X className="w-4 h-4" />
-              </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedItem(null)}
+                  className="absolute top-4 right-4 p-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer"
+                  aria-label="Close modal"
+                >
+                  <X className="w-4 h-4" />
+                </button>
 
-              <div className="w-full aspect-square rounded-2xl overflow-hidden border-2 border-stone-900 dark:border-stone-700 bg-stone-100 dark:bg-stone-800 shadow-[2px_2px_0px_#1c1917]">
-                {selectedItem.preview}
-              </div>
-
-              <div className="space-y-1">
-                <div className="flex items-center justify-between text-xs text-stone-600 dark:text-stone-400 font-bold">
-                  <span>{selectedItem.organization}</span>
-                  <span className="px-2 py-0.5 rounded-xs border border-[#8b2323] text-[#8b2323] dark:text-rose-400 bg-[#8b2323]/5 font-serif font-bold text-[10px] tracking-wider">
-                    {selectedItem.category}
-                  </span>
+                <div className="w-full aspect-square rounded-2xl overflow-hidden border-2 border-stone-900 dark:border-stone-700 bg-stone-100 dark:bg-stone-800 shadow-[2px_2px_0px_#1c1917]">
+                  {selectedItem.preview}
                 </div>
-                <h3 className="text-lg font-bold text-stone-900 dark:text-stone-100">
-                  {selectedItem.title}
-                </h3>
-                <p className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 font-sans leading-relaxed pt-1">
-                  {selectedItem.description}
-                </p>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between text-xs text-stone-600 dark:text-stone-400 font-bold">
+                    <span>{selectedItem.organization}</span>
+                    <span className="px-2 py-0.5 rounded-xs border border-[#8b2323] text-[#8b2323] dark:text-rose-400 bg-[#8b2323]/5 font-serif font-bold text-[10px] tracking-wider">
+                      {selectedItem.category}
+                    </span>
+                  </div>
+                  <h3 className="text-lg font-bold text-stone-900 dark:text-stone-100">
+                    {selectedItem.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 font-sans leading-relaxed pt-1">
+                    {selectedItem.description}
+                  </p>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </DoodleLayout>
   );
 };
