@@ -10,34 +10,39 @@ import FloatingHeader from '../components/FloatingHeader';
 
 type AppType = 'home' | 'mario' | 'hextris' | 'dino' | 'tetris' | 'subway' | 'flappy' | 'spotify' | 'jansampark' | 'pashurakshak' | 'solar' | 'agriscore' | 'dsa';
 
-const SquircleIcon = ({ 
-  imgUrl, 
-  FallbackIcon, 
-  gradient,
+// Custom Tetris Tetromino 4-block Icon
+const TetrisIcon: React.FC<{ size?: number; className?: string }> = ({ size = 22, className = '' }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="1.8" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+  >
+    <rect x="3" y="10" width="6" height="6" rx="1" />
+    <rect x="9" y="10" width="6" height="6" rx="1" />
+    <rect x="15" y="10" width="6" height="6" rx="1" />
+    <rect x="9" y="4" width="6" height="6" rx="1" />
+  </svg>
+);
+
+const PaperAppIcon = ({
+  Icon,
   alt
 }: { 
-  imgUrl: string, 
-  FallbackIcon: any, 
-  gradient: string,
-  alt: string
+  Icon: any;
+  alt: string;
 }) => {
-  const [error, setError] = useState(false);
-  
   return (
-    <div className={`relative w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-sm overflow-hidden flex items-center justify-center bg-gradient-to-br ${gradient} border border-white/10 group-hover:scale-95 transition-transform duration-200`}>
-      {!error ? (
-        <img 
-          src={imgUrl} 
-          alt={alt} 
-          className="w-full h-full object-cover" 
-          onError={() => setError(true)}
-        />
-      ) : (
-        <FallbackIcon size={26} className="text-white drop-shadow-md opacity-90" strokeWidth={1.5} />
-      )}
-      
-      {/* iOS Glossy Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent opacity-50 pointer-events-none"></div>
+    <div 
+      className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] flex items-center justify-center text-stone-900 group-hover:bg-stone-50 group-hover:translate-x-[1px] group-hover:translate-y-[1px] group-hover:shadow-[1px_1px_0px_#1c1917] transition-all shrink-0"
+      title={alt}
+    >
+      <Icon size={24} className="text-stone-900 stroke-[1.8]" />
     </div>
   );
 };
@@ -74,24 +79,30 @@ const PlayGames = () => {
   };
 
   const apps: AppItem[] = [
-    { id: 'mario', name: 'Mario', icon: <SquircleIcon imgUrl="https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Super_Mario_Bros._box.png/220px-Super_Mario_Bros._box.png" FallbackIcon={Gamepad2} gradient="from-red-500 to-blue-600" alt="Super Mario" /> },
-    { id: 'hextris', name: 'Hextris', icon: <SquircleIcon imgUrl="https://raw.githubusercontent.com/hextris/hextris/master/favicon.ico" FallbackIcon={Hexagon} gradient="from-slate-700 to-slate-900" alt="Hextris" /> },
-    { id: 'dino', name: 'Dino Run', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={Activity} gradient="from-zinc-400 to-zinc-600" alt="Dino" /> },
-    { id: 'tetris', name: 'Tetris', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={Gamepad2} gradient="from-violet-500 to-fuchsia-600" alt="Tetris" /> },
-    { id: 'subway', name: 'Surfers', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={TrainFront} gradient="from-amber-400 to-yellow-600" alt="Subway Surfers" /> },
-    { id: 'flappy', name: 'Flappy', icon: <SquircleIcon imgUrl="https://upload.wikimedia.org/wikipedia/en/0/0a/Flappy_Bird_icon.png" FallbackIcon={Bird} gradient="from-sky-300 to-blue-500" alt="Flappy Bird" /> },
-    { id: 'projects_folder', name: 'Projects', isFolder: true, folderApps: [
-      { id: 'jansampark', name: 'JanSampark', icon: <SquircleIcon imgUrl="https://projectjansampark.pranavshende.online/favicon.ico" FallbackIcon={Globe} gradient="from-blue-500 to-indigo-600" alt="JanSampark" />, appId: 'jansampark' },
-      { id: 'pashurakshak', name: 'PashuRakshak', icon: <SquircleIcon imgUrl="https://projectpashurakshak.pranavshende.online/favicon.ico" FallbackIcon={Activity} gradient="from-emerald-400 to-teal-600" alt="PashuRakshak" />, appId: 'pashurakshak' },
-      { id: 'solar', name: 'Solar Analytics', icon: <SquircleIcon imgUrl="https://projectsolarsalesanalysis.pranavshende.online/favicon.ico" FallbackIcon={Hexagon} gradient="from-amber-400 to-orange-600" alt="Solar Analytics" />, appId: 'solar' },
-      { id: 'agriscore', name: 'AgriScore', icon: <SquircleIcon imgUrl="invalid-url" FallbackIcon={Circle} gradient="from-green-400 to-emerald-600" alt="AgriScore" />, appId: 'agriscore' },
-      { id: 'dsa', name: 'DSA', icon: <SquircleIcon imgUrl="https://dsa.pranavshende.online/favicon.ico" FallbackIcon={Square} gradient="from-indigo-400 to-purple-600" alt="DSA" />, appId: 'dsa' }
-    ], icon: (
-      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/20 backdrop-blur-sm shadow-sm flex items-center justify-center border border-white/30 group-hover:scale-95 transition-transform duration-200">
-        <Folder size={22} className="text-white drop-shadow-md" fill="currentColor" opacity={0.8} />
-      </div>
-    )},
-    { id: 'spotify', name: 'Spotify', icon: <SquircleIcon imgUrl="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" FallbackIcon={Music} gradient="from-[#1ED760] to-[#1DB954]" alt="Spotify" /> },
+    { id: 'mario', name: 'Mario', icon: <PaperAppIcon Icon={Gamepad2} alt="Super Mario" /> },
+    { id: 'hextris', name: 'Hextris', icon: <PaperAppIcon Icon={Hexagon} alt="Hextris" /> },
+    { id: 'dino', name: 'Dino Run', icon: <PaperAppIcon Icon={Activity} alt="Dino Run" /> },
+    { id: 'tetris', name: 'Tetris', icon: <PaperAppIcon Icon={TetrisIcon} alt="Tetris" /> },
+    { id: 'subway', name: 'Surfers', icon: <PaperAppIcon Icon={TrainFront} alt="Subway Surfers" /> },
+    { id: 'flappy', name: 'Flappy', icon: <PaperAppIcon Icon={Bird} alt="Flappy Bird" /> },
+    { id: 'projects_folder', name: 'Projects', isFolder: true, 
+      icon: (
+        <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] flex items-center justify-center text-stone-900 group-hover:bg-stone-50 group-hover:translate-x-[1px] group-hover:translate-y-[1px] group-hover:shadow-[1px_1px_0px_#1c1917] transition-all shrink-0">
+          <Folder size={24} className="text-stone-900 stroke-[1.8]" />
+          <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#8b2323] text-white text-[9px] font-mono font-bold flex items-center justify-center">
+            5
+          </span>
+        </div>
+      ),
+      folderApps: [
+        { id: 'jansampark', name: 'JanSampark', icon: <PaperAppIcon Icon={Globe} alt="JanSampark" />, appId: 'jansampark' },
+        { id: 'pashurakshak', name: 'PashuRakshak', icon: <PaperAppIcon Icon={Activity} alt="PashuRakshak" />, appId: 'pashurakshak' },
+        { id: 'solar', name: 'Solar Analytics', icon: <PaperAppIcon Icon={Hexagon} alt="Solar Analytics" />, appId: 'solar' },
+        { id: 'agriscore', name: 'AgriScore', icon: <PaperAppIcon Icon={Circle} alt="AgriScore" />, appId: 'agriscore' },
+        { id: 'dsa', name: 'DSA', icon: <PaperAppIcon Icon={Square} alt="DSA" />, appId: 'dsa' }
+      ]
+    },
+    { id: 'spotify', name: 'Spotify', icon: <PaperAppIcon Icon={Music} alt="Spotify" /> },
   ];
 
   return (
@@ -201,17 +212,30 @@ const PlayGames = () => {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="absolute inset-0 flex flex-col bg-[url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center"
+                className="absolute inset-0 flex flex-col bg-[#faf7f0] bg-[radial-gradient(#e5dfd3_1px,transparent_1px)] [background-size:16px_16px] text-stone-900 select-none overflow-hidden"
               >
-                <div className="absolute inset-0 bg-black/40 backdrop-blur-[4px] pointer-events-none" />
+                {/* Subtle paper grain & ink texture */}
+                <div 
+                  className="absolute inset-0 bg-cover bg-center opacity-10 pointer-events-none mix-blend-multiply"
+                  style={{ backgroundImage: `url('/photo/sumie_website_bg.webp')` }}
+                />
+
+                {/* Decorative Japanese Ink Paper Accents */}
+                <div className="absolute top-4 right-5 flex items-center gap-2 pointer-events-none">
+                  <div className="px-1.5 py-0.5 rounded-xs border border-[#8b2323] text-[#8b2323] text-[9px] font-serif font-bold tracking-widest bg-[#8b2323]/5">
+                    遊戯
+                  </div>
+                  <div className="w-1.5 h-1.5 rounded-full bg-stone-400" />
+                  <span className="text-[10px] font-mono text-stone-500 font-medium tracking-wider">PS-OS v2.6</span>
+                </div>
                 
                 <div className="relative z-10 flex flex-col h-full pt-16 px-6 pb-20 sm:pb-16">
-                  {/* Aesthetic Clock Widget */}
-                  <div className="w-full flex flex-col items-center justify-center mb-10 mt-2 sm:mb-12 sm:mt-4 pointer-events-none drop-shadow-lg">
-                    <span className="text-[#ffffff] text-5xl sm:text-7xl font-light tracking-tight">
+                  {/* Aesthetic Clock Widget in Ink Black */}
+                  <div className="w-full flex flex-col items-center justify-center mb-10 mt-2 sm:mb-12 sm:mt-4 pointer-events-none">
+                    <span className="text-stone-900 text-5xl sm:text-7xl font-light tracking-tight font-sans">
                       {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }).replace(' AM', '').replace(' PM', '')}
                     </span>
-                    <span className="text-[#ffffff]/80 text-[11px] sm:text-sm font-medium tracking-widest uppercase mt-2">
+                    <span className="text-stone-600 text-[11px] sm:text-sm font-mono font-bold tracking-widest uppercase mt-2">
                       {time.toLocaleDateString([], { weekday: 'long', month: 'short', day: 'numeric' })}
                     </span>
                   </div>
@@ -235,7 +259,7 @@ const PlayGames = () => {
                         }}
                       >
                         {app.icon}
-                        <span className="text-[#ffffff] text-[11px] font-medium drop-shadow-md tracking-wide w-full text-center truncate px-1">
+                        <span className="text-stone-900 text-[11px] font-mono font-bold tracking-tight w-full text-center truncate px-1">
                           {app.name}
                         </span>
                       </div>
@@ -243,27 +267,36 @@ const PlayGames = () => {
                   </div>
                 </div>
 
-                {/* Folder Overlay */}
+                {/* Folder Overlay (Paper Theme) */}
                 <AnimatePresence>
                   {openFolder && (
                     <motion.div 
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="absolute inset-0 z-40 bg-black/50 backdrop-blur-xl flex flex-col items-center justify-center p-6"
+                      className="absolute inset-0 z-40 bg-stone-900/40 backdrop-blur-xs flex flex-col items-center justify-center p-6"
                       onClick={() => setOpenFolder(null)}
                     >
                       <motion.div 
                         initial={{ scale: 0.9, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.9, opacity: 0 }}
-                        className="w-full max-w-[280px] bg-white/20 backdrop-blur-md rounded-[32px] p-6 border border-white/20 shadow-2xl"
+                        className="w-full max-w-[300px] bg-[#faf6f0] rounded-3xl p-5 border-2 border-stone-900 shadow-[4px_4px_0px_#1c1917]"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <h3 className="text-[#ffffff] font-medium text-center mb-6 text-sm tracking-wide">
-                          {apps.find(a => a.id === openFolder)?.name}
-                        </h3>
-                        <div className="grid grid-cols-3 gap-x-4 gap-y-6">
+                        <div className="flex items-center justify-between mb-4 pb-2 border-b border-stone-300">
+                          <h4 className="text-stone-900 font-bold text-sm tracking-wide font-mono flex items-center gap-1.5">
+                            <Folder size={16} />
+                            <span>{apps.find(a => a.id === openFolder)?.name}</span>
+                          </h4>
+                          <button 
+                            onClick={() => setOpenFolder(null)}
+                            className="p-1 rounded-full text-stone-500 hover:text-stone-900 text-xs cursor-pointer"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                        <div className="grid grid-cols-3 gap-3">
                           {apps.find(a => a.id === openFolder)?.folderApps?.map((fApp) => (
                             <div 
                               key={fApp.id} 
@@ -275,10 +308,10 @@ const PlayGames = () => {
                                   window.open(fApp.link, '_blank');
                                 }
                               }}
-                              className="flex flex-col items-center gap-1.5 cursor-pointer group"
+                              className="flex flex-col items-center gap-1 cursor-pointer group"
                             >
                               {fApp.icon}
-                              <span className="text-[#ffffff] text-[10px] font-medium drop-shadow-md tracking-wide w-full text-center truncate px-1">
+                              <span className="text-stone-900 text-[10px] font-mono font-bold text-center truncate w-full">
                                 {fApp.name}
                               </span>
                             </div>
