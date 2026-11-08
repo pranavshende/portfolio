@@ -91,10 +91,15 @@ export const SettingsSection: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100">
-          Website Settings & Profiles
-        </h2>
-        <p className="text-xs text-stone-500">
+        <div className="flex items-center gap-2">
+          <span className="px-1.5 py-0.5 rounded border border-[#8b2323] text-[#8b2323] dark:border-rose-400 dark:text-rose-400 font-mono text-[10px] font-bold">
+            [全体設定]
+          </span>
+          <h2 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100">
+            Website Settings & Profiles
+          </h2>
+        </div>
+        <p className="text-xs text-stone-500 mt-1">
           Global configuration for portfolio titles, social destinations, and administrator profile credentials.
         </p>
       </div>
@@ -105,11 +110,11 @@ export const SettingsSection: React.FC = () => {
           <p className="text-xs text-stone-500">Loading settings and administrator profile...</p>
         </div>
       ) : (
-        <div className="p-6 rounded-3xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs max-w-3xl">
+        <div className="p-6 rounded-3xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] max-w-3xl">
           <form onSubmit={handleSave} className="space-y-6 text-xs sm:text-sm">
             
             {/* ── Section A: Administrator Profile ── */}
-            <div className="space-y-3 pb-4 border-b border-stone-200 dark:border-stone-800">
+            <div className="space-y-3 pb-4 border-b-2 border-stone-900/10 dark:border-stone-700">
               <div className="flex items-center gap-2 text-stone-900 dark:text-stone-100 font-bold text-sm">
                 <User className="w-4 h-4 text-[#8b2323]" />
                 <span>Administrator Profile</span>
@@ -124,7 +129,7 @@ export const SettingsSection: React.FC = () => {
                     required
                     value={profileData.name}
                     onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs font-medium"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs font-bold shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   />
                 </div>
 
@@ -137,7 +142,7 @@ export const SettingsSection: React.FC = () => {
                     required
                     value={profileData.email}
                     onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs font-mono"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs font-mono shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   />
                 </div>
               </div>
@@ -159,7 +164,7 @@ export const SettingsSection: React.FC = () => {
                     type="text"
                     value={formData.siteName}
                     onChange={(e) => setFormData({ ...formData, siteName: e.target.value })}
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs font-medium"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs font-bold shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   />
                 </div>
 
@@ -171,7 +176,7 @@ export const SettingsSection: React.FC = () => {
                     type="email"
                     value={formData.contactEmail}
                     onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })}
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs font-mono"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs font-mono shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   />
                 </div>
               </div>
@@ -184,7 +189,7 @@ export const SettingsSection: React.FC = () => {
                   type="text"
                   value={formData.heroGreeting}
                   onChange={(e) => setFormData({ ...formData, heroGreeting: e.target.value })}
-                  className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs"
+                  className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                 />
               </div>
 
@@ -196,11 +201,11 @@ export const SettingsSection: React.FC = () => {
                   rows={2}
                   value={formData.heroBio}
                   onChange={(e) => setFormData({ ...formData, heroBio: e.target.value })}
-                  className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs leading-relaxed"
+                  className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs leading-relaxed shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2 border-t border-stone-200 dark:border-stone-800">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2 border-t-2 border-stone-900/10 dark:border-stone-700">
                 <div className="space-y-1">
                   <label className="block text-xs font-bold text-stone-700 dark:text-stone-300">
                     GitHub Profile URL
@@ -209,7 +214,7 @@ export const SettingsSection: React.FC = () => {
                     type="url"
                     value={formData.githubUrl}
                     onChange={(e) => setFormData({ ...formData, githubUrl: e.target.value })}
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs font-mono"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs font-mono shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   />
                 </div>
 
@@ -221,7 +226,7 @@ export const SettingsSection: React.FC = () => {
                     type="url"
                     value={formData.linkedinUrl}
                     onChange={(e) => setFormData({ ...formData, linkedinUrl: e.target.value })}
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs font-mono"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs font-mono shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   />
                 </div>
               </div>
@@ -234,20 +239,20 @@ export const SettingsSection: React.FC = () => {
                   type="url"
                   value={formData.resumeDriveUrl}
                   onChange={(e) => setFormData({ ...formData, resumeDriveUrl: e.target.value })}
-                  className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs font-mono"
+                  className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs font-mono shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                 />
               </div>
             </div>
 
             {errorMsg && (
-              <div className="p-3 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800 text-xs">
+              <div className="p-3 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 border-2 border-red-800 text-xs shadow-[2px_2px_0px_#8b2323]">
                 {errorMsg}
               </div>
             )}
 
-            <div className="pt-4 flex items-center justify-between border-t border-stone-200 dark:border-stone-800">
+            <div className="pt-4 flex items-center justify-between border-t-2 border-stone-900/10 dark:border-stone-700">
               {saved && (
-                <span className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1.5">
+                <span className="text-xs text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Settings & profile updated live in database
                 </span>
               )}
@@ -255,7 +260,7 @@ export const SettingsSection: React.FC = () => {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-5 py-2.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-semibold transition-all shadow-xs flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                  className="px-5 py-2.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50 hover:translate-x-0.5 hover:translate-y-0.5"
                 >
                   {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                   <span>{saving ? 'Saving Changes...' : 'Save Settings & Profile'}</span>

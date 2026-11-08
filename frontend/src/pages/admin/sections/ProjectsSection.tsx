@@ -326,13 +326,18 @@ export const ProjectsSection: React.FC = () => {
       {/* Header & Action */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100 flex items-center gap-2">
-            <span>Projects CMS</span>
-            <span className="px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 text-xs font-mono">
-              {totalProjects} Total
+          <div className="flex items-center gap-2">
+            <span className="px-1.5 py-0.5 rounded border border-[#8b2323] text-[#8b2323] dark:border-rose-400 dark:text-rose-400 font-mono text-[10px] font-bold">
+              [プロジェクト]
             </span>
-          </h2>
-          <p className="text-xs text-stone-500 mt-0.5">
+            <h2 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100 flex items-center gap-2">
+              <span>Projects CMS</span>
+              <span className="px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-stone-600 dark:text-stone-300 text-xs font-mono font-bold">
+                {totalProjects} Total
+              </span>
+            </h2>
+          </div>
+          <p className="text-xs text-stone-500 mt-1">
             Create, edit, reorder & publish showcase applications directly to your public portfolio.
           </p>
         </div>
@@ -340,7 +345,7 @@ export const ProjectsSection: React.FC = () => {
         <button
           type="button"
           onClick={handleOpenCreate}
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-semibold transition-all shadow-xs cursor-pointer active:scale-95"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-bold border-2 border-stone-900 shadow-[2.5px_2.5px_0px_#1c1917] dark:shadow-[2.5px_2.5px_0px_#000000] transition-all cursor-pointer hover:translate-x-0.5 hover:translate-y-0.5"
         >
           <Plus className="w-4 h-4" />
           <span>Add New Project</span>
@@ -349,9 +354,9 @@ export const ProjectsSection: React.FC = () => {
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-        <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800">
-          <div className="flex items-center justify-between text-stone-400">
-            <span className="text-xs font-medium">All Projects</span>
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000]">
+          <div className="flex items-center justify-between text-stone-500 dark:text-stone-400">
+            <span className="text-xs font-bold uppercase tracking-wider">All Projects</span>
             <FolderGit2 className="w-4 h-4" />
           </div>
           <div className="text-2xl font-bold font-mono text-stone-900 dark:text-stone-100 mt-2">
@@ -359,9 +364,9 @@ export const ProjectsSection: React.FC = () => {
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800">
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000]">
           <div className="flex items-center justify-between text-emerald-600 dark:text-emerald-400">
-            <span className="text-xs font-medium">Live Published</span>
+            <span className="text-xs font-bold uppercase tracking-wider">Live Published</span>
             <CheckCircle2 className="w-4 h-4" />
           </div>
           <div className="text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-400 mt-2">
@@ -369,9 +374,9 @@ export const ProjectsSection: React.FC = () => {
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800">
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000]">
           <div className="flex items-center justify-between text-amber-600 dark:text-amber-400">
-            <span className="text-xs font-medium">Featured (Home)</span>
+            <span className="text-xs font-bold uppercase tracking-wider">Featured (Home)</span>
             <Star className="w-4 h-4" />
           </div>
           <div className="text-2xl font-bold font-mono text-amber-600 dark:text-amber-400 mt-2">
@@ -379,9 +384,9 @@ export const ProjectsSection: React.FC = () => {
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800">
-          <div className="flex items-center justify-between text-stone-400">
-            <span className="text-xs font-medium">Drafts</span>
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000]">
+          <div className="flex items-center justify-between text-stone-500 dark:text-stone-400">
+            <span className="text-xs font-bold uppercase tracking-wider">Drafts</span>
             <AlertCircle className="w-4 h-4" />
           </div>
           <div className="text-2xl font-bold font-mono text-stone-600 dark:text-stone-400 mt-2">
@@ -391,7 +396,7 @@ export const ProjectsSection: React.FC = () => {
       </div>
 
       {/* Projects Table */}
-      <div className="rounded-3xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs overflow-hidden">
+      <div className="rounded-3xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] overflow-hidden">
         {loading ? (
           <div className="py-16 text-center space-y-2">
             <Loader2 className="w-6 h-6 animate-spin mx-auto text-[#8b2323]" />
@@ -653,20 +658,25 @@ export const ProjectsSection: React.FC = () => {
       {/* Project Form Modal */}
       {isEditing && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-xs select-auto overflow-y-auto">
-          <div className="relative w-full max-w-3xl max-h-[92dvh] overflow-y-auto bg-white dark:bg-[#16171d] rounded-2xl sm:rounded-3xl border border-stone-200 dark:border-stone-800 shadow-2xl p-5 sm:p-7 space-y-5 my-auto">
+          <div className="relative w-full max-w-3xl max-h-[92dvh] overflow-y-auto bg-[#faf7f0] dark:bg-[#16171d] rounded-2xl sm:rounded-3xl border-2 border-stone-900 dark:border-stone-700 shadow-[6px_6px_0px_#1c1917] dark:shadow-[6px_6px_0px_#000000] p-5 sm:p-7 space-y-5 my-auto">
             <button
               type="button"
               onClick={() => setIsEditing(false)}
-              className="absolute top-5 right-5 p-2 rounded-full text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-stone-800"
+              className="absolute top-5 right-5 p-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] hover:translate-x-0.5 hover:translate-y-0.5 cursor-pointer transition-all"
             >
               <X className="w-5 h-5" />
             </button>
 
             <div>
-              <h3 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100">
-                {currentProject ? 'Edit Project' : 'Create New Project'}
-              </h3>
-              <p className="text-xs text-stone-500 mt-0.5">
+              <div className="flex items-center gap-2">
+                <span className="px-1.5 py-0.5 rounded border border-[#8b2323] text-[#8b2323] dark:border-rose-400 dark:text-rose-400 font-mono text-[10px] font-bold">
+                  [編集]
+                </span>
+                <h3 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100">
+                  {currentProject ? 'Edit Project' : 'Create New Project'}
+                </h3>
+              </div>
+              <p className="text-xs text-stone-500 mt-1">
                 Update project metadata, architecture breakdown, live URLs, and cover image.
               </p>
             </div>
@@ -684,7 +694,7 @@ export const ProjectsSection: React.FC = () => {
                     value={formData.title}
                     onChange={(e) => handleTitleChange(e.target.value)}
                     placeholder="e.g. Jarvis AI: Enterprise Intelligence Platform"
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs sm:text-sm"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs sm:text-sm shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   />
                 </div>
 
@@ -698,7 +708,7 @@ export const ProjectsSection: React.FC = () => {
                     value={formData.slug}
                     onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
                     placeholder="e.g. jarvis-mcp-multipledbs"
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs font-mono"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs font-mono shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   />
                 </div>
               </div>
@@ -713,7 +723,7 @@ export const ProjectsSection: React.FC = () => {
                   value={formData.subtitle}
                   onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
                   placeholder="Autonomous Enterprise Intelligence • MCP Protocol & Deterministic SQL"
-                  className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs sm:text-sm"
+                  className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs sm:text-sm shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                 />
               </div>
 
@@ -728,7 +738,7 @@ export const ProjectsSection: React.FC = () => {
                     value={formData.client}
                     onChange={(e) => setFormData({ ...formData, client: e.target.value })}
                     placeholder="Meridian Supply Chain / Client"
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   />
                 </div>
 
@@ -741,7 +751,7 @@ export const ProjectsSection: React.FC = () => {
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                     placeholder="Enterprise AI & MCP Architecture"
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   />
                 </div>
 
@@ -754,13 +764,13 @@ export const ProjectsSection: React.FC = () => {
                     value={formData.year}
                     onChange={(e) => setFormData({ ...formData, year: e.target.value })}
                     placeholder="Production 2026"
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   />
                 </div>
               </div>
 
               {/* Row 4: Thumbnail Image Upload & Preview */}
-              <div className="space-y-2 p-3.5 rounded-2xl bg-stone-50/70 dark:bg-[#1d1f27]/70 border border-stone-200 dark:border-stone-800">
+              <div className="space-y-2 p-3.5 rounded-2xl bg-white dark:bg-[#1b1c24] border-2 border-stone-900/80 dark:border-stone-700 shadow-[2.5px_2.5px_0px_#1c1917] dark:shadow-[2.5px_2.5px_0px_#000000]">
                 <label className="block text-xs font-bold text-stone-800 dark:text-stone-200 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
                     <ImageIcon className="w-3.5 h-3.5 text-[#8b2323]" />
@@ -785,7 +795,7 @@ export const ProjectsSection: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-stone-200 dark:bg-stone-800 hover:bg-stone-300 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-semibold cursor-pointer transition-colors"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-stone-800 border-2 border-stone-900 dark:border-stone-700 text-stone-800 dark:text-stone-200 text-xs font-bold cursor-pointer shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] hover:translate-x-0.5 hover:translate-y-0.5 transition-all"
                   >
                     <Upload className="w-3.5 h-3.5" />
                     <span>Upload Image File</span>
@@ -797,7 +807,7 @@ export const ProjectsSection: React.FC = () => {
                       value={formData.thumbnailUrl}
                       onChange={(e) => setFormData({ ...formData, thumbnailUrl: e.target.value })}
                       placeholder="Or paste direct image URL (https://... or data:image/...)"
-                      className="w-full p-2 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-[#16171d] text-xs font-mono"
+                      className="w-full p-2 rounded-xl border-2 border-stone-900/70 dark:border-stone-700 bg-[#faf7f0] dark:bg-[#16171d] text-xs font-mono"
                     />
                   </div>
 
@@ -805,7 +815,7 @@ export const ProjectsSection: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setFormData({ ...formData, thumbnailUrl: '' })}
-                      className="p-2 rounded-xl text-stone-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30"
+                      className="p-2 rounded-xl border-2 border-stone-900 text-stone-600 hover:text-red-600 bg-white hover:bg-red-50 shadow-[2px_2px_0px_#1c1917]"
                       title="Clear image"
                     >
                       <X className="w-4 h-4" />
@@ -815,7 +825,7 @@ export const ProjectsSection: React.FC = () => {
 
                 {/* Image Preview Box */}
                 {formData.thumbnailUrl && (
-                  <div className="mt-2 relative rounded-xl overflow-hidden border border-stone-200 dark:border-stone-700 max-h-48 bg-stone-900/5 flex items-center justify-center">
+                  <div className="mt-2 relative rounded-xl overflow-hidden border-2 border-stone-900 dark:border-stone-700 max-h-48 bg-stone-900/5 flex items-center justify-center">
                     <img
                       src={formData.thumbnailUrl}
                       alt="Thumbnail preview"
@@ -839,7 +849,7 @@ export const ProjectsSection: React.FC = () => {
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   placeholder="Comprehensive technical breakdown of the system, capabilities, architecture, and business impact..."
-                  className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs"
+                  className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                 />
               </div>
 
@@ -853,7 +863,7 @@ export const ProjectsSection: React.FC = () => {
                   value={formData.keyFeatures}
                   onChange={(e) => setFormData({ ...formData, keyFeatures: e.target.value })}
                   placeholder="Official Model Context Protocol (MCP v1.0.4) integration supporting Streamable HTTP&#10;Deterministic star-schema SQL calculation engine delivering zero-hallucination metrics&#10;Hybrid pgvector RAG assistant with 749+ verified operational knowledge chunks"
-                  className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs font-mono"
+                  className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs font-mono shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                 />
               </div>
 
@@ -867,7 +877,7 @@ export const ProjectsSection: React.FC = () => {
                   value={formData.techStack}
                   onChange={(e) => setFormData({ ...formData, techStack: e.target.value })}
                   placeholder="Google Gemini 2.5 Pro, Model Context Protocol (MCP), Fastify, pgvector RAG, Deterministic SQL, Supabase, Redis"
-                  className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs"
+                  className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                 />
               </div>
 
@@ -882,7 +892,7 @@ export const ProjectsSection: React.FC = () => {
                     value={formData.githubUrl}
                     onChange={(e) => setFormData({ ...formData, githubUrl: e.target.value })}
                     placeholder="https://github.com/pranavshende/jarvis-mcp-multipleDBs"
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   />
                 </div>
 
@@ -895,7 +905,7 @@ export const ProjectsSection: React.FC = () => {
                     value={formData.liveDemoUrl}
                     onChange={(e) => setFormData({ ...formData, liveDemoUrl: e.target.value })}
                     placeholder="https://jarvis.pranavshende.online/"
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   />
                 </div>
               </div>
@@ -911,7 +921,7 @@ export const ProjectsSection: React.FC = () => {
                     value={formData.badge}
                     onChange={(e) => setFormData({ ...formData, badge: e.target.value })}
                     placeholder="Live Enterprise"
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   />
                 </div>
 
@@ -923,7 +933,7 @@ export const ProjectsSection: React.FC = () => {
                     type="number"
                     value={formData.displayOrder}
                     onChange={(e) => setFormData({ ...formData, displayOrder: Number(e.target.value) })}
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs font-mono font-bold"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs font-mono font-bold shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   />
                 </div>
 
@@ -933,7 +943,7 @@ export const ProjectsSection: React.FC = () => {
                       type="checkbox"
                       checked={formData.isFeatured}
                       onChange={(e) => setFormData({ ...formData, isFeatured: e.target.checked })}
-                      className="rounded text-[#8b2323] focus:ring-[#8b2323]"
+                      className="rounded border-2 border-stone-900 text-[#8b2323] focus:ring-0"
                     />
                     <span>Featured on Home</span>
                   </label>
@@ -942,7 +952,7 @@ export const ProjectsSection: React.FC = () => {
                       type="checkbox"
                       checked={formData.isPublished}
                       onChange={(e) => setFormData({ ...formData, isPublished: e.target.checked })}
-                      className="rounded text-[#8b2323] focus:ring-[#8b2323]"
+                      className="rounded border-2 border-stone-900 text-[#8b2323] focus:ring-0"
                     />
                     <span>Published to Website</span>
                   </label>
@@ -950,18 +960,18 @@ export const ProjectsSection: React.FC = () => {
               </div>
 
               {/* Submit Buttons */}
-              <div className="pt-4 border-t border-stone-200 dark:border-stone-800 flex justify-end gap-2.5">
+              <div className="pt-4 border-t-2 border-stone-900/10 dark:border-stone-700 flex justify-end gap-2.5">
                 <button
                   type="button"
                   onClick={() => setIsEditing(false)}
-                  className="px-4 py-2 rounded-xl border border-stone-300 dark:border-stone-700 text-stone-600 dark:text-stone-300 text-xs font-semibold hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
+                  className="px-4 py-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 text-xs font-bold shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] hover:translate-x-0.5 hover:translate-y-0.5 transition-all cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-5 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-semibold transition-all shadow-xs disabled:opacity-50 flex items-center gap-2 cursor-pointer active:scale-95"
+                  className="px-5 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] transition-all disabled:opacity-50 flex items-center gap-2 cursor-pointer hover:translate-x-0.5 hover:translate-y-0.5"
                 >
                   {saving ? (
                     <>

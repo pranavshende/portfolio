@@ -65,22 +65,27 @@ export const AnalyticsSection: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100">
-            Real Portfolio Analytics & Telemetry
-          </h2>
-          <p className="text-xs text-stone-500">
+          <div className="flex items-center gap-2">
+            <span className="px-1.5 py-0.5 rounded border border-[#8b2323] text-[#8b2323] dark:border-rose-400 dark:text-rose-400 font-mono text-[10px] font-bold">
+              [分析・データ]
+            </span>
+            <h2 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100">
+              Real Portfolio Analytics & Telemetry
+            </h2>
+          </div>
+          <p className="text-xs text-stone-500 mt-1">
             Live metrics connected directly to Supabase PostgreSQL database without synthetic fallbacks.
           </p>
         </div>
 
-        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-stone-100 dark:bg-stone-800 text-xs font-semibold">
+        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-white dark:bg-stone-800 border-2 border-stone-900 dark:border-stone-700 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] text-xs font-bold">
           {['7d', '30d', '90d'].map((p) => (
             <button
               key={p}
               type="button"
               onClick={() => setPeriod(p)}
-              className={`px-3 py-1 rounded-lg transition-colors ${
-                period === p ? 'bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 shadow-xs' : 'text-stone-500 hover:text-stone-900'
+              className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
+                period === p ? 'bg-[#8b2323] text-white shadow-xs font-bold' : 'text-stone-600 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white'
               }`}
             >
               Last {p.toUpperCase()}
@@ -97,7 +102,7 @@ export const AnalyticsSection: React.FC = () => {
       ) : (
         <>
           {/* Main Visitor Trend Area Chart */}
-          <div className="p-5 rounded-3xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs space-y-4">
+          <div className="p-5 rounded-3xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-sm font-bold text-stone-900 dark:text-stone-100">
@@ -150,7 +155,7 @@ export const AnalyticsSection: React.FC = () => {
           {/* Row 2: Popular Projects + Device Breakdown */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Popular Projects Bar Chart */}
-            <div className="p-5 rounded-3xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs space-y-4">
+            <div className="p-5 rounded-3xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] space-y-4">
               <h3 className="text-sm font-bold text-stone-900 dark:text-stone-100">
                 Most Visited Projects
               </h3>
@@ -176,7 +181,7 @@ export const AnalyticsSection: React.FC = () => {
             </div>
 
             {/* Device Distribution Pie */}
-            <div className="p-5 rounded-3xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs space-y-4">
+            <div className="p-5 rounded-3xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] space-y-4">
               <h3 className="text-sm font-bold text-stone-900 dark:text-stone-100">
                 Device Categories
               </h3>
@@ -208,11 +213,11 @@ export const AnalyticsSection: React.FC = () => {
                   </PieChart>
                 </ResponsiveContainer>
               </div>
-              <div className="flex flex-wrap items-center justify-center gap-4 text-xs">
+              <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-mono font-bold">
                 {deviceDistribution.map((d: any, idx: number) => (
                   <div key={d.name} className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: COLORS[idx % COLORS.length] }} />
-                    <span className="text-stone-600 dark:text-stone-400">{d.name} ({d.value}%)</span>
+                    <span className="w-2.5 h-2.5 rounded-full border border-stone-900" style={{ backgroundColor: COLORS[idx % COLORS.length] }} />
+                    <span className="text-stone-700 dark:text-stone-300">{d.name} ({d.value}%)</span>
                   </div>
                 ))}
               </div>
@@ -220,7 +225,7 @@ export const AnalyticsSection: React.FC = () => {
           </div>
 
           {/* Row 3: Identified Website Visitors by Name */}
-          <div className="p-5 rounded-3xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs space-y-4">
+          <div className="p-5 rounded-3xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] space-y-4">
             <div>
               <h3 className="text-base font-bold text-stone-900 dark:text-stone-100 flex items-center gap-2">
                 <Users className="w-4 h-4 text-[#8b2323]" />

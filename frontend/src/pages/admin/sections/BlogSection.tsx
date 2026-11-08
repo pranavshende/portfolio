@@ -316,13 +316,18 @@ export const BlogSection: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100 flex items-center gap-2">
-            <span>Technical Blog & Knowledge Hub</span>
-            <span className="px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 text-xs font-mono">
-              {totalPosts} Articles
+          <div className="flex items-center gap-2">
+            <span className="px-1.5 py-0.5 rounded border border-[#8b2323] text-[#8b2323] dark:border-rose-400 dark:text-rose-400 font-mono text-[10px] font-bold">
+              [技術ブログ]
             </span>
-          </h2>
-          <p className="text-xs text-stone-500 mt-0.5">
+            <h2 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100 flex items-center gap-2">
+              <span>Technical Blog & Knowledge Hub</span>
+              <span className="px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-stone-600 dark:text-stone-300 text-xs font-mono font-bold">
+                {totalPosts} Articles
+              </span>
+            </h2>
+          </div>
+          <p className="text-xs text-stone-500 mt-1">
             Publish architectural deep-dives, systems tutorials, project breakdowns, and technical achievements.
           </p>
         </div>
@@ -332,7 +337,7 @@ export const BlogSection: React.FC = () => {
             href="/blog"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 text-xs font-semibold transition-colors"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-stone-800 border-2 border-stone-900 dark:border-stone-700 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] text-stone-800 dark:text-stone-200 text-xs font-bold transition-all hover:translate-x-0.5 hover:translate-y-0.5 cursor-pointer"
           >
             <ExternalLink className="w-3.5 h-3.5" />
             <span>View Public Blog</span>
@@ -340,7 +345,7 @@ export const BlogSection: React.FC = () => {
           <button
             type="button"
             onClick={handleOpenCreate}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-semibold transition-all shadow-xs cursor-pointer active:scale-95"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-bold border-2 border-stone-900 shadow-[2.5px_2.5px_0px_#1c1917] dark:shadow-[2.5px_2.5px_0px_#000000] transition-all cursor-pointer hover:translate-x-0.5 hover:translate-y-0.5"
           >
             <Plus className="w-4 h-4" />
             <span>Write Article</span>
@@ -350,9 +355,9 @@ export const BlogSection: React.FC = () => {
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-        <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800">
-          <div className="flex items-center justify-between text-stone-400">
-            <span className="text-xs font-medium">Total Articles</span>
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000]">
+          <div className="flex items-center justify-between text-stone-500 dark:text-stone-400">
+            <span className="text-xs font-bold uppercase tracking-wider">Total Articles</span>
             <BookOpen className="w-4 h-4" />
           </div>
           <div className="text-2xl font-bold font-mono text-stone-900 dark:text-stone-100 mt-2">
@@ -360,9 +365,9 @@ export const BlogSection: React.FC = () => {
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800">
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000]">
           <div className="flex items-center justify-between text-emerald-600 dark:text-emerald-400">
-            <span className="text-xs font-medium">Published Live</span>
+            <span className="text-xs font-bold uppercase tracking-wider">Published Live</span>
             <CheckCircle2 className="w-4 h-4" />
           </div>
           <div className="text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-400 mt-2">
@@ -370,9 +375,9 @@ export const BlogSection: React.FC = () => {
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800">
-          <div className="flex items-center justify-between text-stone-400">
-            <span className="text-xs font-medium">Drafts</span>
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000]">
+          <div className="flex items-center justify-between text-stone-500 dark:text-stone-400">
+            <span className="text-xs font-bold uppercase tracking-wider">Drafts</span>
             <FileText className="w-4 h-4" />
           </div>
           <div className="text-2xl font-bold font-mono text-stone-600 dark:text-stone-400 mt-2">
@@ -380,9 +385,9 @@ export const BlogSection: React.FC = () => {
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800">
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000]">
           <div className="flex items-center justify-between text-purple-600 dark:text-purple-400">
-            <span className="text-xs font-medium">Total Article Views</span>
+            <span className="text-xs font-bold uppercase tracking-wider">Article Views</span>
             <Eye className="w-4 h-4" />
           </div>
           <div className="text-2xl font-bold font-mono text-purple-600 dark:text-purple-400 mt-2">
@@ -399,12 +404,12 @@ export const BlogSection: React.FC = () => {
           value={searchFilter}
           onChange={(e) => setSearchFilter(e.target.value)}
           placeholder="Filter articles by title, category, or tags..."
-          className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-stone-200/80 dark:border-stone-800 bg-white dark:bg-[#16171d] text-xs text-stone-900 dark:text-stone-100 placeholder:text-stone-400"
+          className="w-full pl-10 pr-4 py-2.5 rounded-2xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#16171d] text-xs font-medium text-stone-900 dark:text-stone-100 placeholder:text-stone-400 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
         />
       </div>
 
       {/* Articles Table & Cards */}
-      <div className="rounded-3xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs overflow-hidden">
+      <div className="rounded-3xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] overflow-hidden">
         {loading ? (
           <div className="py-16 text-center space-y-2">
             <Loader2 className="w-6 h-6 animate-spin mx-auto text-[#8b2323]" />
@@ -524,20 +529,25 @@ export const BlogSection: React.FC = () => {
       {/* Blog Post Create / Edit Modal */}
       {isEditing && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-xs select-auto overflow-y-auto">
-          <div className="relative w-full max-w-4xl max-h-[92dvh] overflow-y-auto bg-white dark:bg-[#16171d] rounded-2xl sm:rounded-3xl border border-stone-200 dark:border-stone-800 shadow-2xl p-5 sm:p-8 space-y-5 my-auto">
+          <div className="relative w-full max-w-4xl max-h-[92dvh] overflow-y-auto bg-[#faf7f0] dark:bg-[#16171d] rounded-2xl sm:rounded-3xl border-2 border-stone-900 dark:border-stone-700 shadow-[6px_6px_0px_#1c1917] dark:shadow-[6px_6px_0px_#000000] p-5 sm:p-8 space-y-5 my-auto">
             <button
               type="button"
               onClick={() => setIsEditing(false)}
-              className="absolute top-5 right-5 p-2 rounded-full text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-stone-800"
+              className="absolute top-5 right-5 p-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 shadow-[2px_2px_0px_#1c1917] hover:translate-x-0.5 hover:translate-y-0.5 transition-all cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
 
             <div>
-              <h3 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100">
-                {currentPost ? 'Edit Technical Article' : 'Write New Article'}
-              </h3>
-              <p className="text-xs text-stone-500 mt-0.5">
+              <div className="flex items-center gap-2">
+                <span className="px-1.5 py-0.5 rounded border border-[#8b2323] text-[#8b2323] dark:border-rose-400 dark:text-rose-400 font-mono text-[10px] font-bold">
+                  [執筆]
+                </span>
+                <h3 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100">
+                  {currentPost ? 'Edit Technical Article' : 'Write New Article'}
+                </h3>
+              </div>
+              <p className="text-xs text-stone-500 mt-1">
                 Authored by {formData.author || 'Pranav Shende'}. Published to the portfolio blog and SEO sitemap.
               </p>
             </div>
@@ -555,7 +565,7 @@ export const BlogSection: React.FC = () => {
                     value={formData.title}
                     onChange={(e) => handleTitleChange(e.target.value)}
                     placeholder="Jarvis AI: Building an Enterprise Intelligence Platform with Fastify & MCP"
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs sm:text-sm"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs sm:text-sm shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   />
                 </div>
 
@@ -569,7 +579,7 @@ export const BlogSection: React.FC = () => {
                     value={formData.slug}
                     onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
                     placeholder="jarvis-enterprise-intelligence-mcp"
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs font-mono"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs font-mono shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   />
                 </div>
               </div>
@@ -583,7 +593,7 @@ export const BlogSection: React.FC = () => {
                   <select
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   >
                     {PRESET_CATEGORIES.map((cat) => (
                       <option key={cat} value={cat}>{cat}</option>
@@ -600,7 +610,7 @@ export const BlogSection: React.FC = () => {
                     type="number"
                     value={formData.readingTimeMinutes}
                     onChange={(e) => setFormData({ ...formData, readingTimeMinutes: Number(e.target.value) })}
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs font-mono"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs font-mono shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   />
                 </div>
 
@@ -612,7 +622,7 @@ export const BlogSection: React.FC = () => {
                     type="text"
                     value={formData.author}
                     onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   />
                 </div>
               </div>
@@ -821,18 +831,18 @@ export const BlogSection: React.FC = () => {
               </div>
 
               {/* Submit Buttons */}
-              <div className="pt-4 border-t border-stone-200 dark:border-stone-800 flex justify-end gap-2.5">
+              <div className="pt-4 border-t-2 border-stone-900/10 dark:border-stone-700 flex justify-end gap-2.5">
                 <button
                   type="button"
                   onClick={() => setIsEditing(false)}
-                  className="px-4 py-2 rounded-xl border border-stone-300 dark:border-stone-700 text-stone-600 dark:text-stone-300 text-xs font-semibold hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
+                  className="px-4 py-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 text-xs font-bold shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] hover:translate-x-0.5 hover:translate-y-0.5 transition-all cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-5 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-semibold transition-all shadow-xs disabled:opacity-50 flex items-center gap-2 cursor-pointer active:scale-95"
+                  className="px-5 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] transition-all disabled:opacity-50 flex items-center gap-2 cursor-pointer hover:translate-x-0.5 hover:translate-y-0.5"
                 >
                   {saving ? (
                     <>

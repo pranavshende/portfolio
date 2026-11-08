@@ -152,10 +152,15 @@ export const MessagesSection: React.FC = () => {
       {/* Header & Controls */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100">
-            Messages & Inquiries
-          </h2>
-          <p className="text-xs text-stone-500">
+          <div className="flex items-center gap-2">
+            <span className="px-1.5 py-0.5 rounded border border-[#8b2323] text-[#8b2323] dark:border-rose-400 dark:text-rose-400 font-mono text-[10px] font-bold">
+              [問い合わせ]
+            </span>
+            <h2 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100">
+              Messages & Inquiries
+            </h2>
+          </div>
+          <p className="text-xs text-stone-500 mt-1">
             Track inquiries received from portfolio visitors, manage review workflows & export records.
           </p>
         </div>
@@ -164,7 +169,7 @@ export const MessagesSection: React.FC = () => {
           <button
             type="button"
             onClick={handleExportCSV}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 text-stone-800 dark:text-stone-200 text-xs font-semibold transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-stone-800 border-2 border-stone-900 dark:border-stone-700 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] text-stone-800 dark:text-stone-200 text-xs font-bold transition-all hover:translate-x-0.5 hover:translate-y-0.5 cursor-pointer"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Export CSV</span>
@@ -173,7 +178,7 @@ export const MessagesSection: React.FC = () => {
       </div>
 
       {/* Filters Bar */}
-      <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000] flex flex-wrap items-center justify-between gap-3 text-xs">
         <form onSubmit={handleSearchSubmit} className="relative flex-1 min-w-[200px] max-w-md">
           <Search className="w-4 h-4 absolute left-3 top-2.5 text-stone-400" />
           <input
@@ -181,18 +186,18 @@ export const MessagesSection: React.FC = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name, email, or subject..."
-            className="w-full pl-9 pr-3 py-1.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-stone-900 dark:text-stone-100 text-xs"
+            className="w-full pl-9 pr-3 py-2 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-stone-900 dark:text-stone-100 text-xs shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
           />
         </form>
 
         <div className="flex items-center gap-3">
           {/* Status Filter */}
           <div className="flex items-center gap-1.5">
-            <span className="text-stone-500 font-medium">Status:</span>
+            <span className="text-stone-500 font-bold">Status:</span>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="py-1 px-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-stone-800 dark:text-stone-200 text-xs font-medium"
+              className="py-1.5 px-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-stone-800 dark:text-stone-200 text-xs font-bold shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
             >
               {STATUS_OPTIONS.map((st) => (
                 <option key={st} value={st}>{st}</option>
@@ -202,11 +207,11 @@ export const MessagesSection: React.FC = () => {
 
           {/* Type Filter */}
           <div className="flex items-center gap-1.5">
-            <span className="text-stone-500 font-medium">Type:</span>
+            <span className="text-stone-500 font-bold">Type:</span>
             <select
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
-              className="py-1 px-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-stone-800 dark:text-stone-200 text-xs font-medium"
+              className="py-1.5 px-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-stone-800 dark:text-stone-200 text-xs font-bold shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
             >
               {TYPE_OPTIONS.map((tp) => (
                 <option key={tp} value={tp}>{tp}</option>
@@ -217,7 +222,7 @@ export const MessagesSection: React.FC = () => {
       </div>
 
       {/* Messages Table */}
-      <div className="rounded-3xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs overflow-hidden">
+      <div className="rounded-3xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] overflow-hidden">
         {loading ? (
           <div className="py-16 text-center space-y-2">
             <Loader2 className="w-6 h-6 animate-spin mx-auto text-[#8b2323]" />
@@ -403,21 +408,21 @@ export const MessagesSection: React.FC = () => {
 
       {/* Message Detail Modal */}
       {selectedMessage && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs select-auto">
-          <div className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto bg-white dark:bg-[#16171d] rounded-3xl border border-stone-200 dark:border-stone-800 shadow-2xl p-6 sm:p-8 space-y-5">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs select-auto">
+          <div className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto bg-[#faf7f0] dark:bg-[#16171d] rounded-3xl border-2 border-stone-900 dark:border-stone-700 shadow-[6px_6px_0px_#1c1917] dark:shadow-[6px_6px_0px_#000000] p-6 sm:p-8 space-y-5">
             <button
               onClick={() => setSelectedMessage(null)}
-              className="absolute top-5 right-5 p-2 rounded-full text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-stone-800"
+              className="absolute top-5 right-5 p-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 shadow-[2px_2px_0px_#1c1917] hover:translate-x-0.5 hover:translate-y-0.5 transition-all cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
 
             <div className="space-y-1 pr-8">
               <div className="flex items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded-md bg-[#8b2323]/10 text-[#8b2323] text-xs font-bold">
+                <span className="px-2 py-0.5 rounded border border-[#8b2323] text-[#8b2323] dark:border-rose-400 dark:text-rose-400 font-mono text-[10px] font-bold">
                   {selectedMessage.inquiryType}
                 </span>
-                <span className="text-xs text-stone-400 font-mono">
+                <span className="text-xs text-stone-500 font-mono font-bold">
                   {new Date(selectedMessage.createdAt).toLocaleString()}
                 </span>
               </div>
@@ -427,31 +432,31 @@ export const MessagesSection: React.FC = () => {
             </div>
 
             {/* Sender Metadata Box */}
-            <div className="p-3.5 rounded-2xl bg-stone-50 dark:bg-stone-900/60 border border-stone-200 dark:border-stone-800 space-y-1 text-xs">
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#1b1c24] border-2 border-stone-900/80 dark:border-stone-700 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] space-y-1.5 text-xs">
               <div className="flex items-center justify-between">
-                <span className="text-stone-500">From:</span>
-                <span className="font-semibold text-stone-900 dark:text-stone-100">{selectedMessage.name}</span>
+                <span className="text-stone-500 font-bold">From:</span>
+                <span className="font-bold text-stone-900 dark:text-stone-100">{selectedMessage.name}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-stone-500">Email:</span>
-                <a href={`mailto:${selectedMessage.email}`} className="font-mono text-blue-600 dark:text-blue-400 hover:underline">
+                <span className="text-stone-500 font-bold">Email:</span>
+                <a href={`mailto:${selectedMessage.email}`} className="font-mono text-[#8b2323] dark:text-rose-400 font-bold hover:underline">
                   {selectedMessage.email}
                 </a>
               </div>
               {selectedMessage.company && (
                 <div className="flex items-center justify-between">
-                  <span className="text-stone-500">Organization:</span>
+                  <span className="text-stone-500 font-bold">Organization:</span>
                   <span className="font-medium text-stone-800 dark:text-stone-200">{selectedMessage.company}</span>
                 </div>
               )}
               {selectedMessage.attachmentUrl && (
                 <div className="flex items-center justify-between pt-1 border-t border-stone-200 dark:border-stone-800">
-                  <span className="text-stone-500">Attachment:</span>
+                  <span className="text-stone-500 font-bold">Attachment:</span>
                   <a
                     href={selectedMessage.attachmentUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-blue-600 font-semibold hover:underline"
+                    className="text-[#8b2323] font-bold hover:underline"
                   >
                     Open Link ↗
                   </a>
@@ -461,23 +466,23 @@ export const MessagesSection: React.FC = () => {
 
             {/* Message Body */}
             <div className="space-y-2">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-stone-400">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-stone-500">
                 Inquiry Message
               </h4>
-              <div className="p-4 rounded-2xl bg-stone-50/70 dark:bg-[#1c1d25] border border-stone-200 dark:border-stone-800 text-xs sm:text-sm text-stone-800 dark:text-stone-200 leading-relaxed whitespace-pre-wrap">
+              <div className="p-4 rounded-2xl bg-white dark:bg-[#1c1d25] border-2 border-stone-900/80 dark:border-stone-700 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] text-xs sm:text-sm text-stone-800 dark:text-stone-200 leading-relaxed whitespace-pre-wrap">
                 {selectedMessage.message}
               </div>
             </div>
 
             {/* Status Change in Modal */}
             <div className="flex items-center justify-between pt-1">
-              <span className="text-xs font-semibold text-stone-600 dark:text-stone-400">
+              <span className="text-xs font-bold text-stone-700 dark:text-stone-300">
                 Workflow Status:
               </span>
               <select
                 value={selectedMessage.status}
                 onChange={(e) => handleStatusChange(selectedMessage.id, e.target.value)}
-                className="py-1 px-3 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-[#1a1c23] text-xs font-semibold"
+                className="py-1 px-3 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1a1c23] text-xs font-bold shadow-[2px_2px_0px_#1c1917]"
               >
                 <option value="NEW">NEW</option>
                 <option value="CONTACTED">CONTACTED</option>
@@ -488,8 +493,8 @@ export const MessagesSection: React.FC = () => {
             </div>
 
             {/* Admin Internal Notes */}
-            <div className="space-y-2 pt-2 border-t border-stone-200 dark:border-stone-800">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-stone-400">
+            <div className="space-y-2 pt-2 border-t-2 border-stone-900/10 dark:border-stone-700">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-stone-500">
                 Private Admin Notes (Internal Only)
               </h4>
               <textarea
@@ -497,14 +502,14 @@ export const MessagesSection: React.FC = () => {
                 onChange={(e) => setAdminNotes(e.target.value)}
                 rows={3}
                 placeholder="Add private follow-up notes, phone call logs, or meeting notes..."
-                className="w-full p-3 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1a1c23] text-stone-900 dark:text-stone-100 text-xs focus:ring-2 focus:ring-[#8b2323]/30"
+                className="w-full p-3 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1a1c23] text-stone-900 dark:text-stone-100 text-xs shadow-[2px_2px_0px_#1c1917]"
               />
               <div className="flex justify-end">
                 <button
                   type="button"
                   disabled={savingNotes}
                   onClick={handleSaveNotes}
-                  className="px-4 py-1.5 rounded-xl bg-[#8b2323] text-white text-xs font-semibold hover:bg-[#721c1c] transition-colors disabled:opacity-50"
+                  className="px-4 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] transition-all disabled:opacity-50 cursor-pointer"
                 >
                   {savingNotes ? 'Saving Note...' : 'Save Note'}
                 </button>
@@ -512,19 +517,19 @@ export const MessagesSection: React.FC = () => {
             </div>
 
             {/* Action Bar */}
-            <div className="pt-3 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between">
+            <div className="pt-3 border-t-2 border-stone-900/10 dark:border-stone-700 flex items-center justify-between">
               <a
                 href={`mailto:${selectedMessage.email}?subject=Re: ${encodeURIComponent(selectedMessage.subject)}`}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 text-xs font-semibold hover:bg-stone-800 transition-colors"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 border-2 border-stone-900 dark:border-stone-700 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] text-xs font-bold hover:translate-x-0.5 hover:translate-y-0.5 transition-all"
               >
-                <Send className="w-3.5 h-3.5" />
+                <Send className="w-3.5 h-3.5 text-[#8b2323]" />
                 <span>Reply via Email Client</span>
               </a>
 
               <button
                 type="button"
                 onClick={() => handleDelete(selectedMessage.id)}
-                className="px-4 py-2 rounded-xl border border-red-200 dark:border-red-900 text-red-600 text-xs font-semibold hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors"
+                className="px-4 py-2 rounded-xl border-2 border-red-800/40 text-red-600 bg-red-50 dark:bg-red-950/20 text-xs font-bold hover:bg-red-100 transition-colors cursor-pointer"
               >
                 Delete Inquiry
               </button>

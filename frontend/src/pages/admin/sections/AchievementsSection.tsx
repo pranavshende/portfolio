@@ -106,10 +106,15 @@ export const AchievementsSection: React.FC = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100">
-            Achievements & Publications
-          </h2>
-          <p className="text-xs text-stone-500">
+          <div className="flex items-center gap-2">
+            <span className="px-1.5 py-0.5 rounded border border-[#8b2323] text-[#8b2323] dark:border-rose-400 dark:text-rose-400 font-mono text-[10px] font-bold">
+              [実績・論文]
+            </span>
+            <h2 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100">
+              Achievements & Publications
+            </h2>
+          </div>
+          <p className="text-xs text-stone-500 mt-1">
             Showcase IEEE conference research papers, hackathon wins, honors, and certifications.
           </p>
         </div>
@@ -117,14 +122,14 @@ export const AchievementsSection: React.FC = () => {
         <button
           type="button"
           onClick={handleOpenCreate}
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-semibold transition-all shadow-xs cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs sm:text-sm font-bold border-2 border-stone-900 shadow-[2.5px_2.5px_0px_#1c1917] dark:shadow-[2.5px_2.5px_0px_#000000] transition-all cursor-pointer hover:translate-x-0.5 hover:translate-y-0.5"
         >
           <Plus className="w-4 h-4" />
           <span>Add Achievement</span>
         </button>
       </div>
 
-      <div className="rounded-3xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs overflow-hidden">
+      <div className="rounded-3xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] overflow-hidden">
         {loading ? (
           <div className="py-16 text-center space-y-2">
             <Loader2 className="w-6 h-6 animate-spin mx-auto text-[#8b2323]" />
@@ -196,18 +201,23 @@ export const AchievementsSection: React.FC = () => {
 
       {/* Achievement Modal */}
       {isEditing && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs select-auto">
-          <div className="relative w-full max-w-lg bg-white dark:bg-[#16171d] rounded-3xl border border-stone-200 dark:border-stone-800 shadow-2xl p-6 sm:p-8 space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs select-auto">
+          <div className="relative w-full max-w-lg bg-[#faf7f0] dark:bg-[#16171d] rounded-3xl border-2 border-stone-900 dark:border-stone-700 shadow-[6px_6px_0px_#1c1917] dark:shadow-[6px_6px_0px_#000000] p-6 sm:p-8 space-y-4">
             <button
               onClick={() => setIsEditing(false)}
-              className="absolute top-5 right-5 p-2 rounded-full text-stone-400 hover:text-stone-900 dark:hover:text-white"
+              className="absolute top-5 right-5 p-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 shadow-[2px_2px_0px_#1c1917] hover:translate-x-0.5 hover:translate-y-0.5 transition-all cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
 
-            <h3 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100">
-              {currentAch ? 'Edit Achievement' : 'Add Achievement'}
-            </h3>
+            <div className="flex items-center gap-2">
+              <span className="px-1.5 py-0.5 rounded border border-[#8b2323] text-[#8b2323] dark:border-rose-400 dark:text-rose-400 font-mono text-[10px] font-bold">
+                [表彰]
+              </span>
+              <h3 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100">
+                {currentAch ? 'Edit Achievement' : 'Add Achievement'}
+              </h3>
+            </div>
 
             <form onSubmit={handleSave} className="space-y-3.5 text-xs sm:text-sm">
               <div className="space-y-1">
@@ -220,7 +230,7 @@ export const AchievementsSection: React.FC = () => {
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   placeholder="e.g. CNN Based Classification of Lumpy Skin Disease"
-                  className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs"
+                  className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs font-bold shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                 />
               </div>
 
@@ -234,7 +244,7 @@ export const AchievementsSection: React.FC = () => {
                     value={formData.issuer}
                     onChange={(e) => setFormData({ ...formData, issuer: e.target.value })}
                     placeholder="IEEE 4th OPJU Conference"
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   />
                 </div>
 
@@ -245,7 +255,7 @@ export const AchievementsSection: React.FC = () => {
                   <select
                     value={formData.type}
                     onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs font-medium"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs font-bold shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   >
                     {ACHIEVEMENT_TYPES.map((t) => (
                       <option key={t} value={t}>{t}</option>
@@ -263,7 +273,7 @@ export const AchievementsSection: React.FC = () => {
                     type="month"
                     value={formData.date}
                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs font-mono shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   />
                 </div>
 
@@ -276,7 +286,7 @@ export const AchievementsSection: React.FC = () => {
                     value={formData.url}
                     onChange={(e) => setFormData({ ...formData, url: e.target.value })}
                     placeholder="https://doi.org/10.1109/..."
-                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs"
+                    className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs font-mono shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   />
                 </div>
               </div>
@@ -290,22 +300,22 @@ export const AchievementsSection: React.FC = () => {
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   placeholder="Summary of research contribution or award context..."
-                  className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs"
+                  className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs leading-relaxed shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                 />
               </div>
 
-              <div className="pt-3 border-t border-stone-200 dark:border-stone-800 flex justify-end gap-2">
+              <div className="pt-3 border-t-2 border-stone-900/10 dark:border-stone-700 flex justify-end gap-2.5">
                 <button
                   type="button"
                   onClick={() => setIsEditing(false)}
-                  className="px-4 py-2 rounded-xl border border-stone-300 dark:border-stone-700 text-xs font-semibold"
+                  className="px-4 py-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 text-xs font-bold shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] hover:translate-x-0.5 hover:translate-y-0.5 transition-all cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-5 py-2 rounded-xl bg-[#8b2323] text-white text-xs font-semibold hover:bg-[#721c1c] disabled:opacity-50"
+                  className="px-5 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] transition-all disabled:opacity-50 cursor-pointer hover:translate-x-0.5 hover:translate-y-0.5"
                 >
                   {saving ? 'Saving...' : 'Save Achievement'}
                 </button>

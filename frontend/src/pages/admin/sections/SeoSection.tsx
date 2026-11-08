@@ -38,17 +38,22 @@ export const SeoSection: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100">
-          SEO & Meta Tags Management
-        </h2>
-        <p className="text-xs text-stone-500">
+        <div className="flex items-center gap-2">
+          <span className="px-1.5 py-0.5 rounded border border-[#8b2323] text-[#8b2323] dark:border-rose-400 dark:text-rose-400 font-mono text-[10px] font-bold">
+            [検索・SEO]
+          </span>
+          <h2 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100">
+            SEO & Meta Tags Management
+          </h2>
+        </div>
+        <p className="text-xs text-stone-500 mt-1">
           Configure search engine optimization, Google search appearance, and OpenGraph social previews.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Editor Form */}
-        <div className="lg:col-span-2 p-6 rounded-3xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs space-y-4">
+        <div className="lg:col-span-2 p-6 rounded-3xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] space-y-4">
           <form onSubmit={handleSave} className="space-y-4 text-xs sm:text-sm">
             <div className="space-y-1">
               <label className="block text-xs font-bold text-stone-700 dark:text-stone-300">
@@ -59,7 +64,7 @@ export const SeoSection: React.FC = () => {
                 required
                 value={formData.metaTitle}
                 onChange={(e) => setFormData({ ...formData, metaTitle: e.target.value })}
-                className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs font-medium"
+                className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs font-bold shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
               />
               <span className="text-[10px] text-stone-400 font-mono">
                 {formData.metaTitle.length} / 60 characters
@@ -75,7 +80,7 @@ export const SeoSection: React.FC = () => {
                 required
                 value={formData.metaDescription}
                 onChange={(e) => setFormData({ ...formData, metaDescription: e.target.value })}
-                className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs leading-relaxed"
+                className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs leading-relaxed shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
               />
               <span className="text-[10px] text-stone-400 font-mono">
                 {formData.metaDescription.length} / 160 characters
@@ -90,7 +95,7 @@ export const SeoSection: React.FC = () => {
                 type="text"
                 value={formData.keywords}
                 onChange={(e) => setFormData({ ...formData, keywords: e.target.value })}
-                className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs"
+                className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
               />
             </div>
 
@@ -103,7 +108,7 @@ export const SeoSection: React.FC = () => {
                   type="url"
                   value={formData.ogImage}
                   onChange={(e) => setFormData({ ...formData, ogImage: e.target.value })}
-                  className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs font-mono"
+                  className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs font-mono shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                 />
               </div>
 
@@ -115,14 +120,14 @@ export const SeoSection: React.FC = () => {
                   type="url"
                   value={formData.canonicalUrl}
                   onChange={(e) => setFormData({ ...formData, canonicalUrl: e.target.value })}
-                  className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs font-mono"
+                  className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs font-mono shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                 />
               </div>
             </div>
 
             <div className="pt-2 flex items-center justify-between">
               {saved && (
-                <span className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
+                <span className="text-xs text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
                   <CheckCircle2 className="w-4 h-4" /> SEO updated successfully
                 </span>
               )}
@@ -130,7 +135,7 @@ export const SeoSection: React.FC = () => {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-5 py-2.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-semibold transition-all shadow-xs flex items-center gap-2 cursor-pointer"
+                  className="px-5 py-2.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] transition-all flex items-center gap-2 cursor-pointer hover:translate-x-0.5 hover:translate-y-0.5"
                 >
                   {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                   <span>{saving ? 'Saving...' : 'Save Meta Settings'}</span>
@@ -141,16 +146,16 @@ export const SeoSection: React.FC = () => {
         </div>
 
         {/* Live Google Search Preview */}
-        <div className="p-6 rounded-3xl bg-white dark:bg-[#16171d] border border-stone-200/80 dark:border-stone-800 shadow-xs space-y-4">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-stone-400 flex items-center gap-1.5">
+        <div className="p-6 rounded-3xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] space-y-4">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 flex items-center gap-1.5">
             <Search className="w-4 h-4 text-blue-500" /> Google Search Preview
           </h3>
 
-          <div className="p-4 rounded-2xl bg-stone-50 dark:bg-[#1d1f27] border border-stone-200 dark:border-stone-800 space-y-1.5">
+          <div className="p-4 rounded-2xl bg-[#faf7f0] dark:bg-[#1d1f27] border-2 border-stone-900/40 dark:border-stone-700 space-y-1.5 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]">
             <div className="text-[11px] text-stone-500 font-mono truncate">
               {formData.canonicalUrl}
             </div>
-            <h4 className="text-sm font-semibold text-blue-700 dark:text-blue-400 hover:underline cursor-pointer leading-snug">
+            <h4 className="text-sm font-bold text-blue-700 dark:text-blue-400 hover:underline cursor-pointer leading-snug">
               {formData.metaTitle}
             </h4>
             <p className="text-xs text-stone-600 dark:text-stone-300 line-clamp-3 leading-relaxed">
