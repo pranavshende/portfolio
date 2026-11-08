@@ -275,6 +275,7 @@ export const Home: React.FC = () => {
     const projectImages: Record<string, string> = {
       jarvis: jarvisBanner,
       'jarvis-mcp-multipledbs': jarvisBanner,
+      'jarvis-ai': jarvisBanner,
       electropathy: electropathyBanner,
       'electropathy-ai': electropathyBanner,
       tastifyy: tastifyyBanner,
@@ -282,6 +283,30 @@ export const Home: React.FC = () => {
       jansampark: jansamparkPhoto,
       solar: solarAnalyticsPhoto,
       pashurakshak: pashurakshakPhoto,
+    };
+
+    const resolveProjectThumbnail = (p: any): string => {
+      const slug = String(p.slug || p.id || p.title || '').toLowerCase();
+      
+      // 1. Check known project key in bundled assets
+      for (const [key, asset] of Object.entries(projectImages)) {
+        if (slug.includes(key) || key.includes(slug)) {
+          return asset;
+        }
+      }
+
+      // 2. Check bannerUrl or thumbnailUrl
+      const raw = p.bannerUrl || p.thumbnailUrl;
+      if (raw && typeof raw === 'string') {
+        if (raw.startsWith('data:image/') || raw.startsWith('http://') || raw.startsWith('https://')) {
+          return raw;
+        }
+        if (raw.startsWith('/photo/')) {
+          return raw;
+        }
+      }
+
+      return jarvisBanner;
     };
 
     api.getProjects()
@@ -302,7 +327,7 @@ export const Home: React.FC = () => {
             github: p.githubUrl,
             demo: p.demoUrl || p.liveDemoUrl,
             badge: p.badge || (p.featured || p.isFeatured ? 'Featured' : undefined),
-            image: p.bannerUrl || p.thumbnailUrl || projectImages[p.slug] || jarvisBanner,
+            image: resolveProjectThumbnail(p),
           }));
 
           setProjectList(mapped);
@@ -486,6 +511,9 @@ export const Home: React.FC = () => {
                 <img
                   src={proj.image}
                   alt={proj.title}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = jarvisBanner;
+                  }}
                   className="w-full h-full object-cover object-center group-hover:scale-[1.03] transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
@@ -808,6 +836,9 @@ export const Home: React.FC = () => {
                 <img
                   src={selectedProject.image}
                   alt={selectedProject.title}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = jarvisBanner;
+                  }}
                   className="w-full h-full object-cover object-center"
                 />
               </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import cherryBlossomMist from "@/photo/cherry_blossom_mist.webp";
 import cherryBlossomMistMobile from "@/photo/cherry_blossom_mist_mobile.webp";
-import profilePhoto from "@/photo/profile_photo_wide.webp";
+import Sharingan from "./Sharingan";
 
 interface InitialLoaderProps {
   onComplete: () => void;
@@ -103,37 +103,14 @@ export const InitialLoader: React.FC<InitialLoaderProps> = ({ onComplete }) => {
 
           {/* Center Clean Japanese Sumi-e Spinner Box */}
           <div className="relative z-30 flex flex-col items-center space-y-4 px-4">
-            {/* Ink Circle (Enso) with Round Profile Photo */}
+            {/* Spinning Sharingan (Photo Removed) */}
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: 0.85, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center shrink-0"
+              transition={{ duration: 0.4 }}
+              className="relative flex items-center justify-center shrink-0"
             >
-              {/* Outer Enso Ink Ring */}
-              <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full animate-[spin_12s_linear_infinite] opacity-85 text-stone-900 pointer-events-none">
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="44"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="3.5"
-                  strokeDasharray="210 50"
-                  strokeLinecap="round"
-                />
-              </svg>
-
-              {/* Inner Round Profile Photo with crimson border */}
-              <div className="relative w-14 h-14 sm:w-16 sm:h-16 aspect-square rounded-full overflow-hidden border-2 border-[#8b2323] shadow-sm bg-zinc-100 dark:bg-zinc-800 shrink-0 flex items-center justify-center">
-                <img
-                  src={profilePhoto}
-                  alt="Pranav Shende"
-                  className="w-full h-full max-w-full max-h-full object-cover object-center scale-[1.7] translate-y-0.5 pointer-events-none select-none"
-                  loading="eager"
-                  draggable={false}
-                />
-              </div>
+              <Sharingan className="w-20 h-20 sm:w-24 sm:h-24" />
             </motion.div>
 
             {/* Name */}

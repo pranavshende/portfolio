@@ -274,6 +274,7 @@ export const ProjectsPage: React.FC = () => {
     const projectImages: Record<string, string> = {
       jarvis: jarvisBanner,
       'jarvis-mcp-multipledbs': jarvisBanner,
+      'jarvis-ai': jarvisBanner,
       electropathy: electropathyBanner,
       'electropathy-ai': electropathyBanner,
       tastifyy: tastifyyBanner,
@@ -281,6 +282,28 @@ export const ProjectsPage: React.FC = () => {
       jansampark: jansamparkPhoto,
       solar: solarAnalyticsPhoto,
       pashurakshak: pashurakshakPhoto,
+    };
+
+    const resolveProjectThumbnail = (p: any): string => {
+      const slug = String(p.slug || p.id || p.title || p.name || '').toLowerCase();
+      
+      for (const [key, asset] of Object.entries(projectImages)) {
+        if (slug.includes(key) || key.includes(slug)) {
+          return asset;
+        }
+      }
+
+      const raw = p.bannerUrl || p.thumbnailUrl;
+      if (raw && typeof raw === 'string') {
+        if (raw.startsWith('data:image/') || raw.startsWith('http://') || raw.startsWith('https://')) {
+          return raw;
+        }
+        if (raw.startsWith('/photo/')) {
+          return raw;
+        }
+      }
+
+      return jarvisBanner;
     };
 
     Promise.allSettled([
@@ -312,7 +335,7 @@ export const ProjectsPage: React.FC = () => {
             badge: p.badge || (p.featured || p.isFeatured ? 'Featured' : 'Live Production'),
             demoUrl: p.demoUrl || p.liveDemoUrl,
             githubUrl: p.githubUrl || 'https://github.com/pranavshende',
-            image: p.bannerUrl || p.thumbnailUrl || projectImages[p.slug] || jarvisBanner,
+            image: resolveProjectThumbnail(p),
             stars: 1,
             forks: 0,
             language: Array.isArray(p.techStack) && p.techStack[0] ? p.techStack[0] : 'TypeScript',
@@ -531,6 +554,9 @@ export const ProjectsPage: React.FC = () => {
                           <img
                             src={p.image}
                             alt={p.title}
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = jarvisBanner;
+                            }}
                             className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
                           />
                           {p.badge && (

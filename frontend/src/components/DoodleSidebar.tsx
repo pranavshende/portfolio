@@ -404,13 +404,13 @@ export const DoodleSidebar: React.FC = () => {
 
       {/* ─────────────────────────────────────────────────────────────
           MOBILE FLOATING BOTTOM DOCK
-          Instant 1-tap access to Home, About, Arcade, Resume
+          Compact & Resized 5-item Navigation Dock
       ────────────────────────────────────────────────────────────── */}
       <nav 
         aria-label="Mobile Navigation Dock"
-        className="md:hidden fixed bottom-3 inset-x-0 z-50 flex justify-center px-3 pointer-events-none"
+        className="md:hidden fixed bottom-2.5 inset-x-0 z-50 flex justify-center px-2 pointer-events-none"
       >
-        <div className="pointer-events-auto flex items-center gap-1 p-1 rounded-full bg-[#fbf7f2]/95 dark:bg-[#14161d]/95 backdrop-blur-xl border border-stone-800/15 dark:border-stone-700/50 shadow-2xl">
+        <div className="pointer-events-auto flex items-center gap-0.5 p-1 rounded-full bg-[#fbf7f2]/95 dark:bg-[#14161d]/95 backdrop-blur-xl border border-stone-800/15 dark:border-stone-700/50 shadow-xl max-w-fit">
           {navItems.map((item) => {
             const isActive =
               item.path === '/'
@@ -421,17 +421,17 @@ export const DoodleSidebar: React.FC = () => {
               <NavLink
                 key={item.name}
                 to={item.path}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${
+                className={`flex items-center gap-1 px-2 py-1 sm:px-2.5 sm:py-1 rounded-full text-[11px] font-bold transition-all duration-150 ${
                   isActive
                     ? '!bg-[#8b2323] !text-white shadow-xs'
                     : 'text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white hover:bg-stone-200/50 dark:hover:bg-stone-800/50'
                 }`}
                 style={isActive ? { backgroundColor: '#8b2323', color: '#ffffff' } : undefined}
               >
-                <span className="shrink-0 scale-90" style={isActive ? { color: '#ffffff' } : undefined}>
+                <span className="shrink-0 scale-75 origin-center" style={isActive ? { color: '#ffffff' } : undefined}>
                   {item.icon}
                 </span>
-                <span style={isActive ? { color: '#ffffff' } : undefined}>
+                <span className="leading-none pt-0.5" style={isActive ? { color: '#ffffff' } : undefined}>
                   {item.name}
                 </span>
               </NavLink>
