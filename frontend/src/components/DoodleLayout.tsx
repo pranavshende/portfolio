@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DoodleSidebar } from './DoodleSidebar';
+import SakuraFall from './SakuraFall';
 import cherryBlossomMist from '@/photo/cherry_blossom_mist.webp';
 import cherryBlossomMistDark from '@/photo/cherry_blossom_mist_dark.webp';
 import cherryBlossomMistMobile from '@/photo/cherry_blossom_mist_mobile.webp';
@@ -69,6 +70,15 @@ export const DoodleLayout: React.FC<DoodleLayoutProps> = ({ children }) => {
         {/* Soft atmospheric gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-stone-900/[0.02] via-transparent to-stone-900/[0.04] dark:from-black/40 dark:to-black/60" />
       </div>
+
+      {/* ── Ambient Falling Sakura Petals (Anime Aesthetic) ── */}
+      <SakuraFall />
+
+      {/* ── Subtle Japanese Washi Paper Texture Overlay ── */}
+      <div 
+        className="fixed inset-0 pointer-events-none z-[2] opacity-30 dark:opacity-15 mix-blend-multiply dark:mix-blend-overlay washi-grain"
+        aria-hidden="true"
+      />
 
       <DoodleSidebar />
 

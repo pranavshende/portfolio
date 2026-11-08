@@ -103,16 +103,17 @@ const DoodleBook = () => (
 
 interface NavItem {
   name: string;
+  kanji: string;
   path: string;
   icon: React.ReactNode;
 }
 
 const navItems: NavItem[] = [
-  { name: 'Home', path: '/', icon: <DoodleHouse /> },
-  { name: 'Projects', path: '/projects', icon: <DoodleFolder /> },
-  { name: 'Blog', path: '/blog', icon: <DoodleBook /> },
-  { name: 'About', path: '/about', icon: <DoodleSmiley /> },
-  { name: 'Arcade', path: '/arcade', icon: <DoodleGamepad /> },
+  { name: 'Home', kanji: 'ホーム', path: '/', icon: <DoodleHouse /> },
+  { name: 'Projects', kanji: '作品', path: '/projects', icon: <DoodleFolder /> },
+  { name: 'Blog', kanji: '日誌', path: '/blog', icon: <DoodleBook /> },
+  { name: 'About', kanji: '経歴', path: '/about', icon: <DoodleSmiley /> },
+  { name: 'Arcade', kanji: '遊戯', path: '/arcade', icon: <DoodleGamepad /> },
 ];
 
 export const DoodleSidebar: React.FC = () => {
@@ -173,18 +174,23 @@ export const DoodleSidebar: React.FC = () => {
               </div>
             </button>
 
-            {/* Name */}
-            <h1 
-              onClick={() => setProfileModalOpen(true)}
-              className="text-lg font-bold text-stone-900 dark:text-stone-50 tracking-tight leading-none font-serif cursor-pointer hover:text-[#8b2323] dark:hover:text-red-400 transition-colors"
-              title="Click to view full profile details"
-            >
-              Pranav Shende
-            </h1>
+            {/* Name + Hanko Seal */}
+            <div className="flex items-center justify-center gap-1.5">
+              <h1 
+                onClick={() => setProfileModalOpen(true)}
+                className="text-lg font-bold text-stone-900 dark:text-stone-50 tracking-tight leading-none font-serif cursor-pointer hover:text-[#8b2323] dark:hover:text-red-400 transition-colors"
+                title="Click to view full profile details"
+              >
+                Pranav Shende
+              </h1>
+              <span className="hanko-stamp text-[9px] w-4 h-4" title="印 (Inkan / Hanko Seal)">
+                普
+              </span>
+            </div>
 
             {/* Title */}
-            <p className="text-[11px] font-semibold text-stone-600 dark:text-stone-400 mt-1 leading-none">
-              Full Stack Developer
+            <p className="text-[11px] font-semibold text-stone-600 dark:text-stone-400 mt-1 leading-none font-mono">
+              Full Stack Developer • <span className="font-serif">開発者</span>
             </p>
 
             {/* Location */}
@@ -226,6 +232,9 @@ export const DoodleSidebar: React.FC = () => {
                   >
                     <span className="shrink-0" style={isActive ? { color: '#ffffff' } : undefined}>{item.icon}</span>
                     <span className="leading-none pt-0.5" style={isActive ? { color: '#ffffff' } : undefined}>{item.name}</span>
+                    <span className={`ml-auto text-[9px] font-serif tracking-wider ${isActive ? 'text-white/80' : 'text-stone-400 dark:text-stone-500'}`}>
+                      {item.kanji}
+                    </span>
                   </NavLink>
                 );
               })}
@@ -492,6 +501,9 @@ export const DoodleSidebar: React.FC = () => {
                     >
                       <span className="shrink-0" style={isActive ? { color: '#ffffff' } : undefined}>{item.icon}</span>
                       <span style={isActive ? { color: '#ffffff' } : undefined}>{item.name}</span>
+                      <span className={`ml-auto text-xs font-serif ${isActive ? 'text-white/80' : 'text-stone-400'}`}>
+                        {item.kanji}
+                      </span>
                     </NavLink>
                   );
                 })}

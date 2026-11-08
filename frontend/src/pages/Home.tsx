@@ -376,9 +376,10 @@ export const Home: React.FC = () => {
           HERO STATEMENT (Mockup match)
       ────────────────────────────────────────────────────────────── */}
       <section className="mb-8 sm:mb-10">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium text-[#8b2323] bg-[#8b2323]/10 border border-[#8b2323]/25 mb-4">
-          <span>&lt;//&gt;</span>
-          <span>Welcome to my portfolio</span>
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium text-[#8b2323] bg-[#8b2323]/10 border border-[#8b2323]/25 mb-4 shadow-2xs">
+          <span>⛩️</span>
+          <span>ポートフォリオ • Welcome to my portfolio</span>
+          <span className="hanko-stamp text-[9px] w-3.5 h-3.5 ml-1">普</span>
         </div>
 
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 dark:text-stone-50 tracking-tight leading-tight select-text">
@@ -495,8 +496,11 @@ export const Home: React.FC = () => {
         <div className="flex items-center justify-between pb-1">
           <div className="flex items-center gap-2.5">
             <div className="w-1.5 h-5 bg-[#8b2323] rounded-full" />
-            <h2 className="text-lg sm:text-xl font-bold text-stone-900 dark:text-stone-100 font-sans tracking-tight">
-              Featured Projects
+            <h2 className="text-lg sm:text-xl font-bold text-stone-900 dark:text-stone-100 font-sans tracking-tight flex items-center gap-2">
+              <span>Featured Projects</span>
+              <span className="text-[11px] font-serif font-bold text-[#8b2323] dark:text-rose-400 border border-[#8b2323]/30 dark:border-rose-500/30 px-1.5 py-0.5 rounded-xs bg-[#8b2323]/5">
+                厳選作品
+              </span>
             </h2>
           </div>
           <Link
@@ -571,8 +575,11 @@ export const Home: React.FC = () => {
         <div className="flex items-center justify-between pb-1">
           <div className="flex items-center gap-2.5">
             <div className="w-1.5 h-5 bg-[#8b2323] rounded-full" />
-            <h2 className="text-lg sm:text-xl font-bold text-stone-900 dark:text-stone-100 font-sans tracking-tight">
-              Technical Blog & Systems Insights
+            <h2 className="text-lg sm:text-xl font-bold text-stone-900 dark:text-stone-100 font-sans tracking-tight flex items-center gap-2">
+              <span>Technical Blog & Systems Insights</span>
+              <span className="text-[11px] font-serif font-bold text-[#8b2323] dark:text-rose-400 border border-[#8b2323]/30 dark:border-rose-500/30 px-1.5 py-0.5 rounded-xs bg-[#8b2323]/5">
+                技術日誌
+              </span>
             </h2>
           </div>
           <Link
