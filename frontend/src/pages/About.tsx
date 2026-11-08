@@ -106,13 +106,9 @@ export const About: React.FC = () => {
       ────────────────────────────────────────────────────────────── */}
       <section className="space-y-8 mb-16">
         <div className="flex items-center gap-2.5 border-b-2 border-dashed border-zinc-200 dark:border-zinc-800 pb-3">
-          <span className="text-2xl">⛩️</span>
-          <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-            <span>My Journey & Story</span>
-            <span className="text-[11px] font-serif font-bold text-[#8b2323] dark:text-rose-400 border border-[#8b2323]/30 px-1.5 py-0.5 rounded-xs bg-[#8b2323]/5">
-              経歴年表
-            </span>
-            <span className="hanko-stamp text-[9px] w-3.5 h-3.5 ml-0.5">志</span>
+          <span className="text-2xl">📝</span>
+          <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
+            My Journey & Story
           </h2>
         </div>
 

@@ -446,10 +446,9 @@ export const ProjectsPage: React.FC = () => {
           PAGE HEADER
       ────────────────────────────────────────────────────────────── */}
       <section className="mb-8 sm:mb-10">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium text-[#8b2323] bg-[#8b2323]/10 border border-[#8b2323]/25 mb-4 shadow-2xs">
-          <span>⛩️</span>
-          <span>開発作品録 • GitHub Code Catalog</span>
-          <span className="hanko-stamp text-[9px] w-3.5 h-3.5 ml-1">作</span>
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium text-[#8b2323] bg-[#8b2323]/10 border border-[#8b2323]/25 mb-4">
+          <span>&lt;//&gt;</span>
+          <span>GitHub Code Catalog</span>
         </div>
 
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">

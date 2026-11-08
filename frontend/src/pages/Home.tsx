@@ -376,10 +376,9 @@ export const Home: React.FC = () => {
           HERO STATEMENT (Mockup match)
       ────────────────────────────────────────────────────────────── */}
       <section className="mb-8 sm:mb-10">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium text-[#8b2323] bg-[#8b2323]/10 border border-[#8b2323]/25 mb-4 shadow-2xs">
-          <span>⛩️</span>
-          <span>ポートフォリオ • Welcome to my portfolio</span>
-          <span className="hanko-stamp text-[9px] w-3.5 h-3.5 ml-1">普</span>
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium text-[#8b2323] bg-[#8b2323]/10 border border-[#8b2323]/25 mb-4">
+          <span>&lt;//&gt;</span>
+          <span>Welcome to my portfolio</span>
         </div>
 
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 dark:text-stone-50 tracking-tight leading-tight select-text">
@@ -496,11 +495,8 @@ export const Home: React.FC = () => {
         <div className="flex items-center justify-between pb-1">
           <div className="flex items-center gap-2.5">
             <div className="w-1.5 h-5 bg-[#8b2323] rounded-full" />
-            <h2 className="text-lg sm:text-xl font-bold text-stone-900 dark:text-stone-100 font-sans tracking-tight flex items-center gap-2">
-              <span>Featured Projects</span>
-              <span className="text-[11px] font-serif font-bold text-[#8b2323] dark:text-rose-400 border border-[#8b2323]/30 dark:border-rose-500/30 px-1.5 py-0.5 rounded-xs bg-[#8b2323]/5">
-                厳選作品
-              </span>
+            <h2 className="text-lg sm:text-xl font-bold text-stone-900 dark:text-stone-100 font-sans tracking-tight">
+              Featured Projects
             </h2>
           </div>
           <Link
@@ -575,11 +571,8 @@ export const Home: React.FC = () => {
         <div className="flex items-center justify-between pb-1">
           <div className="flex items-center gap-2.5">
             <div className="w-1.5 h-5 bg-[#8b2323] rounded-full" />
-            <h2 className="text-lg sm:text-xl font-bold text-stone-900 dark:text-stone-100 font-sans tracking-tight flex items-center gap-2">
-              <span>Technical Blog & Systems Insights</span>
-              <span className="text-[11px] font-serif font-bold text-[#8b2323] dark:text-rose-400 border border-[#8b2323]/30 dark:border-rose-500/30 px-1.5 py-0.5 rounded-xs bg-[#8b2323]/5">
-                技術日誌
-              </span>
+            <h2 className="text-lg sm:text-xl font-bold text-stone-900 dark:text-stone-100 font-sans tracking-tight">
+              Technical Blog & Systems Insights
             </h2>
           </div>
           <Link
@@ -639,11 +632,8 @@ export const Home: React.FC = () => {
         <div className="border-b border-zinc-200/80 dark:border-zinc-800/80 pb-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <BookOpen className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            <h2 className="text-xs sm:text-sm font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider font-sans flex items-center gap-2">
-              <span>Research Publications</span>
-              <span className="text-[10px] font-serif normal-case text-emerald-600 dark:text-emerald-400 border border-emerald-600/30 px-1.5 py-0.5 rounded-xs bg-emerald-50/50 dark:bg-emerald-950/20">
-                学術論文
-              </span>
+            <h2 className="text-xs sm:text-sm font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider font-sans">
+              Research Publications
             </h2>
           </div>
         </div>
@@ -700,14 +690,9 @@ export const Home: React.FC = () => {
       ────────────────────────────────────────────────────────────── */}
       <section className="space-y-4 mb-10 pt-2">
         <div className="border-b border-zinc-200/80 dark:border-zinc-800/80 pb-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <h2 className="text-xs sm:text-sm font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider font-sans flex items-center gap-2">
-              <span>Other Noteworthy Repositories</span>
-              <span className="text-[10px] font-serif normal-case text-[#8b2323] dark:text-rose-400 border border-[#8b2323]/30 px-1.5 py-0.5 rounded-xs bg-[#8b2323]/5">
-                公開コード
-              </span>
-            </h2>
-          </div>
+          <h2 className="text-xs sm:text-sm font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider font-sans">
+            Other Noteworthy Repositories
+          </h2>
           <a
             href={siteSettings.githubUrl}
             target="_blank"
