@@ -132,9 +132,10 @@ export const BlogPage: React.FC = () => {
 
         {/* Hero Section */}
         <div className="space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8b2323]/10 text-[#8b2323] dark:text-rose-400 text-xs font-semibold">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Architecture & Systems Engineering Journal</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8b2323]/10 text-[#8b2323] dark:text-rose-400 text-xs font-semibold shadow-2xs">
+            <span>⛩️</span>
+            <span>技術日誌 • Architecture & Systems Engineering Journal</span>
+            <span className="hanko-stamp text-[9px] w-3.5 h-3.5 ml-1">論</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-bold font-serif text-stone-900 dark:text-stone-100 tracking-tight">

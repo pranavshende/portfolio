@@ -639,8 +639,11 @@ export const Home: React.FC = () => {
         <div className="border-b border-zinc-200/80 dark:border-zinc-800/80 pb-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <BookOpen className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            <h2 className="text-xs sm:text-sm font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider font-sans">
-              Research Publications
+            <h2 className="text-xs sm:text-sm font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider font-sans flex items-center gap-2">
+              <span>Research Publications</span>
+              <span className="text-[10px] font-serif normal-case text-emerald-600 dark:text-emerald-400 border border-emerald-600/30 px-1.5 py-0.5 rounded-xs bg-emerald-50/50 dark:bg-emerald-950/20">
+                学術論文
+              </span>
             </h2>
           </div>
         </div>
@@ -697,9 +700,14 @@ export const Home: React.FC = () => {
       ────────────────────────────────────────────────────────────── */}
       <section className="space-y-4 mb-10 pt-2">
         <div className="border-b border-zinc-200/80 dark:border-zinc-800/80 pb-3 flex items-center justify-between">
-          <h2 className="text-xs sm:text-sm font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider font-sans">
-            Other Noteworthy Repositories
-          </h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-xs sm:text-sm font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider font-sans flex items-center gap-2">
+              <span>Other Noteworthy Repositories</span>
+              <span className="text-[10px] font-serif normal-case text-[#8b2323] dark:text-rose-400 border border-[#8b2323]/30 px-1.5 py-0.5 rounded-xs bg-[#8b2323]/5">
+                公開コード
+              </span>
+            </h2>
+          </div>
           <a
             href={siteSettings.githubUrl}
             target="_blank"
