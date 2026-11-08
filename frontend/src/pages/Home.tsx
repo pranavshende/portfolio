@@ -513,18 +513,18 @@ export const Home: React.FC = () => {
           </Link>
         </div>
 
-        {/* 2-Column Responsive Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+        {/* Responsive Grid - Smaller, Compact Paper Cards (3-column on desktop, 2 on tablet) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
           {projectList.map((proj) => (
             <motion.div
               key={proj.id}
               whileHover={{ y: -2 }}
               transition={{ duration: 0.15 }}
               onClick={() => setSelectedProject(proj)}
-              className="group cursor-pointer rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[4px_4px_0px_#1c1917] dark:shadow-[4px_4px_0px_#000000] hover:shadow-[2px_2px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all overflow-hidden flex flex-col p-3.5 sm:p-4"
+              className="group cursor-pointer rounded-2xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all overflow-hidden flex flex-col p-2.5 sm:p-3"
             >
               {/* Banner with badge */}
-              <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-900 border-2 border-stone-900 dark:border-stone-700 shadow-[2px_2px_0px_#1c1917]">
+              <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-900 border-2 border-stone-900 dark:border-stone-700 shadow-[1.5px_1.5px_0px_#1c1917]">
                 <img
                   src={proj.image}
                   alt={proj.title}
@@ -535,26 +535,26 @@ export const Home: React.FC = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
                 {proj.badge && (
-                  <div className="absolute top-2.5 right-2.5 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 border-2 border-stone-900 font-mono font-bold text-[10px] px-2.5 py-0.5 rounded-full shadow-[1.5px_1.5px_0px_#1c1917]">
+                  <div className="absolute top-2 right-2 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 border-2 border-stone-900 font-mono font-bold text-[9px] px-2 py-0.5 rounded-full shadow-[1px_1px_0px_#1c1917]">
                     {proj.badge}
                   </div>
                 )}
               </div>
 
               {/* Footer row */}
-              <div className="flex items-center justify-between gap-3 pt-3.5">
+              <div className="flex items-center justify-between gap-2.5 pt-2.5">
                 <div className="min-w-0 flex-1">
-                  <h3 className="text-sm sm:text-base font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] transition-colors truncate">
+                  <h3 className="text-xs sm:text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] transition-colors truncate">
                     {proj.title}
                   </h3>
-                  <p className="text-[11px] sm:text-xs text-stone-500 dark:text-stone-400 truncate mt-0.5">
+                  <p className="text-[10px] sm:text-[11px] text-stone-500 dark:text-stone-400 truncate mt-0.5">
                     {proj.client} • {proj.category} • {proj.year}
                   </p>
                 </div>
 
                 {/* Circular arrow button */}
-                <div className="w-8 h-8 rounded-full border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 flex items-center justify-center text-stone-900 dark:text-stone-100 shadow-[1.5px_1.5px_0px_#1c1917] group-hover:bg-[#8b2323] group-hover:text-white transition-all shrink-0">
-                  <ArrowRight className="w-3.5 h-3.5" />
+                <div className="w-7 h-7 rounded-full border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 flex items-center justify-center text-stone-900 dark:text-stone-100 shadow-[1px_1px_0px_#1c1917] group-hover:bg-[#8b2323] group-hover:text-white transition-all shrink-0">
+                  <ArrowRight className="w-3 h-3" />
                 </div>
               </div>
             </motion.div>
