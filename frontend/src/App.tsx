@@ -5,6 +5,8 @@ import Index from "@/pages/Index";
 import About from "@/pages/About";
 import Arcade from "@/pages/Arcade";
 import ProjectsPage from "@/pages/ProjectsPage";
+import BlogPage from "@/pages/BlogPage";
+import BlogPostPage from "@/pages/BlogPostPage";
 import NotFound from "@/pages/NotFound";
 import PlayGames from "@/pages/PlayGames";
 import AdminLogin from "@/pages/admin/AdminLogin";
@@ -144,6 +146,8 @@ const AnimatedRoutes = () => {
           <Route path="/art" element={<Navigate to="/" replace />} />
           <Route path="/arcade" element={<PageTransition><Arcade /></PageTransition>} />
           <Route path="/projects" element={<PageTransition><ProjectsPage /></PageTransition>} />
+          <Route path="/blog" element={<PageTransition><BlogPage /></PageTransition>} />
+          <Route path="/blog/:slug" element={<PageTransition><BlogPostPage /></PageTransition>} />
           <Route path="/playgames" element={<PageTransition><PlayGames /></PageTransition>} />
           
           {/* Secure Admin Workspace Routes */}

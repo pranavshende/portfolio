@@ -7,6 +7,7 @@ import {
 import { Link } from 'react-router-dom';
 import { DoodleLayout } from '@/components/DoodleLayout';
 import useAnalytics from '@/hooks/useAnalytics';
+import { api } from '@/lib/api';
 
 import jansamparkPhoto from '../photo/jansampark.webp';
 import solarAnalyticsPhoto from '../photo/solar_analytics.webp';
@@ -270,132 +271,108 @@ export const ProjectsPage: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'flagship' | 'ai' | 'algorithms'>('all');
 
   useEffect(() => {
-    fetch('https://api.github.com/users/pranavshende/repos?per_page=100&sort=updated')
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
-          const items: ProjectItem[] = data
-            .filter((r: any) => r.name !== 'pranavshende') // Hide GitHub profile README repo
-            .map((r: any) => {
-              const meta = REPO_REGISTRY[r.name] || {
-                title: r.name,
-                category: r.fork ? 'Open-Source Fork' : 'Software Repository',
-                tier: r.fork ? 3 : 2,
-                description: r.description || 'Public software engineering repository on GitHub.',
-                tech: [r.language || 'Code'].filter(Boolean),
-                badge: r.fork ? 'Forked Repo' : (r.stargazers_count > 0 ? 'Starred' : undefined),
-              };
+    const projectImages: Record<string, string> = {
+      jarvis: jarvisBanner,
+      'jarvis-mcp-multipledbs': jarvisBanner,
+      electropathy: electropathyBanner,
+      'electropathy-ai': electropathyBanner,
+      tastifyy: tastifyyBanner,
+      attrition: attritionBanner,
+      jansampark: jansamparkPhoto,
+      solar: solarAnalyticsPhoto,
+      pashurakshak: pashurakshakPhoto,
+    };
 
-              return {
-                id: r.id,
-                name: r.name,
-                title: meta.title || r.name,
-                category: meta.category,
-                tier: meta.tier,
-                description: meta.description || r.description || 'Public engineering repository on GitHub.',
-                tech: meta.tech && meta.tech.length > 0 ? meta.tech : [r.language || 'Code'],
-                badge: meta.badge,
-                demoUrl: meta.demoUrl,
-                githubUrl: r.html_url,
-                image: meta.image,
-                stars: r.stargazers_count || 0,
-                forks: r.forks_count || 0,
-                language: r.language || 'TypeScript',
-                updatedAt: r.pushed_at,
-                isFork: r.fork,
-              };
-            });
+    Promise.allSettled([
+      api.getProjects(),
+      fetch('https://api.github.com/users/pranavshende/repos?per_page=100&sort=updated').then(r => r.json())
+    ]).then(([dbResult, ghResult]) => {
+      const items: ProjectItem[] = [];
+      const seenNames = new Set<string>();
 
-          // Ensure Jarvis flagship is included even if private or named differently on GitHub
-          if (!items.some((x) => x.name.toLowerCase() === 'jarvis-mcp-multipledbs' || x.name.toLowerCase() === 'jarvis')) {
-            const jv = REPO_REGISTRY['jarvis-mcp-multipleDBs'];
-            items.push({
-              id: 'jarvis-flagship',
-              name: 'jarvis-mcp-multipleDBs',
-              title: jv.title || 'Jarvis 1.0 Enterprise AI Platform',
-              category: jv.category,
-              tier: 1,
-              description: jv.description,
-              tech: jv.tech,
-              badge: jv.badge,
-              demoUrl: jv.demoUrl,
-              githubUrl: 'https://github.com/pranavshende/jarvis-mcp-multipleDBs',
-              image: jv.image,
-              stars: 1,
-              forks: 0,
-              language: 'TypeScript',
-              updatedAt: '2026-11-07',
-              isFork: false,
-            });
+      // 1. Process Database / CMS Projects First (Tier 1 Flagships)
+      if (dbResult.status === 'fulfilled' && dbResult.value?.data && Array.isArray(dbResult.value.data)) {
+        dbResult.value.data.forEach((p: any) => {
+          const slugName = (p.slug || p.id).toLowerCase();
+          seenNames.add(slugName);
+          if (p.githubUrl) {
+            const parts = p.githubUrl.split('/');
+            const repoSlug = parts[parts.length - 1]?.toLowerCase();
+            if (repoSlug) seenNames.add(repoSlug);
           }
 
-          // Ensure JanSampark flagship is included even if private on GitHub
-          if (!items.some((x) => x.name.toLowerCase() === 'jansampark')) {
-            const js = REPO_REGISTRY['jansampark'];
-            items.push({
-              id: 'jansampark-flagship',
-              name: 'jansampark',
-              title: js.title || 'JanSampark Civic Governance Platform',
-              category: js.category,
-              tier: 1,
-              description: js.description,
-              tech: js.tech,
-              badge: js.badge,
-              demoUrl: js.demoUrl,
-              githubUrl: 'https://github.com/pranavshende',
-              image: js.image,
-              stars: 1,
-              forks: 0,
-              language: 'React Native',
-              updatedAt: '2026-11-06',
-              isFork: false,
-            });
-          }
-
-          // Sort strictly: Jarvis at #1 -> Tier 1 (Best/God projects) -> Tier 2 (Core/Algorithms) -> Tier 3 (Forks/Utilities)
-          items.sort((a, b) => {
-            const isJarvisA = a.name.toLowerCase().includes('jarvis');
-            const isJarvisB = b.name.toLowerCase().includes('jarvis');
-            if (isJarvisA && !isJarvisB) return -1;
-            if (!isJarvisA && isJarvisB) return 1;
-            if (a.tier !== b.tier) return a.tier - b.tier;
-            return b.stars - a.stars;
+          items.push({
+            id: p.id,
+            name: p.slug || p.title,
+            title: p.title,
+            category: p.category || 'Software Engineering',
+            tier: 1,
+            description: p.description || p.subtitle || '',
+            tech: Array.isArray(p.techStack) ? p.techStack : [],
+            badge: p.badge || (p.featured || p.isFeatured ? 'Featured' : 'Live Production'),
+            demoUrl: p.demoUrl || p.liveDemoUrl,
+            githubUrl: p.githubUrl || 'https://github.com/pranavshende',
+            image: p.bannerUrl || p.thumbnailUrl || projectImages[p.slug] || jarvisBanner,
+            stars: 1,
+            forks: 0,
+            language: Array.isArray(p.techStack) && p.techStack[0] ? p.techStack[0] : 'TypeScript',
+            updatedAt: p.updatedAt || '2026-11-08',
+            isFork: false,
           });
-
-          setRepos(items);
-        }
-      })
-      .catch((err) => {
-        console.error('Failed to fetch dynamic repos:', err);
-        // Fallback to static registry items if offline
-        const fallbackItems: ProjectItem[] = Object.entries(REPO_REGISTRY).map(([name, meta], idx) => ({
-          id: idx,
-          name,
-          title: meta.title || name,
-          category: meta.category,
-          tier: meta.tier,
-          description: meta.description,
-          tech: meta.tech,
-          badge: meta.badge,
-          demoUrl: meta.demoUrl,
-          githubUrl: `https://github.com/pranavshende/${name}`,
-          image: meta.image,
-          stars: 1,
-          forks: 0,
-          language: meta.tech[0] || 'TypeScript',
-          updatedAt: '2026-11-07',
-          isFork: meta.category.includes('Fork'),
-        }));
-        fallbackItems.sort((a, b) => {
-          const isJarvisA = a.name.toLowerCase().includes('jarvis');
-          const isJarvisB = b.name.toLowerCase().includes('jarvis');
-          if (isJarvisA && !isJarvisB) return -1;
-          if (!isJarvisA && isJarvisB) return 1;
-          return a.tier - b.tier;
         });
-        setRepos(fallbackItems);
-      })
-      .finally(() => setLoading(false));
+      }
+
+      // 2. Process GitHub Repositories
+      if (ghResult.status === 'fulfilled' && Array.isArray(ghResult.value)) {
+        ghResult.value
+          .filter((r: any) => r.name !== 'pranavshende') // Hide GitHub profile README repo
+          .forEach((r: any) => {
+            const lowerName = r.name.toLowerCase();
+            if (seenNames.has(lowerName)) return; // Already represented by DB project
+
+            const meta = REPO_REGISTRY[r.name] || {
+              title: r.name,
+              category: r.fork ? 'Open-Source Fork' : 'Software Repository',
+              tier: r.fork ? 3 : 2,
+              description: r.description || 'Public software engineering repository on GitHub.',
+              tech: [r.language || 'Code'].filter(Boolean),
+              badge: r.fork ? 'Forked Repo' : (r.stargazers_count > 0 ? 'Starred' : undefined),
+            };
+
+            items.push({
+              id: r.id,
+              name: r.name,
+              title: meta.title || r.name,
+              category: meta.category,
+              tier: meta.tier,
+              description: meta.description || r.description || 'Public engineering repository on GitHub.',
+              tech: meta.tech && meta.tech.length > 0 ? meta.tech : [r.language || 'Code'],
+              badge: meta.badge,
+              demoUrl: meta.demoUrl,
+              githubUrl: r.html_url,
+              image: meta.image,
+              stars: r.stargazers_count || 0,
+              forks: r.forks_count || 0,
+              language: r.language || 'TypeScript',
+              updatedAt: r.pushed_at,
+              isFork: r.fork,
+            });
+            seenNames.add(lowerName);
+          });
+      }
+
+      // Sort: Jarvis strictly #1 -> Tier 1 -> Tier 2 -> Tier 3
+      items.sort((a, b) => {
+        const isJarvisA = a.name.toLowerCase().includes('jarvis') || a.title.toLowerCase().includes('jarvis');
+        const isJarvisB = b.name.toLowerCase().includes('jarvis') || b.title.toLowerCase().includes('jarvis');
+        if (isJarvisA && !isJarvisB) return -1;
+        if (!isJarvisA && isJarvisB) return 1;
+        if (a.tier !== b.tier) return a.tier - b.tier;
+        return b.stars - a.stars;
+      });
+
+      setRepos(items);
+    }).finally(() => setLoading(false));
   }, []);
 
   // Filtered repositories based on search and category tab

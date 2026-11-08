@@ -252,13 +252,29 @@ export const contentController = {
   },
 
   // ── BLOG POSTS ──
-  async getBlogPosts(_req: Request, res: Response, next: NextFunction): Promise<void> {
+  async getBlogPosts(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
+      const { category, tag, search } = req.query;
+      const where: any = { published: true };
+      if (category && typeof category === 'string' && category !== 'ALL') {
+        where.category = category;
+      }
+      if (tag && typeof tag === 'string') {
+        where.tags = { has: tag };
+      }
+      if (search && typeof search === 'string') {
+        where.OR = [
+          { title: { contains: search, mode: 'insensitive' } },
+          { excerpt: { contains: search, mode: 'insensitive' } },
+          { content: { contains: search, mode: 'insensitive' } },
+        ];
+      }
+
       const items = await prisma.blogPost.findMany({
-        where: { published: true },
+        where,
         orderBy: { publishedAt: 'desc' },
       });
-      res.status(200).json({ success: true, data: items });
+      res.status(200).json({ success: true, count: items.length, data: items });
     } catch (e) {
       next(e);
     }
@@ -279,7 +295,7 @@ export const contentController = {
   async adminGetBlogPosts(_req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const items = await prisma.blogPost.findMany({ orderBy: { createdAt: 'desc' } });
-      res.status(200).json({ success: true, data: items });
+      res.status(200).json({ success: true, count: items.length, data: items });
     } catch (e) {
       next(e);
     }
@@ -287,12 +303,58 @@ export const contentController = {
 
   async createBlogPost(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const item = await prisma.blogPost.create({
-        data: {
-          ...req.body,
-          publishedAt: req.body.published ? new Date() : null,
-        },
-      });
+      const body = req.body;
+      const title = (body.title || '').trim();
+      let slug = (body.slug || '').trim();
+      if (!slug && title) {
+        slug = title
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)+/g, '');
+      }
+
+      let tags: string[] = [];
+      if (Array.isArray(body.tags)) {
+        tags = body.tags.map(String).map((s: string) => s.trim()).filter(Boolean);
+      } else if (typeof body.tags === 'string') {
+        tags = body.tags.split(',').map((s: string) => s.trim()).filter(Boolean);
+      }
+
+      const content = (body.content || '').trim();
+      let readingTimeMinutes = Number(body.readingTimeMinutes ?? body.readTime ?? 0);
+      if (!readingTimeMinutes || readingTimeMinutes <= 0) {
+        const wordCount = content.split(/\s+/).filter(Boolean).length;
+        readingTimeMinutes = Math.max(1, Math.ceil(wordCount / 200));
+      }
+
+      const coverImageUrl = (body.coverImageUrl || body.coverImage || '').trim() || null;
+      const published = body.published !== undefined ? Boolean(body.published) : (body.isPublished !== undefined ? Boolean(body.isPublished) : false);
+
+      // Unique slug check
+      let finalSlug = slug;
+      const existing = await prisma.blogPost.findUnique({ where: { slug: finalSlug } });
+      if (existing) {
+        finalSlug = `${slug}-${Date.now().toString(36)}`;
+      }
+
+      const data: any = {
+        title,
+        slug: finalSlug,
+        excerpt: (body.excerpt || (content.length > 200 ? content.slice(0, 197) + '...' : content)).trim(),
+        content,
+        coverImageUrl,
+        category: (body.category || 'System Design & AI').trim(),
+        author: (body.author || 'Pranav Shende').trim(),
+        tags,
+        readingTimeMinutes,
+        published,
+        publishedAt: published ? (body.publishedAt ? new Date(body.publishedAt) : new Date()) : null,
+        seoTitle: (body.seoTitle || title).trim() || null,
+        seoDescription: (body.seoDescription || body.excerpt || '').trim() || null,
+        canonicalUrl: (body.canonicalUrl || `https://pranavshende.online/blog/${finalSlug}`).trim() || null,
+      };
+
+      const item = await prisma.blogPost.create({ data });
       res.status(201).json({ success: true, message: 'Blog post created', data: item });
     } catch (e) {
       next(e);
@@ -302,7 +364,65 @@ export const contentController = {
   async updateBlogPost(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const id = String(req.params.id);
-      const item = await prisma.blogPost.update({ where: { id }, data: req.body });
+      const body = req.body;
+
+      const title = (body.title || '').trim();
+      let slug = (body.slug || '').trim();
+      if (!slug && title) {
+        slug = title
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)+/g, '');
+      }
+
+      let tags: string[] = [];
+      if (Array.isArray(body.tags)) {
+        tags = body.tags.map(String).map((s: string) => s.trim()).filter(Boolean);
+      } else if (typeof body.tags === 'string') {
+        tags = body.tags.split(',').map((s: string) => s.trim()).filter(Boolean);
+      }
+
+      const content = (body.content || '').trim();
+      let readingTimeMinutes = Number(body.readingTimeMinutes ?? body.readTime ?? 0);
+      if (!readingTimeMinutes || readingTimeMinutes <= 0) {
+        const wordCount = content.split(/\s+/).filter(Boolean).length;
+        readingTimeMinutes = Math.max(1, Math.ceil(wordCount / 200));
+      }
+
+      const coverImageUrl = (body.coverImageUrl || body.coverImage || '').trim() || null;
+      const published = body.published !== undefined ? Boolean(body.published) : (body.isPublished !== undefined ? Boolean(body.isPublished) : undefined);
+
+      const updateData: any = {};
+      if (title) updateData.title = title;
+      if (slug) {
+        const existing = await prisma.blogPost.findUnique({ where: { slug } });
+        if (existing && existing.id !== id) {
+          updateData.slug = `${slug}-${Date.now().toString(36)}`;
+        } else {
+          updateData.slug = slug;
+        }
+      }
+      if (body.excerpt !== undefined) updateData.excerpt = body.excerpt.trim();
+      if (content) updateData.content = content;
+      if (coverImageUrl !== undefined) updateData.coverImageUrl = coverImageUrl;
+      if (body.category !== undefined) updateData.category = body.category.trim();
+      if (body.author !== undefined) updateData.author = body.author.trim();
+      if (tags.length > 0) updateData.tags = tags;
+      if (readingTimeMinutes > 0) updateData.readingTimeMinutes = readingTimeMinutes;
+      if (published !== undefined) {
+        updateData.published = published;
+        if (published) {
+          const current = await prisma.blogPost.findUnique({ where: { id } });
+          if (!current?.publishedAt) {
+            updateData.publishedAt = new Date();
+          }
+        }
+      }
+      if (body.seoTitle !== undefined) updateData.seoTitle = body.seoTitle.trim() || null;
+      if (body.seoDescription !== undefined) updateData.seoDescription = body.seoDescription.trim() || null;
+      if (body.canonicalUrl !== undefined) updateData.canonicalUrl = body.canonicalUrl.trim() || null;
+
+      const item = await prisma.blogPost.update({ where: { id }, data: updateData });
       res.status(200).json({ success: true, message: 'Blog post updated', data: item });
     } catch (e) {
       next(e);

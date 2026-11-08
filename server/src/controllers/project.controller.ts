@@ -5,25 +5,92 @@ import { AppError } from '../middleware/errorHandler.js';
 
 export const createProjectSchema = z.object({
   title: z.string().min(2, 'Title is required'),
-  subtitle: z.string().min(2, 'Subtitle is required'),
-  slug: z.string().min(2, 'Slug is required'),
-  client: z.string().default('Independent'),
-  category: z.string().default('Full Stack & AI'),
-  year: z.string().default('2026'),
-  description: z.string().min(10, 'Description is required'),
-  problemStatement: z.string().optional(),
-  solution: z.string().optional(),
-  architecture: z.string().optional(),
-  techStack: z.array(z.string()).default([]),
-  highlights: z.array(z.string()).default([]),
-  githubUrl: z.string().url().optional().or(z.literal('')).nullable(),
-  demoUrl: z.string().url().optional().or(z.literal('')).nullable(),
-  bannerUrl: z.string().min(1, 'Banner URL is required'),
+  subtitle: z.string().optional().default(''),
+  slug: z.string().optional(),
+  client: z.string().optional().default('Independent'),
+  category: z.string().optional().default('Full Stack & AI'),
+  year: z.string().optional().default('2026'),
+  description: z.string().min(2, 'Description is required'),
+  problemStatement: z.string().optional().nullable(),
+  problem: z.string().optional().nullable(),
+  solution: z.string().optional().nullable(),
+  architecture: z.string().optional().nullable(),
+  techStack: z.union([z.array(z.string()), z.string()]).optional().default([]),
+  highlights: z.union([z.array(z.string()), z.string()]).optional().default([]),
+  keyFeatures: z.union([z.array(z.string()), z.string()]).optional().default([]),
+  githubUrl: z.string().optional().or(z.literal('')).nullable(),
+  demoUrl: z.string().optional().or(z.literal('')).nullable(),
+  liveDemoUrl: z.string().optional().or(z.literal('')).nullable(),
+  bannerUrl: z.string().optional().nullable(),
+  thumbnailUrl: z.string().optional().nullable(),
   badge: z.string().optional().nullable(),
-  featured: z.boolean().default(false),
-  orderIndex: z.number().default(0),
-  published: z.boolean().default(true),
+  featured: z.boolean().optional(),
+  isFeatured: z.boolean().optional(),
+  orderIndex: z.union([z.number(), z.string()]).optional(),
+  displayOrder: z.union([z.number(), z.string()]).optional(),
+  published: z.boolean().optional(),
+  isPublished: z.boolean().optional(),
 });
+
+function normalizeProjectData(body: any) {
+  const title = (body.title || '').trim();
+  let slug = (body.slug || '').trim();
+  if (!slug && title) {
+    slug = title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)+/g, '');
+  }
+
+  // Parse arrays
+  let techStack: string[] = [];
+  if (Array.isArray(body.techStack)) {
+    techStack = body.techStack.map(String).map((s: string) => s.trim()).filter(Boolean);
+  } else if (typeof body.techStack === 'string') {
+    techStack = body.techStack.split(',').map((s: string) => s.trim()).filter(Boolean);
+  }
+
+  let highlights: string[] = [];
+  const rawHighlights = body.highlights || body.keyFeatures;
+  if (Array.isArray(rawHighlights)) {
+    highlights = rawHighlights.map(String).map((s: string) => s.trim()).filter(Boolean);
+  } else if (typeof rawHighlights === 'string') {
+    highlights = rawHighlights.split('\n').map((s: string) => s.trim()).filter(Boolean);
+  }
+
+  const bannerUrl = (body.bannerUrl || body.thumbnailUrl || '/src/photo/jarvis_banner.webp').trim();
+  const demoUrl = (body.demoUrl || body.liveDemoUrl || '').trim() || null;
+  const githubUrl = (body.githubUrl || '').trim() || null;
+  const problemStatement = (body.problemStatement || body.problem || '').trim() || null;
+  const solution = (body.solution || '').trim() || null;
+  const architecture = (body.architecture || '').trim() || null;
+  const badge = (body.badge || '').trim() || null;
+  const orderIndex = Number(body.orderIndex ?? body.displayOrder ?? 0) || 0;
+  const featured = body.featured !== undefined ? Boolean(body.featured) : (body.isFeatured !== undefined ? Boolean(body.isFeatured) : true);
+  const published = body.published !== undefined ? Boolean(body.published) : (body.isPublished !== undefined ? Boolean(body.isPublished) : true);
+
+  return {
+    title,
+    subtitle: (body.subtitle || title).trim(),
+    slug,
+    client: (body.client || 'Independent').trim(),
+    category: (body.category || 'Full Stack & AI').trim(),
+    year: (body.year || '2026').trim(),
+    description: (body.description || '').trim(),
+    problemStatement,
+    solution,
+    architecture,
+    techStack,
+    highlights,
+    githubUrl,
+    demoUrl,
+    bannerUrl,
+    badge,
+    featured,
+    orderIndex,
+    published,
+  };
+}
 
 export const projectController = {
   /**
@@ -108,16 +175,21 @@ export const projectController = {
    */
   async create(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
+      const data = normalizeProjectData(req.body);
+
+      // Check for unique slug, append suffix if exists
+      let finalSlug = data.slug;
       const existing = await prisma.project.findUnique({
-        where: { slug: req.body.slug },
+        where: { slug: finalSlug },
       });
 
       if (existing) {
-        throw new AppError('A project with this slug already exists', 400);
+        finalSlug = `${data.slug}-${Date.now().toString(36)}`;
+        data.slug = finalSlug;
       }
 
       const project = await prisma.project.create({
-        data: req.body,
+        data,
       });
 
       res.status(201).json({
@@ -136,10 +208,21 @@ export const projectController = {
   async update(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const id = String(req.params.id);
+      const data = normalizeProjectData(req.body);
+
+      // Check if updating to an existing slug of another project
+      if (data.slug) {
+        const existing = await prisma.project.findUnique({
+          where: { slug: data.slug },
+        });
+        if (existing && existing.id !== id) {
+          data.slug = `${data.slug}-${Date.now().toString(36)}`;
+        }
+      }
 
       const project = await prisma.project.update({
         where: { id },
-        data: req.body,
+        data,
       });
 
       res.status(200).json({

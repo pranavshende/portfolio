@@ -203,6 +203,7 @@ export const Home: React.FC = () => {
   const [projectList, setProjectList] = useState<Project[]>(projects);
   const [gitRepos, setGitRepos] = useState<any[]>([]);
   const [loadingRepos, setLoadingRepos] = useState<boolean>(true);
+  const [recentBlogs, setRecentBlogs] = useState<any[]>([]);
 
   // Dynamic Site Settings (Hero Greeting, Bio, Social destinations)
   const [siteSettings, setSiteSettings] = useState(() => {
@@ -273,7 +274,9 @@ export const Home: React.FC = () => {
   useEffect(() => {
     const projectImages: Record<string, string> = {
       jarvis: jarvisBanner,
+      'jarvis-mcp-multipledbs': jarvisBanner,
       electropathy: electropathyBanner,
+      'electropathy-ai': electropathyBanner,
       tastifyy: tastifyyBanner,
       attrition: attritionBanner,
       jansampark: jansamparkPhoto,
@@ -293,21 +296,15 @@ export const Home: React.FC = () => {
             subtitle: p.subtitle || p.title,
             description: p.description,
             tech: Array.isArray(p.techStack) ? p.techStack : [],
-            highlights: Array.isArray(p.keyFeatures) ? p.keyFeatures : [],
+            highlights: Array.isArray(p.highlights) && p.highlights.length > 0 
+              ? p.highlights 
+              : (Array.isArray(p.keyFeatures) ? p.keyFeatures : []),
             github: p.githubUrl,
-            demo: p.liveDemoUrl,
-            badge: p.badge || (p.isFeatured ? 'Featured' : undefined),
-            image: p.thumbnailUrl || projectImages[p.slug] || jarvisBanner,
+            demo: p.demoUrl || p.liveDemoUrl,
+            badge: p.badge || (p.featured || p.isFeatured ? 'Featured' : undefined),
+            image: p.bannerUrl || p.thumbnailUrl || projectImages[p.slug] || jarvisBanner,
           }));
-          if (!mapped.some(p => p.id === 'jarvis')) {
-            mapped.unshift(projects[0]);
-          } else {
-            mapped.sort((a, b) => {
-              if (a.id === 'jarvis') return -1;
-              if (b.id === 'jarvis') return 1;
-              return 0;
-            });
-          }
+
           setProjectList(mapped);
         }
       })
@@ -319,6 +316,19 @@ export const Home: React.FC = () => {
   const handleResumeDownload = () => {
     api.trackResumeDownload().catch(() => {});
   };
+
+  // Fetch recent blog posts for homepage showcase
+  useEffect(() => {
+    api.getBlogPosts()
+      .then((res: any) => {
+        if (res && res.data && Array.isArray(res.data)) {
+          setRecentBlogs(res.data.slice(0, 3));
+        } else if (Array.isArray(res)) {
+          setRecentBlogs(res.slice(0, 3));
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Fetch real repositories from Pranav's GitHub account
   useEffect(() => {
@@ -512,6 +522,67 @@ export const Home: React.FC = () => {
           <span className="w-1.5 h-1.5 rounded-full bg-stone-300 dark:bg-stone-700" />
           <span className="w-1.5 h-1.5 rounded-full bg-stone-300 dark:bg-stone-700" />
         </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────────
+          TECHNICAL BLOG & KNOWLEDGE HUB SECTION
+      ────────────────────────────────────────────────────────────── */}
+      <section className="space-y-6 mb-16">
+        <div className="flex items-center justify-between pb-1">
+          <div className="flex items-center gap-2.5">
+            <div className="w-1.5 h-5 bg-[#8b2323] rounded-full" />
+            <h2 className="text-lg sm:text-xl font-bold text-stone-900 dark:text-stone-100 font-sans tracking-tight">
+              Technical Blog & Systems Insights
+            </h2>
+          </div>
+          <Link
+            to="/blog"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-semibold shadow-xs transition-colors"
+          >
+            <BookOpen className="w-3.5 h-3.5" />
+            <span>Read All Articles</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        {recentBlogs.length === 0 ? (
+          <div className="p-6 rounded-2xl border border-stone-200 dark:border-stone-800 bg-white/70 dark:bg-[#14161d]/70 text-center">
+            <p className="text-xs text-stone-500">
+              Explore recent architectural deep-dives and engineering breakdowns by visiting the{' '}
+              <Link to="/blog" className="text-[#8b2323] dark:text-rose-400 font-semibold underline">
+                Blog
+              </Link>.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {recentBlogs.map((post) => (
+              <Link
+                key={post.id || post.slug}
+                to={`/blog/${post.slug}`}
+                className="group p-5 rounded-2xl border border-stone-200/90 dark:border-stone-800 bg-white/85 dark:bg-[#14161d]/85 backdrop-blur-md shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-3"
+              >
+                <div className="space-y-2">
+                  <span className="px-2 py-0.5 rounded-md bg-[#8b2323]/10 text-[#8b2323] dark:text-rose-400 font-semibold text-[10px]">
+                    {post.category || (post.tags && post.tags[0]) || 'Architecture'}
+                  </span>
+                  <h3 className="text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors line-clamp-2">
+                    {post.title}
+                  </h3>
+                  <p className="text-xs text-stone-500 line-clamp-2">
+                    {post.excerpt}
+                  </p>
+                </div>
+                <div className="flex items-center justify-between text-[11px] text-stone-400 font-mono pt-2 border-t border-stone-100 dark:border-stone-800">
+                  <span>{post.readingTimeMinutes || 5} min read</span>
+                  <span className="text-[#8b2323] dark:text-rose-400 font-bold group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5">
+                    Read <ArrowRight className="w-3 h-3" />
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* ─────────────────────────────────────────────────────────────

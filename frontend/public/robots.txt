@@ -12,3 +12,6 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+# XML Sitemaps for Google Search Console and crawlers
+Sitemap: https://pranavshende.online/sitemap.xml

@@ -111,6 +111,18 @@ export const api = {
   getProject: (idOrSlug: string) => 
     apiRequest(`/projects/${idOrSlug}`),
 
+  getBlogPosts: (params: { category?: string; tag?: string; search?: string } = {}) => {
+    const query = new URLSearchParams();
+    if (params.category && params.category !== 'ALL') query.set('category', params.category);
+    if (params.tag) query.set('tag', params.tag);
+    if (params.search) query.set('search', params.search);
+    const qs = query.toString();
+    return apiRequest(`/content/blog${qs ? `?${qs}` : ''}`);
+  },
+
+  getBlogPostBySlug: (slug: string) => 
+    apiRequest(`/content/blog/${slug}`),
+
   submitContact: (payload: ContactPayload) => {
     const data = {
       ...payload,
@@ -200,6 +212,9 @@ export const api = {
     apiRequest('/contact/export/csv'),
 
   // Projects CMS
+  getAdminProjects: () =>
+    apiRequest('/projects/admin/all'),
+
   createProject: (data: any) => 
     apiRequest('/projects', { method: 'POST', data }),
 
@@ -257,6 +272,9 @@ export const api = {
     apiRequest(`/content/testimonials/${id}`, { method: 'DELETE' }),
 
   // Blog CMS
+  getAdminBlogPosts: () =>
+    apiRequest('/content/blog/admin/all'),
+
   createBlogPost: (data: any) => 
     apiRequest('/content/blog', { method: 'POST', data }),
 

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, Github, Smartphone } from 'lucide-react';
 import { motion } from 'framer-motion';
 import SectionHeader from './SectionHeader';
+import { api } from '@/lib/api';
 
 import jansamparkPhoto from '../photo/jansampark.webp';
 import solarAnalyticsPhoto from '../photo/solar_analytics.webp';
@@ -139,6 +140,42 @@ const projects: Project[] = [
 
 export const ProjectsScreen = () => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [projectList, setProjectList] = useState<Project[]>(projects);
+
+  useEffect(() => {
+    const projectImages: Record<string, string> = {
+      jarvis: jarvisBanner,
+      'jarvis-mcp-multipledbs': jarvisBanner,
+      electropathy: electropathyBanner,
+      'electropathy-ai': electropathyBanner,
+      tastifyy: tastifyyBanner,
+      attrition: attritionBanner,
+      jansampark: jansamparkPhoto,
+      solar: solarAnalyticsPhoto,
+      pashurakshak: pashurakshakPhoto,
+    };
+
+    api.getProjects()
+      .then((res: any) => {
+        if (res && res.data && Array.isArray(res.data) && res.data.length > 0) {
+          const mapped: Project[] = res.data.map((p: any) => ({
+            title: p.title,
+            subtitle: p.subtitle || p.title,
+            description: p.description,
+            tech: Array.isArray(p.techStack) ? p.techStack : [],
+            highlights: Array.isArray(p.highlights) && p.highlights.length > 0 
+              ? p.highlights 
+              : (Array.isArray(p.keyFeatures) ? p.keyFeatures : []),
+            github: p.githubUrl,
+            demo: p.demoUrl || p.liveDemoUrl,
+            badge: p.badge || (p.featured || p.isFeatured ? 'Featured' : undefined),
+            image: p.bannerUrl || p.thumbnailUrl || projectImages[p.slug] || jarvisBanner,
+          }));
+          setProjectList(mapped);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <div className="relative z-10 w-full max-w-3xl mx-auto px-4 sm:px-6">
@@ -147,7 +184,7 @@ export const ProjectsScreen = () => {
         
         {/* Desktop View (Standard vertical list with split row cards) */}
         <div className="hidden sm:block space-y-4 mt-6">
-          {projects.map((project, i) => (
+          {projectList.map((project, i) => (
             <div 
               key={i} 
               className="group flex flex-col sm:flex-row rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-all overflow-hidden"
@@ -259,7 +296,7 @@ export const ProjectsScreen = () => {
             onTouchStart={() => setIsExpanded(true)}
           >
             <div className="flex items-stretch min-w-max px-2 py-4">
-              {projects.map((project, i) => (
+              {projectList.map((project, i) => (
                 <motion.div 
                   key={i} 
                   animate={{
@@ -271,11 +308,11 @@ export const ProjectsScreen = () => {
                     type: "spring", 
                     stiffness: 250, 
                     damping: 25, 
-                    delay: isExpanded ? i * 0.05 : (projects.length - i) * 0.05 
+                    delay: isExpanded ? i * 0.05 : (projectList.length - i) * 0.05 
                   }}
                   className="flex-shrink-0 w-[280px] flex flex-col overflow-hidden rounded-xl bg-zinc-900 border border-zinc-800 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] transition-colors min-h-[460px]"
                   style={{ 
-                    zIndex: projects.length - i,
+                    zIndex: projectList.length - i,
                   }}
                 >
                   {/* Image Banner */}
