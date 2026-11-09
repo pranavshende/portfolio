@@ -574,7 +574,7 @@ export const DoodleSidebar: React.FC = () => {
               <span>© Pranav Shende 2026</span>
               <Link
                 to="/admin"
-                onClick={() => setMobileOpen(false)}
+                onClick={() => setMobileMenuOpen(false)}
                 className="inline-flex items-center gap-1 font-mono text-[10px] text-zinc-500 dark:text-zinc-400 hover:text-[#8b2323] transition-colors"
               >
                 <Lock className="w-2.5 h-2.5" />

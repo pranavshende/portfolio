@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { DoodleLayout } from '@/components/DoodleLayout';
 import useAnalytics from '@/hooks/useAnalytics';
+import { api } from '@/lib/api';
 
 import jarvisBanner from '@/photo/jarvis_banner.webp';
 import electropathyBanner from '@/photo/electropathy_banner.webp';

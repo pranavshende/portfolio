@@ -380,13 +380,15 @@ export const ProjectsPage: React.FC = () => {
             const lowerName = r.name.toLowerCase();
             if (seenNames.has(lowerName)) return; // Already represented by DB project
 
-            const meta = REPO_REGISTRY[r.name] || {
+            const meta: RepoMeta = REPO_REGISTRY[r.name] || {
               title: r.name,
               category: r.fork ? 'Open-Source Fork' : 'Software Repository',
               tier: r.fork ? 3 : 2,
               description: r.description || 'Public software engineering repository on GitHub.',
               tech: [r.language || 'Code'].filter(Boolean),
               badge: r.fork ? 'Forked Repo' : (r.stargazers_count > 0 ? 'Starred' : undefined),
+              demoUrl: undefined,
+              image: undefined,
             };
 
             items.push({
