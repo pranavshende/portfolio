@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ExternalLink, Github, Linkedin, ArrowUpRight, ArrowRight, X, Star, BookOpen, 
-  Lock, CheckCircle2, Download, Mail, GraduationCap, Layers, Target 
+  Lock, CheckCircle2, Download, Mail, GraduationCap, Layers, Target,
+  ChevronLeft, ChevronRight, GitFork, Sparkles
 } from 'lucide-react';
 import { DoodleLayout } from '@/components/DoodleLayout';
 import { Link } from 'react-router-dom';
@@ -196,15 +197,181 @@ const projects: Project[] = [
   },
 ];
 
+const defaultBlogs = [
+  {
+    slug: 'jarvis-enterprise-ai-platform',
+    title: 'Jarvis AI: Building an Autonomous Enterprise Intelligence Platform',
+    excerpt: 'How I engineered Jarvis AI — a centralized enterprise intelligence platform connecting ERP, warehouse management, and finance systems into an operational command center.',
+    category: 'System Design & AI',
+    readingTimeMinutes: 8,
+  },
+  {
+    slug: 'forgerag-vector-embeddings-production-pipelines',
+    title: 'ForgeRAG: Exploring LLMs, Vector Embeddings & Production-Grade RAG Pipelines',
+    excerpt: 'A comprehensive technical deep-dive into how Large Language Models work internally, context window constraints, high-dimensional vector search, and hybrid retrieval.',
+    category: 'AI & Machine Learning',
+    readingTimeMinutes: 7,
+  },
+  {
+    slug: 'ai-workforce-intelligence-attrition-prediction',
+    title: 'AI-Powered Workforce Intelligence: Predicting Employee Attrition with Scikit-Learn & Gemini',
+    excerpt: 'Developing a predictive HR workforce intelligence platform with dynamic CSV dataset ingestion, SHAP explainable AI attribution, and interactive telemetry charts.',
+    category: 'Data Science & ML',
+    readingTimeMinutes: 6,
+  },
+  {
+    slug: 'solar-energy-analytics-forecasting',
+    title: 'Solar Intelligence: Analyzing 10+ Years of Indian Renewable Big Data & Forecasting to 2030',
+    excerpt: 'Evaluating 10+ years (2014–2024) of nationwide solar time-series data across 36+ Indian states/UTs covering 81.8+ GW with polynomial regression forecasting.',
+    category: 'Data Science & Big Data',
+    readingTimeMinutes: 7,
+  },
+  {
+    slug: 'context-aware-natural-language-database-assistant',
+    title: 'Building a Context-Aware Natural Language Database Assistant with Live Execution Workflows',
+    excerpt: 'Architecting an AI database copilot that translates natural language inquiries into verified read-only SQL queries, explains multi-table joins, and displays live metrics.',
+    category: 'System Design & AI',
+    readingTimeMinutes: 6,
+  },
+  {
+    slug: 'scalable-fullstack-engineering-fastify-nodejs-react',
+    title: 'Scalable Full-Stack Engineering: Fastify, Node.js, Express, PostgreSQL & React Architecture',
+    excerpt: 'Real-world lessons from designing high-concurrency Node.js and Fastify backend architectures, Prisma connection pooling, Redis caching, and reactive React UIs.',
+    category: 'Web Engineering',
+    readingTimeMinutes: 8,
+  },
+];
+
+const defaultRepos = [
+  {
+    id: 1,
+    name: 'Jarvis-MCP-Multipledbs',
+    html_url: 'https://github.com/PranavShende/Jarvis-MCP-Multipledbs',
+    description: 'Enterprise Intelligence Platform with Model Context Protocol (MCP) streamable HTTP transports and zero-hallucination deterministic SQL analytics.',
+    language: 'TypeScript',
+    stargazers_count: 5,
+    forks_count: 2,
+  },
+  {
+    id: 2,
+    name: 'SolarSalesAnalysis',
+    html_url: 'https://github.com/PranavShende/SolarSalesAnalysis',
+    description: '10+ years of Indian renewable energy production big-data analytics and polynomial regression forecasting to 2030.',
+    language: 'Python',
+    stargazers_count: 4,
+    forks_count: 1,
+  },
+  {
+    id: 3,
+    name: 'HackNation_SKB-F17_SKB_P2',
+    html_url: 'https://github.com/PranavShende/HackNation_SKB-F17_SKB_P2',
+    description: 'Offline-first, edge-AI civic issue reporting and municipal dispatch application built for HackNation 2024.',
+    language: 'TypeScript',
+    stargazers_count: 6,
+    forks_count: 3,
+  },
+  {
+    id: 4,
+    name: 'EmployeeAttritionSystem',
+    html_url: 'https://github.com/PranavShende/EmployeeAttritionSystem',
+    description: 'Workforce attrition risk intelligence engine with dynamic CSV ingestion and SHAP explainable AI attribution.',
+    language: 'Python',
+    stargazers_count: 3,
+    forks_count: 1,
+  },
+  {
+    id: 5,
+    name: 'tastifyy',
+    html_url: 'https://github.com/PranavShende/tastifyy',
+    description: 'Zero-commission restaurant POS and diner ordering platform with offline sync and low-latency menu distribution.',
+    language: 'TypeScript',
+    stargazers_count: 4,
+    forks_count: 2,
+  },
+  {
+    id: 6,
+    name: 'pashurakshak',
+    html_url: 'https://github.com/PranavShende/pashurakshak',
+    description: 'Lightweight quantized convolutional neural network system for veterinary disease detection on edge devices.',
+    language: 'Python',
+    stargazers_count: 4,
+    forks_count: 1,
+  },
+];
+
+// Reusable hook for responsive, touch-friendly horizontal card sliders
+const useHorizontalSlider = (itemCount: number) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const checkScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 10);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10);
+
+    const firstChild = el.firstElementChild as HTMLElement | null;
+    const childWidth = firstChild ? firstChild.offsetWidth + 16 : 320;
+    const index = Math.round(el.scrollLeft / childWidth);
+    setActiveIndex(Math.min(Math.max(index, 0), Math.max(itemCount - 1, 0)));
+  }, [itemCount]);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    checkScroll();
+    el.addEventListener('scroll', checkScroll, { passive: true });
+    window.addEventListener('resize', checkScroll);
+    return () => {
+      el.removeEventListener('scroll', checkScroll);
+      window.removeEventListener('resize', checkScroll);
+    };
+  }, [checkScroll, itemCount]);
+
+  const scroll = (direction: 'left' | 'right') => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const scrollAmount = Math.max(el.clientWidth * 0.75, 280);
+    el.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth',
+    });
+  };
+
+  const scrollToIndex = (index: number) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const child = el.children[index] as HTMLElement;
+    if (child) {
+      child.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+    } else {
+      const firstChild = el.firstElementChild as HTMLElement | null;
+      const childWidth = firstChild ? firstChild.offsetWidth + 16 : 320;
+      el.scrollTo({
+        left: index * childWidth,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  return { scrollRef, canScrollLeft, canScrollRight, activeIndex, scroll, scrollToIndex };
+};
+
 export const Home: React.FC = () => {
   useAnalytics();
   const { isDark } = useMode();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [contactModalOpen, setContactModalOpen] = useState<boolean>(false);
   const [projectList, setProjectList] = useState<Project[]>(projects);
-  const [gitRepos, setGitRepos] = useState<any[]>([]);
-  const [loadingRepos, setLoadingRepos] = useState<boolean>(true);
-  const [recentBlogs, setRecentBlogs] = useState<any[]>([]);
+  const [gitRepos, setGitRepos] = useState<any[]>(defaultRepos);
+  const [loadingRepos, setLoadingRepos] = useState<boolean>(false);
+  const [recentBlogs, setRecentBlogs] = useState<any[]>(defaultBlogs);
+
+  const projectSlider = useHorizontalSlider(projectList.length);
+  const blogSlider = useHorizontalSlider(recentBlogs.length);
+  const repoSlider = useHorizontalSlider(gitRepos.length);
 
   // Lock body scroll and close on Escape key when project modal is active
   useEffect(() => {
@@ -362,10 +529,10 @@ export const Home: React.FC = () => {
   useEffect(() => {
     api.getBlogPosts()
       .then((res: any) => {
-        if (res && res.data && Array.isArray(res.data)) {
-          setRecentBlogs(res.data.slice(0, 3));
-        } else if (Array.isArray(res)) {
-          setRecentBlogs(res.slice(0, 3));
+        if (res && res.data && Array.isArray(res.data) && res.data.length > 0) {
+          setRecentBlogs(res.data.slice(0, 10));
+        } else if (Array.isArray(res) && res.length > 0) {
+          setRecentBlogs(res.slice(0, 10));
         }
       })
       .catch(() => {});
@@ -376,10 +543,12 @@ export const Home: React.FC = () => {
     fetch('https://api.github.com/users/pranavshende/repos?sort=updated&per_page=100')
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data)) {
+        if (Array.isArray(data) && data.length > 0) {
           const featuredNames = ['SolarSalesAnalysis', 'HackNation_SKB-F17_SKB_P2', 'EmployeeAttritionSystem', 'tastifyy'];
           const filtered = data.filter((repo: any) => !repo.fork && !featuredNames.includes(repo.name));
-          setGitRepos(filtered.slice(0, 6));
+          if (filtered.length > 0) {
+            setGitRepos(filtered.slice(0, 10));
+          }
         }
       })
       .catch((err) => console.error(err))
@@ -507,34 +676,66 @@ export const Home: React.FC = () => {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          FEATURED PROJECTS (Mockup match: Red Accent Bar & Cards)
+          FEATURED PROJECTS (Sliding Mode)
       ────────────────────────────────────────────────────────────── */}
-      <section className="space-y-6 mb-16">
-        <div className="flex items-center justify-between pb-1">
+      <section className="space-y-4 mb-16">
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-1">
           <div className="flex items-center gap-2.5">
             <div className="w-1.5 h-5 bg-[#8b2323] rounded-full" />
             <h2 className="text-lg sm:text-xl font-bold text-stone-900 dark:text-stone-100 font-sans tracking-tight">
               Featured Projects
             </h2>
+            <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border border-stone-900/20 dark:border-stone-700 bg-white/60 dark:bg-stone-800/60 text-[10px] font-mono font-bold text-stone-600 dark:text-stone-400">
+              <Sparkles className="w-2.5 h-2.5 text-[#8b2323]" />
+              <span>Slide to explore</span>
+            </span>
           </div>
-          <Link
-            to="/projects"
-            className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-[#8b2323] hover:text-[#721c1c] transition-colors"
-          >
-            <span>View All Projects</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
+
+          <div className="flex items-center gap-2">
+            {/* Slider Navigation Chevrons */}
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={() => projectSlider.scroll('left')}
+                disabled={!projectSlider.canScrollLeft}
+                className="w-8 h-8 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 flex items-center justify-center shadow-[1.5px_1.5px_0px_#1c1917] dark:shadow-[1.5px_1.5px_0px_#000000] hover:shadow-[0.5px_0.5px_0px_#1c1917] hover:translate-x-[0.5px] hover:translate-y-[0.5px] disabled:opacity-25 disabled:pointer-events-none transition-all cursor-pointer"
+                aria-label="Previous project slide"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => projectSlider.scroll('right')}
+                disabled={!projectSlider.canScrollRight}
+                className="w-8 h-8 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 flex items-center justify-center shadow-[1.5px_1.5px_0px_#1c1917] dark:shadow-[1.5px_1.5px_0px_#000000] hover:shadow-[0.5px_0.5px_0px_#1c1917] hover:translate-x-[0.5px] hover:translate-y-[0.5px] disabled:opacity-25 disabled:pointer-events-none transition-all cursor-pointer"
+                aria-label="Next project slide"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+
+            <Link
+              to="/projects"
+              className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-[#8b2323] hover:text-[#721c1c] transition-colors pl-2"
+            >
+              <span>View All Projects</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </div>
 
-        {/* Responsive Grid - Smaller, Compact Paper Cards (3-column on desktop, 2 on tablet) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
+        {/* Sliding Track */}
+        <div
+          ref={projectSlider.scrollRef}
+          className="flex gap-4 overflow-x-auto pb-4 pt-1 snap-x snap-mandatory no-scrollbar scroll-smooth -mx-2 px-2"
+        >
           {projectList.map((proj) => (
             <motion.div
               key={proj.id}
-              whileHover={{ y: -2 }}
+              whileHover={{ y: -3 }}
               transition={{ duration: 0.15 }}
               onClick={() => setSelectedProject(proj)}
-              className="group cursor-pointer rounded-2xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all overflow-hidden flex flex-col p-2.5 sm:p-3"
+              className="w-[280px] sm:w-[320px] md:w-[360px] shrink-0 snap-start group cursor-pointer rounded-2xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all overflow-hidden flex flex-col justify-between p-2.5 sm:p-3"
             >
               {/* Banner with badge */}
               <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-900 border-2 border-stone-900 dark:border-stone-700 shadow-[1.5px_1.5px_0px_#1c1917]">
@@ -574,73 +775,122 @@ export const Home: React.FC = () => {
           ))}
         </div>
 
-        {/* Carousel pagination indicator matching mockup */}
+        {/* Dynamic Pagination Pill Dots */}
         <div className="flex justify-center items-center gap-1.5 pt-2">
-          <span className="w-2 h-2 rounded-full bg-[#8b2323]" />
-          <span className="w-1.5 h-1.5 rounded-full bg-stone-300 dark:bg-stone-700" />
-          <span className="w-1.5 h-1.5 rounded-full bg-stone-300 dark:bg-stone-700" />
+          {projectList.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => projectSlider.scrollToIndex(i)}
+              aria-label={`Go to project slide ${i + 1}`}
+              className={`transition-all duration-200 rounded-full cursor-pointer ${
+                projectSlider.activeIndex === i
+                  ? 'w-6 h-2 bg-[#8b2323]'
+                  : 'w-2 h-2 bg-stone-300 dark:bg-stone-700 hover:bg-stone-400'
+              }`}
+            />
+          ))}
         </div>
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          TECHNICAL BLOG & KNOWLEDGE HUB SECTION
+          TECHNICAL BLOG & SYSTEMS INSIGHTS (Sliding Mode)
       ────────────────────────────────────────────────────────────── */}
-      <section className="space-y-6 mb-16">
-        <div className="flex items-center justify-between pb-1">
+      <section className="space-y-4 mb-16">
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-1">
           <div className="flex items-center gap-2.5">
             <div className="w-1.5 h-5 bg-[#8b2323] rounded-full" />
             <h2 className="text-lg sm:text-xl font-bold text-stone-900 dark:text-stone-100 font-sans tracking-tight">
               Technical Blog & Systems Insights
             </h2>
+            <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border border-stone-900/20 dark:border-stone-700 bg-white/60 dark:bg-stone-800/60 text-[10px] font-mono font-bold text-stone-600 dark:text-stone-400">
+              <BookOpen className="w-2.5 h-2.5 text-[#8b2323]" />
+              <span>Slide to explore</span>
+            </span>
           </div>
-          <Link
-            to="/blog"
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer"
-          >
-            <BookOpen className="w-3.5 h-3.5" />
-            <span>Read All Articles</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
+
+          <div className="flex items-center gap-2">
+            {/* Slider Navigation Chevrons */}
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={() => blogSlider.scroll('left')}
+                disabled={!blogSlider.canScrollLeft}
+                className="w-8 h-8 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 flex items-center justify-center shadow-[1.5px_1.5px_0px_#1c1917] dark:shadow-[1.5px_1.5px_0px_#000000] hover:shadow-[0.5px_0.5px_0px_#1c1917] hover:translate-x-[0.5px] hover:translate-y-[0.5px] disabled:opacity-25 disabled:pointer-events-none transition-all cursor-pointer"
+                aria-label="Previous blog slide"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => blogSlider.scroll('right')}
+                disabled={!blogSlider.canScrollRight}
+                className="w-8 h-8 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 flex items-center justify-center shadow-[1.5px_1.5px_0px_#1c1917] dark:shadow-[1.5px_1.5px_0px_#000000] hover:shadow-[0.5px_0.5px_0px_#1c1917] hover:translate-x-[0.5px] hover:translate-y-[0.5px] disabled:opacity-25 disabled:pointer-events-none transition-all cursor-pointer"
+                aria-label="Next blog slide"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+
+            <Link
+              to="/blog"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer ml-1"
+            >
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>All Articles</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </div>
 
-        {recentBlogs.length === 0 ? (
-          <div className="p-6 rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3.5px_3.5px_0px_#1c1917] text-center">
-            <p className="text-xs text-stone-600 dark:text-stone-300">
-              Explore recent architectural deep-dives and engineering breakdowns by visiting the{' '}
-              <Link to="/blog" className="text-[#8b2323] dark:text-rose-400 font-semibold underline">
-                Blog
-              </Link>.
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {recentBlogs.map((post) => (
-              <Link
-                key={post.id || post.slug}
-                to={`/blog/${post.slug}`}
-                className="group p-5 rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all flex flex-col justify-between space-y-3"
-              >
-                <div className="space-y-2">
-                  <span className="px-2 py-0.5 rounded-xs border border-[#8b2323] bg-[#8b2323]/5 text-[#8b2323] dark:text-rose-400 font-serif font-bold text-[10px] tracking-wider inline-block">
-                    {post.category || (post.tags && post.tags[0]) || 'Architecture'}
-                  </span>
-                  <h3 className="text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors line-clamp-2">
-                    {post.title}
-                  </h3>
-                  <p className="text-xs text-stone-600 dark:text-stone-400 line-clamp-2">
-                    {post.excerpt}
-                  </p>
-                </div>
-                <div className="flex items-center justify-between text-[11px] text-stone-500 font-mono pt-2 border-t border-stone-200 dark:border-stone-800">
-                  <span>{post.readingTimeMinutes || 5} min read</span>
-                  <span className="text-[#8b2323] dark:text-rose-400 font-bold group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5">
-                    Read <ArrowRight className="w-3 h-3" />
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
+        {/* Sliding Track */}
+        <div
+          ref={blogSlider.scrollRef}
+          className="flex gap-4 overflow-x-auto pb-4 pt-1 snap-x snap-mandatory no-scrollbar scroll-smooth -mx-2 px-2"
+        >
+          {recentBlogs.map((post) => (
+            <Link
+              key={post.id || post.slug}
+              to={`/blog/${post.slug}`}
+              className="w-[280px] sm:w-[320px] md:w-[350px] shrink-0 snap-start group p-5 rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all flex flex-col justify-between space-y-3 min-h-[200px]"
+            >
+              <div className="space-y-2">
+                <span className="px-2 py-0.5 rounded-xs border border-[#8b2323] bg-[#8b2323]/5 text-[#8b2323] dark:text-rose-400 font-serif font-bold text-[10px] tracking-wider inline-block">
+                  {post.category || (post.tags && post.tags[0]) || 'Architecture'}
+                </span>
+                <h3 className="text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors line-clamp-2">
+                  {post.title}
+                </h3>
+                <p className="text-xs text-stone-600 dark:text-stone-400 line-clamp-3 leading-relaxed">
+                  {post.excerpt}
+                </p>
+              </div>
+              <div className="flex items-center justify-between text-[11px] text-stone-500 font-mono pt-2.5 border-t border-stone-200 dark:border-stone-800">
+                <span>{post.readingTimeMinutes || 5} min read</span>
+                <span className="text-[#8b2323] dark:text-rose-400 font-bold group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5">
+                  Read <ArrowRight className="w-3 h-3" />
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {/* Dynamic Pagination Pill Dots */}
+        <div className="flex justify-center items-center gap-1.5 pt-2">
+          {recentBlogs.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => blogSlider.scrollToIndex(i)}
+              aria-label={`Go to blog slide ${i + 1}`}
+              className={`transition-all duration-200 rounded-full cursor-pointer ${
+                blogSlider.activeIndex === i
+                  ? 'w-6 h-2 bg-[#8b2323]'
+                  : 'w-2 h-2 bg-stone-300 dark:bg-stone-700 hover:bg-stone-400'
+              }`}
+            />
+          ))}
+        </div>
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
@@ -704,71 +954,123 @@ export const Home: React.FC = () => {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          DYNAMIC GITHUB REPOSITORIES
+          OTHER NOTEWORTHY REPOSITORIES (Sliding Mode)
       ────────────────────────────────────────────────────────────── */}
       <section className="space-y-4 mb-10 pt-2">
-        <div className="border-b-2 border-stone-900/20 dark:border-stone-800 pb-3 flex items-center justify-between">
-          <h2 className="text-xs sm:text-sm font-bold text-stone-900 dark:text-stone-100 uppercase tracking-wider font-sans">
-            Other Noteworthy Repositories
-          </h2>
-          <a
-            href={siteSettings.githubUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="text-xs font-bold text-[#8b2323] dark:text-rose-400 hover:underline"
-          >
-            View all on GitHub →
-          </a>
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b-2 border-stone-900/20 dark:border-stone-800 pb-3">
+          <div className="flex items-center gap-2.5">
+            <Github className="w-4 h-4 text-[#8b2323] dark:text-rose-400" />
+            <h2 className="text-xs sm:text-sm font-bold text-stone-900 dark:text-stone-100 uppercase tracking-wider font-sans">
+              Other Noteworthy Repositories
+            </h2>
+            <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border border-stone-900/20 dark:border-stone-700 bg-white/60 dark:bg-stone-800/60 text-[10px] font-mono font-bold text-stone-600 dark:text-stone-400">
+              <span>Slide to explore</span>
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3">
+            {/* Slider Navigation Chevrons */}
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={() => repoSlider.scroll('left')}
+                disabled={!repoSlider.canScrollLeft}
+                className="w-7 h-7 rounded-lg border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 flex items-center justify-center shadow-[1px_1px_0px_#1c1917] dark:shadow-[1px_1px_0px_#000000] hover:translate-x-[0.5px] hover:translate-y-[0.5px] disabled:opacity-25 disabled:pointer-events-none transition-all cursor-pointer"
+                aria-label="Previous repository slide"
+              >
+                <ChevronLeft className="w-3.5 h-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => repoSlider.scroll('right')}
+                disabled={!repoSlider.canScrollRight}
+                className="w-7 h-7 rounded-lg border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 flex items-center justify-center shadow-[1px_1px_0px_#1c1917] dark:shadow-[1px_1px_0px_#000000] hover:translate-x-[0.5px] hover:translate-y-[0.5px] disabled:opacity-25 disabled:pointer-events-none transition-all cursor-pointer"
+                aria-label="Next repository slide"
+              >
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            <a
+              href={siteSettings.githubUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="text-xs font-bold text-[#8b2323] dark:text-rose-400 hover:underline"
+            >
+              View all on GitHub →
+            </a>
+          </div>
         </div>
 
-        {loadingRepos ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="h-32 rounded-2xl bg-stone-200 dark:bg-stone-800/50 border-2 border-stone-900 dark:border-stone-700 animate-pulse" />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {gitRepos.map((repo) => (
-              <a
-                key={repo.id}
-                href={repo.html_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex flex-col justify-between p-4 rounded-2xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
-              >
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-mono text-stone-500 uppercase tracking-wider font-bold">
-                      Repo
-                    </span>
-                    <ArrowUpRight className="w-3.5 h-3.5 text-stone-500 group-hover:text-stone-900 dark:group-hover:text-white transition-colors" />
-                  </div>
-                  <h3 className="text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 truncate">
-                    {repo.name}
-                  </h3>
-                  <p className="text-xs text-stone-600 dark:text-stone-400 line-clamp-2 leading-relaxed">
-                    {repo.description || 'Public repository on GitHub.'}
-                  </p>
+        {/* Sliding Track */}
+        <div
+          ref={repoSlider.scrollRef}
+          className="flex gap-4 overflow-x-auto pb-4 pt-1 snap-x snap-mandatory no-scrollbar scroll-smooth -mx-2 px-2"
+        >
+          {gitRepos.map((repo) => (
+            <a
+              key={repo.id}
+              href={repo.html_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-[260px] sm:w-[290px] md:w-[320px] shrink-0 snap-start group flex flex-col justify-between p-4 sm:p-5 rounded-2xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all min-h-[160px]"
+            >
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono text-stone-500 uppercase tracking-wider font-bold">
+                    Repo
+                  </span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-stone-500 group-hover:text-stone-900 dark:group-hover:text-white transition-colors" />
                 </div>
+                <h3 className="text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 truncate">
+                  {repo.name}
+                </h3>
+                <p className="text-xs text-stone-600 dark:text-stone-400 line-clamp-2 leading-relaxed">
+                  {repo.description || 'Public repository on GitHub.'}
+                </p>
+              </div>
 
-                <div className="pt-3 mt-3 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between text-xs text-stone-500">
-                  {repo.language && (
-                    <span className="font-mono text-[11px] font-bold text-stone-700 dark:text-stone-300">
-                      {repo.language}
+              <div className="pt-3 mt-3 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between text-xs text-stone-500">
+                {repo.language && (
+                  <span className="font-mono text-[11px] font-bold text-stone-700 dark:text-stone-300">
+                    {repo.language}
+                  </span>
+                )}
+                <div className="flex items-center gap-2.5">
+                  {repo.forks_count > 0 && (
+                    <span className="flex items-center gap-1 text-[11px] font-mono text-stone-500">
+                      <GitFork className="w-3 h-3" />
+                      {repo.forks_count}
                     </span>
                   )}
                   {repo.stargazers_count > 0 && (
-                    <span className="flex items-center gap-1 text-[11px] font-mono font-bold">
+                    <span className="flex items-center gap-1 text-[11px] font-mono font-bold text-stone-700 dark:text-stone-300">
                       <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
                       {repo.stargazers_count}
                     </span>
                   )}
                 </div>
-              </a>
-            ))}
-          </div>
-        )}
+              </div>
+            </a>
+          ))}
+        </div>
+
+        {/* Dynamic Pagination Pill Dots */}
+        <div className="flex justify-center items-center gap-1.5 pt-2">
+          {gitRepos.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => repoSlider.scrollToIndex(i)}
+              aria-label={`Go to repository slide ${i + 1}`}
+              className={`transition-all duration-200 rounded-full cursor-pointer ${
+                repoSlider.activeIndex === i
+                  ? 'w-6 h-2 bg-[#8b2323]'
+                  : 'w-2 h-2 bg-stone-300 dark:bg-stone-700 hover:bg-stone-400'
+              }`}
+            />
+          ))}
+        </div>
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
