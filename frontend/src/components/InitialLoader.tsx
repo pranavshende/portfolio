@@ -12,6 +12,12 @@ export const InitialLoader: React.FC<InitialLoaderProps> = ({ onComplete }) => {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
+    // Seamlessly hand off and remove static pre-react loader
+    const preLoader = document.getElementById('pre-react-loader');
+    if (preLoader) {
+      preLoader.remove();
+    }
+
     // Elegant calibrated display duration (~1200ms) without any text
     const timer = setTimeout(() => {
       setIsVisible(false);

@@ -148,8 +148,12 @@ const BLOG_POSTS = [
 ];
 
 // Helper to replace metadata in HTML template
-function injectMetadata(html, { title, description, canonicalUrl, ogType = 'website', ogImage = 'https://pranavshende.online/og-image.png', keywords, robots, jsonLd, bodyContent }) {
+function injectMetadata(html, { title, description, canonicalUrl, ogType = 'website', ogImage = 'https://pranavshende.online/og-image.png', keywords, robots, jsonLd, bodyContent, skipLoader = false }) {
   let modified = html;
+
+  if (skipLoader) {
+    modified = modified.replace(/<!-- ═+ PRE-REACT INSTANT SPINNER ═+ -->[\s\S]*?<!-- \/pre-react-loader -->/i, '');
+  }
 
   // Title
   modified = modified.replace(/<title>.*?<\/title>/i, `<title>${title}</title>`);
@@ -382,6 +386,7 @@ writeStaticPage('playgames', playGamesHtml);
 // ─────────────────────────────────────────────────────────────
 for (const cs of CASE_STUDIES) {
   const caseStudyHtml = injectMetadata(baseHtml, {
+    skipLoader: true,
     title: cs.title,
     description: cs.description,
     canonicalUrl: `https://pranavshende.online/projects/${cs.slug}`,
@@ -431,6 +436,7 @@ for (const cs of CASE_STUDIES) {
 // ─────────────────────────────────────────────────────────────
 for (const bp of BLOG_POSTS) {
   const postHtml = injectMetadata(baseHtml, {
+    skipLoader: true,
     title: `${bp.title} | Pranav Shende`,
     description: bp.description,
     canonicalUrl: `https://pranavshende.online/blog/${bp.slug}`,
@@ -473,6 +479,7 @@ for (const bp of BLOG_POSTS) {
 // 7. 404 Not Found (dist/404.html)
 // ─────────────────────────────────────────────────────────────
 const notFoundHtml = injectMetadata(baseHtml, {
+  skipLoader: true,
   title: '404 - Page Not Found | Pranav Shende',
   description: 'The requested page could not be found on Pranav Shende portfolio.',
   canonicalUrl: 'https://pranavshende.online/404',

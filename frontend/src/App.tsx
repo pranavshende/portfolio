@@ -182,6 +182,15 @@ const checkInitialSkipLoader = (): boolean => {
 const App = () => {
   const [isAppLoaded, setIsAppLoaded] = useState(() => checkInitialSkipLoader());
 
+  useEffect(() => {
+    if (isAppLoaded) {
+      const preLoader = document.getElementById('pre-react-loader');
+      if (preLoader) {
+        preLoader.remove();
+      }
+    }
+  }, [isAppLoaded]);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
