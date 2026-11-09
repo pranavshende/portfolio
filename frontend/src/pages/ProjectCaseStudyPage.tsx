@@ -6,6 +6,7 @@ import {
   Layers, Terminal, Calendar, User, Share2, Copy, Check, ArrowUpRight, BookOpen
 } from 'lucide-react';
 import { DoodleLayout } from '@/components/DoodleLayout';
+import { PageSeo } from '@/components/PageSeo';
 import useAnalytics from '@/hooks/useAnalytics';
 import { api } from '@/lib/api';
 
@@ -389,87 +390,6 @@ export const ProjectCaseStudyPage: React.FC = () => {
     return null;
   }, [slug]);
 
-  useEffect(() => {
-    if (!project) return;
-
-    const pageTitle = `${project.title} | Case Study by Pranav Shende`;
-    const pageDesc = project.summary.slice(0, 160) + '...';
-    document.title = pageTitle;
-
-    // Meta Description
-    let metaDesc = document.querySelector('meta[name="description"]') as HTMLMetaElement;
-    if (!metaDesc) {
-      metaDesc = document.createElement('meta');
-      metaDesc.name = 'description';
-      document.head.appendChild(metaDesc);
-    }
-    metaDesc.content = pageDesc;
-
-    // Canonical
-    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
-    if (!canonical) {
-      canonical = document.createElement('link');
-      canonical.rel = 'canonical';
-      document.head.appendChild(canonical);
-    }
-    canonical.href = `https://pranavshende.online/projects/${project.slug}`;
-
-    // Open Graph
-    const setMeta = (property: string, content: string) => {
-      let el = document.querySelector(`meta[property="${property}"]`) as HTMLMetaElement;
-      if (!el) {
-        el = document.createElement('meta');
-        el.setAttribute('property', property);
-        document.head.appendChild(el);
-      }
-      el.content = content;
-    };
-
-    setMeta('og:title', pageTitle);
-    setMeta('og:description', pageDesc);
-    setMeta('og:type', 'article');
-    setMeta('og:url', `https://pranavshende.online/projects/${project.slug}`);
-
-    // Inject CreativeWork Schema.org JSON-LD
-    let script = document.getElementById('case-study-schema') as HTMLScriptElement;
-    if (!script) {
-      script = document.createElement('script');
-      script.id = 'case-study-schema';
-      script.type = 'application/ld+json';
-      document.head.appendChild(script);
-    }
-
-    const schema = {
-      '@context': 'https://schema.org',
-      '@type': 'CreativeWork',
-      'name': project.title,
-      'headline': project.headline,
-      'description': project.summary,
-      'url': `https://pranavshende.online/projects/${project.slug}`,
-      'creator': {
-        '@type': 'Person',
-        'name': 'Pranav Shende',
-        'jobTitle': 'Full Stack Developer & Forward Deployed Engineer',
-        'url': 'https://pranavshende.online/'
-      },
-      'author': {
-        '@type': 'Person',
-        'name': 'Pranav Shende',
-        'url': 'https://pranavshende.online/'
-      },
-      'dateCreated': project.year,
-      'keywords': project.techStack.join(', '),
-      'genre': project.category
-    };
-
-    script.text = JSON.stringify(schema);
-
-    return () => {
-      const s = document.getElementById('case-study-schema');
-      if (s) s.remove();
-    };
-  }, [project]);
-
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
     setCopied(true);
@@ -479,6 +399,11 @@ export const ProjectCaseStudyPage: React.FC = () => {
   if (!project) {
     return (
       <DoodleLayout>
+        <PageSeo
+          title="Project Case Study Not Found | Pranav Shende"
+          description="The requested engineering project case study could not be found."
+          noindex={true}
+        />
         <div className="py-20 text-center max-w-xl mx-auto">
           <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-stone-100 dark:bg-stone-800 border-2 border-stone-900 flex items-center justify-center text-2xl shadow-[3px_3px_0px_#1c1917]">
             🔍
@@ -501,6 +426,37 @@ export const ProjectCaseStudyPage: React.FC = () => {
 
   return (
     <DoodleLayout>
+      <PageSeo
+        title={`${project.title} | Case Study by Pranav Shende`}
+        description={project.summary.slice(0, 160) + '...'}
+        canonicalPath={`/projects/${project.slug}`}
+        keywords={[project.title, project.category, ...project.techStack, 'Pranav Shende', 'Case Study']}
+        ogType="article"
+        ogImage={customCover || project.image}
+        ogImageAlt={project.title}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'CreativeWork',
+          'name': project.title,
+          'headline': project.headline,
+          'description': project.summary,
+          'url': `https://pranavshende.online/projects/${project.slug}`,
+          'creator': {
+            '@type': 'Person',
+            'name': 'Pranav Shende',
+            'jobTitle': 'Full Stack Developer & Forward Deployed Engineer',
+            'url': 'https://pranavshende.online/'
+          },
+          'author': {
+            '@type': 'Person',
+            'name': 'Pranav Shende',
+            'url': 'https://pranavshende.online/'
+          },
+          'dateCreated': project.year,
+          'keywords': project.techStack.join(', '),
+          'genre': project.category
+        }}
+      />
       <article className="max-w-4xl mx-auto pb-16">
         {/* Back Link */}
         <div className="mb-6 flex items-center justify-between">

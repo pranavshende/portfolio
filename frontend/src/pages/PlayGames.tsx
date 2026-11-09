@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import FloatingHeader from '../components/FloatingHeader';
+import { PageSeo } from '@/components/PageSeo';
 
 type AppType = 'home' | 'mario' | 'hextris' | 'dino' | 'tetris' | 'subway' | 'flappy' | 'spotify' | 'jansampark' | 'pashurakshak' | 'solar' | 'agriscore' | 'dsa';
 
@@ -107,6 +108,33 @@ const PlayGames = () => {
 
   return (
     <div className="h-[100dvh] sm:h-screen bg-zinc-50 dark:bg-black flex flex-col p-0 sm:p-6 md:p-8 font-sans overflow-hidden">
+      <PageSeo
+        title="Gaming Station & Interactive Retro Console | Pranav Shende"
+        description="Play classic arcade titles including Mario, Hextris, Dino Runner, Tetris, Flappy Bird, and Subway Surfers directly in the browser."
+        canonicalPath="/playgames"
+        keywords={[
+          'Web Games',
+          'Retro Gaming Station',
+          'Browser Arcade',
+          'React Games',
+          'Mario Web',
+          'Tetris Online',
+          'Pranav Shende'
+        ]}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'WebApplication',
+          'name': 'Interactive Gaming Station',
+          'operatingSystem': 'Web Browser',
+          'applicationCategory': 'GameApplication',
+          'url': 'https://pranavshende.online/playgames',
+          'author': {
+            '@type': 'Person',
+            'name': 'Pranav Shende',
+            'url': 'https://pranavshende.online/'
+          }
+        }}
+      />
       
       <div className="hidden lg:block">
         <FloatingHeader />

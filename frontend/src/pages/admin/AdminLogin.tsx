@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Lock, Mail, Eye, EyeOff, Loader2, ShieldCheck, ArrowLeft, AlertCircle } from 'lucide-react';
 import { api, setStoredToken, getStoredToken } from '@/lib/api';
+import { PageSeo } from '@/components/PageSeo';
 
 export const AdminLogin: React.FC = () => {
   const navigate = useNavigate();
@@ -59,6 +60,11 @@ export const AdminLogin: React.FC = () => {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4 bg-[#faf7f0] dark:bg-[#121316] text-stone-900 dark:text-stone-100 select-none relative overflow-hidden font-sans bg-[radial-gradient(#d6cec0_1.25px,transparent_1.25px)] dark:bg-[radial-gradient(#2b2e38_1.25px,transparent_1.25px)] [background-size:18px_18px]">
+      <PageSeo
+        title="Admin Portal Login | Pranav Shende"
+        description="Secure authentication checkpoint for administrator management."
+        noindex={true}
+      />
       <motion.div
         initial={{ opacity: 0, y: 15, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}

@@ -148,7 +148,7 @@ const BLOG_POSTS = [
 ];
 
 // Helper to replace metadata in HTML template
-function injectMetadata(html, { title, description, canonicalUrl, ogType = 'website', ogImage = 'https://pranavshende.online/og-image.png', jsonLd, bodyContent }) {
+function injectMetadata(html, { title, description, canonicalUrl, ogType = 'website', ogImage = 'https://pranavshende.online/og-image.png', keywords, robots, jsonLd, bodyContent }) {
   let modified = html;
 
   // Title
@@ -157,6 +157,18 @@ function injectMetadata(html, { title, description, canonicalUrl, ogType = 'webs
 
   // Description
   modified = modified.replace(/<meta\s+name=["']description["']\s+content=["'].*?["']\s*\/?>/i, `<meta name="description" content="${description}" />`);
+
+  // Keywords
+  if (keywords) {
+    modified = modified.replace(/<meta\s+name=["']keywords["']\s+content=["'].*?["']\s*\/?>/i, `<meta name="keywords" content="${keywords}" />`);
+  }
+
+  // Robots
+  if (robots) {
+    modified = modified.replace(/<meta\s+name=["']robots["']\s+content=["'].*?["']\s*\/?>/i, `<meta name="robots" content="${robots}" />`);
+    modified = modified.replace(/<meta\s+name=["']googlebot["']\s+content=["'].*?["']\s*\/?>/i, `<meta name="googlebot" content="${robots}" />`);
+    modified = modified.replace(/<meta\s+name=["']bingbot["']\s+content=["'].*?["']\s*\/?>/i, `<meta name="bingbot" content="${robots}" />`);
+  }
 
   // Canonical
   modified = modified.replace(/<link\s+rel=["']canonical["']\s+href=["'].*?["']\s*\/?>/i, `<link rel="canonical" href="${canonicalUrl}" />`);
@@ -168,6 +180,7 @@ function injectMetadata(html, { title, description, canonicalUrl, ogType = 'webs
   modified = modified.replace(/<meta\s+property=["']og:type["']\s+content=["'].*?["']\s*\/?>/i, `<meta property="og:type" content="${ogType}" />`);
   if (ogImage) {
     modified = modified.replace(/<meta\s+property=["']og:image["']\s+content=["'].*?["']\s*\/?>/i, `<meta property="og:image" content="${ogImage}" />`);
+    modified = modified.replace(/<meta\s+name=["']twitter:image["']\s+content=["'].*?["']\s*\/?>/i, `<meta name="twitter:image" content="${ogImage}" />`);
   }
 
   // Twitter
@@ -306,14 +319,66 @@ writeStaticPage('blog', blogHtml);
 // 4. /arcade
 // ─────────────────────────────────────────────────────────────
 const arcadeHtml = injectMetadata(baseHtml, {
-  title: 'Interactive Arcade Console | Pranav Shende',
-  description: 'Play retro arcade games and explore interactive mobile app simulators built by Pranav Shende.',
-  canonicalUrl: 'https://pranavshende.online/arcade'
+  title: 'Interactive Arcade Console & Mobile Simulator | Pranav Shende',
+  description: 'Play retro arcade games including Tetris, Snake, Flappy Bird, and explore interactive mobile app simulators built by Pranav Shende.',
+  canonicalUrl: 'https://pranavshende.online/arcade',
+  keywords: 'Retro Arcade, Interactive Simulator, Tetris React, Flappy Bird Web, Mobile App Simulator, Pranav Shende Games',
+  jsonLd: {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    'name': 'Interactive Arcade Console',
+    'operatingSystem': 'Web Browser',
+    'applicationCategory': 'GameApplication',
+    'url': 'https://pranavshende.online/arcade',
+    'author': {
+      '@type': 'Person',
+      'name': 'Pranav Shende',
+      'url': 'https://pranavshende.online/'
+    }
+  },
+  bodyContent: `
+    <div style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem; font-family: system-ui, -apple-system, sans-serif;">
+      <nav style="margin-bottom: 1.5rem;"><a href="/" style="color: #8b2323;">← Back to Home</a></nav>
+      <h1 style="font-size: 2.2rem; font-weight: 800; color: #1c1917;">Interactive Arcade Console</h1>
+      <p style="font-size: 1.1rem; color: #57534e; margin-bottom: 2rem;">Handcrafted interactive simulators and retro arcade titles.</p>
+    </div>
+  `
 });
 writeStaticPage('arcade', arcadeHtml);
 
 // ─────────────────────────────────────────────────────────────
-// 5. Individual Case Studies (/projects/:slug)
+// 5. /playgames
+// ─────────────────────────────────────────────────────────────
+const playGamesHtml = injectMetadata(baseHtml, {
+  title: 'Gaming Station & Interactive Retro Console | Pranav Shende',
+  description: 'Play classic arcade titles including Mario, Hextris, Dino Runner, Tetris, Flappy Bird, and Subway Surfers directly in the browser.',
+  canonicalUrl: 'https://pranavshende.online/playgames',
+  keywords: 'Web Games, Retro Gaming Station, Browser Arcade, React Games, Mario Web, Tetris Online, Pranav Shende',
+  jsonLd: {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    'name': 'Interactive Gaming Station',
+    'operatingSystem': 'Web Browser',
+    'applicationCategory': 'GameApplication',
+    'url': 'https://pranavshende.online/playgames',
+    'author': {
+      '@type': 'Person',
+      'name': 'Pranav Shende',
+      'url': 'https://pranavshende.online/'
+    }
+  },
+  bodyContent: `
+    <div style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem; font-family: system-ui, -apple-system, sans-serif;">
+      <nav style="margin-bottom: 1.5rem;"><a href="/" style="color: #8b2323;">← Back to Home</a></nav>
+      <h1 style="font-size: 2.2rem; font-weight: 800; color: #1c1917;">Gaming Station &amp; Interactive Console</h1>
+      <p style="font-size: 1.1rem; color: #57534e; margin-bottom: 2rem;">Classic retro arcade games playable directly in the browser.</p>
+    </div>
+  `
+});
+writeStaticPage('playgames', playGamesHtml);
+
+// ─────────────────────────────────────────────────────────────
+// 6. Individual Case Studies (/projects/:slug)
 // ─────────────────────────────────────────────────────────────
 for (const cs of CASE_STUDIES) {
   const caseStudyHtml = injectMetadata(baseHtml, {
@@ -403,6 +468,26 @@ for (const bp of BLOG_POSTS) {
   });
   writeStaticPage(`blog/${bp.slug}`, postHtml);
 }
+
+// ─────────────────────────────────────────────────────────────
+// 7. 404 Not Found (dist/404.html)
+// ─────────────────────────────────────────────────────────────
+const notFoundHtml = injectMetadata(baseHtml, {
+  title: '404 - Page Not Found | Pranav Shende',
+  description: 'The requested page could not be found on Pranav Shende portfolio.',
+  canonicalUrl: 'https://pranavshende.online/404',
+  robots: 'noindex, nofollow',
+  bodyContent: `
+    <div style="max-width: 600px; margin: 5rem auto; text-align: center; font-family: system-ui, sans-serif;">
+      <h1 style="font-size: 3rem; color: #8b2323;">404</h1>
+      <h2>Page Not Found</h2>
+      <p style="color: #57534e;">The page you are looking for does not exist or has been moved.</p>
+      <a href="/" style="display: inline-block; margin-top: 1.5rem; padding: 0.75rem 1.5rem; background: #8b2323; color: white; text-decoration: none; border-radius: 8px; font-weight: bold;">Return to Home</a>
+    </div>
+  `
+});
+fs.writeFileSync(path.join(DIST_DIR, '404.html'), notFoundHtml, 'utf-8');
+console.log('[Prerender] Generated: dist/404.html');
 
 console.log('[Prerender] All static SEO routes successfully generated in dist/!');
 

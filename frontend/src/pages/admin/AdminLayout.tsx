@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { api, getStoredToken, removeStoredToken } from '@/lib/api';
 import { useMode } from '@/contexts/ModeContext';
+import { PageSeo } from '@/components/PageSeo';
 
 // Import modular sections (6 pruned as requested: experience, skills, testimonials, subscribers, bookings, logs)
 import OverviewSection from './sections/OverviewSection';
@@ -123,6 +124,11 @@ export const AdminLayout: React.FC = () => {
 
   return (
     <div className="min-h-screen flex bg-[#faf7f0] dark:bg-[#121316] text-stone-900 dark:text-stone-100 font-sans antialiased bg-[radial-gradient(#d6cec0_1.25px,transparent_1.25px)] dark:bg-[radial-gradient(#2b2e38_1.25px,transparent_1.25px)] [background-size:18px_18px]">
+      <PageSeo
+        title="Admin Portal Dashboard | Pranav Shende"
+        description="Secure portfolio content management system and administration dashboard."
+        noindex={true}
+      />
       {/* ─────────────────────────────────────────────────────────────
           DESKTOP SIDEBAR
       ────────────────────────────────────────────────────────────── */}

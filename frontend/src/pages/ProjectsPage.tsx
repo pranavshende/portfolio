@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { DoodleLayout } from '@/components/DoodleLayout';
+import { PageSeo } from '@/components/PageSeo';
 import useAnalytics from '@/hooks/useAnalytics';
 import { api } from '@/lib/api';
 
@@ -271,24 +272,6 @@ export const ProjectsPage: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'flagship' | 'ai' | 'algorithms'>('all');
 
   useEffect(() => {
-    document.title = 'All Projects & Engineering Repositories | Pranav Shende';
-
-    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
-    if (!canonical) {
-      canonical = document.createElement('link');
-      canonical.rel = 'canonical';
-      document.head.appendChild(canonical);
-    }
-    canonical.href = 'https://pranavshende.online/projects';
-
-    let metaDesc = document.querySelector('meta[name="description"]') as HTMLMetaElement;
-    if (!metaDesc) {
-      metaDesc = document.createElement('meta');
-      metaDesc.name = 'description';
-      document.head.appendChild(metaDesc);
-    }
-    metaDesc.content = 'Explore the complete engineering portfolio of Pranav Shende — featuring autonomous AI platforms, RAG systems, distributed Kafka pipelines, and edge computing architectures.';
-
     const projectImages: Record<string, string> = {
       jarvis: jarvisBanner,
       'jarvis-mcp-multipledbs': jarvisBanner,
@@ -471,6 +454,33 @@ export const ProjectsPage: React.FC = () => {
 
   return (
     <DoodleLayout>
+      <PageSeo
+        title="All Projects & Engineering Repositories | Pranav Shende"
+        description="Explore the complete engineering portfolio of Pranav Shende — featuring autonomous AI platforms, RAG systems, distributed Kafka pipelines, and edge computing architectures."
+        canonicalPath="/projects"
+        keywords={[
+          'All Projects Pranav Shende',
+          'Software Engineering Repositories',
+          'Autonomous AI Systems',
+          'RAG Architecture Projects',
+          'Distributed Kafka Pipelines',
+          'Model Context Protocol',
+          'Full Stack Developer Portfolio'
+        ]}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'CollectionPage',
+          'name': 'All Projects & Engineering Repositories by Pranav Shende',
+          'description': 'Curated collection of engineering software architectures, AI systems, and distributed platforms.',
+          'url': 'https://pranavshende.online/projects',
+          'author': {
+            '@type': 'Person',
+            'name': 'Pranav Shende',
+            'url': 'https://pranavshende.online/'
+          }
+        }}
+      />
+
       {/* ─────────────────────────────────────────────────────────────
           PAGE HEADER
       ────────────────────────────────────────────────────────────── */}

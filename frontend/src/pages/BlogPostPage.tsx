@@ -7,6 +7,7 @@ import {
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { DoodleLayout } from '@/components/DoodleLayout';
+import { PageSeo } from '@/components/PageSeo';
 import { api } from '@/lib/api';
 import useAnalytics from '@/hooks/useAnalytics';
 import profilePhoto from '@/photo/profile_photo_wide.webp';
@@ -74,84 +75,7 @@ export const BlogPostPage: React.FC = () => {
     api.getBlogPostBySlug(slug)
       .then((res: any) => {
         if (res && res.data) {
-          const item: BlogPost = res.data;
-          setPost(item);
-
-          // Dynamic SEO Title & Meta tags
-          const pageTitle = item.seoTitle || `${item.title} | Pranav Shende`;
-          const pageDesc = item.seoDescription || item.excerpt;
-          document.title = pageTitle;
-
-          // Update Meta Description
-          let metaDesc = document.querySelector('meta[name="description"]') as HTMLMetaElement;
-          if (!metaDesc) {
-            metaDesc = document.createElement('meta');
-            metaDesc.name = 'description';
-            document.head.appendChild(metaDesc);
-          }
-          metaDesc.content = pageDesc;
-
-          // Canonical URL
-          let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
-          if (!canonical) {
-            canonical = document.createElement('link');
-            canonical.rel = 'canonical';
-            document.head.appendChild(canonical);
-          }
-          canonical.href = `https://pranavshende.online/blog/${item.slug}`;
-
-          // Open Graph metadata
-          const setMetaTag = (property: string, content: string) => {
-            let el = document.querySelector(`meta[property="${property}"]`) as HTMLMetaElement;
-            if (!el) {
-              el = document.createElement('meta');
-              el.setAttribute('property', property);
-              document.head.appendChild(el);
-            }
-            el.content = content;
-          };
-
-          setMetaTag('og:title', pageTitle);
-          setMetaTag('og:description', pageDesc);
-          setMetaTag('og:type', 'article');
-          setMetaTag('og:url', `https://pranavshende.online/blog/${item.slug}`);
-          if (item.coverImageUrl) {
-            setMetaTag('og:image', item.coverImageUrl);
-          }
-
-          // Inject Schema.org TechArticle JSON-LD
-          let schemaScript = document.getElementById('blog-post-schema') as HTMLScriptElement;
-          if (!schemaScript) {
-            schemaScript = document.createElement('script');
-            schemaScript.id = 'blog-post-schema';
-            schemaScript.type = 'application/ld+json';
-            document.head.appendChild(schemaScript);
-          }
-
-          const schemaData = {
-            '@context': 'https://schema.org',
-            '@type': 'TechArticle',
-            'headline': item.title,
-            'description': pageDesc,
-            'image': item.coverImageUrl || 'https://pranavshende.online/og-image.png',
-            'author': {
-              '@type': 'Person',
-              'name': item.author || 'Pranav Shende',
-              'url': 'https://pranavshende.online/',
-            },
-            'publisher': {
-              '@type': 'Person',
-              'name': 'Pranav Shende',
-              'url': 'https://pranavshende.online/',
-            },
-            'datePublished': item.publishedAt || item.createdAt || new Date().toISOString(),
-            'dateModified': item.publishedAt || item.createdAt || new Date().toISOString(),
-            'mainEntityOfPage': `https://pranavshende.online/blog/${item.slug}`,
-            'articleSection': item.category || 'Software Engineering',
-            'keywords': (item.tags || []).join(', '),
-          };
-
-          schemaScript.text = JSON.stringify(schemaData);
+          setPost(res.data);
         } else {
           setError('Article not found.');
         }
@@ -161,12 +85,6 @@ export const BlogPostPage: React.FC = () => {
         setError('Article not found or could not be loaded.');
       })
       .finally(() => setLoading(false));
-
-    return () => {
-      // Cleanup script tag on unmount
-      const s = document.getElementById('blog-post-schema');
-      if (s) s.remove();
-    };
   }, [slug]);
 
   const handleCopyLink = () => {
@@ -204,6 +122,11 @@ export const BlogPostPage: React.FC = () => {
   if (error || !post) {
     return (
       <DoodleLayout>
+        <PageSeo
+          title="Article Not Found | Pranav Shende"
+          description="The requested technical article does not exist or has been archived."
+          noindex={true}
+        />
         <div className="max-w-xl mx-auto py-20 text-center space-y-4">
           <BookOpen className="w-12 h-12 mx-auto text-stone-400 opacity-60" />
           <h2 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100">
@@ -236,6 +159,38 @@ export const BlogPostPage: React.FC = () => {
 
   return (
     <DoodleLayout>
+      <PageSeo
+        title={post.seoTitle || `${post.title} | Pranav Shende`}
+        description={post.seoDescription || post.excerpt}
+        canonicalPath={`/blog/${post.slug}`}
+        keywords={post.tags && post.tags.length > 0 ? post.tags : [post.category || 'Engineering', 'System Design', 'Pranav Shende']}
+        ogType="article"
+        ogImage={resolveBlogCover(post.coverImageUrl, post.slug)}
+        publishedTime={post.publishedAt || post.createdAt}
+        author={post.author || 'Pranav Shende'}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'TechArticle',
+          'headline': post.title,
+          'description': post.seoDescription || post.excerpt,
+          'image': resolveBlogCover(post.coverImageUrl, post.slug),
+          'author': {
+            '@type': 'Person',
+            'name': post.author || 'Pranav Shende',
+            'url': 'https://pranavshende.online/',
+          },
+          'publisher': {
+            '@type': 'Person',
+            'name': 'Pranav Shende',
+            'url': 'https://pranavshende.online/',
+          },
+          'datePublished': post.publishedAt || post.createdAt || new Date().toISOString(),
+          'dateModified': post.publishedAt || post.createdAt || new Date().toISOString(),
+          'mainEntityOfPage': `https://pranavshende.online/blog/${post.slug}`,
+          'articleSection': post.category || 'Software Engineering',
+          'keywords': (post.tags || []).join(', '),
+        }}
+      />
       <div className="max-w-3xl mx-auto space-y-8 py-4 sm:py-8">
         {/* Navigation Breadcrumb */}
         <nav className="flex items-center gap-2 text-xs text-stone-500 font-mono">

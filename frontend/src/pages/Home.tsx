@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import { api } from '@/lib/api';
 import useAnalytics from '@/hooks/useAnalytics';
 import ContactModal from '@/components/ContactModal';
+import { PageSeo } from '@/components/PageSeo';
 import { GitHubCalendar } from 'react-github-calendar';
 import { useMode } from '@/contexts/ModeContext';
 
@@ -564,6 +565,58 @@ export const Home: React.FC = () => {
 
   return (
     <DoodleLayout>
+      <PageSeo
+        title="Pranav Shende | Full Stack Developer & AI Engineer"
+        description="Explore the portfolio of Pranav Shende, a Full Stack Developer and Forward Deployed Engineer building scalable backend systems, AI-powered applications, RAG solutions and production-ready software."
+        canonicalPath="/"
+        keywords={[
+          'Pranav Shende',
+          'Pranav Shende developer',
+          'Full Stack Developer Nagpur',
+          'Backend Developer India',
+          'Forward Deployed Engineer',
+          'AI Engineer Portfolio',
+          'React Node.js Developer',
+          'RAG Application Developer',
+          'Backend Architecture Projects',
+          'Model Context Protocol',
+          'pgvector',
+          'PostgreSQL',
+          'Kafka',
+          'Redis',
+          'Distributed Systems',
+          'SVPCET Nagpur'
+        ]}
+        jsonLd={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Person',
+            'name': 'Pranav Shende',
+            'url': 'https://pranavshende.online/',
+            'jobTitle': 'Full Stack Developer & Forward Deployed Engineer',
+            'description': 'Software engineer building scalable backend architectures, enterprise systems, and AI-powered applications.',
+            'address': {
+              '@type': 'PostalAddress',
+              'addressLocality': 'Nagpur',
+              'addressRegion': 'Maharashtra',
+              'addressCountry': 'IN'
+            },
+            'sameAs': [
+              'https://linkedin.com/in/pranavshende',
+              'https://github.com/PranavShende',
+              'https://medium.com/@pranavshende97'
+            ]
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            'name': 'Pranav Shende Portfolio',
+            'url': 'https://pranavshende.online/',
+            'description': 'Engineering portfolio and technical case studies by Pranav Shende.'
+          }
+        ]}
+      />
+
       {/* ─────────────────────────────────────────────────────────────
           HERO STATEMENT (Mockup match)
       ────────────────────────────────────────────────────────────── */}

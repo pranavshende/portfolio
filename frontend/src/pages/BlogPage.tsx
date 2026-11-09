@@ -6,6 +6,7 @@ import {
   Sparkles, Tag, Layers, User, ChevronRight, Filter
 } from 'lucide-react';
 import { DoodleLayout } from '@/components/DoodleLayout';
+import { PageSeo } from '@/components/PageSeo';
 import { api } from '@/lib/api';
 import useAnalytics from '@/hooks/useAnalytics';
 
@@ -72,17 +73,6 @@ export const BlogPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
   useEffect(() => {
-    document.title = 'Technical Blog & Architectural Insights | Pranav Shende';
-    
-    // Update or insert canonical link
-    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
-    if (!canonical) {
-      canonical = document.createElement('link');
-      canonical.rel = 'canonical';
-      document.head.appendChild(canonical);
-    }
-    canonical.href = 'https://pranavshende.online/blog';
-
     // Fetch blog posts
     api.getBlogPosts()
       .then((res: any) => {
@@ -118,6 +108,32 @@ export const BlogPage: React.FC = () => {
 
   return (
     <DoodleLayout>
+      <PageSeo
+        title="Technical Blog & Architectural Insights | Pranav Shende"
+        description="In-depth engineering deep-dives, system design breakdowns, LLM architectures, and backend case studies by Pranav Shende."
+        canonicalPath="/blog"
+        keywords={[
+          'Technical Blog Pranav Shende',
+          'System Design Articles',
+          'LLM RAG Pipelines',
+          'Model Context Protocol',
+          'Distributed Systems',
+          'PostgreSQL Performance',
+          'Kafka Architecture'
+        ]}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'Blog',
+          'name': 'Pranav Shende Technical Engineering Journal',
+          'description': 'System design, LLMs, RAG, and scalable engineering articles by Pranav Shende.',
+          'url': 'https://pranavshende.online/blog',
+          'author': {
+            '@type': 'Person',
+            'name': 'Pranav Shende',
+            'url': 'https://pranavshende.online/'
+          }
+        }}
+      />
       <div className="max-w-6xl mx-auto space-y-10 py-4 sm:py-8">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-xs text-stone-500 font-mono">

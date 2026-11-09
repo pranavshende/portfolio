@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DoodleLayout } from '@/components/DoodleLayout';
+import { PageSeo } from '@/components/PageSeo';
 import { 
   Gamepad2, Hexagon, Activity, TrainFront, Bird, Folder, Music, Globe, 
   Users, UtensilsCrossed, Circle, Square, ChevronLeft, Smartphone, Tablet, 
@@ -531,6 +532,33 @@ const RetroOSConsole: React.FC = () => {
 export const Arcade: React.FC = () => {
   return (
     <DoodleLayout>
+      <PageSeo
+        title="Interactive Arcade Console & Mobile Simulator | Pranav Shende"
+        description="Play retro games including Tetris, Snake, Flappy Bird, and explore interactive mobile app simulators built by Pranav Shende."
+        canonicalPath="/arcade"
+        keywords={[
+          'Retro Arcade',
+          'Interactive Simulator',
+          'Tetris React',
+          'Flappy Bird Web',
+          'Mobile App Simulator',
+          'Pranav Shende Games'
+        ]}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'WebApplication',
+          'name': 'Interactive Arcade Console',
+          'operatingSystem': 'Web Browser',
+          'applicationCategory': 'GameApplication',
+          'url': 'https://pranavshende.online/arcade',
+          'author': {
+            '@type': 'Person',
+            'name': 'Pranav Shende',
+            'url': 'https://pranavshende.online/'
+          }
+        }}
+      />
+
       {/* ─────────────────────────────────────────────────────────────
           HEADER ROW
       ────────────────────────────────────────────────────────────── */}
