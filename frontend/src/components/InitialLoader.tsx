@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import cherryBlossomMist from "@/photo/cherry_blossom_mist.webp";
 import cherryBlossomMistMobile from "@/photo/cherry_blossom_mist_mobile.webp";
-import Sharingan from "./Sharingan";
+import ClassySpinner from "./ClassySpinner";
 
 interface InitialLoaderProps {
   onComplete: () => void;
@@ -32,33 +32,17 @@ const SakuraPetal = ({ delay, startX, duration }: { delay: number; startX: numbe
 );
 
 export const InitialLoader: React.FC<InitialLoaderProps> = ({ onComplete }) => {
-  const [progress, setProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          return 100;
-        }
-        const step = Math.floor(Math.random() * 8) + 5;
-        return Math.min(100, prev + step);
-      });
-    }, 45);
+    // Elegant calibrated display duration (~1100ms) for a classy, instant feel
+    const timer = setTimeout(() => {
+      setIsVisible(false);
+      setTimeout(onComplete, 350);
+    }, 1150);
 
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    if (progress >= 100) {
-      const timer = setTimeout(() => {
-        setIsVisible(false);
-        setTimeout(onComplete, 400);
-      }, 200);
-      return () => clearTimeout(timer);
-    }
-  }, [progress, onComplete]);
+    return () => clearTimeout(timer);
+  }, [onComplete]);
 
   const petals = [
     { delay: 0.1, startX: 12, duration: 4.8 },
@@ -72,13 +56,13 @@ export const InitialLoader: React.FC<InitialLoaderProps> = ({ onComplete }) => {
     <AnimatePresence mode="wait">
       {isVisible && (
         <motion.div
-          key="sumie-clean-loader"
+          key="aesthetic-zen-loader"
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center select-none overflow-hidden bg-[#eee0d1]"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, scale: 1.02 }}
-          transition={{ duration: 0.4, ease: "easeInOut" }}
+          exit={{ opacity: 0, scale: 1.015 }}
+          transition={{ duration: 0.35, ease: "easeInOut" }}
         >
-          {/* Fullscreen Cherry Blossom Mist Artwork (HD Desktop & QHD Mobile) */}
+          {/* Fullscreen Cherry Blossom Mist Artwork */}
           <div
             className="hidden md:block absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-1000 scale-100"
             style={{
@@ -101,39 +85,37 @@ export const InitialLoader: React.FC<InitialLoaderProps> = ({ onComplete }) => {
             <SakuraPetal key={idx} delay={p.delay} startX={p.startX} duration={p.duration} />
           ))}
 
-          {/* Center Clean Japanese Sumi-e Spinner Box */}
-          <div className="relative z-30 flex flex-col items-center space-y-4 px-4">
-            {/* Spinning Sharingan (Photo Removed) */}
-            <motion.div
-              initial={{ scale: 0.85, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.4 }}
-              className="relative flex items-center justify-center shrink-0"
-            >
-              <Sharingan className="w-20 h-20 sm:w-24 sm:h-24" />
-            </motion.div>
+          {/* Aesthetic Japanese Washi Card */}
+          <motion.div 
+            initial={{ scale: 0.92, opacity: 0, y: 8 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.95, opacity: 0, y: -4 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="relative z-30 flex flex-col items-center px-8 py-7 sm:px-10 sm:py-9 rounded-3xl bg-[#faf6f0]/95 backdrop-blur-md border-2 border-stone-900 shadow-[5px_5px_0px_#1c1917] max-w-[90vw] sm:max-w-md"
+          >
+            {/* Classy Zen Orbit Spinner with Red Hanko Core */}
+            <div className="mb-4">
+              <ClassySpinner size="lg" />
+            </div>
 
-            {/* Name */}
-            <h1 className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-stone-900 drop-shadow-2xs">
+            {/* Name with tracked serif typography */}
+            <h1 className="font-serif text-lg sm:text-xl font-bold tracking-[0.28em] uppercase text-stone-900 drop-shadow-2xs text-center">
               Pranav Shende
             </h1>
 
-            {/* Compact Spinner Bar (Smaller size requested) */}
-            <div className="flex flex-col items-center pt-1">
-              <div className="w-36 sm:w-44 h-1.5 sm:h-2 rounded-full bg-stone-900/10 p-0.5 border border-stone-800/20 overflow-hidden shadow-inner">
-                <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-[#7f1d1d] via-[#b91c1c] to-[#8b2323] shadow-xs"
-                  style={{ width: `${progress}%` }}
-                  transition={{ ease: "easeOut", duration: 0.1 }}
-                />
-              </div>
+            {/* Minimalist Subtitle */}
+            <p className="font-serif text-xs sm:text-sm text-stone-600 font-medium tracking-wide mt-1 text-center">
+              Full Stack &amp; AI Engineer
+            </p>
 
-              {/* Minimal percentage counter */}
-              <span className="font-serif text-[11px] sm:text-xs tracking-[0.2em] text-stone-600 font-semibold mt-1.5">
-                {progress}%
+            {/* Status indicator (replaced the progress bar with an elegant badge) */}
+            <div className="mt-4 pt-3 border-t border-stone-900/15 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#8b2323] animate-ping" />
+              <span className="font-mono text-[10px] tracking-[0.25em] uppercase text-stone-700 font-semibold">
+                「 読込中 」 ENTERING
               </span>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
