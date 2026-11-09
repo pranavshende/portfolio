@@ -469,23 +469,30 @@ export const Home: React.FC = () => {
     };
 
     const resolveProjectThumbnail = (p: any): string => {
-      const slug = String(p.slug || p.id || p.title || '').toLowerCase();
-      
-      // 1. Check known project key in bundled assets
-      for (const [key, asset] of Object.entries(projectImages)) {
-        if (slug.includes(key) || key.includes(slug)) {
-          return asset;
+      // 1. Priority 1: Check custom uploaded thumbnail from CMS / database
+      const raw = p.thumbnailUrl || p.bannerUrl || p.imageUrl || p.coverImageUrl;
+      if (raw && typeof raw === 'string' && raw.trim() !== '') {
+        const trimmed = raw.trim();
+        const isGenericUnsplash = trimmed.includes('photo-1555066931-4365d14bab8c');
+        if (!isGenericUnsplash) {
+          if (
+            trimmed.startsWith('data:image/') ||
+            trimmed.startsWith('http://') ||
+            trimmed.startsWith('https://') ||
+            trimmed.startsWith('/photo/') ||
+            trimmed.startsWith('/src/photo/')
+          ) {
+            return trimmed.startsWith('/src/photo/') ? trimmed.replace('/src/photo/', '/photo/') : trimmed;
+          }
+          return trimmed;
         }
       }
 
-      // 2. Check bannerUrl or thumbnailUrl
-      const raw = p.bannerUrl || p.thumbnailUrl;
-      if (raw && typeof raw === 'string') {
-        if (raw.startsWith('data:image/') || raw.startsWith('http://') || raw.startsWith('https://')) {
-          return raw;
-        }
-        if (raw.startsWith('/photo/')) {
-          return raw;
+      // 2. Priority 2: Fall back to bundled assets if no custom image was uploaded
+      const slug = String(p.slug || p.id || p.title || '').toLowerCase();
+      for (const [key, asset] of Object.entries(projectImages)) {
+        if (slug.includes(key) || key.includes(slug)) {
+          return asset;
         }
       }
 

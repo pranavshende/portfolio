@@ -358,6 +358,23 @@ export const ProjectCaseStudyPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [copied, setCopied] = React.useState(false);
+  const [customCover, setCustomCover] = React.useState<string | null>(null);
+
+  // Fetch dynamic CMS thumbnail if updated in admin
+  useEffect(() => {
+    if (!slug) return;
+    api.getProject(slug)
+      .then((res: any) => {
+        const p = res?.data;
+        if (p) {
+          const raw = p.bannerUrl || p.thumbnailUrl || p.imageUrl;
+          if (raw && typeof raw === 'string' && raw.trim() !== '' && !raw.includes('photo-1555066931-4365d14bab8c')) {
+            setCustomCover(raw.trim());
+          }
+        }
+      })
+      .catch(() => {});
+  }, [slug]);
 
   // Match by slug or alias
   const project = useMemo(() => {
@@ -573,7 +590,7 @@ export const ProjectCaseStudyPage: React.FC = () => {
         {/* Cover Image */}
         <div className="rounded-2xl overflow-hidden border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917] mb-8 bg-stone-100 dark:bg-stone-900">
           <img
-            src={project.image}
+            src={customCover || project.image}
             alt={project.title}
             className="w-full h-auto max-h-[460px] object-cover"
           />
