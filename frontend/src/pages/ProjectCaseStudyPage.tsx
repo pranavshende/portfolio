@@ -589,11 +589,11 @@ export const ProjectCaseStudyPage: React.FC = () => {
         </header>
 
         {/* Cover Image */}
-        <div className="rounded-2xl overflow-hidden border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917] mb-8 bg-stone-100 dark:bg-stone-900">
+        <div className="relative aspect-video w-full rounded-2xl overflow-hidden border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917] mb-8 bg-stone-100 dark:bg-stone-900 flex items-center justify-center">
           <img
             src={customCover || project.image}
             alt={project.title}
-            className="w-full h-auto max-h-[460px] object-cover"
+            className="w-full h-full object-cover object-center"
           />
         </div>
 

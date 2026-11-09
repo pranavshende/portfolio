@@ -579,14 +579,14 @@ export const ProjectsPage: React.FC = () => {
                     <div className="space-y-3">
                       {/* Image Thumbnail Banner if available */}
                       {p.image && (
-                        <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-900 border-2 border-stone-900 dark:border-stone-700 shadow-[2px_2px_0px_#1c1917]">
+                        <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-900 border-2 border-stone-900 dark:border-stone-700 shadow-[2px_2px_0px_#1c1917] flex items-center justify-center">
                           <img
                             src={p.image}
                             alt={p.title}
                             onError={(e) => {
                               (e.target as HTMLImageElement).src = jarvisBanner;
                             }}
-                            className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
+                            className="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-300"
                           />
                           {p.badge && (
                             <div className="absolute top-2.5 right-2.5 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full border-2 border-stone-900 shadow-[1.5px_1.5px_0px_#1c1917]">

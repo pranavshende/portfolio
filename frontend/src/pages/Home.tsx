@@ -745,7 +745,7 @@ export const Home: React.FC = () => {
               className="w-[280px] sm:w-[320px] md:w-[360px] shrink-0 snap-start group cursor-pointer rounded-2xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all overflow-hidden flex flex-col justify-between p-2.5 sm:p-3"
             >
               {/* Banner with badge */}
-              <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-900 border-2 border-stone-900 dark:border-stone-700 shadow-[1.5px_1.5px_0px_#1c1917]">
+              <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-900 border-2 border-stone-900 dark:border-stone-700 shadow-[1.5px_1.5px_0px_#1c1917]">
                 <img
                   src={proj.image}
                   alt={proj.title}
@@ -1187,7 +1187,7 @@ export const Home: React.FC = () => {
 
                 {/* Scrollable Modal Content */}
                 <div className="overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-5 flex-1 overscroll-contain">
-                  <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden border-2 border-stone-900 dark:border-stone-700 bg-stone-100 dark:bg-stone-800 shadow-[3px_3px_0px_#1c1917]">
+                  <div className="w-full aspect-video rounded-2xl overflow-hidden border-2 border-stone-900 dark:border-stone-700 bg-stone-100 dark:bg-stone-800 shadow-[3px_3px_0px_#1c1917] flex items-center justify-center">
                     <img
                       src={selectedProject.image}
                       alt={selectedProject.title}

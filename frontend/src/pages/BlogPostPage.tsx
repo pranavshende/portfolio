@@ -326,14 +326,14 @@ export const BlogPostPage: React.FC = () => {
         </header>
 
         {/* Cover Banner */}
-        <div className="rounded-3xl overflow-hidden border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917] dark:shadow-[4px_4px_0px_#000000]">
+        <div className="relative aspect-video w-full rounded-3xl overflow-hidden border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917] dark:shadow-[4px_4px_0px_#000000] mb-8 bg-stone-100 dark:bg-stone-900 flex items-center justify-center">
           <img
             src={resolveBlogCover(post.coverImageUrl, post.slug)}
             alt={post.title}
             onError={(e) => {
               (e.target as HTMLImageElement).src = jarvisBanner;
             }}
-            className="w-full max-h-[460px] object-cover bg-stone-100 dark:bg-stone-900"
+            className="w-full h-full object-cover object-center"
           />
         </div>
 

@@ -427,7 +427,7 @@ export const ProjectsSection: React.FC = () => {
                           onError={(e) => {
                             (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=400&q=80';
                           }}
-                          className="w-16 h-12 rounded-lg object-cover bg-stone-100 border border-stone-200 dark:border-stone-700 shrink-0" 
+                          className="w-16 aspect-video rounded-lg object-cover bg-stone-100 border border-stone-200 dark:border-stone-700 shrink-0" 
                         />
                       )}
                       <div className="min-w-0 flex-1">
@@ -549,10 +549,10 @@ export const ProjectsSection: React.FC = () => {
                                 onError={(e) => {
                                   (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=400&q=80';
                                 }}
-                                className="w-12 h-9 rounded-md object-cover bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 shrink-0" 
+                                className="w-14 aspect-video rounded-md object-cover bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 shrink-0" 
                               />
                             ) : (
-                              <div className="w-12 h-9 rounded-md bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-400 shrink-0">
+                              <div className="w-14 aspect-video rounded-md bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-400 shrink-0">
                                 <ImageIcon className="w-4 h-4" />
                               </div>
                             )}

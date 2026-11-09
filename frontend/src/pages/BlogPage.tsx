@@ -217,7 +217,7 @@ export const BlogPage: React.FC = () => {
                   className="group rounded-3xl bg-white/95 dark:bg-[#181920]/95 border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917] dark:shadow-[4px_4px_0px_#000000] hover:shadow-[2px_2px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all duration-200 overflow-hidden flex flex-col"
                 >
                   {/* Cover Image */}
-                  <Link to={`/blog/${post.slug}`} className="block relative aspect-16/10 overflow-hidden bg-stone-100 dark:bg-stone-900 border-b-2 border-stone-900 dark:border-stone-700">
+                  <Link to={`/blog/${post.slug}`} className="block relative aspect-video overflow-hidden bg-stone-100 dark:bg-stone-900 border-b-2 border-stone-900 dark:border-stone-700">
                     <img
                       src={resolveBlogCover(post.coverImageUrl, post.slug)}
                       alt={post.title}
