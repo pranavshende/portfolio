@@ -420,18 +420,19 @@ export const DoodleSidebar: React.FC = () => {
           <button
             type="button"
             onClick={toggleTheme}
-            className="p-1.5 rounded-lg text-stone-800 dark:text-stone-200 hover:bg-stone-900/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
+            className="w-9 h-9 flex items-center justify-center rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_#1c1917] dark:hover:shadow-[1px_1px_0px_#000000] active:translate-x-1 active:translate-y-1 active:shadow-none transition-all cursor-pointer shrink-0"
             title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
             aria-label="Toggle dark mode"
           >
-            {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-stone-700" />}
+            {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-stone-800" />}
           </button>
           <button
+            type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-1.5 rounded-lg text-stone-800 dark:text-stone-200 hover:bg-stone-900/5 dark:hover:bg-white/5 focus:outline-none"
+            className="w-9 h-9 flex items-center justify-center rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_#1c1917] dark:hover:shadow-[1px_1px_0px_#000000] active:translate-x-1 active:translate-y-1 active:shadow-none transition-all cursor-pointer shrink-0 focus:outline-hidden"
             aria-label="Toggle navigation menu"
           >
-            {mobileMenuOpen ? <X className="w-5 h-5 text-[#8b2323]" /> : <Menu className="w-5 h-5" />}
+            {mobileMenuOpen ? <X className="w-4 h-4 text-[#8b2323]" /> : <Menu className="w-4 h-4" />}
           </button>
         </div>
       </header>

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DoodleSidebar } from './DoodleSidebar';
+import { useMode } from '@/contexts/ModeContext';
+import { Moon, Sun } from 'lucide-react';
 import cherryBlossomMist from '@/photo/cherry_blossom_mist.webp';
 import cherryBlossomMistDark from '@/photo/cherry_blossom_mist_dark.webp';
 import cherryBlossomMistMobile from '@/photo/cherry_blossom_mist_mobile.webp';
@@ -11,6 +13,7 @@ interface DoodleLayoutProps {
 
 export const DoodleLayout: React.FC<DoodleLayoutProps> = ({ children }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
+  const { isDark, toggleTheme } = useMode();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -76,6 +79,23 @@ export const DoodleLayout: React.FC<DoodleLayoutProps> = ({ children }) => {
       </div>
 
       <DoodleSidebar />
+
+      {/* ── Desktop Floating Theme Switcher Button (Top-Right) ── */}
+      <div className="hidden md:flex fixed top-4 right-5 sm:right-7 z-40 items-center">
+        <button
+          type="button"
+          onClick={toggleTheme}
+          className="w-10 h-10 flex items-center justify-center rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-stone-800/95 backdrop-blur-md text-stone-800 dark:text-stone-200 shadow-[2.5px_2.5px_0px_#1c1917] dark:shadow-[2.5px_2.5px_0px_#000000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1.5px_1.5px_0px_#1c1917] dark:hover:shadow-[1.5px_1.5px_0px_#000000] active:translate-x-1 active:translate-y-1 active:shadow-none transition-all cursor-pointer"
+          title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          aria-label="Toggle theme mode"
+        >
+          {isDark ? (
+            <Sun className="w-4 h-4 text-amber-400" />
+          ) : (
+            <Moon className="w-4 h-4 text-stone-800" />
+          )}
+        </button>
+      </div>
 
       {/* Main Content Area - Generous width filling the screen without excessive right-side void */}
       <div className="md:pl-[264px] flex flex-col min-h-screen relative z-10">
