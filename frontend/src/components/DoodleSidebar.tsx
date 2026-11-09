@@ -439,13 +439,13 @@ export const DoodleSidebar: React.FC = () => {
 
       {/* ─────────────────────────────────────────────────────────────
           MOBILE FLOATING BOTTOM DOCK
-          Compact & Resized 5-item Navigation Dock (Paper Block)
+          Icons-Only Compact Navigation Dock (Paper Block)
       ────────────────────────────────────────────────────────────── */}
       <nav 
         aria-label="Mobile Navigation Dock"
-        className="md:hidden fixed bottom-2.5 inset-x-0 z-40 flex justify-center px-2 pointer-events-none"
+        className="md:hidden fixed bottom-3 inset-x-0 z-40 flex justify-center px-2 pointer-events-none"
       >
-        <div className="pointer-events-auto flex items-center gap-0.5 p-1 rounded-full bg-[#faf7f0]/95 dark:bg-[#15161c]/95 backdrop-blur-xl border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] max-w-fit">
+        <div className="pointer-events-auto flex items-center gap-1 sm:gap-1.5 p-1.5 rounded-full bg-[#faf7f0]/95 dark:bg-[#15161c]/95 backdrop-blur-xl border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000]">
           {navItems.map((item) => {
             const isActive =
               item.path === '/'
@@ -456,18 +456,17 @@ export const DoodleSidebar: React.FC = () => {
               <NavLink
                 key={item.name}
                 to={item.path}
-                className={`flex items-center gap-1 px-2 py-1 sm:px-2.5 sm:py-1 rounded-full text-[11px] font-bold transition-all duration-150 ${
+                title={item.name}
+                aria-label={item.name}
+                className={`w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full transition-all duration-150 ${
                   isActive
-                    ? '!bg-[#8b2323] !text-white border border-stone-900 shadow-[1px_1px_0px_#1c1917]'
-                    : 'text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white hover:bg-stone-200/50 dark:hover:bg-stone-800/50'
+                    ? '!bg-[#8b2323] !text-white border-2 border-stone-900 shadow-[1.5px_1.5px_0px_#1c1917] scale-105'
+                    : 'text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white hover:bg-stone-200/60 dark:hover:bg-stone-800/60'
                 }`}
                 style={isActive ? { backgroundColor: '#8b2323', color: '#ffffff' } : undefined}
               >
-                <span className="shrink-0 scale-75 origin-center" style={isActive ? { color: '#ffffff' } : undefined}>
+                <span className="shrink-0 flex items-center justify-center" style={isActive ? { color: '#ffffff' } : undefined}>
                   {item.icon}
-                </span>
-                <span className="leading-none pt-0.5" style={isActive ? { color: '#ffffff' } : undefined}>
-                  {item.name}
                 </span>
               </NavLink>
             );
