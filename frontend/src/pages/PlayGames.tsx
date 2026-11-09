@@ -234,6 +234,15 @@ const TetrisIcon: React.FC<{ size?: number; className?: string }> = ({ size = 22
   </svg>
 );
 
+// Auto-detect optimal device mode based on viewport
+const getDeviceTypeFromWindow = (): 'mobile' | 'tablet' | 'desktop' => {
+  if (typeof window === 'undefined') return 'desktop';
+  const width = window.innerWidth;
+  if (width < 640) return 'mobile';
+  if (width < 1024) return 'tablet';
+  return 'desktop';
+};
+
 const PaperAppIcon = ({
   Icon,
   alt
@@ -254,12 +263,23 @@ const PaperAppIcon = ({
 const PlayGames = () => {
   const [activeApp, setActiveApp] = useState<AppType>('home');
   const [time, setTime] = useState(new Date());
-  const [deviceType, setDeviceType] = useState<'mobile' | 'tablet' | 'desktop'>('tablet');
+  const [hasManuallySelected, setHasManuallySelected] = useState(false);
+  const [deviceType, setDeviceType] = useState<'mobile' | 'tablet' | 'desktop'>(() => getDeviceTypeFromWindow());
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (!hasManuallySelected) {
+        setDeviceType(getDeviceTypeFromWindow());
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [hasManuallySelected]);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -355,7 +375,10 @@ const PlayGames = () => {
             return (
               <button
                 key={type}
-                onClick={() => setDeviceType(type)}
+                onClick={() => {
+                  setHasManuallySelected(true);
+                  setDeviceType(type);
+                }}
                 className={`relative p-2 rounded-full transition-colors z-10 ${isActive ? 'text-zinc-900 dark:text-white' : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'}`}
                 title={`${type.charAt(0).toUpperCase() + type.slice(1)} View`}
               >

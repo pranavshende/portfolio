@@ -225,6 +225,15 @@ const PaperAppIcon = ({
   );
 };
 
+// Auto-detect optimal device mode based on viewport
+const getDeviceTypeFromWindow = (): 'mobile' | 'tablet' | 'desktop' => {
+  if (typeof window === 'undefined') return 'desktop';
+  const width = window.innerWidth;
+  if (width < 640) return 'mobile';
+  if (width < 1024) return 'tablet';
+  return 'desktop';
+};
+
 // Rich Project App Logo Component with Vibrant Gradient and Status Indicator
 const ProjectAppLogo = ({
   Icon,
@@ -256,13 +265,29 @@ const ProjectAppLogo = ({
 const RetroOSConsole: React.FC = () => {
   const [activeApp, setActiveApp] = useState<AppType>('home');
   const [time, setTime] = useState(new Date());
-  const [deviceType, setDeviceType] = useState<'mobile' | 'tablet' | 'desktop'>('tablet');
+  const [hasManuallySelected, setHasManuallySelected] = useState(false);
+  const [deviceType, setDeviceType] = useState<'mobile' | 'tablet' | 'desktop'>(() => getDeviceTypeFromWindow());
   const [openFolder, setOpenFolder] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (!hasManuallySelected) {
+        setDeviceType(getDeviceTypeFromWindow());
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [hasManuallySelected]);
+
+  const handleDeviceChange = (type: 'mobile' | 'tablet' | 'desktop') => {
+    setHasManuallySelected(true);
+    setDeviceType(type);
+  };
 
   type AppItem = {
     id: string;
@@ -327,9 +352,9 @@ const RetroOSConsole: React.FC = () => {
 
   return (
     <div className="w-full flex flex-col items-center mb-16">
-      {/* View Mode Switcher (Clean, standalone pill control) */}
+      {/* View Mode Switcher (Icons Only in Pill Control) */}
       <div className="flex items-center justify-center mb-6">
-        <div className="inline-flex items-center gap-1 bg-white/90 dark:bg-stone-900/90 backdrop-blur-md border-2 border-stone-900 rounded-full p-1 shadow-[2px_2px_0px_#1c1917]">
+        <div className="inline-flex items-center gap-1.5 bg-white/90 dark:bg-stone-900/90 backdrop-blur-md border-2 border-stone-900 rounded-full p-1.5 shadow-[2px_2px_0px_#1c1917]">
           {(['mobile', 'tablet', 'desktop'] as const).map((type) => {
             const icons = {
               mobile: Smartphone,
@@ -342,16 +367,16 @@ const RetroOSConsole: React.FC = () => {
             return (
               <button
                 key={type}
-                onClick={() => setDeviceType(type)}
-                className={`relative px-3 sm:px-4 py-1.5 rounded-full text-xs font-bold font-mono transition-all flex items-center gap-1.5 cursor-pointer ${
+                onClick={() => handleDeviceChange(type)}
+                className={`relative p-2 sm:p-2.5 rounded-full transition-all flex items-center justify-center cursor-pointer ${
                   isActive
                     ? 'bg-stone-900 text-white shadow-xs'
                     : 'text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white'
                 }`}
-                title={`${type.charAt(0).toUpperCase() + type.slice(1)} View`}
+                title={`${type.charAt(0).toUpperCase() + type.slice(1)} Mode`}
+                aria-label={`${type} mode`}
               >
-                <Icon size={14} />
-                <span className="capitalize">{type}</span>
+                <Icon size={16} />
               </button>
             );
           })}
