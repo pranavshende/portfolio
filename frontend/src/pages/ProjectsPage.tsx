@@ -271,6 +271,24 @@ export const ProjectsPage: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'flagship' | 'ai' | 'algorithms'>('all');
 
   useEffect(() => {
+    document.title = 'All Projects & Engineering Repositories | Pranav Shende';
+
+    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.rel = 'canonical';
+      document.head.appendChild(canonical);
+    }
+    canonical.href = 'https://pranavshende.online/projects';
+
+    let metaDesc = document.querySelector('meta[name="description"]') as HTMLMetaElement;
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.name = 'description';
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.content = 'Explore the complete engineering portfolio of Pranav Shende — featuring autonomous AI platforms, RAG systems, distributed Kafka pipelines, and edge computing architectures.';
+
     const projectImages: Record<string, string> = {
       jarvis: jarvisBanner,
       'jarvis-mcp-multipledbs': jarvisBanner,
@@ -614,6 +632,26 @@ export const ProjectsPage: React.FC = () => {
                       </div>
 
                       <div className="flex items-center gap-2">
+                        {(() => {
+                          const n = p.name.toLowerCase();
+                          const csSlug = n.includes('jarvis') ? 'jarvis-ai' :
+                                         n.includes('electropathy') ? 'electropathy-ai' :
+                                         n.includes('tastifyy') ? 'tastifyy' :
+                                         (n.includes('pashu') || n.includes('skb')) ? 'pashurakshak' :
+                                         n.includes('solar') ? 'solar-intelligence' :
+                                         n.includes('jansampark') ? 'jan-sampark' :
+                                         n.includes('attrition') ? 'employee-attrition-ai' : null;
+                          if (!csSlug) return null;
+                          return (
+                            <Link
+                              to={`/projects/${csSlug}`}
+                              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/50 text-amber-950 dark:text-amber-200 text-xs font-bold shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
+                            >
+                              <ArrowUpRight className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400" />
+                              <span className="hidden sm:inline">Case Study</span>
+                            </Link>
+                          );
+                        })()}
                         {p.demoUrl && (
                           <a
                             href={p.demoUrl}

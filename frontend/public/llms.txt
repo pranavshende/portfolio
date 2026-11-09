@@ -1,0 +1,37 @@
+# Pranav Shende — Engineering Profile & Portfolio
+
+> Full Stack Developer & Forward Deployed Engineer based in Nagpur, India.
+> Specializing in Autonomous AI Systems, Model Context Protocol (MCP), Retrieval-Augmented Generation (RAG), and Scalable Distributed Systems.
+
+## Profile Summary
+Pranav Shende is an Indian software engineer and IEEE-published researcher currently pursuing B.Tech in Information Technology at St. Vincent Pallotti College of Engineering & Technology (SVPCET), Nagpur (2023–2027). He has engineered production systems across enterprise AI, distributed food logistics, clean-tech big data, and offline-first edge veterinary computer vision.
+
+- Website: https://pranavshende.online/
+- GitHub: https://github.com/PranavShende
+- LinkedIn: https://linkedin.com/in/pranavshende
+- Medium: https://medium.com/@pranavshende97
+- Email: pranavshende97@gmail.com
+- Location: Nagpur, Maharashtra, India
+
+## Technical Ecosystem & Specializations
+- **AI & RAG Systems**: Model Context Protocol (MCP v1.0.4), pgvector, Agentic RAG, Google Gemini 2.5 Pro / Flash, Deterministic Star-Schema SQL, Quantized CNNs (TensorFlow Lite INT8).
+- **Backend & Distributed Systems**: Node.js, Express, Fastify Gateway, Python (Flask / FastAPI), Apache Kafka, Redis (Geospatial & BullMQ), PostgreSQL, Supabase, Prisma ORM.
+- **Frontend & Mobile**: React 19, TypeScript, React Native (Expo), Tailwind CSS, Framer Motion, WebSockets (Socket.io).
+- **Research & Publications**: IEEE OTCON 2025 published author on Convolutional Neural Networks for Edge Livestock Pathology.
+
+## Flagship Case Studies & Engineering Projects
+- [Jarvis 1.0 Enterprise AI Platform](https://pranavshende.online/projects/jarvis-ai): Autonomous enterprise intelligence unifying ERP, WMS, and finance systems via Anthropic Model Context Protocol (MCP v1.0.4) and Google Gemini 2.5 Pro.
+- [Electropathy AI Clinical Engine](https://pranavshende.online/projects/electropathy-ai): Agentic clinical decision-support and multilingual knowledge engine with pgvector semantic search in English, Hindi, and Marathi.
+- [Tastifyy Delivery Ecosystem](https://pranavshende.online/projects/tastifyy): High-throughput food logistics platform featuring Kafka event streams, Redis geospatial caching, and real-time live dispatch.
+- [PashuRakshak Edge Diagnostics](https://pranavshende.online/projects/pashurakshak): Offline-first edge computing livestock pathology classifier with INT8 quantized TensorFlow Lite CNNs. Published in IEEE.
+- [Solar Big Data Intelligence](https://pranavshende.online/projects/solar-intelligence): Analyzing 10+ years of Indian renewable energy time-series covering 81.8+ GW with GIS heatmaps and polynomial forecasting to 2030.
+- [JanSampark Civic Platform](https://pranavshende.online/projects/jan-sampark): Civic governance application with 25+ React Native modules, RBAC security, and sub-15ms PostgreSQL queries.
+
+## Key Technical Articles
+- [Jarvis AI: Building an Autonomous Enterprise Intelligence Platform](https://pranavshende.online/blog/jarvis-ai-enterprise-intelligence-platform)
+- [ForgeRAG: Exploring LLMs, Vector Embeddings & Production-Grade RAG](https://pranavshende.online/blog/forgerag-exploring-llms-and-retrieval-augmented-generation)
+- [AI-Powered Workforce Risk Intelligence with Gemini 2.5](https://pranavshende.online/blog/ai-powered-employee-attrition-analysis)
+- [CleanTech Big Data & Multi-Decadal Time-Series Forecasting](https://pranavshende.online/blog/solar-intelligence-renewable-energy-big-data-forecasting)
+- [Distributed Logistics with Kafka Streams & Redis Geospatial](https://pranavshende.online/blog/tastifyy-distributed-logistics-kafka-redis-geospatial)
+- [Edge Computing & Quantized CNNs in Agriculture (IEEE OTCON)](https://pranavshende.online/blog/ai-in-agriculture-pashurakshak-edge-cnn-ieee)
+

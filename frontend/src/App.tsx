@@ -5,6 +5,7 @@ import Index from "@/pages/Index";
 import About from "@/pages/About";
 import Arcade from "@/pages/Arcade";
 import ProjectsPage from "@/pages/ProjectsPage";
+import ProjectCaseStudyPage from "@/pages/ProjectCaseStudyPage";
 import BlogPage from "@/pages/BlogPage";
 import BlogPostPage from "@/pages/BlogPostPage";
 import NotFound from "@/pages/NotFound";
@@ -146,6 +147,7 @@ const AnimatedRoutes = () => {
           <Route path="/art" element={<Navigate to="/" replace />} />
           <Route path="/arcade" element={<PageTransition><Arcade /></PageTransition>} />
           <Route path="/projects" element={<PageTransition><ProjectsPage /></PageTransition>} />
+          <Route path="/projects/:slug" element={<PageTransition><ProjectCaseStudyPage /></PageTransition>} />
           <Route path="/blog" element={<PageTransition><BlogPage /></PageTransition>} />
           <Route path="/blog/:slug" element={<PageTransition><BlogPostPage /></PageTransition>} />
           <Route path="/playgames" element={<PageTransition><PlayGames /></PageTransition>} />
@@ -162,8 +164,23 @@ const AnimatedRoutes = () => {
   );
 };
 
+const checkInitialSkipLoader = (): boolean => {
+  if (typeof window === 'undefined' || typeof navigator === 'undefined') return true;
+  // Bot / Crawler detection: immediately render full DOM so headless browsers/crawlers index full content
+  const ua = navigator.userAgent || '';
+  const isBot = /bot|crawler|spider|crawling|google|bing|msnbot|slurp|yandex|duckduck|baiduspider|twitterbot|facebookexternalhit|rogerbot|linkedinbot|embedly|quora|whatsapp|pinterest|slackbot|perplexity|applebot|chatgpt|gptbot/i.test(ua);
+  if (isBot) return true;
+
+  // Direct subpage or case study hits skip initial splash for faster UX & indexing
+  const p = window.location.pathname;
+  if (p.startsWith('/projects/') || p.startsWith('/blog/') || p.startsWith('/admin') || window.location.search.includes('nobanner')) {
+    return true;
+  }
+  return false;
+};
+
 const App = () => {
-  const [isAppLoaded, setIsAppLoaded] = useState(false);
+  const [isAppLoaded, setIsAppLoaded] = useState(() => checkInitialSkipLoader());
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -1264,6 +1264,14 @@ export const Home: React.FC = () => {
                         </Link>
                       )
                     )}
+
+                    <Link
+                      to={`/projects/${selectedProject.id === 'jarvis' ? 'jarvis-ai' : selectedProject.id === 'electropathy' ? 'electropathy-ai' : selectedProject.id === 'jansampark' ? 'jan-sampark' : selectedProject.id === 'solar-analytics' ? 'solar-intelligence' : selectedProject.id === 'attrition' ? 'employee-attrition-ai' : selectedProject.id}`}
+                      className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/40 dark:hover:bg-amber-900/50 text-amber-950 dark:text-amber-200 text-xs sm:text-sm font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
+                    >
+                      <ArrowUpRight className="w-4 h-4" />
+                      <span>Case Study</span>
+                    </Link>
                   </div>
                 </div>
               </motion.div>

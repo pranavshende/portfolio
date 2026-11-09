@@ -51,6 +51,61 @@ export const About: React.FC = () => {
   const resumeUrl = "https://drive.google.com/drive/folders/1z3-tvjY5U1OP90Dls4IfLwV10E8e4qij?usp=sharing";
   const emailUrl = "https://mail.google.com/mail/?view=cm&fs=1&to=pranavshende97@gmail.com";
 
+  React.useEffect(() => {
+    document.title = "About Pranav Shende | Full Stack Developer & AI Engineer";
+
+    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.rel = 'canonical';
+      document.head.appendChild(canonical);
+    }
+    canonical.href = "https://pranavshende.online/about";
+
+    let metaDesc = document.querySelector('meta[name="description"]') as HTMLMetaElement;
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.name = 'description';
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.content = "Pranav Shende is a Full Stack Developer and Forward Deployed Engineer based in Nagpur, India specializing in backend engineering, AI systems, RAG, and scalable system architecture.";
+
+    let schemaScript = document.getElementById('about-profile-schema') as HTMLScriptElement;
+    if (!schemaScript) {
+      schemaScript = document.createElement('script');
+      schemaScript.id = 'about-profile-schema';
+      schemaScript.type = 'application/ld+json';
+      document.head.appendChild(schemaScript);
+    }
+    schemaScript.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "ProfilePage",
+      "name": "About Pranav Shende",
+      "url": "https://pranavshende.online/about",
+      "mainEntity": {
+        "@type": "Person",
+        "name": "Pranav Shende",
+        "jobTitle": "Full Stack Developer & Forward Deployed Engineer",
+        "url": "https://pranavshende.online/",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Nagpur",
+          "addressCountry": "IN"
+        },
+        "sameAs": [
+          "https://github.com/PranavShende",
+          "https://linkedin.com/in/pranavshende",
+          "https://medium.com/@pranavshende97"
+        ]
+      }
+    });
+
+    return () => {
+      const s = document.getElementById('about-profile-schema');
+      if (s) s.remove();
+    };
+  }, []);
+
   return (
     <DoodleLayout>
       {/* ─────────────────────────────────────────────────────────────
