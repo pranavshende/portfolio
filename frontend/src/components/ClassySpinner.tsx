@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 interface ClassySpinnerProps {
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
   showSeal?: boolean;
 }
@@ -13,119 +13,135 @@ export const ClassySpinner: React.FC<ClassySpinnerProps> = ({
   showSeal = true 
 }) => {
   const dimensions = {
-    sm: { px: 44, strokeWidth: 1.5, sealSize: 18 },
-    md: { px: 68, strokeWidth: 1.75, sealSize: 26 },
-    lg: { px: 96, strokeWidth: 2, sealSize: 34 },
+    sm: 52,
+    md: 84,
+    lg: 124,
+    xl: 148,
   }[size];
 
   return (
     <div className={`relative flex items-center justify-center select-none ${className}`}>
       <svg
-        width={dimensions.px}
-        height={dimensions.px}
-        viewBox="0 0 100 100"
+        width={dimensions}
+        height={dimensions}
+        viewBox="0 0 120 120"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="overflow-visible"
       >
-        {/* Subtle Static Outer Guide Ring */}
-        <circle
-          cx="50"
-          cy="50"
-          r="46"
-          stroke="currentColor"
-          strokeWidth="0.75"
-          className="text-stone-400/40 dark:text-stone-600/40"
-          strokeDasharray="2 4"
-        />
+        <defs>
+          <linearGradient id="hankoSealGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#991b1b" />
+            <stop offset="100%" stopColor="#661010" />
+          </linearGradient>
+          <filter id="hankoShadow" x="-20%" y="-20%" width="150%" height="150%">
+            <feDropShadow dx="0" dy="2.5" stdDeviation="2.5" floodColor="#1c1917" floodOpacity="0.25" />
+          </filter>
+          <filter id="satelliteGlow" x="-60%" y="-60%" width="220%" height="220%">
+            <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#ef4444" floodOpacity="0.9" />
+          </filter>
+        </defs>
 
-        {/* Outer Clockwise Rotating Zen Ring */}
+        {/* ── 1. Outer Dark Ink Arc Ring ── */}
         <motion.g
           animate={{ rotate: 360 }}
-          transition={{ duration: 4.5, repeat: Infinity, ease: "linear" }}
-          style={{ originX: "50px", originY: "50px" }}
+          transition={{ duration: 5.5, repeat: Infinity, ease: "linear" }}
+          style={{ originX: "60px", originY: "60px" }}
         >
-          {/* Main Ink Arc */}
-          <circle
-            cx="50"
-            cy="50"
-            r="42"
+          <ellipse
+            cx="60"
+            cy="60"
+            rx="45"
+            ry="45"
             stroke="#1c1917"
-            strokeWidth={dimensions.strokeWidth}
+            strokeWidth="2.2"
             strokeLinecap="round"
-            strokeDasharray="160 80"
+            strokeDasharray="190 95"
             className="dark:stroke-stone-200"
           />
-          {/* Cardinal Zen Marks */}
-          <circle cx="50" cy="8" r="1.75" fill="#8b2323" />
-          <circle cx="92" cy="50" r="1.25" fill="#1c1917" className="dark:fill-stone-300" />
-          <circle cx="50" cy="92" r="1.25" fill="#1c1917" className="dark:fill-stone-300" />
-          <circle cx="8" cy="50" r="1.25" fill="#1c1917" className="dark:fill-stone-300" />
         </motion.g>
 
-        {/* Inner Counter-Clockwise Vermilion Orbit */}
-        <motion.g
-          animate={{ rotate: -360 }}
-          transition={{ duration: 3.2, repeat: Infinity, ease: "linear" }}
-          style={{ originX: "50px", originY: "50px" }}
-        >
-          <circle
-            cx="50"
-            cy="50"
-            r="30"
-            stroke="#8b2323"
-            strokeWidth={dimensions.strokeWidth}
-            strokeLinecap="round"
-            strokeDasharray="80 60"
-          />
-          {/* Orbiting Red Particle */}
-          <circle cx="50" cy="20" r="2.25" fill="#8b2323" />
-        </motion.g>
-
-        {/* Micro Dashed Inner Ring */}
+        {/* ── 2. Primary Red Orbital Ellipse (Tilted 38° with glowing red satellite bead) ── */}
         <motion.g
           animate={{ rotate: 360 }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-          style={{ originX: "50px", originY: "50px" }}
+          transition={{ duration: 4.2, repeat: Infinity, ease: "linear" }}
+          style={{ originX: "60px", originY: "60px" }}
         >
-          <circle
-            cx="50"
-            cy="50"
-            r="22"
-            stroke="#8b2323"
-            strokeWidth="0.8"
-            strokeDasharray="4 6"
-            strokeOpacity="0.45"
-          />
+          <g transform="rotate(38 60 60)">
+            <ellipse
+              cx="60"
+              cy="60"
+              rx="49"
+              ry="36"
+              stroke="#8b2323"
+              strokeWidth="1.9"
+              strokeLinecap="round"
+              strokeDasharray="185 85"
+            />
+            {/* Glowing Red Orbital Bead at apex */}
+            <circle
+              cx="109"
+              cy="60"
+              r="3.2"
+              fill="#dc2626"
+              filter="url(#satelliteGlow)"
+            />
+          </g>
         </motion.g>
-      </svg>
 
-      {/* Centerpiece: Minimalist Japanese Red Hanko (Seal) or Sakura Blossom Core */}
-      {showSeal && (
-        <motion.div
-          animate={{
-            scale: [0.94, 1.04, 0.94],
-            opacity: [0.9, 1, 0.9],
-          }}
-          transition={{
-            duration: 2.4,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute inset-0 flex items-center justify-center pointer-events-none"
+        {/* ── 3. Secondary Red Orbital Ellipse (Tilted -40°, Counter-Rotating) ── */}
+        <motion.g
+          animate={{ rotate: -360 }}
+          transition={{ duration: 4.8, repeat: Infinity, ease: "linear" }}
+          style={{ originX: "60px", originY: "60px" }}
         >
-          <div 
-            className="flex items-center justify-center rounded-lg bg-[#8b2323] text-[#faf6f0] border border-[#5c1616] shadow-[1.5px_1.5px_0px_#1c1917] font-serif font-black select-none"
-            style={{ 
-              width: `${dimensions.sealSize}px`, 
-              height: `${dimensions.sealSize}px`,
-              fontSize: `${Math.round(dimensions.sealSize * 0.52)}px`
-            }}
+          <g transform="rotate(-40 60 60)">
+            <ellipse
+              cx="60"
+              cy="60"
+              rx="47"
+              ry="34"
+              stroke="#6b1a1a"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeDasharray="165 95"
+            />
+          </g>
+        </motion.g>
+
+        {/* ── 4. Center Hanko Seal (普 - Pranav) ── */}
+        {showSeal && (
+          <motion.g
+            animate={{ scale: [0.97, 1.03, 0.97] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+            style={{ originX: "60px", originY: "60px" }}
+            filter="url(#hankoShadow)"
           >
-            普
-          </div>
-        </motion.div>
-      )}
+            <rect
+              x="44"
+              y="44"
+              width="32"
+              height="32"
+              rx="8.5"
+              fill="url(#hankoSealGradient)"
+              stroke="#580f0f"
+              strokeWidth="0.5"
+            />
+            <text
+              x="60"
+              y="66.5"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fill="#ffffff"
+              fontFamily="'Plus Jakarta Sans', serif"
+              fontWeight="bold"
+              fontSize="17"
+            >
+              普
+            </text>
+          </motion.g>
+        )}
+      </svg>
     </div>
   );
 };
