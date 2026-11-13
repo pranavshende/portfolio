@@ -78,12 +78,41 @@ export const About: React.FC = () => {
             "@type": "Person",
             "name": "Pranav Shende",
             "jobTitle": "Full Stack Developer & Forward Deployed Engineer",
+            "description": "Pranav Shende is an Indian Full Stack Developer, Forward Deployed Engineer, and IEEE-published researcher based in Nagpur, India. He specializes in autonomous AI systems with Model Context Protocol (MCP v1.0.4), pgvector hybrid RAG, distributed event streaming with Kafka, and edge computer vision.",
             "url": "https://pranavshende.online/",
+            "email": "pranavshende97@gmail.com",
             "address": {
               "@type": "PostalAddress",
               "addressLocality": "Nagpur",
+              "addressRegion": "Maharashtra",
               "addressCountry": "IN"
             },
+            "alumniOf": {
+              "@type": "CollegeOrUniversity",
+              "name": "St. Vincent Pallotti College of Engineering & Technology (SVPCET), Nagpur"
+            },
+            "knowsAbout": [
+              "Full Stack Engineering",
+              "Model Context Protocol (MCP v1.0.4)",
+              "Retrieval-Augmented Generation (RAG)",
+              "pgvector",
+              "PostgreSQL",
+              "Apache Kafka",
+              "Redis Geospatial",
+              "React 19",
+              "Node.js",
+              "Fastify Gateway",
+              "Python",
+              "Edge AI Diagnostics",
+              "TensorFlow Lite INT8"
+            ],
+            "award": [
+              "IEEE OTCON 2025 Published Research Author",
+              "Third Prize Technex 2025",
+              "2nd Place Codetronics Robotics Competition",
+              "Technical Head, Computer Society of India (CSI)",
+              "GirlScript Summer of Code (GSSoC) Mentor"
+            ],
             "sameAs": [
               "https://github.com/PranavShende",
               "https://linkedin.com/in/pranavshende",

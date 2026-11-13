@@ -71,3 +71,7 @@ Disallow: /admin/
 
 # Sitemaps & AI Index Files
 Sitemap: https://pranavshende.online/sitemap.xml
+
+# AI Agent & LLM Knowledge File
+# https://llmstxt.org standard for ChatGPT, Claude, Gemini, and Perplexity
+Allow: /llms.txt

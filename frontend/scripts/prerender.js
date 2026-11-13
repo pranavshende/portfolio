@@ -251,7 +251,7 @@ function writeStaticPage(subPath, htmlContent) {
 // ─────────────────────────────────────────────────────────────
 const aboutHtml = injectMetadata(baseHtml, {
   title: 'About Pranav Shende | Full Stack Developer & AI Engineer',
-  description: 'Pranav Shende is a Full Stack Developer and Forward Deployed Engineer based in Nagpur, India specializing in backend engineering, AI systems, RAG, and scalable system architecture.',
+  description: 'Pranav Shende is an Indian Full Stack Developer, Forward Deployed Engineer, and IEEE-published researcher based in Nagpur, India specializing in backend engineering, autonomous AI systems (MCP v1.0.4), pgvector RAG, and scalable system architecture.',
   canonicalUrl: 'https://pranavshende.online/about',
   jsonLd: {
     '@context': 'https://schema.org',
@@ -262,7 +262,41 @@ const aboutHtml = injectMetadata(baseHtml, {
       '@type': 'Person',
       'name': 'Pranav Shende',
       'jobTitle': 'Full Stack Developer & Forward Deployed Engineer',
+      'description': 'Pranav Shende is a Full Stack Developer and Forward Deployed Engineer based in Nagpur, India. He builds autonomous AI platforms with Model Context Protocol (MCP v1.0.4), pgvector RAG, distributed systems with Kafka and Redis, and offline-first edge diagnostics published at IEEE.',
       'url': 'https://pranavshende.online/',
+      'email': 'pranavshende97@gmail.com',
+      'address': {
+        '@type': 'PostalAddress',
+        'addressLocality': 'Nagpur',
+        'addressRegion': 'Maharashtra',
+        'addressCountry': 'IN'
+      },
+      'alumniOf': {
+        '@type': 'CollegeOrUniversity',
+        'name': 'St. Vincent Pallotti College of Engineering & Technology (SVPCET), Nagpur'
+      },
+      'knowsAbout': [
+        'Full Stack Engineering',
+        'Model Context Protocol (MCP v1.0.4)',
+        'Retrieval-Augmented Generation (RAG)',
+        'pgvector',
+        'PostgreSQL',
+        'Apache Kafka',
+        'Redis Geospatial',
+        'React 19',
+        'Node.js',
+        'Fastify Gateway',
+        'Python',
+        'Edge AI Diagnostics',
+        'TensorFlow Lite INT8'
+      ],
+      'award': [
+        'IEEE OTCON 2025 Published Research Author',
+        'Third Prize Technex 2025',
+        '2nd Place Codetronics Robotics Competition',
+        'Technical Head, Computer Society of India (CSI)',
+        'GirlScript Summer of Code (GSSoC) Mentor'
+      ],
       'sameAs': [
         'https://github.com/PranavShende',
         'https://linkedin.com/in/pranavshende',
