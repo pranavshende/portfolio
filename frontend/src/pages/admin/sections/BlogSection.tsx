@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   Plus, Edit2, Trash2, BookOpen, ExternalLink, Loader2, X, Eye, 
   Upload, Image as ImageIcon, Sparkles, CheckCircle2, Clock, Tag, 
-  Search, Filter, FileText, ArrowUpRight, Key
+  Search, Filter, FileText, ArrowUpRight, Key, Zap
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -80,6 +80,7 @@ export const BlogSection: React.FC = () => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isAiStructuring, setIsAiStructuring] = useState(false);
   const [showKeyModal, setShowKeyModal] = useState(false);
+  const [isCustomCategory, setIsCustomCategory] = useState(false);
   const [apiKeyInput, setApiKeyInput] = useState(() => {
     return (
       (import.meta.env.VITE_GEMINI_API_KEY as string) ||
@@ -191,6 +192,7 @@ export const BlogSection: React.FC = () => {
   const handleOpenCreate = () => {
     setCurrentPost(null);
     setActiveTab('write');
+    setIsCustomCategory(false);
     setFormData({
       title: '',
       slug: '',
@@ -211,10 +213,12 @@ export const BlogSection: React.FC = () => {
   const handleOpenEdit = (post: BlogPostItem) => {
     setCurrentPost(post);
     setActiveTab('write');
+    const cat = post.category || 'Enterprise AI & Architecture';
+    setIsCustomCategory(!PRESET_CATEGORIES.includes(cat));
     setFormData({
       title: post.title || '',
       slug: post.slug || generateSlug(post.title || ''),
-      category: post.category || 'Enterprise AI & Architecture',
+      category: cat,
       excerpt: post.excerpt || '',
       content: post.content || '',
       tags: Array.isArray(post.tags) ? post.tags.join(', ') : '',
@@ -377,6 +381,172 @@ export const BlogSection: React.FC = () => {
     });
   };
 
+  /**
+   * Universal Raw Article Parser
+   * Transforms unformatted plain text drafts (like copied text with numbers,
+   * bylines, lists, and takeaway lines) directly into production-grade Markdown.
+   */
+  const parseRawArticleToMarkdown = (text: string) => {
+    const rawLines = text.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+    if (rawLines.length === 0) return null;
+
+    let title = '';
+    let author = '';
+    let category = '';
+    let startIndex = 0;
+
+    // 1. Detect Title (first non-empty line)
+    if (rawLines[0]) {
+      title = rawLines[0].replace(/^#+\s*/, '').trim();
+      startIndex = 1;
+    }
+
+    // 2. Detect Byline (e.g. By Pranav Shende | 13 November 2026 | AI & Technology)
+    let byline = '';
+    if (rawLines[startIndex] && /^by\s+/i.test(rawLines[startIndex].replace(/^\*+|\*+$/g, ''))) {
+      byline = rawLines[startIndex].replace(/^\*+|\*+$/g, '').trim();
+      const parts = byline.split('|').map((p) => p.trim());
+      const authorPart = parts[0].replace(/^by\s+/i, '').trim();
+      if (authorPart) author = authorPart;
+      if (parts.length >= 3) {
+        category = parts[2];
+      }
+      startIndex++;
+    }
+
+    const resultBlocks: string[] = [];
+    if (title) resultBlocks.push('# ' + title);
+    if (byline) resultBlocks.push('**' + byline + '**');
+
+    let listCount = 0;
+
+    const isParagraphStart = (str: string) => {
+      return /^(I |My |This |The |Companies |However|In my|Regardless|We |It |As |First|Second|Third|Some |NVIDIA|For |On |When |While )\b/i.test(str);
+    };
+
+    for (let i = startIndex; i < rawLines.length; i++) {
+      const line = rawLines[i];
+
+      // Check for Section Heading (e.g. '1. What Happened at NVIDIA?')
+      const sectionMatch = line.match(/^(\d+[\.\)]\s+.+)$/);
+      if (sectionMatch) {
+        listCount = 0;
+        resultBlocks.push('## ' + sectionMatch[1]);
+        continue;
+      }
+
+      // Check for Subsection Heading (e.g. 'A. Semiconductor Industry: Opportunities for Competitors')
+      const subMatch = line.match(/^([A-Z][\.\)]\s+.+)$/);
+      if (subMatch) {
+        listCount = 0;
+        resultBlocks.push('### ' + subMatch[1]);
+        continue;
+      }
+
+      // Check for common top-level keywords
+      if (/^(references|disclaimer:|disclaimer|final thoughts|conclusion|summary)\b/i.test(line)) {
+        listCount = 0;
+        if (line.toLowerCase().startsWith('disclaimer')) {
+          resultBlocks.push('> **' + line.replace(/^disclaimer:?\s*/i, 'Disclaimer: ') + '**');
+        } else {
+          resultBlocks.push('## ' + line);
+        }
+        continue;
+      }
+
+      // Check if line is a markdown link: [text](url)
+      if (/^\[.+\]\(https?:\/\/.+\)$/.test(line)) {
+        listCount = 0;
+        resultBlocks.push('- ' + line);
+        continue;
+      }
+
+      // Check for key-takeaway pattern e.g. "Reduce vendor dependency: Build solutions..."
+      const takeawayMatch = line.match(/^([A-Z][a-zA-Z\s]{2,35}):\s+(.+)$/);
+      if (takeawayMatch && !line.toLowerCase().startsWith('disclaimer') && !line.toLowerCase().startsWith('note')) {
+        listCount = 0;
+        resultBlocks.push(`- **${takeawayMatch[1]}:** ${takeawayMatch[2]}`);
+        continue;
+      }
+
+      // Check if in list
+      if (listCount > 0) {
+        const isListItem = line.length < 85 && !isParagraphStart(line) && !line.endsWith(':');
+        if (isListItem) {
+          resultBlocks.push('- ' + line);
+          listCount++;
+          continue;
+        } else {
+          listCount = 0;
+        }
+      }
+
+      if (line.endsWith(':') && line.length < 120) {
+        listCount = 1;
+        resultBlocks.push(line);
+        continue;
+      }
+
+      // Check for 'raises an important question: <Question>'
+      if (line.includes('raises an important question:')) {
+        const qIndex = line.indexOf('raises an important question:');
+        const intro = line.substring(0, qIndex + 'raises an important question:'.length);
+        const question = line.substring(qIndex + 'raises an important question:'.length).trim();
+        if (question) {
+          resultBlocks.push(intro + ' **' + question + '**');
+          continue;
+        }
+      }
+
+      resultBlocks.push(line);
+    }
+
+    // Format list items so consecutive list items are joined with \n while paragraphs with \n\n
+    const finalOutput: string[] = [];
+    for (let i = 0; i < resultBlocks.length; i++) {
+      const cur = resultBlocks[i];
+      const prev = resultBlocks[i - 1];
+      if (cur.startsWith('- ') && prev && prev.startsWith('- ')) {
+        finalOutput[finalOutput.length - 1] += '\n' + cur;
+      } else {
+        finalOutput.push(cur);
+      }
+    }
+
+    return {
+      title,
+      author,
+      category,
+      markdown: finalOutput.join('\n\n')
+    };
+  };
+
+  const handleSmartParseRawText = () => {
+    const rawContent = formData.content.trim();
+    if (!rawContent) {
+      alert('Please paste or write your draft text into the editor first.');
+      return;
+    }
+
+    const parsed = parseRawArticleToMarkdown(rawContent);
+    if (!parsed) return;
+
+    setFormData((prev) => ({
+      ...prev,
+      title: parsed.title || prev.title,
+      slug: !prev.slug && parsed.title ? generateSlug(parsed.title) : prev.slug,
+      author: parsed.author || prev.author,
+      category: parsed.category || prev.category,
+      content: parsed.markdown
+    }));
+
+    if (parsed.category && !PRESET_CATEGORIES.includes(parsed.category)) {
+      setIsCustomCategory(true);
+    }
+
+    showToast('⚡ Raw draft parsed & converted into structured Markdown!');
+  };
+
   const handleAiAutoStructure = async (overrideKey?: string) => {
     const rawContent = formData.content.trim();
     if (!rawContent) {
@@ -489,10 +659,21 @@ Formatting Rules:
         }
       }
 
+      // Also extract metadata from raw content if author/category are present
+      const preParsed = parseRawArticleToMarkdown(rawContent);
+      const detectedAuthor = preParsed?.author || formData.author;
+      const detectedCategory = preParsed?.category || formData.category;
+
+      if (detectedCategory && !PRESET_CATEGORIES.includes(detectedCategory)) {
+        setIsCustomCategory(true);
+      }
+
       setFormData((prev) => ({
         ...prev,
         title: detectedTitle || prev.title,
         slug: !prev.slug && detectedTitle ? generateSlug(detectedTitle) : prev.slug,
+        author: detectedAuthor || prev.author,
+        category: detectedCategory || prev.category,
         content: structuredMarkdown
       }));
 
@@ -866,12 +1047,26 @@ Formatting Rules:
               {/* Row 2: Category, Reading Time, Author */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-stone-700 dark:text-stone-300">
-                    Category
+                  <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 flex items-center justify-between">
+                    <span>Category</span>
+                    {isCustomCategory && (
+                      <span className="text-[10px] text-[#8b2323] dark:text-rose-400 font-semibold">Custom Category</span>
+                    )}
                   </label>
                   <select
-                    value={formData.category}
-                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    value={PRESET_CATEGORIES.includes(formData.category) ? formData.category : 'Other'}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (val === 'Other') {
+                        setIsCustomCategory(true);
+                        if (PRESET_CATEGORIES.includes(formData.category)) {
+                          setFormData((prev) => ({ ...prev, category: '' }));
+                        }
+                      } else {
+                        setIsCustomCategory(false);
+                        setFormData((prev) => ({ ...prev, category: val }));
+                      }
+                    }}
                     className="w-full p-2.5 rounded-xl border-2 border-stone-900/80 dark:border-stone-700 bg-white dark:bg-[#1d1f27] text-xs shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000]"
                   >
                     {PRESET_CATEGORIES.map((cat) => (
@@ -879,6 +1074,24 @@ Formatting Rules:
                     ))}
                     <option value="Other">Other / Custom</option>
                   </select>
+
+                  {/* Custom Category Writer Box */}
+                  {(isCustomCategory || (!PRESET_CATEGORIES.includes(formData.category) && formData.category !== '')) && (
+                    <div className="mt-2 space-y-1 animate-in fade-in">
+                      <input
+                        type="text"
+                        required
+                        placeholder="Write custom category (e.g. AI & Technology)..."
+                        value={formData.category === 'Other' ? '' : formData.category}
+                        onChange={(e) => setFormData((prev) => ({ ...prev, category: e.target.value }))}
+                        className="w-full p-2.5 rounded-xl border-2 border-[#8b2323] dark:border-rose-500 bg-white dark:bg-[#1d1f27] text-xs font-semibold shadow-[2px_2px_0px_#8b2323] dark:shadow-[2px_2px_0px_#000000] text-stone-900 dark:text-stone-100 placeholder:text-stone-400 focus:outline-hidden"
+                        autoFocus
+                      />
+                      <span className="text-[10px] text-stone-500 block">
+                        Custom category will be saved and displayed on your blog.
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="space-y-1">
@@ -1101,8 +1314,18 @@ Formatting Rules:
                         </button>
                       </div>
 
-                      {/* Gemini AI Assistant Button */}
-                      <div className="flex items-center gap-1 sm:ml-auto">
+                      {/* Smart Parser & Gemini AI Assistant */}
+                      <div className="flex items-center gap-1.5 sm:ml-auto">
+                        <button
+                          type="button"
+                          onClick={handleSmartParseRawText}
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold text-stone-900 dark:text-stone-100 bg-stone-200 dark:bg-stone-700 hover:bg-stone-300 dark:hover:bg-stone-600 border border-stone-300 dark:border-stone-600 shadow-xs active:scale-95 transition-all cursor-pointer"
+                          title="Instant offline parser: auto-detects Title, Byline, Headings, Subheadings & Bullet Lists from raw draft"
+                        >
+                          <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                          <span>Smart Parse</span>
+                        </button>
+
                         <button
                           type="button"
                           onClick={() => handleAiAutoStructure()}
