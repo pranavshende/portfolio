@@ -81,6 +81,7 @@ export const BlogSection: React.FC = () => {
   const [isAiStructuring, setIsAiStructuring] = useState(false);
   const [showKeyModal, setShowKeyModal] = useState(false);
   const [isCustomCategory, setIsCustomCategory] = useState(false);
+  const [lastSavedTime, setLastSavedTime] = useState<string | null>(null);
   const [apiKeyInput, setApiKeyInput] = useState(() => {
     return (
       (import.meta.env.VITE_GEMINI_API_KEY as string) ||
@@ -686,8 +687,10 @@ Formatting Rules:
     }
   };
 
-  const handleSave = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const executeSave = async (options?: { asDraft?: boolean; keepEditing?: boolean }) => {
+    const asDraft = options?.asDraft ?? false;
+    const keepEditing = options?.keepEditing ?? false;
+
     if (!formData.title.trim() || !formData.content.trim()) {
       alert('Article Title and Markdown Content are required.');
       return;
@@ -699,7 +702,7 @@ Formatting Rules:
       ? formData.tags.split(',').map((t) => t.trim()).filter(Boolean)
       : [];
 
-    const isPub = Boolean(formData.published);
+    const isPub = asDraft ? false : Boolean(formData.published);
 
     const payload = {
       title: formData.title.trim(),
@@ -720,21 +723,62 @@ Formatting Rules:
     };
 
     try {
+      let savedResult: any = null;
       if (currentPost) {
-        await api.updateBlogPost(currentPost.id, payload);
-        showToast('Article updated successfully.');
+        savedResult = await api.updateBlogPost(currentPost.id, payload);
+        const updatedItem = savedResult?.data || savedResult || { ...currentPost, ...payload };
+        setCurrentPost(updatedItem);
+        showToast(asDraft ? 'Article saved as draft.' : keepEditing ? 'Changes saved! Continue editing.' : 'Article updated successfully.');
       } else {
-        await api.createBlogPost(payload);
-        showToast('Article created and saved.');
+        savedResult = await api.createBlogPost(payload);
+        const newItem = savedResult?.data || savedResult;
+        if (newItem && (newItem.id || newItem._id)) {
+          setCurrentPost({
+            id: newItem.id || newItem._id,
+            ...payload
+          });
+        }
+        showToast(asDraft ? 'Article saved as draft.' : keepEditing ? 'Article saved! Continue editing.' : 'Article created and saved.');
       }
-      setIsEditing(false);
+
+      const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      setLastSavedTime(now);
+
+      if (asDraft) {
+        setFormData((prev) => ({ ...prev, published: false }));
+      }
+
       fetchPosts();
+
+      if (!keepEditing) {
+        setIsEditing(false);
+      }
     } catch (err: any) {
       alert(err.message || 'Failed to save blog post.');
     } finally {
       setSaving(false);
     }
   };
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await executeSave({ keepEditing: false });
+  };
+
+  // Keyboard shortcut: Ctrl+S / Cmd+S to save changes while editing
+  useEffect(() => {
+    if (!isEditing) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        executeSave({ keepEditing: true });
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isEditing, formData, currentPost]);
 
   const handleDelete = async (id: string, title: string) => {
     if (!window.confirm(`Delete article "${title}"? This cannot be undone.`)) return;
@@ -998,18 +1042,55 @@ Formatting Rules:
               <X className="w-5 h-5" />
             </button>
 
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="px-1.5 py-0.5 rounded border border-[#8b2323] text-[#8b2323] dark:border-rose-400 dark:text-rose-400 font-mono text-[10px] font-bold">
-                  [執筆]
-                </span>
-                <h3 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100">
-                  {currentPost ? 'Edit Technical Article' : 'Write New Article'}
-                </h3>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pr-10">
+              <div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="px-1.5 py-0.5 rounded border border-[#8b2323] text-[#8b2323] dark:border-rose-400 dark:text-rose-400 font-mono text-[10px] font-bold">
+                    [執筆]
+                  </span>
+                  <h3 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100">
+                    {currentPost ? 'Edit Technical Article' : 'Write New Article'}
+                  </h3>
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                    formData.published
+                      ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300'
+                      : 'bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300'
+                  }`}>
+                    {formData.published ? 'Live / Published' : 'Draft Mode'}
+                  </span>
+                </div>
+                <p className="text-xs text-stone-500 mt-1">
+                  Authored by {formData.author || 'Pranav Shende'}.{' '}
+                  {lastSavedTime ? (
+                    <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+                      Last saved at {lastSavedTime}
+                    </span>
+                  ) : (
+                    <span>Press Ctrl+S to save changes anytime while editing.</span>
+                  )}
+                </p>
               </div>
-              <p className="text-xs text-stone-500 mt-1">
-                Authored by {formData.author || 'Pranav Shende'}. Published to the portfolio blog and SEO sitemap.
-              </p>
+
+              {/* Quick Save Header Button */}
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  disabled={saving}
+                  onClick={() => executeSave({ keepEditing: true })}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-[#1d1f27] hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-800 dark:text-stone-200 text-xs font-bold shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] active:scale-95 transition-all cursor-pointer disabled:opacity-50"
+                  title="Save progress to database without closing the editor (Shortcut: Ctrl+S)"
+                >
+                  {saving ? (
+                    <Loader2 className="w-3.5 h-3.5 animate-spin text-[#8b2323]" />
+                  ) : (
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                  )}
+                  <span>Save Progress</span>
+                  <kbd className="hidden sm:inline-block px-1 py-0.5 bg-stone-100 dark:bg-stone-800 text-[10px] font-mono rounded text-stone-500">
+                    Ctrl+S
+                  </kbd>
+                </button>
+              </div>
             </div>
 
             <form onSubmit={handleSave} className="space-y-4 text-xs sm:text-sm">
@@ -1409,7 +1490,7 @@ Formatting Rules:
               </div>
 
               {/* Submit Buttons */}
-              <div className="pt-4 border-t-2 border-stone-900/10 dark:border-stone-700 flex justify-end gap-2.5">
+              <div className="pt-4 border-t-2 border-stone-900/10 dark:border-stone-700 flex flex-wrap items-center justify-between gap-3">
                 <button
                   type="button"
                   onClick={() => setIsEditing(false)}
@@ -1417,20 +1498,52 @@ Formatting Rules:
                 >
                   Cancel
                 </button>
-                <button
-                  type="submit"
-                  disabled={saving}
-                  className="px-5 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] transition-all disabled:opacity-50 flex items-center gap-2 cursor-pointer hover:translate-x-0.5 hover:translate-y-0.5"
-                >
-                  {saving ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      <span>Saving Article...</span>
-                    </>
-                  ) : (
-                    <span>{currentPost ? 'Save Changes' : 'Publish Article'}</span>
-                  )}
-                </button>
+
+                <div className="flex flex-wrap items-center gap-2.5">
+                  {/* Save as Draft Button */}
+                  <button
+                    type="button"
+                    disabled={saving}
+                    onClick={() => executeSave({ asDraft: true, keepEditing: false })}
+                    className="px-4 py-2 rounded-xl border-2 border-amber-600 dark:border-amber-500 bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 text-xs font-bold shadow-[2px_2px_0px_#b45309] dark:shadow-[2px_2px_0px_#000000] hover:bg-amber-100 dark:hover:bg-amber-900/50 hover:translate-x-0.5 hover:translate-y-0.5 transition-all disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
+                    title="Save article as an unpublished draft"
+                  >
+                    <FileText className="w-3.5 h-3.5" />
+                    <span>Save as Draft</span>
+                  </button>
+
+                  {/* Save Changes & Keep Editing */}
+                  <button
+                    type="button"
+                    disabled={saving}
+                    onClick={() => executeSave({ keepEditing: true })}
+                    className="px-4 py-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-stone-100 dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-xs font-bold shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] hover:bg-stone-200 dark:hover:bg-stone-700 hover:translate-x-0.5 hover:translate-y-0.5 transition-all disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
+                    title="Save changes to database without closing the editor (Shortcut: Ctrl+S)"
+                  >
+                    {saving ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    ) : (
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                    )}
+                    <span>Save (Keep Editing)</span>
+                  </button>
+
+                  {/* Primary Save & Close / Publish Article */}
+                  <button
+                    type="submit"
+                    disabled={saving}
+                    className="px-5 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] transition-all disabled:opacity-50 flex items-center gap-2 cursor-pointer hover:translate-x-0.5 hover:translate-y-0.5"
+                  >
+                    {saving ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>Saving...</span>
+                      </>
+                    ) : (
+                      <span>{formData.published ? (currentPost ? 'Save Changes' : 'Publish Article') : 'Save & Close'}</span>
+                    )}
+                  </button>
+                </div>
               </div>
             </form>
           </div>
