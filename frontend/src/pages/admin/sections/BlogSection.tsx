@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   Plus, Edit2, Trash2, BookOpen, ExternalLink, Loader2, X, Eye, 
   Upload, Image as ImageIcon, Sparkles, CheckCircle2, Clock, Tag, 
-  Search, Filter, FileText, ArrowUpRight
+  Search, Filter, FileText, ArrowUpRight, Key
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -77,6 +77,15 @@ export const BlogSection: React.FC = () => {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [searchFilter, setSearchFilter] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [isAiStructuring, setIsAiStructuring] = useState(false);
+  const [showKeyModal, setShowKeyModal] = useState(false);
+  const [apiKeyInput, setApiKeyInput] = useState(() => {
+    return (
+      (import.meta.env.VITE_GEMINI_API_KEY as string) ||
+      (typeof window !== 'undefined' ? localStorage.getItem('gemini_api_key') || '' : '')
+    );
+  });
 
   const [formData, setFormData] = useState({
     title: '',
@@ -219,11 +228,281 @@ export const BlogSection: React.FC = () => {
     setIsEditing(true);
   };
 
-  const insertMarkdown = (syntax: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      content: prev.content + syntax,
-    }));
+  const applyFormatting = (
+    formatType: 'h1' | 'h2' | 'h3' | 'bold' | 'italic' | 'code' | 'quote' | 'list' | 'link'
+  ) => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const original = formData.content;
+    const selectedText = original.substring(start, end);
+
+    let replacement = '';
+    let newCursorStart = start;
+    let newCursorEnd = end;
+
+    switch (formatType) {
+      case 'h1': {
+        if (selectedText) {
+          replacement = `\n# ${selectedText.trim()}\n`;
+          newCursorStart = start;
+          newCursorEnd = start + replacement.length;
+        } else {
+          replacement = '\n# Main Article Title\n';
+          newCursorStart = start + 3;
+          newCursorEnd = start + 21;
+        }
+        break;
+      }
+      case 'h2': {
+        if (selectedText) {
+          replacement = `\n## ${selectedText.trim()}\n`;
+          newCursorStart = start;
+          newCursorEnd = start + replacement.length;
+        } else {
+          replacement = '\n## Section Heading\n';
+          newCursorStart = start + 4;
+          newCursorEnd = start + 19;
+        }
+        break;
+      }
+      case 'h3': {
+        if (selectedText) {
+          replacement = `\n### ${selectedText.trim()}\n`;
+          newCursorStart = start;
+          newCursorEnd = start + replacement.length;
+        } else {
+          replacement = '\n### Subheading\n';
+          newCursorStart = start + 5;
+          newCursorEnd = start + 15;
+        }
+        break;
+      }
+      case 'bold': {
+        if (selectedText) {
+          replacement = `**${selectedText}**`;
+          newCursorStart = start;
+          newCursorEnd = start + replacement.length;
+        } else {
+          replacement = '**bold text**';
+          newCursorStart = start + 2;
+          newCursorEnd = start + 11;
+        }
+        break;
+      }
+      case 'italic': {
+        if (selectedText) {
+          replacement = `*${selectedText}*`;
+          newCursorStart = start;
+          newCursorEnd = start + replacement.length;
+        } else {
+          replacement = '*italic text*';
+          newCursorStart = start + 1;
+          newCursorEnd = start + 12;
+        }
+        break;
+      }
+      case 'code': {
+        if (selectedText) {
+          if (selectedText.includes('\n')) {
+            replacement = `\n\`\`\`typescript\n${selectedText}\n\`\`\`\n`;
+          } else {
+            replacement = `\`${selectedText}\``;
+          }
+          newCursorStart = start;
+          newCursorEnd = start + replacement.length;
+        } else {
+          replacement = '\n```typescript\n// code snippet\n```\n';
+          newCursorStart = start + 15;
+          newCursorEnd = start + 29;
+        }
+        break;
+      }
+      case 'quote': {
+        if (selectedText) {
+          const quoted = selectedText
+            .split('\n')
+            .map((line) => (line.startsWith('> ') ? line : `> ${line}`))
+            .join('\n');
+          replacement = `\n${quoted}\n`;
+          newCursorStart = start;
+          newCursorEnd = start + replacement.length;
+        } else {
+          replacement = '\n> Highlighted callout or quote\n';
+          newCursorStart = start + 3;
+          newCursorEnd = start + 31;
+        }
+        break;
+      }
+      case 'list': {
+        if (selectedText) {
+          const listed = selectedText
+            .split('\n')
+            .map((line) => (line.trim().startsWith('- ') ? line : `- ${line}`))
+            .join('\n');
+          replacement = `\n${listed}\n`;
+          newCursorStart = start;
+          newCursorEnd = start + replacement.length;
+        } else {
+          replacement = '\n- Key point 1\n- Key point 2\n';
+          newCursorStart = start + 3;
+          newCursorEnd = start + 14;
+        }
+        break;
+      }
+      case 'link': {
+        if (selectedText) {
+          replacement = `[${selectedText}](https://)`;
+          newCursorStart = start + selectedText.length + 3;
+          newCursorEnd = start + replacement.length - 1;
+        } else {
+          replacement = '[link text](https://example.com)';
+          newCursorStart = start + 1;
+          newCursorEnd = start + 10;
+        }
+        break;
+      }
+    }
+
+    const updatedContent = original.substring(0, start) + replacement + original.substring(end);
+    setFormData((prev) => ({ ...prev, content: updatedContent }));
+
+    requestAnimationFrame(() => {
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+        textareaRef.current.setSelectionRange(newCursorStart, newCursorEnd);
+      }
+    });
+  };
+
+  const handleAiAutoStructure = async (overrideKey?: string) => {
+    const rawContent = formData.content.trim();
+    if (!rawContent) {
+      alert('Please paste or write your draft text into the editor before running the AI assistant.');
+      return;
+    }
+
+    const effectiveKey = (
+      overrideKey ||
+      apiKeyInput ||
+      (import.meta.env.VITE_GEMINI_API_KEY as string) ||
+      (typeof window !== 'undefined' ? localStorage.getItem('gemini_api_key') || '' : '')
+    ).trim();
+
+    if (!effectiveKey) {
+      setShowKeyModal(true);
+      return;
+    }
+
+    setIsAiStructuring(true);
+    try {
+      const models = ['gemini-2.5-flash', 'gemini-1.5-flash'];
+      let structuredMarkdown = '';
+      let lastErrMsg = '';
+
+      const promptSystem = `You are an elite technical editor and publication architect for Pranav Shende's blog.
+Convert the given raw article text into a beautifully structured, highly readable, production-grade Markdown post.
+
+Formatting Rules:
+1. Title & Header:
+   - If the first line is the article title, format it as '# <Title>'.
+   - If there is an author, date, or category metadata line (e.g. 'By Pranav Shende | 13 November 2026 | AI & Technology'), format it in bold as: **By Pranav Shende | 13 November 2026 | AI & Technology**
+2. Headings:
+   - Convert all major topics/questions into '## ' section headings (e.g., '## 1. What Happened at NVIDIA?').
+   - Use '### ' for detailed subsections.
+3. Emphasis & Callouts:
+   - Bold key concepts, names, industry stats, and critical thesis statements (e.g. **What happens to the AI industry when...**).
+   - Format notable declarations, questions, or key takeaways into blockquotes ('> ').
+4. Lists & Breakdown:
+   - Turn lists, bullet points, or serialized items into neat Markdown lists ('- ' or '1. ').
+5. Code & Technical Elements:
+   - Use proper markdown backticks for system components, code snippets, and terminal commands.
+6. Content Fidelity:
+   - Preserve ALL factual statements, narrative flow, and analytical points without omitting paragraphs or inventing facts.
+7. Output Format:
+   - Return ONLY the clean formatted markdown. Do NOT wrap your whole response in outer \`\`\`markdown ... \`\`\` fences, and do not add conversational preamble or sign-offs.`;
+
+      for (const model of models) {
+        try {
+          const res = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${effectiveKey}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                contents: [
+                  {
+                    role: 'user',
+                    parts: [
+                      {
+                        text: `${promptSystem}\n\n=== RAW ARTICLE DRAFT ===\n${rawContent}`
+                      }
+                    ]
+                  }
+                ],
+                generationConfig: {
+                  temperature: 0.25,
+                  topP: 0.95
+                }
+              })
+            }
+          );
+
+          if (!res.ok) {
+            const errJson = await res.json().catch(() => ({}));
+            throw new Error(errJson?.error?.message || `HTTP ${res.status}`);
+          }
+
+          const resData = await res.json();
+          const candidateText = resData?.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (candidateText && typeof candidateText === 'string') {
+            let cleaned = candidateText.trim();
+            if (cleaned.startsWith('```markdown')) {
+              cleaned = cleaned.replace(/^```markdown\s*/i, '').replace(/\s*```$/i, '');
+            } else if (cleaned.startsWith('```')) {
+              cleaned = cleaned.replace(/^```\w*\s*/i, '').replace(/\s*```$/i, '');
+            }
+            structuredMarkdown = cleaned;
+            break;
+          }
+        } catch (mErr: any) {
+          console.warn(`Model ${model} attempt failed:`, mErr);
+          lastErrMsg = mErr.message || String(mErr);
+          if (lastErrMsg.includes('API_KEY_INVALID') || lastErrMsg.includes('API key not valid')) {
+            throw new Error('Gemini API key is invalid. Please update your key.');
+          }
+        }
+      }
+
+      if (!structuredMarkdown) {
+        throw new Error(lastErrMsg || 'Could not structure markdown with Gemini.');
+      }
+
+      // If title is not set, extract first # heading
+      let detectedTitle = formData.title;
+      if (!detectedTitle.trim()) {
+        const firstLine = structuredMarkdown.split('\n')[0];
+        if (firstLine && firstLine.startsWith('# ')) {
+          detectedTitle = firstLine.replace('# ', '').trim();
+        }
+      }
+
+      setFormData((prev) => ({
+        ...prev,
+        title: detectedTitle || prev.title,
+        slug: !prev.slug && detectedTitle ? generateSlug(detectedTitle) : prev.slug,
+        content: structuredMarkdown
+      }));
+
+      showToast('✨ Article structured successfully with Gemini AI!');
+    } catch (err: any) {
+      console.error('AI Structure error:', err);
+      alert(`AI Assistant Error: ${err.message || 'Failed to communicate with Gemini.'}`);
+    } finally {
+      setIsAiStructuring(false);
+    }
   };
 
   const handleSave = async (e: React.FormEvent) => {
@@ -741,55 +1020,131 @@ export const BlogSection: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Formatting quick buttons */}
+                  {/* Formatting quick buttons & AI Assistant */}
                   {activeTab === 'write' && (
-                    <div className="hidden sm:flex items-center gap-1 text-[11px]">
-                      <button
-                        type="button"
-                        onClick={() => insertMarkdown('\n\n## Section Heading\n')}
-                        className="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 text-stone-600 dark:text-stone-300"
-                      >
-                        H2
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => insertMarkdown('\n\n### Subheading\n')}
-                        className="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 text-stone-600 dark:text-stone-300"
-                      >
-                        H3
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => insertMarkdown('**bold text**')}
-                        className="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 text-stone-600 dark:text-stone-300 font-bold"
-                      >
-                        B
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => insertMarkdown('\n```typescript\n// code snippet\n```\n')}
-                        className="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 text-stone-600 dark:text-stone-300 font-mono"
-                      >
-                        Code
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => insertMarkdown('\n> Highlighted callout or quote\n')}
-                        className="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 text-stone-600 dark:text-stone-300 italic"
-                      >
-                        Quote
-                      </button>
+                    <div className="flex flex-wrap items-center gap-1.5 text-[11px] w-full sm:w-auto">
+                      <div className="flex items-center bg-stone-100 dark:bg-stone-800 rounded-lg p-0.5 border border-stone-200 dark:border-stone-700">
+                        <button
+                          type="button"
+                          title="Heading 1"
+                          onClick={() => applyFormatting('h1')}
+                          className="px-2 py-0.5 rounded font-bold hover:bg-white dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 transition-colors"
+                        >
+                          H1
+                        </button>
+                        <button
+                          type="button"
+                          title="Heading 2"
+                          onClick={() => applyFormatting('h2')}
+                          className="px-2 py-0.5 rounded font-bold hover:bg-white dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 transition-colors"
+                        >
+                          H2
+                        </button>
+                        <button
+                          type="button"
+                          title="Heading 3"
+                          onClick={() => applyFormatting('h3')}
+                          className="px-2 py-0.5 rounded font-bold hover:bg-white dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 transition-colors"
+                        >
+                          H3
+                        </button>
+                      </div>
+
+                      <div className="flex items-center bg-stone-100 dark:bg-stone-800 rounded-lg p-0.5 border border-stone-200 dark:border-stone-700">
+                        <button
+                          type="button"
+                          title="Bold Text"
+                          onClick={() => applyFormatting('bold')}
+                          className="px-2 py-0.5 rounded font-black hover:bg-white dark:hover:bg-stone-700 text-stone-800 dark:text-stone-100 transition-colors"
+                        >
+                          B
+                        </button>
+                        <button
+                          type="button"
+                          title="Italic Text"
+                          onClick={() => applyFormatting('italic')}
+                          className="px-2 py-0.5 rounded italic hover:bg-white dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 transition-colors"
+                        >
+                          I
+                        </button>
+                        <button
+                          type="button"
+                          title="Code Snippet"
+                          onClick={() => applyFormatting('code')}
+                          className="px-2 py-0.5 rounded font-mono hover:bg-white dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 transition-colors"
+                        >
+                          Code
+                        </button>
+                        <button
+                          type="button"
+                          title="Quote Callout"
+                          onClick={() => applyFormatting('quote')}
+                          className="px-2 py-0.5 rounded italic hover:bg-white dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 transition-colors"
+                        >
+                          Quote
+                        </button>
+                        <button
+                          type="button"
+                          title="Bullet List"
+                          onClick={() => applyFormatting('list')}
+                          className="px-2 py-0.5 rounded hover:bg-white dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 transition-colors"
+                        >
+                          List
+                        </button>
+                        <button
+                          type="button"
+                          title="Hyperlink"
+                          onClick={() => applyFormatting('link')}
+                          className="px-2 py-0.5 rounded hover:bg-white dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 transition-colors"
+                        >
+                          Link
+                        </button>
+                      </div>
+
+                      {/* Gemini AI Assistant Button */}
+                      <div className="flex items-center gap-1 sm:ml-auto">
+                        <button
+                          type="button"
+                          onClick={() => handleAiAutoStructure()}
+                          disabled={isAiStructuring}
+                          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-purple-700 via-indigo-600 to-[#8b2323] hover:opacity-95 shadow-[2px_2px_0px_#1c1917] active:scale-95 disabled:opacity-50 transition-all cursor-pointer"
+                          title="Structure and format raw text into clean Markdown with Google Gemini AI"
+                        >
+                          {isAiStructuring ? (
+                            <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-300" />
+                          ) : (
+                            <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
+                          )}
+                          <span>{isAiStructuring ? 'Structuring with AI...' : 'AI Auto-Structure'}</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setApiKeyInput(
+                              (import.meta.env.VITE_GEMINI_API_KEY as string) ||
+                              (typeof window !== 'undefined' ? localStorage.getItem('gemini_api_key') || '' : '')
+                            );
+                            setShowKeyModal(true);
+                          }}
+                          className="p-1.5 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-600 dark:text-stone-300 transition-colors"
+                          title="Configure Gemini API Key"
+                        >
+                          <Key className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>
 
                 {activeTab === 'write' ? (
                   <textarea
-                    rows={12}
+                    ref={textareaRef}
+                    rows={14}
                     required
                     value={formData.content}
                     onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                    placeholder="## Introduction&#10;&#10;Technical deep-dive into the architectural mechanics..."
+                    placeholder="## Introduction&#10;&#10;Paste your raw draft here and click 'AI Auto-Structure' or use formatting buttons..."
                     className="w-full p-3.5 rounded-2xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] text-xs font-mono leading-relaxed"
                   />
                 ) : (
@@ -855,6 +1210,80 @@ export const BlogSection: React.FC = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+      {/* Gemini API Key Configuration Modal */}
+      {showKeyModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
+          <div className="w-full max-w-md bg-white dark:bg-[#181920] border-2 border-stone-900 dark:border-stone-700 rounded-2xl shadow-[6px_6px_0px_#1c1917] dark:shadow-[6px_6px_0px_#000000] p-5 sm:p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="p-2 rounded-xl bg-purple-100 dark:bg-purple-950/50 text-purple-700 dark:text-purple-400">
+                  <Sparkles className="w-5 h-5 text-amber-500" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-stone-900 dark:text-stone-100 text-sm">Gemini AI Assistant Key</h3>
+                  <p className="text-[11px] text-stone-500">Google Gemini API Configuration</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowKeyModal(false)}
+                className="p-1.5 rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="text-xs text-stone-600 dark:text-stone-300 space-y-2 leading-relaxed">
+              <p>
+                To power the <strong>AI Auto-Structure</strong> feature, enter your Gemini API key below or set <code className="bg-stone-100 dark:bg-stone-800 px-1 py-0.5 rounded text-[11px] font-mono text-[#8b2323]">VITE_GEMINI_API_KEY="..."</code> in your <code className="bg-stone-100 dark:bg-stone-800 px-1 py-0.5 rounded text-[11px] font-mono">.env</code> file.
+              </p>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-stone-700 dark:text-stone-300">Gemini API Key</label>
+              <input
+                type="password"
+                placeholder="AIzaSy..."
+                value={apiKeyInput}
+                onChange={(e) => setApiKeyInput(e.target.value)}
+                className="w-full px-3 py-2 text-xs rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#1d1f27] font-mono text-stone-900 dark:text-stone-100 focus:outline-hidden focus:ring-2 focus:ring-[#8b2323]"
+              />
+              <p className="text-[10px] text-stone-400">
+                You can obtain a free Gemini API key anytime at <a href="https://aistudio.google.com" target="_blank" rel="noopener noreferrer" className="text-indigo-600 dark:text-indigo-400 underline">aistudio.google.com</a>.
+              </p>
+            </div>
+
+            <div className="flex items-center justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setShowKeyModal(false)}
+                className="px-3.5 py-1.5 rounded-xl text-xs font-semibold border border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const cleaned = apiKeyInput.trim();
+                  if (!cleaned) {
+                    alert('Please enter a valid Gemini API Key.');
+                    return;
+                  }
+                  if (typeof window !== 'undefined') {
+                    localStorage.setItem('gemini_api_key', cleaned);
+                  }
+                  setShowKeyModal(false);
+                  showToast('Gemini API key saved!');
+                  handleAiAutoStructure(cleaned);
+                }}
+                className="px-4 py-1.5 rounded-xl text-xs font-bold bg-[#8b2323] hover:bg-[#721c1c] text-white shadow-[2px_2px_0px_#1c1917] active:scale-95 transition-all"
+              >
+                Save &amp; Structure
+              </button>
+            </div>
           </div>
         </div>
       )}

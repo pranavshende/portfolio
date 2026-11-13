@@ -17,7 +17,15 @@ export interface PageSeoProps {
 
 const DEFAULT_KEYWORDS = [
   'Pranav Shende',
+  'pranav',
+  'shende',
+  'pranav shende',
+  'shende pranav',
+  'Shende Pranav',
+  'pranavshende',
+  'pranav shende portfolio',
   'Pranav Shende developer',
+  'shende developer',
   'Full Stack Developer Nagpur',
   'Backend Developer India',
   'Forward Deployed Engineer',

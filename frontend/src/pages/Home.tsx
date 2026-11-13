@@ -656,8 +656,8 @@ export const Home: React.FC = () => {
         </div>
 
         {/* ── Slim Contact & Opportunity Card (Paper Block) ── */}
-        <div className="mt-5 p-4 sm:p-5 lg:p-6 rounded-2xl bg-white/95 dark:bg-[#181920]/95 border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917] dark:shadow-[4px_4px_0px_#000000] relative transition-all">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#8b2323] via-[#b91c1c] to-[#8b2323] rounded-t-2xl" />
+        <div className="mt-5 p-4 sm:p-5 lg:p-6 rounded-2xl bg-white/95 dark:bg-[#181920]/95 border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917] dark:shadow-[4px_4px_0px_#000000] relative overflow-hidden transition-all">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#8b2323] via-[#b91c1c] to-[#8b2323]" />
           
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div className="space-y-1.5 max-w-xl">
