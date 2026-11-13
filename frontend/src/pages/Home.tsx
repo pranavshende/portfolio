@@ -243,6 +243,26 @@ const defaultBlogs = [
   },
 ];
 
+const resolveBlogCover = (url?: string, slug?: string): string => {
+  if (!url && !slug) return jarvisBanner;
+  if (url && (url.startsWith('data:image/') || url.startsWith('http://') || url.startsWith('https://'))) {
+    return url;
+  }
+  const target = (url || slug || '').toLowerCase();
+  if (target.includes('forgerag') || target.includes('electropathy')) return electropathyBanner;
+  if (target.includes('attrition') || target.includes('workforce')) return attritionBanner;
+  if (target.includes('solar')) return solarAnalyticsPhoto;
+  if (target.includes('tastifyy') || target.includes('fullstack') || target.includes('scalable')) return tastifyyBanner;
+  if (target.includes('jansampark') || target.includes('civic') || target.includes('hackathon')) return jansamparkPhoto;
+  if (target.includes('pashu') || target.includes('agriculture')) return pashurakshakPhoto;
+  if (target.includes('jarvis')) return jarvisBanner;
+
+  if (url && url.startsWith('/src/photo/')) {
+    return url.replace('/src/photo/', '/photo/');
+  }
+  return url || jarvisBanner;
+};
+
 const defaultRepos = [
   {
     id: 1,
@@ -912,19 +932,37 @@ export const Home: React.FC = () => {
             <Link
               key={post.id || post.slug}
               to={`/blog/${post.slug}`}
-              className="w-[280px] sm:w-[320px] md:w-[350px] shrink-0 snap-start group p-5 rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all flex flex-col justify-between space-y-3 min-h-[200px]"
+              className="w-[280px] sm:w-[320px] md:w-[340px] shrink-0 snap-start group p-4 sm:p-5 rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all flex flex-col justify-between space-y-3"
             >
-              <div className="space-y-2">
-                <span className="px-2 py-0.5 rounded-xs border border-[#8b2323] bg-[#8b2323]/5 text-[#8b2323] dark:text-rose-400 font-serif font-bold text-[10px] tracking-wider inline-block">
-                  {post.category || (post.tags && post.tags[0]) || 'Architecture'}
-                </span>
-                <h3 className="text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors line-clamp-2">
-                  {post.title}
-                </h3>
-                <p className="text-xs text-stone-600 dark:text-stone-400 line-clamp-3 leading-relaxed">
-                  {post.excerpt}
-                </p>
+              <div className="space-y-3">
+                {/* Small compact thumbnail */}
+                <div className="w-full h-28 sm:h-32 rounded-2xl overflow-hidden border border-stone-900/15 dark:border-stone-700 bg-stone-100 dark:bg-stone-800 relative shadow-xs">
+                  <img
+                    src={resolveBlogCover(post.coverImageUrl, post.slug)}
+                    alt={post.title}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = jarvisBanner;
+                    }}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                  <div className="absolute top-2 left-2">
+                    <span className="px-2 py-0.5 rounded-md border border-stone-900/30 dark:border-stone-700 bg-white/95 dark:bg-stone-900/90 text-[#8b2323] dark:text-rose-400 font-serif font-bold text-[10px] tracking-wider shadow-xs backdrop-blur-xs">
+                      {post.category || (post.tags && post.tags[0]) || 'Architecture'}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <h3 className="text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors line-clamp-2 leading-snug">
+                    {post.title}
+                  </h3>
+                  <p className="text-xs text-stone-600 dark:text-stone-400 line-clamp-2 leading-relaxed">
+                    {post.excerpt}
+                  </p>
+                </div>
               </div>
+
               <div className="flex items-center justify-between text-[11px] text-stone-500 font-mono pt-2.5 border-t border-stone-200 dark:border-stone-800">
                 <span>{post.readingTimeMinutes || 5} min read</span>
                 <span className="text-[#8b2323] dark:text-rose-400 font-bold group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5">
