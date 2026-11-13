@@ -89,63 +89,89 @@ const CASE_STUDIES = [
   }
 ];
 
-// Blog Posts Data for static route generation
-const BLOG_POSTS = [
-  {
-    slug: 'jarvis-ai-enterprise-intelligence-platform',
-    title: 'Jarvis AI: Building an Autonomous Enterprise Intelligence Platform with Model Context Protocol',
-    description: 'How I engineered Jarvis AI — connecting ERP, warehouse management, and finance systems into an operational command center using official MCP v1.0.4 and Gemini 2.5 Pro.',
-    category: 'System Design & AI'
-  },
-  {
-    slug: 'forgerag-exploring-llms-and-retrieval-augmented-generation',
-    title: 'ForgeRAG: Exploring LLMs, Vector Embeddings & Production-Grade RAG Pipelines',
-    description: 'A comprehensive technical deep-dive into context window constraints, high-dimensional vector search, chunking strategies, and pgvector retrieval grounding.',
-    category: 'AI & Machine Learning'
-  },
-  {
-    slug: 'ai-powered-employee-attrition-analysis',
-    title: 'AI-Powered Workforce Intelligence: Predicting Employee Attrition with Scikit-Learn & Gemini 2.5 Flash',
-    description: 'Developing a predictive HR workforce intelligence platform with dynamic CSV dataset ingestion, SHAP explainable AI attribution, and interactive Chart.js visualizations.',
-    category: 'Data Science & ML'
-  },
-  {
-    slug: 'solar-intelligence-renewable-energy-big-data-forecasting',
-    title: 'Solar Intelligence: Analyzing 10+ Years of Indian Renewable Big Data & Forecasting to 2030',
-    description: 'Evaluating 10+ years (2014-2024) of nationwide solar time-series data across 36+ Indian states/UTs covering 81.8+ GW with polynomial regression forecasting.',
-    category: 'Data Science & Big Data'
-  },
-  {
-    slug: 'natural-language-rag-database-assistant',
-    title: 'Building a Context-Aware Natural Language Database Assistant with Live Execution Workflows',
-    description: 'Architecting an AI database copilot translating natural language inquiries into verified read-only SQL queries with deterministic star-schema validation.',
-    category: 'System Design & AI'
-  },
-  {
-    slug: 'scalable-fullstack-architecture-system-design',
-    title: 'Scalable Full-Stack Engineering: Fastify, Node.js, Express, PostgreSQL & React Architecture',
-    description: 'Real-world lessons from designing high-concurrency Node.js and Fastify backend architectures, Prisma connection pooling, Redis caching, and reactive React portals.',
-    category: 'Web Engineering'
-  },
-  {
-    slug: 'jansampark-civic-governance-platform-react-native',
-    title: 'JanSampark: Architecting an Enterprise Civic Governance Mobile Platform with React Native',
-    description: 'Technical walkthrough of building 25+ production React Native modules, offline-first GPS geo-tagging, and 4-tier Role-Based Access Control.',
-    category: 'Mobile & Enterprise'
-  },
-  {
-    slug: 'tastifyy-distributed-logistics-kafka-redis-geospatial',
-    title: 'Distributed Logistics: Powering On-Demand Delivery with Kafka Streams & Redis Geospatial',
-    description: 'Engineering high-throughput order pipelines, sub-2ms driver proximity queries with Redis GEORADIUS, and resilient event-driven state transitions.',
-    category: 'Distributed Systems'
-  },
-  {
-    slug: 'ai-in-agriculture-pashurakshak-edge-cnn-ieee',
-    title: 'Edge AI in Agriculture: Quantized TensorFlow Lite CNNs for Rural Livestock Diagnostics (IEEE OTCON)',
-    description: 'How we engineered sub-120ms offline convolutional neural network inference on budget Android smartphones for livestock disease detection, published at IEEE.',
-    category: 'Edge Computing & Research'
+// Blog Posts Data for static route generation (dynamically loaded from Supabase manifest)
+let BLOG_POSTS = [];
+const manifestPath = path.resolve(__dirname, '../public/blogs-manifest.json');
+if (fs.existsSync(manifestPath)) {
+  try {
+    const raw = fs.readFileSync(manifestPath, 'utf-8');
+    BLOG_POSTS = JSON.parse(raw);
+    console.log(`[Prerender] Loaded ${BLOG_POSTS.length} blog posts from blogs-manifest.json`);
+  } catch (err) {
+    console.warn('[Prerender] Failed to parse blogs-manifest.json:', err);
   }
-];
+}
+
+if (!BLOG_POSTS.length) {
+  BLOG_POSTS = [
+    {
+      slug: 'jensen-huang-s-sudden-exit-from-nvidia-what-it-means-for-the-future-of-ai-and-the-global-it-industry',
+      title: "Jensen Huang's Sudden Exit from NVIDIA: What It Means for the Future of AI and the Global IT Industry",
+      description: "An in-depth analysis of Jensen Huang stepping down as NVIDIA CEO and its strategic ramifications for accelerated computing, custom silicon, and enterprise IT.",
+      category: 'AI & Technology'
+    },
+    {
+      slug: 'hackathons-technical-leadership-gssoc-achievements',
+      title: 'From Hackathons to Technical Leadership: Third Prize at Technex 2025, Mentorship & Growth',
+      description: 'Reflecting on winning Third Prize at Technex 2025, mentoring open-source contributors in GSSoC, and engineering production software under pressure.',
+      category: 'Engineering Leadership'
+    },
+    {
+      slug: 'jarvis-ai-enterprise-intelligence-platform',
+      title: 'Jarvis AI: Building an Autonomous Enterprise Intelligence Platform with Model Context Protocol',
+      description: 'How I engineered Jarvis AI — connecting ERP, warehouse management, and finance systems into an operational command center using official MCP v1.0.4 and Gemini 2.5 Pro.',
+      category: 'System Design & AI'
+    },
+    {
+      slug: 'forgerag-exploring-llms-and-retrieval-augmented-generation',
+      title: 'ForgeRAG: Exploring LLMs, Vector Embeddings & Production-Grade RAG Pipelines',
+      description: 'A comprehensive technical deep-dive into context window constraints, high-dimensional vector search, chunking strategies, and pgvector retrieval grounding.',
+      category: 'AI & Machine Learning'
+    },
+    {
+      slug: 'ai-powered-employee-attrition-analysis',
+      title: 'AI-Powered Workforce Intelligence: Predicting Employee Attrition with Scikit-Learn & Gemini 2.5 Flash',
+      description: 'Developing a predictive HR workforce intelligence platform with dynamic CSV dataset ingestion, SHAP explainable AI attribution, and interactive Chart.js visualizations.',
+      category: 'Data Science & ML'
+    },
+    {
+      slug: 'solar-intelligence-renewable-energy-big-data-forecasting',
+      title: 'Solar Intelligence: Analyzing 10+ Years of Indian Renewable Big Data & Forecasting to 2030',
+      description: 'Evaluating 10+ years (2014-2024) of nationwide solar time-series data across 36+ Indian states/UTs covering 81.8+ GW with polynomial regression forecasting.',
+      category: 'Data Science & Big Data'
+    },
+    {
+      slug: 'natural-language-rag-database-assistant',
+      title: 'Building a Context-Aware Natural Language Database Assistant with Live Execution Workflows',
+      description: 'Architecting an AI database copilot translating natural language inquiries into verified read-only SQL queries with deterministic star-schema validation.',
+      category: 'System Design & AI'
+    },
+    {
+      slug: 'scalable-fullstack-architecture-system-design',
+      title: 'Scalable Full-Stack Engineering: Fastify, Node.js, Express, PostgreSQL & React Architecture',
+      description: 'Real-world lessons from designing high-concurrency Node.js and Fastify backend architectures, Prisma connection pooling, Redis caching, and reactive React portals.',
+      category: 'Web Engineering'
+    },
+    {
+      slug: 'jansampark-civic-governance-platform-react-native',
+      title: 'JanSampark: Architecting an Enterprise Civic Governance Mobile Platform with React Native',
+      description: 'Technical walkthrough of building 25+ production React Native modules, offline-first GPS geo-tagging, and 4-tier Role-Based Access Control.',
+      category: 'Mobile & Enterprise'
+    },
+    {
+      slug: 'tastifyy-distributed-logistics-kafka-redis-geospatial',
+      title: 'Distributed Logistics: Powering On-Demand Delivery with Kafka Streams & Redis Geospatial',
+      description: 'Engineering high-throughput order pipelines, sub-2ms driver proximity queries with Redis GEORADIUS, and resilient event-driven state transitions.',
+      category: 'Distributed Systems'
+    },
+    {
+      slug: 'ai-in-agriculture-pashurakshak-edge-cnn-ieee',
+      title: 'Edge AI in Agriculture: Quantized TensorFlow Lite CNNs for Rural Livestock Diagnostics (IEEE OTCON)',
+      description: 'How we engineered sub-120ms offline convolutional neural network inference on budget Android smartphones for livestock disease detection, published at IEEE.',
+      category: 'Edge Computing & Research'
+    }
+  ];
+}
 
 // Helper to replace metadata in HTML template
 function injectMetadata(html, { title, description, canonicalUrl, ogType = 'website', ogImage = 'https://pranavshende.online/og-image.png', keywords, robots, jsonLd, bodyContent, skipLoader = false }) {
@@ -435,21 +461,28 @@ for (const cs of CASE_STUDIES) {
 // 6. Individual Blog Posts (/blog/:slug)
 // ─────────────────────────────────────────────────────────────
 for (const bp of BLOG_POSTS) {
+  const desc = bp.seoDescription || bp.description || bp.excerpt || 'Technical architecture breakdown and engineering insights by Pranav Shende.';
+  const postTitle = bp.seoTitle || `${bp.title} | Pranav Shende`;
   const postHtml = injectMetadata(baseHtml, {
     skipLoader: true,
-    title: `${bp.title} | Pranav Shende`,
-    description: bp.description,
+    title: postTitle,
+    description: desc,
     canonicalUrl: `https://pranavshende.online/blog/${bp.slug}`,
     ogType: 'article',
+    ogImage: bp.coverImageUrl || 'https://pranavshende.online/og-image.png',
+    keywords: Array.isArray(bp.tags) ? bp.tags.join(', ') : (bp.tags || 'AI, Software Engineering, Pranav Shende'),
+    robots: 'index, follow',
     jsonLd: {
       '@context': 'https://schema.org',
-      '@type': 'TechArticle',
+      '@type': 'BlogPosting',
       'headline': bp.title,
-      'description': bp.description,
+      'description': desc,
       'url': `https://pranavshende.online/blog/${bp.slug}`,
+      'datePublished': bp.publishedAt || '2026-11-13',
+      'dateModified': bp.updatedAt || bp.publishedAt || '2026-11-13',
       'author': {
         '@type': 'Person',
-        'name': 'Pranav Shende',
+        'name': bp.author || 'Pranav Shende',
         'url': 'https://pranavshende.online/'
       },
       'publisher': {
@@ -457,14 +490,15 @@ for (const bp of BLOG_POSTS) {
         'name': 'Pranav Shende',
         'url': 'https://pranavshende.online/'
       },
-      'articleSection': bp.category
+      'articleSection': bp.category,
+      'keywords': Array.isArray(bp.tags) ? bp.tags.join(', ') : ''
     },
     bodyContent: `
       <div style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem; font-family: system-ui, -apple-system, sans-serif;">
         <nav style="margin-bottom: 1.5rem;"><a href="/blog" style="color: #8b2323;">← Back to Technical Blog</a></nav>
-        <span style="font-size: 0.8rem; text-transform: uppercase; font-weight: 800; color: #8b2323; background: #fff0f0; padding: 0.2rem 0.6rem; border-radius: 4px; border: 1px solid #ffcccc;">${bp.category}</span>
+        <span style="font-size: 0.8rem; text-transform: uppercase; font-weight: 800; color: #8b2323; background: #fff0f0; padding: 0.2rem 0.6rem; border-radius: 4px; border: 1px solid #ffcccc;">${bp.category || 'Engineering'}</span>
         <h1 style="font-size: 2.2rem; font-weight: 800; color: #1c1917; margin: 0.75rem 0 1rem 0;">${bp.title}</h1>
-        <p style="font-size: 1.1rem; line-height: 1.6; color: #44403c; margin-bottom: 2rem;">${bp.description}</p>
+        <p style="font-size: 1.1rem; line-height: 1.6; color: #44403c; margin-bottom: 2rem;">${desc}</p>
         <div style="margin-top: 2rem; border-top: 2px solid #1c1917; padding-top: 1rem;">
           <a href="/blog" style="color: #8b2323; font-weight: 700; margin-right: 1.5rem;">← All Articles</a>
           <a href="/projects" style="color: #8b2323; font-weight: 700;">Explore Projects →</a>
@@ -495,6 +529,21 @@ const notFoundHtml = injectMetadata(baseHtml, {
 });
 fs.writeFileSync(path.join(DIST_DIR, '404.html'), notFoundHtml, 'utf-8');
 console.log('[Prerender] Generated: dist/404.html');
+
+// Sync sitemap.xml & blogs-manifest.json to dist
+const publicSitemap = path.join(__dirname, '../public/sitemap.xml');
+const distSitemap = path.join(DIST_DIR, 'sitemap.xml');
+if (fs.existsSync(publicSitemap)) {
+  fs.copyFileSync(publicSitemap, distSitemap);
+  console.log('[Prerender] Synced: dist/sitemap.xml');
+}
+
+const publicManifest = path.join(__dirname, '../public/blogs-manifest.json');
+const distManifest = path.join(DIST_DIR, 'blogs-manifest.json');
+if (fs.existsSync(publicManifest)) {
+  fs.copyFileSync(publicManifest, distManifest);
+  console.log('[Prerender] Synced: dist/blogs-manifest.json');
+}
 
 console.log('[Prerender] All static SEO routes successfully generated in dist/!');
 

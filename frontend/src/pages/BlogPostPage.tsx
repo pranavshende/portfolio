@@ -50,17 +50,38 @@ export const BlogPostPage: React.FC = () => {
     setLoading(true);
     setError(null);
 
+    // 1. Fast local hydration: Attempt to load from /blogs-manifest.json immediately
+    fetch('/blogs-manifest.json')
+      .then((r) => r.json())
+      .then((manifest: BlogPost[]) => {
+        if (Array.isArray(manifest)) {
+          const found = manifest.find((b) => b.slug === slug);
+          if (found) {
+            setPost(found);
+            setLoading(false);
+          }
+        }
+      })
+      .catch(() => {});
+
+    // 2. Fetch fresh dynamic data from backend API
     api.getBlogPostBySlug(slug)
       .then((res: any) => {
         if (res && res.data) {
           setPost(res.data);
-        } else {
+          setError(null);
+        } else if (!post) {
           setError('Article not found.');
         }
       })
       .catch((err) => {
         console.error('Error fetching blog post:', err);
-        setError('Article not found or could not be loaded.');
+        setPost((current) => {
+          if (!current) {
+            setError('Article not found or could not be loaded.');
+          }
+          return current;
+        });
       })
       .finally(() => setLoading(false));
   }, [slug]);
@@ -103,7 +124,6 @@ export const BlogPostPage: React.FC = () => {
         <PageSeo
           title="Article Not Found | Pranav Shende"
           description="The requested technical article does not exist or has been archived."
-          noindex={true}
         />
         <div className="max-w-xl mx-auto py-20 text-center space-y-4">
           <BookOpen className="w-12 h-12 mx-auto text-stone-400 opacity-60" />

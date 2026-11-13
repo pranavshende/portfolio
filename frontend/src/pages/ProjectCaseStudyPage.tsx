@@ -388,7 +388,6 @@ export const ProjectCaseStudyPage: React.FC = () => {
         <PageSeo
           title="Project Case Study Not Found | Pranav Shende"
           description="The requested engineering project case study could not be found."
-          noindex={true}
         />
         <div className="py-20 text-center max-w-xl mx-auto">
           <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-stone-100 dark:bg-stone-800 border-2 border-stone-900 flex items-center justify-center text-2xl shadow-[3px_3px_0px_#1c1917]">

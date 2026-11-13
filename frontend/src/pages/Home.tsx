@@ -494,6 +494,17 @@ export const Home: React.FC = () => {
 
   // Fetch recent blog posts for homepage showcase
   useEffect(() => {
+    // 1. Instant local hydration from manifest
+    fetch('/blogs-manifest.json')
+      .then((r) => r.json())
+      .then((manifest: any[]) => {
+        if (Array.isArray(manifest) && manifest.length > 0) {
+          setRecentBlogs(manifest.slice(0, 10));
+        }
+      })
+      .catch(() => {});
+
+    // 2. Fetch fresh posts from API
     api.getBlogPosts()
       .then((res: any) => {
         if (res && res.data && Array.isArray(res.data) && res.data.length > 0) {

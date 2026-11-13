@@ -11,8 +11,8 @@
     "server:build": "npm --prefix server run build",
     "server:start": "npm --prefix server run start",
     "server:seed": "npm --prefix server run prisma:seed",
-    "build": "npm --prefix frontend run build",
-    "build:frontend": "npm --prefix frontend run build",
+    "build": "node scripts/sync_seo.cjs && npm --prefix frontend run build",
+    "build:frontend": "node scripts/sync_seo.cjs && npm --prefix frontend run build",
     "build:server": "npm --prefix server run build",
     "start": "npm --prefix frontend run start",
     "preview": "npm --prefix frontend run preview"

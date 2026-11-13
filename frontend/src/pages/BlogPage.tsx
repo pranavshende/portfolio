@@ -51,17 +51,28 @@ export const BlogPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
   useEffect(() => {
-    // Fetch blog posts
+    // 1. Instant local hydration from manifest
+    fetch('/blogs-manifest.json')
+      .then((r) => r.json())
+      .then((manifest: BlogPost[]) => {
+        if (Array.isArray(manifest) && manifest.length > 0) {
+          setPosts(manifest);
+          setLoading(false);
+        }
+      })
+      .catch(() => {});
+
+    // 2. Fetch fresh dynamic posts from API
     api.getBlogPosts()
       .then((res: any) => {
-        if (res && res.data && Array.isArray(res.data)) {
+        if (res && res.data && Array.isArray(res.data) && res.data.length > 0) {
           setPosts(res.data);
-        } else if (Array.isArray(res)) {
+        } else if (Array.isArray(res) && res.length > 0) {
           setPosts(res);
         }
       })
       .catch((err) => {
-        console.warn('Failed to load blog posts:', err);
+        console.warn('Failed to load blog posts from API:', err);
       })
       .finally(() => setLoading(false));
   }, []);
