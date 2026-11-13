@@ -9,17 +9,8 @@ import { DoodleLayout } from '@/components/DoodleLayout';
 import { PageSeo } from '@/components/PageSeo';
 import useAnalytics from '@/hooks/useAnalytics';
 import { api } from '@/lib/api';
+import { LoadingThumbnail, resolveCustomPhoto } from '@/components/LoadingThumbnail';
 
-import jansamparkPhoto from '../photo/jansampark.webp';
-import solarAnalyticsPhoto from '../photo/solar_analytics.webp';
-import pashurakshakPhoto from '../photo/pashurakshak.webp';
-import attritionBanner from '../photo/attrition_banner.webp';
-import tastifyyBanner from '../photo/tastifyy_banner.webp';
-import electropathyBanner from '../photo/electropathy_banner.webp';
-import jarvisBanner from '../photo/jarvis_banner.webp';
-import citywidePhoto from '../photo/citywide_surveillance.webp';
-import truliacarePhoto from '../photo/truliacare_telehealth.webp';
-import farmerCreditPhoto from '../photo/farmer_credit.webp';
 
 interface RepoMeta {
   title?: string;
@@ -42,7 +33,6 @@ const REPO_REGISTRY: Record<string, RepoMeta> = {
     tech: ['Google Gemini 2.5 Pro', 'Model Context Protocol (MCP)', 'Fastify Gateway', 'pgvector RAG', 'Deterministic SQL', 'Supabase', 'BullMQ'],
     badge: 'Live Enterprise',
     demoUrl: 'https://jarvis.pranavshende.online/',
-    image: jarvisBanner,
   },
   jarvis: {
     title: 'Jarvis 1.0 Enterprise AI Platform',
@@ -52,7 +42,6 @@ const REPO_REGISTRY: Record<string, RepoMeta> = {
     tech: ['Google Gemini 2.5 Pro', 'Model Context Protocol (MCP)', 'Fastify Gateway', 'pgvector RAG', 'Deterministic SQL', 'Supabase', 'BullMQ'],
     badge: 'Live Enterprise',
     demoUrl: 'https://jarvis.pranavshende.online/',
-    image: jarvisBanner,
   },
   Electropathy_AI: {
     title: 'Electropathy AI Clinical Engine',
@@ -62,7 +51,6 @@ const REPO_REGISTRY: Record<string, RepoMeta> = {
     tech: ['Agentic RAG', 'pgvector', 'TypeScript', 'Node.js', 'Supabase', 'Prisma ORM'],
     badge: 'Live Production',
     demoUrl: 'https://client-raprax.vercel.app',
-    image: electropathyBanner,
   },
   tastifyy: {
     title: 'Tastifyy Delivery Ecosystem',
@@ -72,7 +60,6 @@ const REPO_REGISTRY: Record<string, RepoMeta> = {
     tech: ['Kafka Streams', 'Redis Geospatial', 'React 19', 'React Native', 'TypeScript', 'Socket.io'],
     badge: 'Production Shipped',
     demoUrl: 'https://www.tastifyy.in',
-    image: tastifyyBanner,
   },
   EmployeeAttritionSystem: {
     title: 'Employee Attrition AI',
@@ -81,7 +68,6 @@ const REPO_REGISTRY: Record<string, RepoMeta> = {
     description: 'End-to-end workforce risk intelligence platform with instant dynamic CSV dataset ingestion, 11 interactive Chart.js visualizations, and an intelligent Gemini 2.5 Flash copilot.',
     tech: ['Google Gemini 2.5', 'Predictive ML', 'Python (Flask)', 'React 19', 'Chart.js', 'Redis'],
     badge: 'Gemini 2.5 Flash',
-    image: attritionBanner,
   },
   PashuRakshak: {
     title: 'PashuRakshak Diagnostics',
@@ -90,7 +76,6 @@ const REPO_REGISTRY: Record<string, RepoMeta> = {
     description: 'Offline-first Edge AI veterinary diagnostics system with quantized TensorFlow Lite CNNs (INT8) for sub-120ms livestock disease detection in zero-connectivity rural farms. Published at IEEE.',
     tech: ['Edge Computing', 'TensorFlow Lite INT8', 'Computer Vision', 'React Native', 'IEEE Research'],
     badge: 'IEEE Published',
-    image: pashurakshakPhoto,
   },
   'HackNation_SKB-F17_SKB_P2': {
     title: 'PashuRakshak Edge Mobile Pipeline',
@@ -99,7 +84,6 @@ const REPO_REGISTRY: Record<string, RepoMeta> = {
     description: 'Core mobile client and on-device INT8 quantized inference engine for PashuRakshak, featuring offline telemetry queuing, SQLite local storage, and veterinary dispatch routing.',
     tech: ['TensorFlow Lite', 'React Native', 'Offline-First', 'SQLite', 'IEEE OTCON'],
     badge: 'IEEE Published',
-    image: pashurakshakPhoto,
   },
   SolarSalesAnalysis: {
     title: 'Solar Intelligence Platform',
@@ -108,7 +92,6 @@ const REPO_REGISTRY: Record<string, RepoMeta> = {
     description: 'CleanTech big data intelligence platform analyzing 10+ years (2014–2024) of solar energy across 36+ states/UTs covering 81.8+ GW with automated ETL pipelines, GIS heatmaps, and polynomial forecasting to 2030.',
     tech: ['CleanTech Big Data', 'Geospatial GIS', 'Python', 'PostgreSQL', 'Polynomial Regression', 'Recharts'],
     badge: 'CleanTech Big Data',
-    image: solarAnalyticsPhoto,
   },
   citywidecamersur: {
     title: 'Citywide Camera Surveillance System',
@@ -117,7 +100,6 @@ const REPO_REGISTRY: Record<string, RepoMeta> = {
     description: 'Distributed urban video surveillance and camera intelligence network with real-time video stream monitoring, incident alerting, and geo-spatial camera mapping.',
     tech: ['Computer Vision', 'Video Streaming', 'TypeScript', 'Node.js', 'PostgreSQL'],
     badge: 'Smart City Vision',
-    image: citywidePhoto,
   },
   TruliaCare_Appathon: {
     title: 'TruliaCare: Telehealth & Automated SLA Escalation Engine',
@@ -126,7 +108,6 @@ const REPO_REGISTRY: Record<string, RepoMeta> = {
     description: 'Telehealth and emergency response platform featuring an automated dual-tier SLA escalation engine. Runs background cron breach jobs, atomic Prisma $transactions with optimistic concurrency guards, multi-channel email/push dispatch, and live SlaTimer countdown widgets.',
     tech: ['Dual-Tier SLA Engine', 'Background Cron Jobs', 'Prisma Transactions', 'React Native (Expo)', 'Node.js', 'Audit Logging'],
     badge: 'Automated Escalation',
-    image: truliacarePhoto,
   },
   'Credit-Score-Invisibility-Farmer': {
     title: 'Farmer Alternative Credit Scoring',
@@ -135,7 +116,6 @@ const REPO_REGISTRY: Record<string, RepoMeta> = {
     description: 'Alternative credit scoring platform evaluating agricultural risk and seasonal yield metrics to overcome credit invisibility for unbanked rural farmers.',
     tech: ['FinTech', 'Predictive Scoring', 'TypeScript', 'Data Science', 'Financial Inclusion'],
     badge: 'FinTech AI',
-    image: farmerCreditPhoto,
   },
   jansampark: {
     title: 'JanSampark Civic Governance Platform',
@@ -145,7 +125,6 @@ const REPO_REGISTRY: Record<string, RepoMeta> = {
     tech: ['Enterprise Architecture', 'React Native', 'Node.js', 'PostgreSQL', 'RBAC Security', 'JWT'],
     badge: 'Civic Enterprise',
     demoUrl: '/arcade?folder=projects_folder',
-    image: jansamparkPhoto,
   },
   StockMarketIntelligence: {
     title: 'Stock Market Intelligence Engine',
@@ -272,48 +251,9 @@ export const ProjectsPage: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'flagship' | 'ai' | 'algorithms'>('all');
 
   useEffect(() => {
-    const projectImages: Record<string, string> = {
-      jarvis: jarvisBanner,
-      'jarvis-mcp-multipledbs': jarvisBanner,
-      'jarvis-ai': jarvisBanner,
-      electropathy: electropathyBanner,
-      'electropathy-ai': electropathyBanner,
-      tastifyy: tastifyyBanner,
-      attrition: attritionBanner,
-      jansampark: jansamparkPhoto,
-      solar: solarAnalyticsPhoto,
-      pashurakshak: pashurakshakPhoto,
-    };
-
-    const resolveProjectThumbnail = (p: any): string => {
-      // 1. Priority 1: Check custom uploaded thumbnail from CMS / database
+    const resolveProjectThumbnail = (p: any): string | undefined => {
       const raw = p.thumbnailUrl || p.bannerUrl || p.imageUrl || p.coverImageUrl;
-      if (raw && typeof raw === 'string' && raw.trim() !== '') {
-        const trimmed = raw.trim();
-        const isGenericUnsplash = trimmed.includes('photo-1555066931-4365d14bab8c');
-        if (!isGenericUnsplash) {
-          if (
-            trimmed.startsWith('data:image/') ||
-            trimmed.startsWith('http://') ||
-            trimmed.startsWith('https://') ||
-            trimmed.startsWith('/photo/') ||
-            trimmed.startsWith('/src/photo/')
-          ) {
-            return trimmed.startsWith('/src/photo/') ? trimmed.replace('/src/photo/', '/photo/') : trimmed;
-          }
-          return trimmed;
-        }
-      }
-
-      // 2. Priority 2: Fall back to bundled assets if no custom image was uploaded
-      const slug = String(p.slug || p.id || p.title || p.name || '').toLowerCase();
-      for (const [key, asset] of Object.entries(projectImages)) {
-        if (slug.includes(key) || key.includes(slug)) {
-          return asset;
-        }
-      }
-
-      return jarvisBanner;
+      return resolveCustomPhoto(raw) || undefined;
     };
 
     Promise.allSettled([
@@ -587,23 +527,19 @@ export const ProjectsPage: React.FC = () => {
                     className="group rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 p-4 sm:p-5 flex flex-col justify-between shadow-[4px_4px_0px_#1c1917] dark:shadow-[4px_4px_0px_#000000] hover:shadow-[2px_2px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
                   >
                     <div className="space-y-3">
-                      {/* Image Thumbnail Banner if available */}
+                      {/* Image Thumbnail Banner: only if custom photo exists from Supabase */}
                       {p.image && (
-                        <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-900 border-2 border-stone-900 dark:border-stone-700 shadow-[2px_2px_0px_#1c1917] flex items-center justify-center">
-                          <img
-                            src={p.image}
-                            alt={p.title}
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).src = jarvisBanner;
-                            }}
-                            className="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-300"
-                          />
-                          {p.badge && (
-                            <div className="absolute top-2.5 right-2.5 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full border-2 border-stone-900 shadow-[1.5px_1.5px_0px_#1c1917]">
+                        <LoadingThumbnail
+                          src={p.image}
+                          alt={p.title}
+                          aspectClass="aspect-video w-full rounded-2xl border-2 border-stone-900 dark:border-stone-700 shadow-[2px_2px_0px_#1c1917]"
+                          badgePosition="top-right"
+                          badge={p.badge && (
+                            <div className="bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full border-2 border-stone-900 shadow-[1.5px_1.5px_0px_#1c1917]">
                               {p.badge}
                             </div>
                           )}
-                        </div>
+                        />
                       )}
 
                       <div>

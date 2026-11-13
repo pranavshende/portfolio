@@ -12,32 +12,10 @@ import { api } from '@/lib/api';
 import useAnalytics from '@/hooks/useAnalytics';
 import profilePhoto from '@/photo/profile_photo_wide.webp';
 
-import jarvisBanner from '@/photo/jarvis_banner.webp';
-import electropathyBanner from '@/photo/electropathy_banner.webp';
-import tastifyyBanner from '@/photo/tastifyy_banner.webp';
-import attritionBanner from '@/photo/attrition_banner.webp';
-import jansamparkBanner from '@/photo/jansampark.webp';
-import solarBanner from '@/photo/solar_analytics.webp';
-import pashurakshakBanner from '@/photo/pashurakshak.webp';
+import { LoadingThumbnail, resolveCustomPhoto } from '@/components/LoadingThumbnail';
 
-const resolveBlogCover = (url?: string, slug?: string): string => {
-  if (!url && !slug) return jarvisBanner;
-  if (url && (url.startsWith('data:image/') || url.startsWith('http://') || url.startsWith('https://'))) {
-    return url;
-  }
-  const target = (url || slug || '').toLowerCase();
-  if (target.includes('forgerag') || target.includes('electropathy')) return electropathyBanner;
-  if (target.includes('attrition') || target.includes('workforce')) return attritionBanner;
-  if (target.includes('solar')) return solarBanner;
-  if (target.includes('tastifyy') || target.includes('fullstack') || target.includes('scalable')) return tastifyyBanner;
-  if (target.includes('jansampark') || target.includes('civic') || target.includes('hackathon')) return jansamparkBanner;
-  if (target.includes('pashu') || target.includes('agriculture')) return pashurakshakBanner;
-  if (target.includes('jarvis')) return jarvisBanner;
-
-  if (url && url.startsWith('/src/photo/')) {
-    return url.replace('/src/photo/', '/photo/');
-  }
-  return url || jarvisBanner;
+const resolveBlogCover = (url?: string): string | null => {
+  return resolveCustomPhoto(url);
 };
 
 interface BlogPost {
@@ -280,17 +258,16 @@ export const BlogPostPage: React.FC = () => {
           </div>
         </header>
 
-        {/* Cover Banner */}
-        <div className="relative aspect-video w-full rounded-3xl overflow-hidden border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917] dark:shadow-[4px_4px_0px_#000000] mb-8 bg-stone-100 dark:bg-stone-900 flex items-center justify-center">
-          <img
-            src={resolveBlogCover(post.coverImageUrl, post.slug)}
-            alt={post.title}
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = jarvisBanner;
-            }}
-            className="w-full h-full object-cover object-center"
-          />
-        </div>
+        {/* Cover Banner: only rendered if custom photo from Supabase exists */}
+        {resolveCustomPhoto(post.coverImageUrl) && (
+          <div className="mb-8">
+            <LoadingThumbnail
+              src={resolveCustomPhoto(post.coverImageUrl)}
+              alt={post.title}
+              aspectClass="aspect-video w-full rounded-3xl border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917] dark:shadow-[4px_4px_0px_#000000]"
+            />
+          </div>
+        )}
 
         {/* Article Body Container */}
         <div className="rounded-3xl bg-white/95 dark:bg-[#181920]/95 border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917] dark:shadow-[4px_4px_0px_#000000] p-6 sm:p-10">

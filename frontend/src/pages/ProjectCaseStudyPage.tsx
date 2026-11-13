@@ -9,14 +9,7 @@ import { DoodleLayout } from '@/components/DoodleLayout';
 import { PageSeo } from '@/components/PageSeo';
 import useAnalytics from '@/hooks/useAnalytics';
 import { api } from '@/lib/api';
-
-import jarvisBanner from '@/photo/jarvis_banner.webp';
-import electropathyBanner from '@/photo/electropathy_banner.webp';
-import tastifyyBanner from '@/photo/tastifyy_banner.webp';
-import attritionBanner from '@/photo/attrition_banner.webp';
-import jansamparkPhoto from '@/photo/jansampark.webp';
-import solarAnalyticsPhoto from '@/photo/solar_analytics.webp';
-import pashurakshakPhoto from '@/photo/pashurakshak.webp';
+import { LoadingThumbnail, resolveCustomPhoto } from '@/components/LoadingThumbnail';
 
 export interface CaseStudyData {
   slug: string;
@@ -27,7 +20,7 @@ export interface CaseStudyData {
   category: string;
   year: string;
   badge: string;
-  image: string;
+  image?: string;
   demoUrl?: string;
   githubUrl?: string;
   relatedBlogSlug?: string;
@@ -51,7 +44,6 @@ export const CASE_STUDIES: Record<string, CaseStudyData> = {
     category: 'Enterprise AI & MCP Architecture',
     year: '2026',
     badge: 'Live Enterprise',
-    image: jarvisBanner,
     demoUrl: 'https://jarvis.pranavshende.online/',
     githubUrl: 'https://github.com/pranavshende/jarvis-mcp-multipleDBs',
     relatedBlogSlug: 'jarvis-ai-enterprise-intelligence-platform',
@@ -107,7 +99,6 @@ export const CASE_STUDIES: Record<string, CaseStudyData> = {
     category: 'Agentic AI & Healthcare Systems',
     year: '2026',
     badge: 'Live Production',
-    image: electropathyBanner,
     demoUrl: 'https://client-raprax.vercel.app',
     githubUrl: 'https://github.com/pranavshende/Electropathy_AI',
     relatedBlogSlug: 'forgerag-exploring-llms-and-retrieval-augmented-generation',
@@ -154,7 +145,6 @@ export const CASE_STUDIES: Record<string, CaseStudyData> = {
     category: 'Distributed Systems & Mobile Architecture',
     year: '2026',
     badge: 'Production Shipped',
-    image: tastifyyBanner,
     demoUrl: 'https://www.tastifyy.in',
     githubUrl: 'https://github.com/pranavshende/tastifyy',
     relatedBlogSlug: 'tastifyy-distributed-logistics-kafka-redis-geospatial',
@@ -196,7 +186,6 @@ export const CASE_STUDIES: Record<string, CaseStudyData> = {
     category: 'Edge Computing & Computer Vision',
     year: '2026',
     badge: 'IEEE Published',
-    image: pashurakshakPhoto,
     demoUrl: '/arcade?folder=projects_folder',
     githubUrl: 'https://github.com/pranavshende/HackNation_SKB-F17_SKB_P2',
     relatedBlogSlug: 'ai-in-agriculture-pashurakshak-edge-cnn-ieee',
@@ -238,7 +227,6 @@ export const CASE_STUDIES: Record<string, CaseStudyData> = {
     category: 'CleanTech Big Data & GIS Analytics',
     year: '2026',
     badge: 'CleanTech Big Data',
-    image: solarAnalyticsPhoto,
     demoUrl: '/arcade?folder=projects_folder',
     githubUrl: 'https://github.com/pranavshende/SolarSalesAnalysis',
     relatedBlogSlug: 'solar-intelligence-renewable-energy-big-data-forecasting',
@@ -279,7 +267,6 @@ export const CASE_STUDIES: Record<string, CaseStudyData> = {
     category: 'Civic Enterprise & Mobile Systems',
     year: '2026',
     badge: 'Civic Enterprise',
-    image: jansamparkPhoto,
     demoUrl: '/arcade?folder=projects_folder',
     githubUrl: 'private',
     relatedBlogSlug: 'jansampark-civic-governance-platform-react-native',
@@ -321,7 +308,6 @@ export const CASE_STUDIES: Record<string, CaseStudyData> = {
     category: 'Predictive ML & Analytics',
     year: '2026',
     badge: 'Gemini 2.5 Flash',
-    image: attritionBanner,
     demoUrl: undefined,
     githubUrl: 'https://github.com/pranavshende/EmployeeAttritionSystem',
     relatedBlogSlug: 'ai-powered-employee-attrition-analysis',
@@ -544,14 +530,16 @@ export const ProjectCaseStudyPage: React.FC = () => {
           </div>
         </header>
 
-        {/* Cover Image */}
-        <div className="relative aspect-video w-full rounded-2xl overflow-hidden border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917] mb-8 bg-stone-100 dark:bg-stone-900 flex items-center justify-center">
-          <img
-            src={customCover || project.image}
-            alt={project.title}
-            className="w-full h-full object-cover object-center"
-          />
-        </div>
+        {/* Cover Image: only rendered if custom photo exists from Supabase bucket */}
+        {resolveCustomPhoto(customCover) && (
+          <div className="mb-8">
+            <LoadingThumbnail
+              src={resolveCustomPhoto(customCover)}
+              alt={project.title}
+              aspectClass="aspect-video w-full rounded-2xl border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917]"
+            />
+          </div>
+        )}
 
         {/* Executive Summary */}
         <section className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-stone-800/90 border-2 border-stone-900 dark:border-stone-700 shadow-[3px_3px_0px_#1c1917] mb-8">

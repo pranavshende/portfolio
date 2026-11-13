@@ -14,6 +14,7 @@ import ContactModal from '@/components/ContactModal';
 import { PageSeo } from '@/components/PageSeo';
 import { GitHubCalendar } from 'react-github-calendar';
 import { useMode } from '@/contexts/ModeContext';
+import { LoadingThumbnail, resolveCustomPhoto } from '@/components/LoadingThumbnail';
 
 const ghDarkTheme = {
   light: ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'],
@@ -69,7 +70,6 @@ const projects: Project[] = [
     github: 'https://github.com/pranavshende/jarvis-mcp-multipleDBs',
     demo: 'https://jarvis.pranavshende.online/',
     badge: 'Live Enterprise',
-    image: jarvisBanner,
   },
   {
     id: 'electropathy',
@@ -90,7 +90,6 @@ const projects: Project[] = [
     github: 'https://github.com/pranavshende/Electropathy_AI',
     demo: 'https://client-raprax.vercel.app',
     badge: 'Live Production',
-    image: electropathyBanner,
   },
   {
     id: 'tastifyy',
@@ -111,7 +110,6 @@ const projects: Project[] = [
     github: 'https://github.com/pranavshende/tastifyy',
     demo: 'https://www.tastifyy.in',
     badge: 'Production Shipped',
-    image: tastifyyBanner,
   },
   {
     id: 'attrition',
@@ -131,7 +129,6 @@ const projects: Project[] = [
     ],
     github: 'https://github.com/pranavshende/EmployeeAttritionSystem',
     badge: 'Gemini 2.5 Flash',
-    image: attritionBanner,
   },
   {
     id: 'jansampark',
@@ -152,7 +149,6 @@ const projects: Project[] = [
     github: 'private',
     demo: '/arcade?folder=projects_folder',
     badge: 'Civic Enterprise',
-    image: jansamparkPhoto,
   },
   {
     id: 'solar-analytics',
@@ -173,7 +169,6 @@ const projects: Project[] = [
     github: 'https://github.com/pranavshende/SolarSalesAnalysis',
     demo: '/arcade?folder=projects_folder',
     badge: 'CleanTech Big Data',
-    image: solarAnalyticsPhoto,
   },
   {
     id: 'pashurakshak',
@@ -194,7 +189,6 @@ const projects: Project[] = [
     badge: 'IEEE Published',
     github: 'https://github.com/pranavshende/HackNation_SKB-F17_SKB_P2',
     demo: '/arcade?folder=projects_folder',
-    image: pashurakshakPhoto,
   },
 ];
 
@@ -243,24 +237,8 @@ const defaultBlogs = [
   },
 ];
 
-const resolveBlogCover = (url?: string, slug?: string): string => {
-  if (!url && !slug) return jarvisBanner;
-  if (url && (url.startsWith('data:image/') || url.startsWith('http://') || url.startsWith('https://'))) {
-    return url;
-  }
-  const target = (url || slug || '').toLowerCase();
-  if (target.includes('forgerag') || target.includes('electropathy')) return electropathyBanner;
-  if (target.includes('attrition') || target.includes('workforce')) return attritionBanner;
-  if (target.includes('solar')) return solarAnalyticsPhoto;
-  if (target.includes('tastifyy') || target.includes('fullstack') || target.includes('scalable')) return tastifyyBanner;
-  if (target.includes('jansampark') || target.includes('civic') || target.includes('hackathon')) return jansamparkPhoto;
-  if (target.includes('pashu') || target.includes('agriculture')) return pashurakshakPhoto;
-  if (target.includes('jarvis')) return jarvisBanner;
-
-  if (url && url.startsWith('/src/photo/')) {
-    return url.replace('/src/photo/', '/photo/');
-  }
-  return url || jarvisBanner;
+const resolveBlogCover = (url?: string, slug?: string): string | null => {
+  return resolveCustomPhoto(url);
 };
 
 const defaultRepos = [
@@ -476,48 +454,9 @@ export const Home: React.FC = () => {
 
   // Fetch dynamic projects from backend database with fallback to verified offline data
   useEffect(() => {
-    const projectImages: Record<string, string> = {
-      jarvis: jarvisBanner,
-      'jarvis-mcp-multipledbs': jarvisBanner,
-      'jarvis-ai': jarvisBanner,
-      electropathy: electropathyBanner,
-      'electropathy-ai': electropathyBanner,
-      tastifyy: tastifyyBanner,
-      attrition: attritionBanner,
-      jansampark: jansamparkPhoto,
-      solar: solarAnalyticsPhoto,
-      pashurakshak: pashurakshakPhoto,
-    };
-
-    const resolveProjectThumbnail = (p: any): string => {
-      // 1. Priority 1: Check custom uploaded thumbnail from CMS / database
+    const resolveProjectThumbnail = (p: any): string | undefined => {
       const raw = p.thumbnailUrl || p.bannerUrl || p.imageUrl || p.coverImageUrl;
-      if (raw && typeof raw === 'string' && raw.trim() !== '') {
-        const trimmed = raw.trim();
-        const isGenericUnsplash = trimmed.includes('photo-1555066931-4365d14bab8c');
-        if (!isGenericUnsplash) {
-          if (
-            trimmed.startsWith('data:image/') ||
-            trimmed.startsWith('http://') ||
-            trimmed.startsWith('https://') ||
-            trimmed.startsWith('/photo/') ||
-            trimmed.startsWith('/src/photo/')
-          ) {
-            return trimmed.startsWith('/src/photo/') ? trimmed.replace('/src/photo/', '/photo/') : trimmed;
-          }
-          return trimmed;
-        }
-      }
-
-      // 2. Priority 2: Fall back to bundled assets if no custom image was uploaded
-      const slug = String(p.slug || p.id || p.title || '').toLowerCase();
-      for (const [key, asset] of Object.entries(projectImages)) {
-        if (slug.includes(key) || key.includes(slug)) {
-          return asset;
-        }
-      }
-
-      return jarvisBanner;
+      return resolveCustomPhoto(raw) || undefined;
     };
 
     api.getProjects()
@@ -817,27 +756,30 @@ export const Home: React.FC = () => {
               onClick={() => setSelectedProject(proj)}
               className="w-[280px] sm:w-[320px] md:w-[360px] shrink-0 snap-start group cursor-pointer rounded-2xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all overflow-hidden flex flex-col justify-between p-2.5 sm:p-3"
             >
-              {/* Banner with badge */}
-              <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-900 border-2 border-stone-900 dark:border-stone-700 shadow-[1.5px_1.5px_0px_#1c1917]">
-                <img
-                  src={proj.image}
-                  alt={proj.title}
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = jarvisBanner;
-                  }}
-                  className="w-full h-full object-cover object-center group-hover:scale-[1.03] transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
-                {proj.badge && (
-                  <div className="absolute top-2 right-2 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 border-2 border-stone-900 font-mono font-bold text-[9px] px-2 py-0.5 rounded-full shadow-[1px_1px_0px_#1c1917]">
-                    {proj.badge}
-                  </div>
-                )}
-              </div>
+              {/* Banner with badge: only rendered if custom photo from Supabase exists */}
+              {proj.image && (
+                <div className="mb-2">
+                  <LoadingThumbnail
+                    src={proj.image}
+                    alt={proj.title}
+                    aspectClass="aspect-video w-full rounded-xl border-2 border-stone-900 dark:border-stone-700 shadow-[1.5px_1.5px_0px_#1c1917]"
+                    badge={proj.badge && (
+                      <div className="bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 border-2 border-stone-900 font-mono font-bold text-[9px] px-2 py-0.5 rounded-full shadow-[1px_1px_0px_#1c1917]">
+                        {proj.badge}
+                      </div>
+                    )}
+                  />
+                </div>
+              )}
 
               {/* Footer row */}
-              <div className="flex items-center justify-between gap-2.5 pt-2.5">
+              <div className="flex items-center justify-between gap-2.5 pt-1">
                 <div className="min-w-0 flex-1">
+                  {!proj.image && proj.badge && (
+                    <span className="inline-block mb-1.5 bg-[#8b2323]/10 dark:bg-stone-800 text-[#8b2323] dark:text-rose-400 border border-[#8b2323]/30 dark:border-stone-700 font-mono font-bold text-[9px] px-2 py-0.5 rounded-full">
+                      {proj.badge}
+                    </span>
+                  )}
                   <h3 className="text-xs sm:text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] transition-colors truncate">
                     {proj.title}
                   </h3>
@@ -935,29 +877,31 @@ export const Home: React.FC = () => {
               className="w-[280px] sm:w-[320px] md:w-[340px] shrink-0 snap-start group p-4 sm:p-5 rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all flex flex-col justify-between space-y-3"
             >
               <div className="space-y-3">
-                {/* Small compact thumbnail */}
-                <div className="w-full h-28 sm:h-32 rounded-2xl overflow-hidden border border-stone-900/15 dark:border-stone-700 bg-stone-100 dark:bg-stone-800 relative shadow-xs">
-                  <img
-                    src={resolveBlogCover(post.coverImageUrl, post.slug)}
+                {/* Small compact thumbnail: only rendered if custom photo from Supabase bucket exists */}
+                {resolveCustomPhoto(post.coverImageUrl) ? (
+                  <LoadingThumbnail
+                    src={resolveCustomPhoto(post.coverImageUrl)}
                     alt={post.title}
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = jarvisBanner;
-                    }}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    loading="lazy"
+                    aspectClass="w-full h-28 sm:h-32 rounded-2xl border border-stone-900/15 dark:border-stone-700 shadow-xs"
+                    badge={(
+                      <span className="px-2 py-0.5 rounded-md border border-stone-900/30 dark:border-stone-700 bg-white/95 dark:bg-stone-900/90 text-[#8b2323] dark:text-rose-400 font-serif font-bold text-[10px] tracking-wider shadow-xs backdrop-blur-xs">
+                        {post.category || (post.tags && post.tags[0]) || 'Architecture'}
+                      </span>
+                    )}
                   />
-                  <div className="absolute top-2 left-2">
-                    <span className="px-2 py-0.5 rounded-md border border-stone-900/30 dark:border-stone-700 bg-white/95 dark:bg-stone-900/90 text-[#8b2323] dark:text-rose-400 font-serif font-bold text-[10px] tracking-wider shadow-xs backdrop-blur-xs">
+                ) : (
+                  <div>
+                    <span className="px-2 py-0.5 rounded-xs border border-[#8b2323] bg-[#8b2323]/5 text-[#8b2323] dark:text-rose-400 font-serif font-bold text-[10px] tracking-wider inline-block">
                       {post.category || (post.tags && post.tags[0]) || 'Architecture'}
                     </span>
                   </div>
-                </div>
+                )}
 
                 <div className="space-y-1.5">
                   <h3 className="text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors line-clamp-2 leading-snug">
                     {post.title}
                   </h3>
-                  <p className="text-xs text-stone-600 dark:text-stone-400 line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-stone-600 dark:text-stone-400 line-clamp-3 leading-relaxed">
                     {post.excerpt}
                   </p>
                 </div>
@@ -1278,16 +1222,14 @@ export const Home: React.FC = () => {
 
                 {/* Scrollable Modal Content */}
                 <div className="overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-5 flex-1 overscroll-contain">
-                  <div className="w-full aspect-video rounded-2xl overflow-hidden border-2 border-stone-900 dark:border-stone-700 bg-stone-100 dark:bg-stone-800 shadow-[3px_3px_0px_#1c1917] flex items-center justify-center">
-                    <img
+                  {/* Image banner: only if custom photo exists from Supabase */}
+                  {selectedProject.image && (
+                    <LoadingThumbnail
                       src={selectedProject.image}
                       alt={selectedProject.title}
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = jarvisBanner;
-                      }}
-                      className="w-full h-full object-cover object-center"
+                      aspectClass="w-full aspect-video rounded-2xl border-2 border-stone-900 dark:border-stone-700 shadow-[3px_3px_0px_#1c1917]"
                     />
-                  </div>
+                  )}
 
                   <p className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed font-sans">
                     {selectedProject.description}

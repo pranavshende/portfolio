@@ -10,32 +10,10 @@ import { PageSeo } from '@/components/PageSeo';
 import { api } from '@/lib/api';
 import useAnalytics from '@/hooks/useAnalytics';
 
-import jarvisBanner from '@/photo/jarvis_banner.webp';
-import electropathyBanner from '@/photo/electropathy_banner.webp';
-import tastifyyBanner from '@/photo/tastifyy_banner.webp';
-import attritionBanner from '@/photo/attrition_banner.webp';
-import jansamparkBanner from '@/photo/jansampark.webp';
-import solarBanner from '@/photo/solar_analytics.webp';
-import pashurakshakBanner from '@/photo/pashurakshak.webp';
+import { LoadingThumbnail, resolveCustomPhoto } from '@/components/LoadingThumbnail';
 
-const resolveBlogCover = (url?: string, slug?: string): string => {
-  if (!url && !slug) return jarvisBanner;
-  if (url && (url.startsWith('data:image/') || url.startsWith('http://') || url.startsWith('https://'))) {
-    return url;
-  }
-  const target = (url || slug || '').toLowerCase();
-  if (target.includes('forgerag') || target.includes('electropathy')) return electropathyBanner;
-  if (target.includes('attrition') || target.includes('workforce')) return attritionBanner;
-  if (target.includes('solar')) return solarBanner;
-  if (target.includes('tastifyy') || target.includes('fullstack') || target.includes('scalable')) return tastifyyBanner;
-  if (target.includes('jansampark') || target.includes('civic') || target.includes('hackathon')) return jansamparkBanner;
-  if (target.includes('pashu') || target.includes('agriculture')) return pashurakshakBanner;
-  if (target.includes('jarvis')) return jarvisBanner;
-
-  if (url && url.startsWith('/src/photo/')) {
-    return url.replace('/src/photo/', '/photo/');
-  }
-  return url || jarvisBanner;
+const resolveBlogCover = (url?: string): string | null => {
+  return resolveCustomPhoto(url);
 };
 
 interface BlogPost {
@@ -232,27 +210,32 @@ export const BlogPage: React.FC = () => {
                   transition={{ delay: idx * 0.04 }}
                   className="group rounded-3xl bg-white/95 dark:bg-[#181920]/95 border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917] dark:shadow-[4px_4px_0px_#000000] hover:shadow-[2px_2px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all duration-200 overflow-hidden flex flex-col"
                 >
-                  {/* Cover Image */}
-                  <Link to={`/blog/${post.slug}`} className="block relative aspect-video overflow-hidden bg-stone-100 dark:bg-stone-900 border-b-2 border-stone-900 dark:border-stone-700">
-                    <img
-                      src={resolveBlogCover(post.coverImageUrl, post.slug)}
-                      alt={post.title}
-                      loading="lazy"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = jarvisBanner;
-                      }}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute top-3 left-3">
-                      <span className="px-2.5 py-0.5 rounded-xs bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 border border-stone-900 font-bold font-serif text-[10px] tracking-wide shadow-[1.5px_1.5px_0px_#1c1917]">
-                        {post.category || (post.tags && post.tags[0]) || 'Engineering'}
-                      </span>
-                    </div>
-                  </Link>
+                  {/* Cover Image: only rendered if custom photo from Supabase bucket exists */}
+                  {resolveCustomPhoto(post.coverImageUrl) ? (
+                    <Link to={`/blog/${post.slug}`} className="block">
+                      <LoadingThumbnail
+                        src={resolveCustomPhoto(post.coverImageUrl)}
+                        alt={post.title}
+                        aspectClass="aspect-video w-full border-b-2 border-stone-900 dark:border-stone-700"
+                        badge={(
+                          <span className="px-2.5 py-0.5 rounded-xs bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 border border-stone-900 font-bold font-serif text-[10px] tracking-wide shadow-[1.5px_1.5px_0px_#1c1917]">
+                            {post.category || (post.tags && post.tags[0]) || 'Engineering'}
+                          </span>
+                        )}
+                      />
+                    </Link>
+                  ) : null}
 
                   {/* Body */}
                   <div className="p-5 sm:p-6 flex flex-col flex-1 justify-between space-y-4">
                     <div className="space-y-2.5">
+                      {!resolveCustomPhoto(post.coverImageUrl) && (
+                        <div>
+                          <span className="px-2.5 py-0.5 rounded-xs bg-[#8b2323]/5 dark:bg-stone-800 text-[#8b2323] dark:text-rose-400 border border-[#8b2323]/30 dark:border-stone-700 font-bold font-serif text-[10px] tracking-wide inline-block">
+                            {post.category || (post.tags && post.tags[0]) || 'Engineering'}
+                          </span>
+                        </div>
+                      )}
                       <div className="flex items-center gap-3 text-[11px] text-stone-500 font-mono">
                         <span className="flex items-center gap-1">
                           <Calendar className="w-3 h-3 text-stone-400" />

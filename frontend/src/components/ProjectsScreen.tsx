@@ -4,14 +4,7 @@ import { ArrowUpRight, Github, Smartphone } from 'lucide-react';
 import { motion } from 'framer-motion';
 import SectionHeader from './SectionHeader';
 import { api } from '@/lib/api';
-
-import jansamparkPhoto from '../photo/jansampark.webp';
-import solarAnalyticsPhoto from '../photo/solar_analytics.webp';
-import pashurakshakPhoto from '../photo/pashurakshak.webp';
-import attritionBanner from '../photo/attrition_banner.webp';
-import tastifyyBanner from '../photo/tastifyy_banner.webp';
-import electropathyBanner from '../photo/electropathy_banner.webp';
-import jarvisBanner from '../photo/jarvis_banner.webp';
+import { LoadingThumbnail, resolveCustomPhoto } from './LoadingThumbnail';
 
 interface Project {
   title: string;
@@ -22,7 +15,7 @@ interface Project {
   github?: string;
   demo?: string;
   badge?: string;
-  image: string;
+  image?: string;
 }
 
 const projects: Project[] = [
@@ -41,7 +34,6 @@ const projects: Project[] = [
     badge: "Live Enterprise",
     github: "https://github.com/pranavshende/jarvis-mcp-multipleDBs",
     demo: "https://jarvis.pranavshende.online/",
-    image: jarvisBanner
   },
   {
     title: "Electropathy AI",
@@ -57,7 +49,6 @@ const projects: Project[] = [
     badge: "Live Production",
     github: "https://github.com/pranavshende/Electropathy_AI",
     demo: "https://client-raprax.vercel.app",
-    image: electropathyBanner
   },
   {
     title: "Tastifyy",
@@ -73,7 +64,6 @@ const projects: Project[] = [
     badge: "Production Shipped",
     github: "https://github.com/pranavshende/tastifyy",
     demo: "https://www.tastifyy.in",
-    image: tastifyyBanner
   },
   {
     title: "Employee Attrition AI",
@@ -88,7 +78,6 @@ const projects: Project[] = [
     ],
     badge: "Gemini 2.5 Flash",
     github: "https://github.com/pranavshende/EmployeeAttritionSystem",
-    image: attritionBanner
   },
   {
     title: "JanSampark",
@@ -103,7 +92,6 @@ const projects: Project[] = [
     ],
     github: "private",
     demo: "/arcade?folder=projects_folder",
-    image: jansamparkPhoto
   },
   {
     title: "Solar Intelligence",
@@ -118,7 +106,6 @@ const projects: Project[] = [
     ],
     github: "https://github.com/pranavshende/SolarSalesAnalysis",
     demo: "/playgames?folder=projects_folder",
-    image: solarAnalyticsPhoto
   },
   {
     title: "PashuRakshak",
@@ -134,7 +121,6 @@ const projects: Project[] = [
     badge: "IEEE Published",
     github: "https://github.com/pranavshende/HackNation_SKB-F17_SKB_P2",
     demo: "/playgames?folder=projects_folder",
-    image: pashurakshakPhoto
   }
 ];
 
@@ -143,47 +129,9 @@ export const ProjectsScreen = () => {
   const [projectList, setProjectList] = useState<Project[]>(projects);
 
   useEffect(() => {
-    const projectImages: Record<string, string> = {
-      jarvis: jarvisBanner,
-      'jarvis-mcp-multipledbs': jarvisBanner,
-      electropathy: electropathyBanner,
-      'electropathy-ai': electropathyBanner,
-      tastifyy: tastifyyBanner,
-      attrition: attritionBanner,
-      jansampark: jansamparkPhoto,
-      solar: solarAnalyticsPhoto,
-      pashurakshak: pashurakshakPhoto,
-    };
-
-    const resolveProjectThumbnail = (p: any): string => {
-      // 1. Priority 1: Check custom uploaded thumbnail from CMS / database
+    const resolveProjectThumbnail = (p: any): string | undefined => {
       const raw = p.thumbnailUrl || p.bannerUrl || p.imageUrl || p.coverImageUrl;
-      if (raw && typeof raw === 'string' && raw.trim() !== '') {
-        const trimmed = raw.trim();
-        const isGenericUnsplash = trimmed.includes('photo-1555066931-4365d14bab8c');
-        if (!isGenericUnsplash) {
-          if (
-            trimmed.startsWith('data:image/') ||
-            trimmed.startsWith('http://') ||
-            trimmed.startsWith('https://') ||
-            trimmed.startsWith('/photo/') ||
-            trimmed.startsWith('/src/photo/')
-          ) {
-            return trimmed.startsWith('/src/photo/') ? trimmed.replace('/src/photo/', '/photo/') : trimmed;
-          }
-          return trimmed;
-        }
-      }
-
-      // 2. Priority 2: Fall back to bundled assets if no custom image was uploaded
-      const slug = String(p.slug || p.id || p.title || '').toLowerCase();
-      for (const [key, asset] of Object.entries(projectImages)) {
-        if (slug.includes(key) || key.includes(slug)) {
-          return asset;
-        }
-      }
-
-      return jarvisBanner;
+      return resolveCustomPhoto(raw) || undefined;
     };
 
     api.getProjects()
@@ -220,21 +168,17 @@ export const ProjectsScreen = () => {
               key={i} 
               className="group flex flex-col sm:flex-row rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-all overflow-hidden"
             >
-              {/* Image Banner Left Side */}
-              <div className="relative w-full sm:w-48 overflow-hidden bg-zinc-950 border-b sm:border-b-0 sm:border-r border-zinc-800/80 flex-shrink-0">
-                <img 
-                  src={project.image} 
-                  alt={project.title} 
-                  loading="lazy" 
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = jarvisBanner;
-                  }}
-                  className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${
-                    project.title === 'JanSampark' ? 'object-left' : 'object-center'
-                  }`}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/60 to-transparent pointer-events-none" />
-              </div>
+              {/* Image Banner Left Side: only rendered if custom photo exists from Supabase bucket */}
+              {project.image && (
+                <div className="relative w-full sm:w-48 overflow-hidden bg-zinc-950 border-b sm:border-b-0 sm:border-r border-zinc-800/80 flex-shrink-0">
+                  <LoadingThumbnail
+                    src={project.image}
+                    alt={project.title}
+                    aspectClass="w-full h-full min-h-[120px]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/60 to-transparent pointer-events-none" />
+                </div>
+              )}
 
               <div className="flex-grow p-5">
                 <div className="flex items-start justify-between">
@@ -349,20 +293,16 @@ export const ProjectsScreen = () => {
                     zIndex: projectList.length - i,
                   }}
                 >
-                  {/* Image Banner */}
-                  <div className="relative w-full aspect-[16/9] overflow-hidden bg-zinc-950 border-b border-zinc-800/80">
-                    <img 
-                      src={project.image} 
-                      alt={project.title} 
-                      loading="lazy" 
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = jarvisBanner;
-                      }}
-                      className={`w-full h-full object-cover ${
-                        project.title === 'JanSampark' ? 'object-left' : 'object-center'
-                      }`}
-                    />
-                  </div>
+                  {/* Image Banner: only rendered if custom photo exists from Supabase bucket */}
+                  {project.image && (
+                    <div className="relative w-full aspect-[16/9] overflow-hidden bg-zinc-950 border-b border-zinc-800/80">
+                      <LoadingThumbnail
+                        src={project.image}
+                        alt={project.title}
+                        aspectClass="w-full h-full"
+                      />
+                    </div>
+                  )}
 
                   <div className="flex-grow p-4 flex flex-col">
                     <div className="flex items-start justify-between">
