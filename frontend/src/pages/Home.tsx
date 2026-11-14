@@ -28,14 +28,6 @@ const ghLightTheme = {
   dark: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
 };
 
-import jansamparkPhoto from '../photo/jansampark.webp';
-import solarAnalyticsPhoto from '../photo/solar_analytics.webp';
-import pashurakshakPhoto from '../photo/pashurakshak.webp';
-import attritionBanner from '../photo/attrition_banner.webp';
-import tastifyyBanner from '../photo/tastifyy_banner.webp';
-import electropathyBanner from '../photo/electropathy_banner.webp';
-import jarvisBanner from '../photo/jarvis_banner.webp';
-
 interface Project {
   id: string;
   client: string;
@@ -49,7 +41,7 @@ interface Project {
   github?: string;
   demo?: string;
   badge?: string;
-  image: string;
+  image?: string;
   projectPageImage?: string;
   viewCount?: number;
 }
@@ -75,7 +67,6 @@ const projects: Project[] = [
     github: 'https://github.com/pranavshende/jarvis-mcp-multipleDBs',
     demo: 'https://jarvis.pranavshende.online/',
     badge: 'Live Enterprise',
-    image: jarvisBanner,
   },
   {
     id: 'electropathy',
@@ -96,7 +87,6 @@ const projects: Project[] = [
     github: 'https://github.com/pranavshende/Electropathy_AI',
     demo: 'https://client-raprax.vercel.app',
     badge: 'Live Production',
-    image: electropathyBanner,
   },
   {
     id: 'tastifyy',
@@ -117,7 +107,6 @@ const projects: Project[] = [
     github: 'https://github.com/pranavshende/tastifyy',
     demo: 'https://www.tastifyy.in',
     badge: 'Production Shipped',
-    image: tastifyyBanner,
   },
   {
     id: 'attrition',
@@ -137,7 +126,6 @@ const projects: Project[] = [
     ],
     github: 'https://github.com/pranavshende/EmployeeAttritionSystem',
     badge: 'Gemini 2.5 Flash',
-    image: attritionBanner,
   },
   {
     id: 'jansampark',
@@ -158,7 +146,6 @@ const projects: Project[] = [
     github: 'private',
     demo: '/arcade?folder=projects_folder',
     badge: 'Civic Enterprise',
-    image: jansamparkPhoto,
   },
   {
     id: 'solar-analytics',
@@ -179,7 +166,6 @@ const projects: Project[] = [
     github: 'https://github.com/pranavshende/SolarSalesAnalysis',
     demo: '/arcade?folder=projects_folder',
     badge: 'CleanTech Big Data',
-    image: solarAnalyticsPhoto,
   },
   {
     id: 'pashurakshak',
@@ -200,7 +186,6 @@ const projects: Project[] = [
     badge: 'IEEE Published',
     github: 'https://github.com/pranavshende/HackNation_SKB-F17_SKB_P2',
     demo: '/arcade?folder=projects_folder',
-    image: pashurakshakPhoto,
   },
 ];
 
@@ -368,6 +353,93 @@ const useHorizontalSlider = (itemCount: number) => {
   };
 
   return { scrollRef, canScrollLeft, canScrollRight, activeIndex, scroll, scrollToIndex };
+};
+
+interface FeaturedProjectCardProps {
+  proj: Project;
+  idx: number;
+  onClick: () => void;
+  views: number;
+}
+
+const FeaturedProjectCard: React.FC<FeaturedProjectCardProps> = ({
+  proj,
+  idx,
+  onClick,
+  views,
+}) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const validImage = resolveCustomPhoto(proj.image);
+
+  return (
+    <motion.div
+      key={proj.id}
+      whileHover={{ y: -3 }}
+      transition={{ duration: 0.15 }}
+      onClick={onClick}
+      className="w-[280px] sm:w-[320px] md:w-[360px] shrink-0 snap-start group cursor-pointer rounded-2xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all overflow-hidden flex flex-col justify-between p-2.5 sm:p-3"
+    >
+      {/* Thumbnail Banner: Only revealed once custom image has fully loaded over network */}
+      {validImage && (
+        <div className={imageLoaded ? 'mb-2' : 'hidden'}>
+          <LoadingThumbnail
+            src={validImage}
+            alt={proj.title}
+            priority={idx === 0}
+            width={640}
+            height={360}
+            hideUntilLoaded={true}
+            onLoadStatusChange={(status) => {
+              if (status === 'loaded') setImageLoaded(true);
+            }}
+            aspectClass="aspect-video w-full rounded-xl border-2 border-stone-900 dark:border-stone-700 shadow-[1.5px_1.5px_0px_#1c1917]"
+            badge={proj.badge && (
+              <div className="bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 border-2 border-stone-900 font-mono font-bold text-[9px] px-2 py-0.5 rounded-full shadow-[1px_1px_0px_#1c1917]">
+                {proj.badge}
+              </div>
+            )}
+          />
+        </div>
+      )}
+
+      {/* Card Content & Details */}
+      <div className="flex items-center justify-between gap-2.5 pt-1">
+        <div className="min-w-0 flex-1">
+          {/* If there is no loaded image yet, display badge in text row */}
+          {(!validImage || !imageLoaded) && proj.badge && (
+            <span className="inline-block mb-1.5 bg-[#8b2323]/10 dark:bg-stone-800 text-[#8b2323] dark:text-rose-400 border border-[#8b2323]/30 dark:border-stone-700 font-mono font-bold text-[9px] px-2 py-0.5 rounded-full">
+              {proj.badge}
+            </span>
+          )}
+          <h3 className="text-xs sm:text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] transition-colors truncate">
+            {proj.title}
+          </h3>
+          {(!validImage || !imageLoaded) && proj.subtitle && (
+            <p className="text-[11px] text-stone-600 dark:text-stone-400 line-clamp-2 mt-1 mb-1 font-sans">
+              {proj.subtitle}
+            </p>
+          )}
+          <div className="flex items-center justify-between gap-2 mt-0.5">
+            <p className="text-[10px] sm:text-[11px] text-stone-500 dark:text-stone-400 truncate">
+              {proj.client} • {proj.category} • {proj.year}
+            </p>
+            <span 
+              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800/80 border border-stone-200 dark:border-stone-700/60 font-mono text-[9px] font-semibold text-stone-700 dark:text-stone-300 shrink-0"
+              title={`${views} project views`}
+            >
+              <Eye className="w-2.5 h-2.5 text-[#8b2323] dark:text-rose-400 shrink-0" />
+              <span>{views}</span>
+            </span>
+          </div>
+        </div>
+
+        {/* Circular arrow button */}
+        <div className="w-7 h-7 rounded-full border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 flex items-center justify-center text-stone-900 dark:text-stone-100 shadow-[1px_1px_0px_#1c1917] group-hover:bg-[#8b2323] group-hover:text-white transition-all shrink-0">
+          <ArrowRight className="w-3 h-3" />
+        </div>
+      </div>
+    </motion.div>
+  );
 };
 
 export const Home: React.FC = () => {
@@ -828,71 +900,16 @@ export const Home: React.FC = () => {
           className="flex gap-4 overflow-x-auto pb-4 pt-1 snap-x snap-mandatory no-scrollbar scroll-smooth -mx-2 px-2"
         >
           {projectList.map((proj, idx) => (
-            <motion.div
+            <FeaturedProjectCard
               key={proj.id}
-              whileHover={{ y: -3 }}
-              transition={{ duration: 0.15 }}
+              proj={proj}
+              idx={idx}
+              views={getProjectViews(proj.id, proj.viewCount || 0)}
               onClick={() => {
                 recordProjectView(proj.id);
                 setSelectedProject(proj);
               }}
-              className="w-[280px] sm:w-[320px] md:w-[360px] shrink-0 snap-start group cursor-pointer rounded-2xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all overflow-hidden flex flex-col justify-between p-2.5 sm:p-3"
-            >
-              {/* Banner with badge: rendered with high LCP priority for initial card */}
-              {proj.image && (
-                <div className="mb-2">
-                  <LoadingThumbnail
-                    src={proj.image}
-                    alt={proj.title}
-                    priority={idx === 0}
-                    width={640}
-                    height={360}
-                    aspectClass="aspect-video w-full rounded-xl border-2 border-stone-900 dark:border-stone-700 shadow-[1.5px_1.5px_0px_#1c1917]"
-                    badge={proj.badge && (
-                      <div className="bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 border-2 border-stone-900 font-mono font-bold text-[9px] px-2 py-0.5 rounded-full shadow-[1px_1px_0px_#1c1917]">
-                        {proj.badge}
-                      </div>
-                    )}
-                  />
-                </div>
-              )}
-
-              {/* Footer row */}
-              <div className="flex items-center justify-between gap-2.5 pt-1">
-                <div className="min-w-0 flex-1">
-                  {!proj.image && proj.badge && (
-                    <span className="inline-block mb-1.5 bg-[#8b2323]/10 dark:bg-stone-800 text-[#8b2323] dark:text-rose-400 border border-[#8b2323]/30 dark:border-stone-700 font-mono font-bold text-[9px] px-2 py-0.5 rounded-full">
-                      {proj.badge}
-                    </span>
-                  )}
-                  <h3 className="text-xs sm:text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] transition-colors truncate">
-                    {proj.title}
-                  </h3>
-                  <div className="flex items-center justify-between gap-2 mt-0.5">
-                    <p className="text-[10px] sm:text-[11px] text-stone-500 dark:text-stone-400 truncate">
-                      {proj.client} • {proj.category} • {proj.year}
-                    </p>
-                    {(() => {
-                      const pViews = getProjectViews(proj.id, proj.viewCount || 0);
-                      return (
-                        <span 
-                          className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800/80 border border-stone-200 dark:border-stone-700/60 font-mono text-[9px] font-semibold text-stone-700 dark:text-stone-300 shrink-0"
-                          title={`${pViews} project views`}
-                        >
-                          <Eye className="w-2.5 h-2.5 text-[#8b2323] dark:text-rose-400 shrink-0" />
-                          <span>{pViews}</span>
-                        </span>
-                      );
-                    })()}
-                  </div>
-                </div>
-
-                {/* Circular arrow button */}
-                <div className="w-7 h-7 rounded-full border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 flex items-center justify-center text-stone-900 dark:text-stone-100 shadow-[1px_1px_0px_#1c1917] group-hover:bg-[#8b2323] group-hover:text-white transition-all shrink-0">
-                  <ArrowRight className="w-3 h-3" />
-                </div>
-              </div>
-            </motion.div>
+            />
           ))}
         </div>
 

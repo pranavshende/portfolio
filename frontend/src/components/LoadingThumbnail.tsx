@@ -12,6 +12,8 @@ export interface LoadingThumbnailProps {
   width?: number;
   height?: number;
   sizes?: string;
+  hideUntilLoaded?: boolean;
+  onLoadStatusChange?: (status: 'loading' | 'loaded' | 'error') => void;
 }
 
 /**
@@ -31,6 +33,8 @@ export const LoadingThumbnail: React.FC<LoadingThumbnailProps> = ({
   width = 640,
   height = 360,
   sizes,
+  hideUntilLoaded = false,
+  onLoadStatusChange,
 }) => {
   const [status, setStatus] = useState<'loading' | 'loaded' | 'error'>(() => {
     // If priority is true or image is data URI, treat as immediately ready
@@ -38,6 +42,11 @@ export const LoadingThumbnail: React.FC<LoadingThumbnailProps> = ({
     return 'loading';
   });
   const imgRef = useRef<HTMLImageElement>(null);
+
+  // Notify parent of status changes
+  useEffect(() => {
+    onLoadStatusChange?.(status);
+  }, [status, onLoadStatusChange]);
 
   // Check if image is already cached synchronously in browser
   useEffect(() => {
@@ -57,6 +66,22 @@ export const LoadingThumbnail: React.FC<LoadingThumbnailProps> = ({
 
   if (!isValidPhoto || status === 'error') {
     return null;
+  }
+
+  // If hideUntilLoaded is requested, stay hidden until image completes loading
+  if (hideUntilLoaded && status !== 'loaded') {
+    return (
+      <img
+        ref={imgRef}
+        src={src!}
+        alt={alt}
+        loading={priority ? 'eager' : 'lazy'}
+        decoding="async"
+        onLoad={() => setStatus('loaded')}
+        onError={() => setStatus('error')}
+        className="hidden"
+      />
+    );
   }
 
   return (
