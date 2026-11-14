@@ -83,6 +83,10 @@ export interface ContactPayload {
   name: string;
   fullName?: string;
   email: string;
+  phone?: string;
+  phoneNumber?: string;
+  callTiming?: string;
+  preferredTiming?: string;
   company?: string;
   subject: string;
   inquiryType: string;
@@ -229,10 +233,26 @@ export const api = {
   },
 
   submitContact: (payload: ContactPayload) => {
+    let formattedMessage = (payload.message || '').trim();
+    const phone = (payload.phone || payload.phoneNumber || '').trim();
+    const callTiming = (payload.callTiming || payload.preferredTiming || '').trim();
+
+    if (phone || callTiming) {
+      const callMeta = [
+        phone ? `📞 Phone Number: ${phone}` : '',
+        callTiming ? `⏰ Preferred Call Timing: ${callTiming}` : ''
+      ].filter(Boolean).join('\n');
+      formattedMessage = `${callMeta}\n\n---\n\n${formattedMessage}`;
+    }
+
     const data = {
       ...payload,
       fullName: (payload.fullName || payload.name || '').trim(),
       name: (payload.name || payload.fullName || '').trim(),
+      phone: phone || undefined,
+      phoneNumber: phone || undefined,
+      callTiming: callTiming || undefined,
+      message: formattedMessage,
       inquiryType: normalizeInquiryType(payload.inquiryType),
       attachmentUrl: payload.attachmentUrl && payload.attachmentUrl.trim().length > 0 ? payload.attachmentUrl.trim() : undefined,
     };

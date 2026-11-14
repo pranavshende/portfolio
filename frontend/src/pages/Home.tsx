@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ExternalLink, Github, Linkedin, ArrowUpRight, ArrowRight, X, Star, BookOpen, 
   Lock, CheckCircle2, Download, Mail, GraduationCap, Layers, Target,
-  ChevronLeft, ChevronRight, GitFork, Sparkles, Eye, TrendingUp
+  ChevronLeft, ChevronRight, GitFork, Sparkles, Eye, TrendingUp, PhoneCall
 } from 'lucide-react';
 import { DoodleLayout } from '@/components/DoodleLayout';
 import { Link, useNavigate } from 'react-router-dom';
@@ -621,7 +621,7 @@ export const Home: React.FC = () => {
         <div className="flex items-center gap-2 mb-4">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold text-stone-900 dark:text-stone-100 bg-white dark:bg-stone-800 border-2 border-stone-900 dark:border-stone-700 shadow-[2px_2px_0px_#1c1917]">
             <span>&lt;//&gt;</span>
-            <span>Welcome to my portfolio</span>
+            <span>Welcome DEVs</span>
           </div>
           <div className="px-1.5 py-0.5 rounded-xs border border-[#8b2323] text-[#8b2323] text-[10px] font-serif font-bold tracking-widest bg-[#8b2323]/5">
             開発者
@@ -682,8 +682,8 @@ export const Home: React.FC = () => {
                 onClick={() => setContactModalOpen(true)}
                 className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all active:scale-95 shrink-0 whitespace-nowrap cursor-pointer"
               >
-                <Mail className="w-3.5 h-3.5" />
-                <span>Get In Touch</span>
+                <PhoneCall className="w-3.5 h-3.5" />
+                <span>Book a Call</span>
               </button>
               <a
                 href={siteSettings.linkedinUrl}

@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Send, CheckCircle2, AlertCircle, Loader2, Sparkles, Building, Mail, User, FileText, HelpCircle, Paperclip } from 'lucide-react';
+import { 
+  X, Send, CheckCircle2, AlertCircle, Loader2, Sparkles, Building, 
+  Mail, User, FileText, HelpCircle, Paperclip, Phone, Clock, PhoneCall 
+} from 'lucide-react';
 import { api, ContactPayload } from '@/lib/api';
 
 interface ContactModalProps {
@@ -23,6 +26,8 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
   const [formData, setFormData] = useState<ContactPayload>({
     name: '',
     email: '',
+    phone: '',
+    callTiming: '',
     company: '',
     subject: '',
     inquiryType: 'JOB_OPPORTUNITY',
@@ -84,6 +89,8 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
     setFormData({
       name: '',
       email: '',
+      phone: '',
+      callTiming: '',
       company: '',
       subject: '',
       inquiryType: 'JOB_OPPORTUNITY',
@@ -121,10 +128,10 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                   <span>Direct Communication</span>
                 </div>
                 <h2 className="text-xl sm:text-2xl font-bold font-serif text-stone-900 dark:text-stone-100 tracking-tight">
-                  Get in Touch
+                  Book a Call / Get in Touch
                 </h2>
                 <p className="text-xs text-stone-600 dark:text-stone-400 leading-snug">
-                  Send a message directly to Pranav. You'll receive an automated confirmation email immediately.
+                  Schedule a call or send a message directly to Pranav. You'll receive an automated confirmation email immediately.
                 </p>
               </div>
 
@@ -215,6 +222,43 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                             value={formData.email}
                             onChange={handleChange}
                             placeholder="xyz@gmail.com"
+                            className="w-full pl-9 pr-3 py-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 placeholder:text-stone-400 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] focus:outline-hidden text-xs sm:text-sm"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Phone Number & Preferred Call Timing Row (Optional) */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="space-y-1">
+                        <label className="block text-xs font-bold text-stone-800 dark:text-stone-200">
+                          Phone Number <span className="text-stone-400 font-normal">(Optional)</span>
+                        </label>
+                        <div className="relative">
+                          <Phone className="w-4 h-4 absolute left-3 top-2.5 text-stone-400 pointer-events-none" />
+                          <input
+                            type="tel"
+                            name="phone"
+                            value={formData.phone || ''}
+                            onChange={handleChange}
+                            placeholder="e.g. +91 98765 43210"
+                            className="w-full pl-9 pr-3 py-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 placeholder:text-stone-400 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] focus:outline-hidden text-xs sm:text-sm"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="block text-xs font-bold text-stone-800 dark:text-stone-200">
+                          Preferred Call Timing <span className="text-stone-400 font-normal">(Optional)</span>
+                        </label>
+                        <div className="relative">
+                          <Clock className="w-4 h-4 absolute left-3 top-2.5 text-stone-400 pointer-events-none" />
+                          <input
+                            type="text"
+                            name="callTiming"
+                            value={formData.callTiming || ''}
+                            onChange={handleChange}
+                            placeholder="e.g. Weekdays 2 PM – 6 PM IST"
                             className="w-full pl-9 pr-3 py-2 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 placeholder:text-stone-400 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] focus:outline-hidden text-xs sm:text-sm"
                           />
                         </div>
@@ -332,8 +376,8 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                           </>
                         ) : (
                           <>
-                            <Send className="w-4 h-4" />
-                            <span>Send Inquiry</span>
+                            <PhoneCall className="w-4 h-4" />
+                            <span>Book Call / Send Message</span>
                           </>
                         )}
                       </button>

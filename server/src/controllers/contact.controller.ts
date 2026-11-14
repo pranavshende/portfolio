@@ -22,6 +22,10 @@ export const createInquirySchema = z.object({
   fullName: z.string().optional(),
   name: z.string().optional(),
   email: z.string().email('Please enter a valid email address'),
+  phone: z.string().optional().nullable().or(z.literal('')),
+  phoneNumber: z.string().optional().nullable().or(z.literal('')),
+  callTiming: z.string().optional().nullable().or(z.literal('')),
+  preferredTiming: z.string().optional().nullable().or(z.literal('')),
   company: z.string().optional().nullable(),
   subject: z.string().min(2, 'Subject must be at least 2 characters'),
   inquiryType: z.any().optional(),
@@ -46,6 +50,18 @@ export const contactController = {
       const data = req.body;
       const resolvedFullName = (data.fullName || data.name || '').trim();
       const resolvedInquiryType = normalizeInquiryType(data.inquiryType);
+      
+      let resolvedMessage = (data.message || '').trim();
+      const phone = (data.phone || data.phoneNumber || '').trim();
+      const callTiming = (data.callTiming || data.preferredTiming || '').trim();
+
+      if ((phone || callTiming) && !resolvedMessage.includes('📞 Phone Number') && !resolvedMessage.includes('⏰ Preferred Call Timing')) {
+        const meta = [
+          phone ? `📞 Phone Number: ${phone}` : '',
+          callTiming ? `⏰ Preferred Call Timing: ${callTiming}` : ''
+        ].filter(Boolean).join('\n');
+        resolvedMessage = `${meta}\n\n---\n\n${resolvedMessage}`;
+      }
 
       // Generate human-friendly inquiry ticket number e.g. INQ-2026-0042
       const year = new Date().getFullYear();
@@ -60,7 +76,7 @@ export const contactController = {
           company: data.company || null,
           subject: data.subject,
           inquiryType: resolvedInquiryType,
-          message: data.message,
+          message: resolvedMessage,
           attachmentUrl: data.attachmentUrl ? String(data.attachmentUrl).trim() : null,
           ipAddress: req.ip || req.socket.remoteAddress,
           userAgent: req.headers['user-agent'] || null,
