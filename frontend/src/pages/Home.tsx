@@ -50,6 +50,7 @@ interface Project {
   demo?: string;
   badge?: string;
   image: string;
+  projectPageImage?: string;
   viewCount?: number;
 }
 
@@ -465,8 +466,13 @@ export const Home: React.FC = () => {
 
   // Fetch dynamic projects from backend database with fallback to verified offline data
   useEffect(() => {
-    const resolveProjectThumbnail = (p: any): string | undefined => {
+    const resolveFeaturedThumbnail = (p: any): string | undefined => {
       const raw = p.featuredThumbnailUrl || p.thumbnailUrl || p.bannerUrl || p.imageUrl || p.coverImageUrl;
+      return resolveCustomPhoto(raw) || undefined;
+    };
+
+    const resolveProjectPageThumbnail = (p: any): string | undefined => {
+      const raw = p.projectPageThumbnailUrl || p.bannerUrl || p.thumbnailUrl || p.imageUrl || p.coverImageUrl;
       return resolveCustomPhoto(raw) || undefined;
     };
 
@@ -488,7 +494,8 @@ export const Home: React.FC = () => {
             github: p.githubUrl,
             demo: p.demoUrl || p.liveDemoUrl,
             badge: p.badge || (p.featured || p.isFeatured ? 'Featured' : undefined),
-            image: resolveProjectThumbnail(p),
+            image: resolveFeaturedThumbnail(p) || '',
+            projectPageImage: resolveProjectPageThumbnail(p) || '',
             viewCount: typeof p.viewCount === 'number' ? p.viewCount : (Number(p.viewCount) || 0),
           }));
 
@@ -499,6 +506,23 @@ export const Home: React.FC = () => {
         // Silently preserve offline static projects
       });
   }, []);
+
+  // When selectedProject modal opens, fetch the latest live project details from API to ensure projectPageThumbnail is fresh
+  useEffect(() => {
+    if (!selectedProject?.id) return;
+    api.getProject(selectedProject.id)
+      .then((res: any) => {
+        const p = res?.data;
+        if (p) {
+          const raw = p.projectPageThumbnailUrl || p.bannerUrl || p.thumbnailUrl || p.imageUrl;
+          const resolved = resolveCustomPhoto(raw);
+          if (resolved) {
+            setSelectedProject((prev) => (prev && prev.id === (p.slug || p.id)) ? { ...prev, projectPageImage: resolved } : prev);
+          }
+        }
+      })
+      .catch(() => {});
+  }, [selectedProject?.id]);
 
   const handleResumeDownload = () => {
     api.trackResumeDownload().catch(() => {});
@@ -1403,10 +1427,10 @@ export const Home: React.FC = () => {
 
                 {/* Scrollable Modal Content */}
                 <div className="overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-5 flex-1 overscroll-contain">
-                  {/* Image banner: only if custom photo exists from Supabase */}
-                  {selectedProject.image && (
+                  {/* Image banner: displays project page thumbnail on this modal screen */}
+                  {(selectedProject.projectPageImage || selectedProject.image) && (
                     <LoadingThumbnail
-                      src={selectedProject.image}
+                      src={selectedProject.projectPageImage || selectedProject.image}
                       alt={selectedProject.title}
                       aspectClass="w-full aspect-video rounded-2xl border-2 border-stone-900 dark:border-stone-700 shadow-[3px_3px_0px_#1c1917]"
                     />
