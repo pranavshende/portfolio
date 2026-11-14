@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Briefcase, MapPin, Menu, X, ExternalLink, GraduationCap, Sun, Moon, Lock, Send, Download } from 'lucide-react';
+import { Briefcase, MapPin, Menu, X, ExternalLink, GraduationCap, Sun, Moon, Lock, Send, Download, PhoneCall } from 'lucide-react';
 import { useMode } from '@/contexts/ModeContext';
 import { api } from '@/lib/api';
 import profilePhoto from '../photo/profile_photo_wide.webp';
@@ -312,10 +312,10 @@ export const DoodleSidebar: React.FC = () => {
                 type="button"
                 onClick={() => window.dispatchEvent(new CustomEvent('open-contact-modal'))}
                 className="group flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-sm font-bold text-[#8b2323] dark:text-rose-400 hover:text-white hover:bg-[#8b2323] dark:hover:bg-rose-900/60 transition-colors text-left cursor-pointer"
-                title="Send inquiry & receive instant confirmation email"
+                title="Book a Call / Send inquiry"
               >
-                <Send className="w-4 h-4 shrink-0 text-[#8b2323] dark:text-rose-400 group-hover:text-white" />
-                <span className="pt-0.5">Contact Me</span>
+                <PhoneCall className="w-4 h-4 shrink-0 text-[#8b2323] dark:text-rose-400 group-hover:text-white" />
+                <span className="pt-0.5">Book a Call</span>
               </button>
 
               <a
@@ -424,12 +424,23 @@ export const DoodleSidebar: React.FC = () => {
         </button>
 
         <div className="flex items-center gap-1 sm:gap-1.5">
+          {/* Book a Call Button in Phone / Mobile Navbar */}
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new CustomEvent('open-contact-modal'))}
+            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[0.5px] hover:translate-y-[0.5px] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer font-sans shrink-0"
+            title="Book a Call / Schedule a Consultation"
+          >
+            <PhoneCall className="w-3.5 h-3.5 text-white shrink-0" />
+            <span className="leading-none pt-0.5 whitespace-nowrap">Book a Call</span>
+          </button>
+
           {/* Resume Quick Action in Mobile Top Nav */}
           <a
             href={resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:opacity-90 active:scale-95 transition-all cursor-pointer font-mono"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:opacity-90 active:scale-95 transition-all cursor-pointer font-mono"
             title="Open Pranav's Resume on Google Drive"
           >
             <Download className="w-3.5 h-3.5" />
@@ -502,6 +513,19 @@ export const DoodleSidebar: React.FC = () => {
             exit={{ opacity: 0, y: -10 }}
             className="md:hidden fixed inset-x-0 top-14 bg-[#faf7f0]/98 dark:bg-[#15161c]/98 backdrop-blur-md border-b-2 border-stone-900 dark:border-stone-700 shadow-[0_6px_0px_#1c1917] px-5 py-5 z-50 flex flex-col space-y-4 transition-colors"
           >
+            {/* Quick Book a Call Action in Drawer */}
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                window.dispatchEvent(new CustomEvent('open-contact-modal'));
+              }}
+              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold bg-[#8b2323] hover:bg-[#721c1c] text-white border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] active:scale-95 transition-all cursor-pointer w-full font-sans"
+            >
+              <PhoneCall className="w-4 h-4 text-white" />
+              <span>Book a Call</span>
+            </button>
+
             <div className="flex flex-col space-y-1">
               <span className="text-[10px] font-bold tracking-widest text-stone-500 dark:text-stone-400 uppercase">
                 Navigation
@@ -557,6 +581,17 @@ export const DoodleSidebar: React.FC = () => {
                 Contacts
               </span>
               <div className="flex flex-col space-y-1 text-sm font-semibold">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    window.dispatchEvent(new CustomEvent('open-contact-modal'));
+                  }}
+                  className="flex items-center gap-2.5 p-1.5 rounded-lg text-[#8b2323] dark:text-rose-400 hover:bg-[#8b2323]/10 dark:hover:bg-rose-950/40 text-left font-bold cursor-pointer"
+                >
+                  <PhoneCall className="w-4 h-4 text-[#8b2323] dark:text-rose-400 shrink-0" />
+                  <span>Book a Call / Get in Touch</span>
+                </button>
                 <a
                   href={emailUrl}
                   target="_blank"

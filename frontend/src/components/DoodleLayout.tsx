@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DoodleSidebar } from './DoodleSidebar';
+import { ContactModal } from './ContactModal';
 import { useMode } from '@/contexts/ModeContext';
 import { Moon, Sun } from 'lucide-react';
 import cherryBlossomMist from '@/photo/cherry_blossom_mist.webp';
@@ -13,7 +14,14 @@ interface DoodleLayoutProps {
 
 export const DoodleLayout: React.FC<DoodleLayoutProps> = ({ children }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [contactModalOpen, setContactModalOpen] = useState(false);
   const { isDark, toggleTheme } = useMode();
+
+  useEffect(() => {
+    const handleOpen = () => setContactModalOpen(true);
+    window.addEventListener('open-contact-modal', handleOpen);
+    return () => window.removeEventListener('open-contact-modal', handleOpen);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -117,6 +125,8 @@ export const DoodleLayout: React.FC<DoodleLayoutProps> = ({ children }) => {
           }}
         />
       </div>
+      {/* Global Book a Call / Contact Modal */}
+      <ContactModal isOpen={contactModalOpen} onClose={() => setContactModalOpen(false)} />
     </div>
   );
 };

@@ -12,7 +12,6 @@ import { api } from '@/lib/api';
 import useAnalytics from '@/hooks/useAnalytics';
 import useBlogStats from '@/hooks/useBlogStats';
 import useProjectStats from '@/hooks/useProjectStats';
-import ContactModal from '@/components/ContactModal';
 import { PageSeo } from '@/components/PageSeo';
 import { GitHubCalendar } from 'react-github-calendar';
 import { useMode } from '@/contexts/ModeContext';
@@ -447,7 +446,6 @@ export const Home: React.FC = () => {
   const navigate = useNavigate();
   const { isDark } = useMode();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [contactModalOpen, setContactModalOpen] = useState<boolean>(false);
   const [projectList, setProjectList] = useState<Project[]>(projects);
   const [gitRepos, setGitRepos] = useState<any[]>(defaultRepos);
   const [loadingRepos, setLoadingRepos] = useState<boolean>(false);
@@ -535,13 +533,6 @@ export const Home: React.FC = () => {
     }
     return greeting;
   };
-
-  // Global listener to open contact modal from sidebar, header, or CTA buttons
-  useEffect(() => {
-    const handleOpen = () => setContactModalOpen(true);
-    window.addEventListener('open-contact-modal', handleOpen);
-    return () => window.removeEventListener('open-contact-modal', handleOpen);
-  }, []);
 
   // Fetch dynamic projects from backend database with fallback to verified offline data
   useEffect(() => {
@@ -792,7 +783,7 @@ export const Home: React.FC = () => {
             <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 shrink-0 pt-1 lg:pt-0">
               <button
                 type="button"
-                onClick={() => setContactModalOpen(true)}
+                onClick={() => window.dispatchEvent(new CustomEvent('open-contact-modal'))}
                 className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all active:scale-95 shrink-0 whitespace-nowrap cursor-pointer"
               >
                 <PhoneCall className="w-3.5 h-3.5" />
@@ -1558,9 +1549,6 @@ export const Home: React.FC = () => {
         </AnimatePresence>,
         document.body
       )}
-
-      {/* Direct Contact Modal with Instant Automated Confirmation Email */}
-      <ContactModal isOpen={contactModalOpen} onClose={() => setContactModalOpen(false)} />
     </DoodleLayout>
   );
 };
