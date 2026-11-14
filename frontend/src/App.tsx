@@ -18,55 +18,20 @@ import React, { useState, useEffect, useRef } from "react";
 import InitialLoader from "./components/InitialLoader";
 import PageSwitchSpinner from "./components/PageSwitchSpinner";
 import { AnimatePresence, motion } from "framer-motion";
-import cherryBlossomMist from "@/photo/cherry_blossom_mist.webp";
-import cherryBlossomMistDark from "@/photo/cherry_blossom_mist_dark.webp";
-import cherryBlossomMistMobile from "@/photo/cherry_blossom_mist_mobile.webp";
-import cherryBlossomMistMobileDark from "@/photo/cherry_blossom_mist_mobile_dark.webp";
 
 const queryClient = new QueryClient();
 
 const GlobalBackground = () => {
   const { pathname } = useLocation();
+  const { isDark } = useMode();
   if (pathname.startsWith('/admin')) {
     return null;
   }
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
-      {/* Light Mode Desktop (HD 2560x1440) */}
-      <div 
-        className="hidden md:block absolute inset-0 bg-cover bg-center bg-fixed opacity-100 dark:opacity-0 transition-opacity duration-300"
-        style={{ 
-          backgroundImage: `url(${cherryBlossomMist})`,
-          imageRendering: '-webkit-optimize-contrast'
-        }}
-      />
-      {/* Light Mode Mobile (QHD 1440x2560) */}
-      <div 
-        className="block md:hidden absolute inset-0 bg-cover bg-top bg-fixed opacity-100 dark:opacity-0 transition-opacity duration-300"
-        style={{ 
-          backgroundImage: `url(${cherryBlossomMistMobile})`,
-          imageRendering: '-webkit-optimize-contrast'
-        }}
-      />
-
-      {/* Dark Mode Desktop (HD 2560x1440) */}
-      <div 
-        className="hidden md:block absolute inset-0 bg-cover bg-center bg-fixed opacity-0 dark:opacity-100 transition-opacity duration-300"
-        style={{ 
-          backgroundImage: `url(${cherryBlossomMistDark})`,
-          imageRendering: '-webkit-optimize-contrast'
-        }}
-      />
-      {/* Dark Mode Mobile (QHD 1440x2560) */}
-      <div 
-        className="block md:hidden absolute inset-0 bg-cover bg-top bg-fixed opacity-0 dark:opacity-100 transition-opacity duration-300"
-        style={{ 
-          backgroundImage: `url(${cherryBlossomMistMobileDark})`,
-          imageRendering: '-webkit-optimize-contrast'
-        }}
-      />
-
+      {/* CSS Media-Query driven responsive background: browser fetches ONLY 1 matching image */}
+      <div className={`absolute inset-0 global-site-bg ${isDark ? 'is-dark' : 'is-light'}`} />
       <div className="absolute inset-0 bg-gradient-to-b from-stone-900/[0.02] via-transparent to-stone-900/[0.04] dark:from-black/40 dark:to-black/60" />
     </div>
   );
@@ -180,29 +145,27 @@ const checkInitialSkipLoader = (): boolean => {
 };
 
 const App = () => {
-  const [isAppLoaded, setIsAppLoaded] = useState(() => checkInitialSkipLoader());
+  const [showSplash, setShowSplash] = useState(() => !checkInitialSkipLoader());
 
   useEffect(() => {
-    if (isAppLoaded) {
-      const preLoader = document.getElementById('pre-react-loader');
-      if (preLoader) {
-        preLoader.remove();
-      }
+    // Immediately remove static pre-loader on React mount so browser can paint content
+    const preLoader = document.getElementById('pre-react-loader');
+    if (preLoader) {
+      preLoader.remove();
     }
-  }, [isAppLoaded]);
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <ModeProvider>
-          {!isAppLoaded ? (
-            <InitialLoader onComplete={() => setIsAppLoaded(true)} />
-          ) : (
-            <BrowserRouter>
-              <GlobalBackground />
-              <ScrollToTop />
-              <AnimatedRoutes />
-            </BrowserRouter>
+          <BrowserRouter>
+            <GlobalBackground />
+            <ScrollToTop />
+            <AnimatedRoutes />
+          </BrowserRouter>
+          {showSplash && (
+            <InitialLoader onComplete={() => setShowSplash(false)} />
           )}
         </ModeProvider>
       </TooltipProvider>

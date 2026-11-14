@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 export interface LoadingThumbnailProps {
   src?: string | null;
@@ -8,13 +8,16 @@ export interface LoadingThumbnailProps {
   aspectClass?: string;
   badge?: React.ReactNode;
   badgePosition?: 'top-left' | 'top-right';
+  priority?: boolean;
+  width?: number;
+  height?: number;
+  sizes?: string;
 }
 
 /**
  * LoadingThumbnail
- * Renders photos from Supabase bucket / custom upload with a loading gradient.
- * If photo is not loaded yet, displays an animated loading gradient shimmer.
- * If photo fails or does not exist, renders null (keeping only the text).
+ * High-performance image component with intelligent LCP prioritization,
+ * native lazy loading, explicit layout dimensions, and memory-safe caching.
  */
 export const LoadingThumbnail: React.FC<LoadingThumbnailProps> = ({
   src,
@@ -24,8 +27,24 @@ export const LoadingThumbnail: React.FC<LoadingThumbnailProps> = ({
   aspectClass = 'aspect-video w-full',
   badge,
   badgePosition = 'top-left',
+  priority = false,
+  width = 640,
+  height = 360,
+  sizes,
 }) => {
-  const [status, setStatus] = useState<'loading' | 'loaded' | 'error'>('loading');
+  const [status, setStatus] = useState<'loading' | 'loaded' | 'error'>(() => {
+    // If priority is true or image is data URI, treat as immediately ready
+    if (priority || (src && src.startsWith('data:'))) return 'loaded';
+    return 'loading';
+  });
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  // Check if image is already cached synchronously in browser
+  useEffect(() => {
+    if (imgRef.current && imgRef.current.complete && imgRef.current.naturalWidth > 0) {
+      setStatus('loaded');
+    }
+  }, [src]);
 
   // Verify that src is a valid custom photo (e.g. from Supabase bucket or uploaded URL)
   // and NOT a generic placeholder or missing
@@ -42,22 +61,29 @@ export const LoadingThumbnail: React.FC<LoadingThumbnailProps> = ({
 
   return (
     <div
-      className={`relative overflow-hidden ${aspectClass} ${containerClassName}`}
+      className={`relative overflow-hidden ${aspectClass} ${containerClassName} bg-stone-100 dark:bg-stone-800/60`}
+      style={{ aspectRatio: `${width} / ${height}` }}
     >
-      {/* Loading Gradient Shimmer while photo is loading */}
-      {status === 'loading' && (
+      {/* Loading Gradient Shimmer - only for non-priority images while pending */}
+      {!priority && status === 'loading' && (
         <div className="absolute inset-0 bg-gradient-to-r from-stone-200 via-stone-100 to-stone-200 dark:from-stone-800 dark:via-stone-700/80 dark:to-stone-800 animate-pulse pointer-events-none" />
       )}
 
-      {/* Actual photo */}
+      {/* Actual photo with prioritized LCP attributes */}
       <img
+        ref={imgRef}
         src={src!}
         alt={alt}
-        loading="lazy"
+        width={width}
+        height={height}
+        sizes={sizes}
+        loading={priority ? 'eager' : 'lazy'}
+        fetchPriority={priority ? 'high' : 'low'}
+        decoding={priority ? 'auto' : 'async'}
         onLoad={() => setStatus('loaded')}
         onError={() => setStatus('error')}
-        className={`${className} transition-opacity duration-300 ${
-          status === 'loaded' ? 'opacity-100' : 'opacity-0'
+        className={`${className} transition-opacity duration-200 ${
+          priority || status === 'loaded' ? 'opacity-100' : 'opacity-0'
         }`}
       />
 
@@ -91,7 +117,9 @@ export const resolveCustomPhoto = (url?: string | null): string | null => {
   if (
     trimmed.startsWith('http://') ||
     trimmed.startsWith('https://') ||
-    trimmed.startsWith('data:image/')
+    trimmed.startsWith('data:image/') ||
+    trimmed.startsWith('/') ||
+    trimmed.startsWith('./')
   ) {
     return trimmed;
   }

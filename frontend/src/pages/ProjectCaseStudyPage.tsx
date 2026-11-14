@@ -12,6 +12,13 @@ import useAnalytics from '@/hooks/useAnalytics';
 import useProjectStats from '@/hooks/useProjectStats';
 import { api } from '@/lib/api';
 import { LoadingThumbnail, resolveCustomPhoto } from '@/components/LoadingThumbnail';
+import jarvisBanner from '@/photo/jarvis_banner.webp';
+import electropathyBanner from '@/photo/electropathy_banner.webp';
+import tastifyyBanner from '@/photo/tastifyy_banner.webp';
+import pashurakshakPhoto from '@/photo/pashurakshak.webp';
+import solarAnalyticsPhoto from '@/photo/solar_analytics.webp';
+import jansamparkPhoto from '@/photo/jansampark.webp';
+import attritionBanner from '@/photo/attrition_banner.webp';
 
 export interface ArchitectureTier {
   client: string;
@@ -108,6 +115,7 @@ export const CASE_STUDIES: Record<string, CaseStudyData> = {
     category: 'Enterprise AI & MCP Architecture',
     year: '2026',
     badge: 'Live Enterprise',
+    image: jarvisBanner,
     demoUrl: 'https://jarvis.pranavshende.online/',
     githubUrl: 'https://github.com/pranavshende/jarvis-mcp-multipleDBs',
     relatedBlogSlug: 'jarvis-ai-enterprise-intelligence-platform',
@@ -163,6 +171,7 @@ export const CASE_STUDIES: Record<string, CaseStudyData> = {
     category: 'Agentic AI & Healthcare Systems',
     year: '2026',
     badge: 'Live Production',
+    image: electropathyBanner,
     demoUrl: 'https://client-raprax.vercel.app',
     githubUrl: 'https://github.com/pranavshende/Electropathy_AI',
     relatedBlogSlug: 'forgerag-exploring-llms-and-retrieval-augmented-generation',
@@ -209,6 +218,7 @@ export const CASE_STUDIES: Record<string, CaseStudyData> = {
     category: 'Distributed Systems & Mobile Architecture',
     year: '2026',
     badge: 'Production Shipped',
+    image: tastifyyBanner,
     demoUrl: 'https://www.tastifyy.in',
     githubUrl: 'https://github.com/pranavshende/tastifyy',
     relatedBlogSlug: 'tastifyy-distributed-logistics-kafka-redis-geospatial',
@@ -250,6 +260,7 @@ export const CASE_STUDIES: Record<string, CaseStudyData> = {
     category: 'Edge Computing & Computer Vision',
     year: '2026',
     badge: 'IEEE Published',
+    image: pashurakshakPhoto,
     demoUrl: '/arcade?folder=projects_folder',
     githubUrl: 'https://github.com/pranavshende/HackNation_SKB-F17_SKB_P2',
     relatedBlogSlug: 'ai-in-agriculture-pashurakshak-edge-cnn-ieee',
@@ -291,6 +302,7 @@ export const CASE_STUDIES: Record<string, CaseStudyData> = {
     category: 'CleanTech Big Data & GIS Analytics',
     year: '2026',
     badge: 'CleanTech Big Data',
+    image: solarAnalyticsPhoto,
     demoUrl: '/arcade?folder=projects_folder',
     githubUrl: 'https://github.com/pranavshende/SolarSalesAnalysis',
     relatedBlogSlug: 'solar-intelligence-renewable-energy-big-data-forecasting',
@@ -331,6 +343,7 @@ export const CASE_STUDIES: Record<string, CaseStudyData> = {
     category: 'Civic Enterprise & Mobile Systems',
     year: '2026',
     badge: 'Civic Enterprise',
+    image: jansamparkPhoto,
     demoUrl: '/arcade?folder=projects_folder',
     githubUrl: 'private',
     relatedBlogSlug: 'jansampark-civic-governance-platform-react-native',
@@ -372,6 +385,7 @@ export const CASE_STUDIES: Record<string, CaseStudyData> = {
     category: 'Predictive ML & Analytics',
     year: '2026',
     badge: 'Gemini 2.5 Flash',
+    image: attritionBanner,
     demoUrl: undefined,
     githubUrl: 'https://github.com/pranavshende/EmployeeAttritionSystem',
     relatedBlogSlug: 'ai-powered-employee-attrition-analysis',
@@ -411,7 +425,11 @@ export const ProjectCaseStudyPage: React.FC = () => {
   const navigate = useNavigate();
   const { getProjectViews, recordView } = useProjectStats();
   const [copied, setCopied] = React.useState(false);
-  const [customCover, setCustomCover] = React.useState<string | null>(null);
+  const [customCover, setCustomCover] = React.useState<string | null>(() => {
+    if (!slug) return null;
+    const clean = slug.toLowerCase();
+    return CASE_STUDIES[clean]?.image || null;
+  });
 
   useEffect(() => {
     if (slug) {
@@ -620,12 +638,15 @@ export const ProjectCaseStudyPage: React.FC = () => {
           </div>
         </header>
 
-        {/* Cover Image: only rendered if custom photo exists from Supabase bucket */}
-        {resolveCustomPhoto(customCover) && (
+        {/* Hero Cover Image: rendered with high LCP priority */}
+        {(resolveCustomPhoto(customCover) || project.image) && (
           <div className="mb-8">
             <LoadingThumbnail
-              src={resolveCustomPhoto(customCover)}
+              src={resolveCustomPhoto(customCover) || project.image}
               alt={project.title}
+              priority={true}
+              width={1280}
+              height={720}
               aspectClass="aspect-video w-full rounded-2xl border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917]"
             />
           </div>

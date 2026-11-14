@@ -11,6 +11,149 @@ import useAnalytics from '@/hooks/useAnalytics';
 import useProjectStats from '@/hooks/useProjectStats';
 import { api } from '@/lib/api';
 import { LoadingThumbnail, resolveCustomPhoto } from '@/components/LoadingThumbnail';
+import jarvisBanner from '@/photo/jarvis_banner.webp';
+import electropathyBanner from '@/photo/electropathy_banner.webp';
+import tastifyyBanner from '@/photo/tastifyy_banner.webp';
+import attritionBanner from '@/photo/attrition_banner.webp';
+import jansamparkPhoto from '@/photo/jansampark.webp';
+import solarAnalyticsPhoto from '@/photo/solar_analytics.webp';
+import pashurakshakPhoto from '@/photo/pashurakshak.webp';
+
+const DEFAULT_FLAGSHIPS: ProjectItem[] = [
+  {
+    id: 'jarvis',
+    name: 'jarvis-ai',
+    title: 'Jarvis 1.0 Enterprise AI Platform',
+    category: 'Enterprise AI & MCP Architecture',
+    tier: 1,
+    description: 'Autonomous enterprise intelligence platform with official Model Context Protocol (MCP v1.0.4) streaming, deterministic star-schema SQL calculations across 35 tables, pgvector hybrid RAG with 749+ chunks, and Google Gemini 2.5 Pro/Flash dynamic model routing.',
+    tech: ['Google Gemini 2.5 Pro', 'Model Context Protocol (MCP)', 'Fastify Gateway', 'pgvector RAG', 'Deterministic SQL', 'Supabase', 'BullMQ'],
+    badge: 'Live Enterprise',
+    demoUrl: 'https://jarvis.pranavshende.online/',
+    githubUrl: 'https://github.com/pranavshende/jarvis-mcp-multipleDBs',
+    image: jarvisBanner,
+    stars: 1,
+    forks: 0,
+    language: 'TypeScript',
+    updatedAt: '2026-11-08',
+    isFork: false,
+    viewCount: 0,
+  },
+  {
+    id: 'electropathy',
+    name: 'electropathy-ai',
+    title: 'Electropathy AI: Agentic Clinical Decision-Support & Multilingual RAG Engine',
+    category: 'Agentic AI & Healthcare',
+    tier: 1,
+    description: 'AI-powered clinical decision-support and medical knowledge platform built for Dr. Ashish Wandhare with zero-hallucination medical literature grounding, pgvector semantic embeddings on Supabase PostgreSQL, and multilingual clinical intake.',
+    tech: ['Agentic RAG', 'Multilingual NLP', 'pgvector', 'Prisma ORM', 'TypeScript', 'Node.js', 'Supabase', 'Tailwind CSS'],
+    badge: 'Live Production',
+    demoUrl: 'https://client-raprax.vercel.app',
+    githubUrl: 'https://github.com/pranavshende/Electropathy_AI',
+    image: electropathyBanner,
+    stars: 1,
+    forks: 0,
+    language: 'TypeScript',
+    updatedAt: '2026-11-08',
+    isFork: false,
+    viewCount: 0,
+  },
+  {
+    id: 'tastifyy',
+    name: 'tastifyy',
+    title: 'Tastifyy: Distributed On-Demand Food Logistics Engine',
+    category: 'Distributed Systems & Mobile',
+    tier: 1,
+    description: 'High-throughput food delivery ecosystem featuring dual client surfaces (React 19 Web + React Native Expo App), centralized Express + TypeScript backend, Prisma ORM with Supabase PostgreSQL, Kafka-powered order event buses, and Redis geospatial indexes.',
+    tech: ['Kafka Streams', 'Redis Geospatial', 'WebSockets (Socket.io)', 'Distributed Systems', 'React 19', 'React Native (Expo)', 'Express', 'Prisma'],
+    badge: 'Production Shipped',
+    demoUrl: 'https://www.tastifyy.in',
+    githubUrl: 'https://github.com/pranavshende/tastifyy',
+    image: tastifyyBanner,
+    stars: 1,
+    forks: 0,
+    language: 'TypeScript',
+    updatedAt: '2026-11-08',
+    isFork: false,
+    viewCount: 0,
+  },
+  {
+    id: 'attrition',
+    name: 'employee-attrition-ai',
+    title: 'Employee Attrition AI: Predictive HR Intelligence Platform',
+    category: 'Generative AI & Predictive ML',
+    tier: 1,
+    description: 'End-to-end AI-powered workforce attrition analysis platform and conversational copilot built with React 19, Flask, and Google Gemini 2.5 Flash. Features dynamic CSV dataset ingestion and predictive risk scoring.',
+    tech: ['Google Gemini 2.5', 'Predictive ML', 'Dynamic ETL', 'Python (Pandas)', 'Flask REST APIs', 'React 19', 'Chart.js'],
+    badge: 'Gemini 2.5 Flash',
+    demoUrl: undefined,
+    githubUrl: 'https://github.com/pranavshende/EmployeeAttritionSystem',
+    image: attritionBanner,
+    stars: 1,
+    forks: 0,
+    language: 'Python',
+    updatedAt: '2026-11-08',
+    isFork: false,
+    viewCount: 0,
+  },
+  {
+    id: 'jansampark',
+    name: 'jan-sampark',
+    title: 'JanSampark: Enterprise Civic Governance Platform',
+    category: 'Enterprise Full Stack & Mobile',
+    tier: 1,
+    description: 'Enterprise civic governance platform bridging citizens and administrative departments with 25+ React Native modules, offline geo-tagging, JWT + RBAC security, and high-concurrency Node.js RESTful APIs.',
+    tech: ['Enterprise Architecture', 'React Native', 'RBAC Security', 'Node.js', 'PostgreSQL', 'High-Concurrency APIs', 'JWT'],
+    badge: 'Civic Enterprise',
+    demoUrl: '/arcade?folder=projects_folder',
+    githubUrl: 'https://github.com/pranavshende',
+    image: jansamparkPhoto,
+    stars: 1,
+    forks: 0,
+    language: 'TypeScript',
+    updatedAt: '2026-11-08',
+    isFork: false,
+    viewCount: 0,
+  },
+  {
+    id: 'solar-analytics',
+    name: 'solar-intelligence',
+    title: 'Solar Intelligence: CleanTech Big Data Pipeline & Forecasting',
+    category: 'Big Data & Geospatial Analytics',
+    tier: 1,
+    description: 'CleanTech big data intelligence platform analyzing 10+ years (2014–2024) of nationwide solar energy metrics across 36+ Indian states/UTs covering 81.8+ GW with polynomial regression trajectory forecasting to 2030.',
+    tech: ['CleanTech Big Data', 'Time-Series Forecasting', 'Geospatial GIS', 'Python', 'PostgreSQL', 'Polynomial Regression', 'Recharts'],
+    badge: 'CleanTech Big Data',
+    demoUrl: '/arcade?folder=projects_folder',
+    githubUrl: 'https://github.com/pranavshende/SolarSalesAnalysis',
+    image: solarAnalyticsPhoto,
+    stars: 1,
+    forks: 0,
+    language: 'Python',
+    updatedAt: '2026-11-08',
+    isFork: false,
+    viewCount: 0,
+  },
+  {
+    id: 'pashurakshak',
+    name: 'pashurakshak',
+    title: 'PashuRakshak: Edge Computing Livestock Pathology Classifier',
+    category: 'Edge AI & Computer Vision',
+    tier: 1,
+    description: 'Edge computing veterinary diagnostics system with quantized convolutional neural networks (TensorFlow Lite INT8) for sub-second offline livestock disease classification. Presented at IEEE OTCON.',
+    tech: ['Edge Computing', 'Quantized CNNs', 'TensorFlow Lite', 'Offline-First IoT', 'Computer Vision', 'React Native', 'IEEE Research'],
+    badge: 'IEEE Published',
+    demoUrl: '/arcade?folder=projects_folder',
+    githubUrl: 'https://github.com/pranavshende/HackNation_SKB-F17_SKB_P2',
+    image: pashurakshakPhoto,
+    stars: 1,
+    forks: 0,
+    language: 'Python',
+    updatedAt: '2026-11-08',
+    isFork: false,
+    viewCount: 0,
+  },
+];
 
 
 interface RepoMeta {
@@ -248,14 +391,15 @@ interface ProjectItem {
 export const ProjectsPage: React.FC = () => {
   useAnalytics();
   const { getProjectViews, recordView: recordProjectView } = useProjectStats();
-  const [repos, setRepos] = useState<ProjectItem[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [repos, setRepos] = useState<ProjectItem[]>(DEFAULT_FLAGSHIPS);
+  const [loading, setLoading] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'flagship' | 'ai' | 'algorithms'>('all');
 
   useEffect(() => {
     const resolveProjectThumbnail = (p: any): string | undefined => {
-      const raw = p.projectPageThumbnailUrl || p.thumbnailUrl || p.bannerUrl || p.imageUrl || p.coverImageUrl;
+      // Prioritize the card thumbnail (featuredThumbnailUrl || thumbnailUrl || bannerUrl) so it reuses browser cache from Home
+      const raw = p.featuredThumbnailUrl || p.thumbnailUrl || p.bannerUrl || p.projectPageThumbnailUrl || p.imageUrl || p.coverImageUrl;
       return resolveCustomPhoto(raw) || undefined;
     };
 
@@ -525,7 +669,7 @@ export const ProjectsPage: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {tier1Projects.map((p) => (
+                {tier1Projects.map((p, idx) => (
                   <div
                     key={p.name}
                     className="group rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 p-4 sm:p-5 flex flex-col justify-between shadow-[4px_4px_0px_#1c1917] dark:shadow-[4px_4px_0px_#000000] hover:shadow-[2px_2px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
@@ -536,6 +680,9 @@ export const ProjectsPage: React.FC = () => {
                         <LoadingThumbnail
                           src={p.image}
                           alt={p.title}
+                          priority={idx < 2}
+                          width={640}
+                          height={360}
                           aspectClass="aspect-video w-full rounded-2xl border-2 border-stone-900 dark:border-stone-700 shadow-[2px_2px_0px_#1c1917]"
                           badgePosition="top-right"
                           badge={p.badge && (

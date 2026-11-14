@@ -75,6 +75,7 @@ const projects: Project[] = [
     github: 'https://github.com/pranavshende/jarvis-mcp-multipleDBs',
     demo: 'https://jarvis.pranavshende.online/',
     badge: 'Live Enterprise',
+    image: jarvisBanner,
   },
   {
     id: 'electropathy',
@@ -95,6 +96,7 @@ const projects: Project[] = [
     github: 'https://github.com/pranavshende/Electropathy_AI',
     demo: 'https://client-raprax.vercel.app',
     badge: 'Live Production',
+    image: electropathyBanner,
   },
   {
     id: 'tastifyy',
@@ -115,6 +117,7 @@ const projects: Project[] = [
     github: 'https://github.com/pranavshende/tastifyy',
     demo: 'https://www.tastifyy.in',
     badge: 'Production Shipped',
+    image: tastifyyBanner,
   },
   {
     id: 'attrition',
@@ -134,6 +137,7 @@ const projects: Project[] = [
     ],
     github: 'https://github.com/pranavshende/EmployeeAttritionSystem',
     badge: 'Gemini 2.5 Flash',
+    image: attritionBanner,
   },
   {
     id: 'jansampark',
@@ -154,6 +158,7 @@ const projects: Project[] = [
     github: 'private',
     demo: '/arcade?folder=projects_folder',
     badge: 'Civic Enterprise',
+    image: jansamparkPhoto,
   },
   {
     id: 'solar-analytics',
@@ -174,6 +179,7 @@ const projects: Project[] = [
     github: 'https://github.com/pranavshende/SolarSalesAnalysis',
     demo: '/arcade?folder=projects_folder',
     badge: 'CleanTech Big Data',
+    image: solarAnalyticsPhoto,
   },
   {
     id: 'pashurakshak',
@@ -194,6 +200,7 @@ const projects: Project[] = [
     badge: 'IEEE Published',
     github: 'https://github.com/pranavshende/HackNation_SKB-F17_SKB_P2',
     demo: '/arcade?folder=projects_folder',
+    image: pashurakshakPhoto,
   },
 ];
 
@@ -513,9 +520,9 @@ export const Home: React.FC = () => {
       });
   }, []);
 
-  // When selectedProject modal opens, fetch the latest live project details from API to ensure projectPageThumbnail is fresh
+  // When selectedProject modal opens, fetch the latest live project details from API only if projectPageImage is not already cached
   useEffect(() => {
-    if (!selectedProject?.id) return;
+    if (!selectedProject?.id || selectedProject.projectPageImage) return;
     api.getProject(selectedProject.id)
       .then((res: any) => {
         const p = res?.data;
@@ -820,7 +827,7 @@ export const Home: React.FC = () => {
           ref={projectSlider.scrollRef}
           className="flex gap-4 overflow-x-auto pb-4 pt-1 snap-x snap-mandatory no-scrollbar scroll-smooth -mx-2 px-2"
         >
-          {projectList.map((proj) => (
+          {projectList.map((proj, idx) => (
             <motion.div
               key={proj.id}
               whileHover={{ y: -3 }}
@@ -831,12 +838,15 @@ export const Home: React.FC = () => {
               }}
               className="w-[280px] sm:w-[320px] md:w-[360px] shrink-0 snap-start group cursor-pointer rounded-2xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all overflow-hidden flex flex-col justify-between p-2.5 sm:p-3"
             >
-              {/* Banner with badge: only rendered if custom photo from Supabase exists */}
+              {/* Banner with badge: rendered with high LCP priority for initial card */}
               {proj.image && (
                 <div className="mb-2">
                   <LoadingThumbnail
                     src={proj.image}
                     alt={proj.title}
+                    priority={idx === 0}
+                    width={640}
+                    height={360}
                     aspectClass="aspect-video w-full rounded-xl border-2 border-stone-900 dark:border-stone-700 shadow-[1.5px_1.5px_0px_#1c1917]"
                     badge={proj.badge && (
                       <div className="bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 border-2 border-stone-900 font-mono font-bold text-[9px] px-2 py-0.5 rounded-full shadow-[1px_1px_0px_#1c1917]">

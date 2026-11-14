@@ -133,6 +133,11 @@ export const About: React.FC = () => {
             <img
               src={profilePhoto}
               alt="Pranav Shende"
+              width={128}
+              height={128}
+              loading="eager"
+              fetchPriority="high"
+              decoding="auto"
               className="w-full h-full object-cover object-[48%_18%] scale-105 group-hover:scale-110 transition-transform duration-300"
             />
           </div>
