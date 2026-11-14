@@ -25,6 +25,7 @@ export const SettingsSection: React.FC = () => {
     linkedinUrl: 'https://linkedin.com/in/pranavshende',
     resumeDriveUrl: 'https://drive.google.com/drive/folders/1z3-tvjY5U1OP90Dls4IfLwV10E8e4qij?usp=sharing',
     maintenanceMode: false,
+    hideBlogThumbnailsOnHome: false,
   });
 
   useEffect(() => {

@@ -120,6 +120,49 @@ export const BlogSection: React.FC = () => {
     setTimeout(() => setToastMessage(null), 3500);
   };
 
+  // Homepage Blog Thumbnail display preference
+  const [hideThumbnailsOnHome, setHideThumbnailsOnHome] = useState(false);
+  const [updatingThumbnailsSetting, setUpdatingThumbnailsSetting] = useState(false);
+
+  useEffect(() => {
+    api.getSettings()
+      .then((res: any) => {
+        const s = res?.data || res;
+        if (s) {
+          const isHidden = typeof s.hideBlogThumbnailsOnHome === 'boolean'
+            ? s.hideBlogThumbnailsOnHome
+            : s.hideBlogThumbnailsOnHome === 'true';
+          setHideThumbnailsOnHome(isHidden);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleToggleHomeThumbnails = async () => {
+    const nextVal = !hideThumbnailsOnHome;
+    setUpdatingThumbnailsSetting(true);
+    try {
+      await api.updateSettings({ hideBlogThumbnailsOnHome: nextVal });
+      setHideThumbnailsOnHome(nextVal);
+      try {
+        const cached = localStorage.getItem('site_settings');
+        const parsed = cached ? JSON.parse(cached) : {};
+        parsed.hideBlogThumbnailsOnHome = nextVal;
+        localStorage.setItem('site_settings', JSON.stringify(parsed));
+      } catch {}
+      showToast(
+        nextVal
+          ? 'Homepage blog thumbnails removed! Cards are now textual only for a cleaner layout.'
+          : 'Homepage blog thumbnails restored!'
+      );
+    } catch (err: any) {
+      console.error('Failed to update homepage thumbnail setting:', err);
+      showToast('Failed to update setting. Please try again.');
+    } finally {
+      setUpdatingThumbnailsSetting(false);
+    }
+  };
+
   const fetchPosts = () => {
     setLoading(true);
     // Use getAdminBlogPosts to see drafts and published articles
@@ -1038,64 +1081,133 @@ Formatting Rules:
         </div>
       </div>
 
-      {/* Blog Management Navigation Tabs */}
-      <div className="flex flex-wrap items-center gap-2 border-b-2 border-stone-200 dark:border-stone-800 pb-2">
-        <button
-          type="button"
-          onClick={() => setViewTab('all')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-            viewTab === 'all'
-              ? 'bg-[#8b2323] text-white shadow-[2px_2px_0px_#1c1917]'
-              : 'bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 border border-stone-300 dark:border-stone-700'
-          }`}
-        >
-          <span>All Blogs</span>
-          <span className="text-[10px] opacity-80 font-mono">({totalPosts})</span>
-        </button>
+      {/* Blog Management Navigation Tabs & Clean Text-Only Cards Switch */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b-2 border-stone-200 dark:border-stone-800 pb-3">
+        {/* View Tabs */}
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setViewTab('all')}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              viewTab === 'all'
+                ? 'bg-[#8b2323] text-white shadow-[2px_2px_0px_#1c1917]'
+                : 'bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 border border-stone-300 dark:border-stone-700'
+            }`}
+          >
+            <span>All Blogs</span>
+            <span className="text-[10px] opacity-80 font-mono">({totalPosts})</span>
+          </button>
 
-        <button
-          type="button"
-          onClick={() => setViewTab('published')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-            viewTab === 'published'
-              ? 'bg-[#8b2323] text-white shadow-[2px_2px_0px_#1c1917]'
-              : 'bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 border border-stone-300 dark:border-stone-700'
-          }`}
-        >
-          <span>Published</span>
-          <span className="text-[10px] opacity-80 font-mono">({publishedCount})</span>
-        </button>
+          <button
+            type="button"
+            onClick={() => setViewTab('published')}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              viewTab === 'published'
+                ? 'bg-[#8b2323] text-white shadow-[2px_2px_0px_#1c1917]'
+                : 'bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 border border-stone-300 dark:border-stone-700'
+            }`}
+          >
+            <span>Published</span>
+            <span className="text-[10px] opacity-80 font-mono">({publishedCount})</span>
+          </button>
 
-        <button
-          type="button"
-          onClick={() => setViewTab('drafts')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-            viewTab === 'drafts'
-              ? 'bg-[#8b2323] text-white shadow-[2px_2px_0px_#1c1917]'
-              : 'bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 border border-stone-300 dark:border-stone-700'
-          }`}
-        >
-          <span>Drafts</span>
-          <span className="text-[10px] opacity-80 font-mono">({draftCount})</span>
-        </button>
+          <button
+            type="button"
+            onClick={() => setViewTab('drafts')}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              viewTab === 'drafts'
+                ? 'bg-[#8b2323] text-white shadow-[2px_2px_0px_#1c1917]'
+                : 'bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 border border-stone-300 dark:border-stone-700'
+            }`}
+          >
+            <span>Drafts</span>
+            <span className="text-[10px] opacity-80 font-mono">({draftCount})</span>
+          </button>
 
-        <button
-          type="button"
-          onClick={() => setViewTab('order')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-            viewTab === 'order'
-              ? 'bg-[#8b2323] text-white shadow-[2px_2px_0px_#1c1917]'
-              : 'bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 border border-stone-300 dark:border-stone-700'
-          }`}
-        >
-          <ArrowUpDown className="w-3.5 h-3.5" />
-          <span>Manage Order</span>
-          <span className="text-[10px] opacity-80 font-mono">({orderedPosts.length})</span>
-          {hasUnsavedOrderChanges && (
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse ml-0.5" title="Unsaved order changes" />
-          )}
-        </button>
+          <button
+            type="button"
+            onClick={() => setViewTab('order')}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              viewTab === 'order'
+                ? 'bg-[#8b2323] text-white shadow-[2px_2px_0px_#1c1917]'
+                : 'bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 border border-stone-300 dark:border-stone-700'
+            }`}
+          >
+            <ArrowUpDown className="w-3.5 h-3.5" />
+            <span>Manage Order</span>
+            <span className="text-[10px] opacity-80 font-mono">({orderedPosts.length})</span>
+            {hasUnsavedOrderChanges && (
+              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse ml-0.5" title="Unsaved order changes" />
+            )}
+          </button>
+        </div>
+
+        {/* Homepage Thumbnails Toggle Switch Button */}
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handleToggleHomeThumbnails}
+            disabled={updatingThumbnailsSetting}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2.5 border-2 cursor-pointer select-none ${
+              hideThumbnailsOnHome
+                ? 'bg-amber-100 dark:bg-amber-950/60 border-amber-600 dark:border-amber-500 text-amber-950 dark:text-amber-200 shadow-[2px_2px_0px_#b45309]'
+                : 'bg-white dark:bg-stone-800 border-stone-900 dark:border-stone-700 text-stone-700 dark:text-stone-300 shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] hover:bg-stone-50 dark:hover:bg-stone-700'
+            }`}
+            title={
+              hideThumbnailsOnHome
+                ? 'Homepage blog thumbnails are currently removed (Clean Text-Only Mode is ACTIVE). Click to restore thumbnails.'
+                : 'Click to remove all thumbnails from the homepage blog section for a cleaner textual look.'
+            }
+          >
+            {updatingThumbnailsSetting ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            ) : hideThumbnailsOnHome ? (
+              <FileText className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400 shrink-0" />
+            ) : (
+              <ImageIcon className="w-3.5 h-3.5 text-stone-500 dark:text-stone-400 shrink-0" />
+            )}
+            
+            <div className="flex items-center gap-1.5 text-xs">
+              <span className="hidden sm:inline">Homepage Blog Thumbnails:</span>
+              <span className="sm:hidden">Thumbnails:</span>
+              <span className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider ${
+                hideThumbnailsOnHome
+                  ? 'bg-amber-200 dark:bg-amber-900/80 text-amber-950 dark:text-amber-100 border border-amber-400 dark:border-amber-600'
+                  : 'bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-300 border border-stone-200 dark:border-stone-600'
+              }`}>
+                {hideThumbnailsOnHome ? 'Hidden (Clean Mode ON)' : 'Visible'}
+              </span>
+            </div>
+
+            {/* Toggle visual pill */}
+            <div className={`w-8 h-4 rounded-full p-0.5 transition-colors flex items-center ${
+              hideThumbnailsOnHome ? 'bg-amber-600 justify-end' : 'bg-stone-300 dark:bg-stone-600 justify-start'
+            }`}>
+              <div className="w-3 h-3 rounded-full bg-white shadow-xs" />
+            </div>
+          </button>
+        </div>
       </div>
+
+      {/* Info notification when Clean Mode is active */}
+      {hideThumbnailsOnHome && (
+        <div className="p-3 rounded-2xl bg-amber-50/90 dark:bg-amber-950/40 border-2 border-amber-600/50 dark:border-amber-500/50 text-amber-950 dark:text-amber-200 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-[2px_2px_0px_#b45309]">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+            <span>
+              <strong>Clean Textual Cards Active:</strong> All cover image thumbnails on the homepage blog section are removed for a minimalist, cleaner presentation.
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={handleToggleHomeThumbnails}
+            disabled={updatingThumbnailsSetting}
+            className="px-2.5 py-1 rounded-lg bg-white dark:bg-stone-800 border border-amber-600 dark:border-amber-500 text-amber-800 dark:text-amber-300 font-bold hover:bg-amber-100 dark:hover:bg-stone-700 text-[11px] shrink-0 self-start sm:self-center cursor-pointer"
+          >
+            Restore Thumbnails
+          </button>
+        </div>
+      )}
 
       {viewTab === 'order' ? (
         /* ════════════════════════════════════════════════════════════════

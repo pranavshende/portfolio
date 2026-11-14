@@ -409,6 +409,7 @@ export const Home: React.FC = () => {
       contactEmail: 'pranavshende97@gmail.com',
       githubUrl: 'https://github.com/PranavShende',
       linkedinUrl: 'https://linkedin.com/in/pranavshende',
+      hideBlogThumbnailsOnHome: false,
     };
   });
 
@@ -426,6 +427,9 @@ export const Home: React.FC = () => {
               contactEmail: s.contactEmail ?? prev.contactEmail,
               githubUrl: s.githubUrl ?? prev.githubUrl,
               linkedinUrl: s.linkedinUrl ?? prev.linkedinUrl,
+              hideBlogThumbnailsOnHome: typeof s.hideBlogThumbnailsOnHome === 'boolean'
+                ? s.hideBlogThumbnailsOnHome
+                : s.hideBlogThumbnailsOnHome === 'true',
             };
             try {
               localStorage.setItem('site_settings', JSON.stringify(nextSettings));
@@ -935,8 +939,8 @@ export const Home: React.FC = () => {
                 className="w-[280px] sm:w-[320px] md:w-[340px] shrink-0 snap-start group p-4 sm:p-5 rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all flex flex-col justify-between space-y-3"
               >
                 <div className="space-y-3">
-                  {/* Small compact thumbnail: only rendered if custom photo from Supabase bucket exists */}
-                  {resolveCustomPhoto(post.coverImageUrl) ? (
+                  {/* Category & Thumbnail handling: thumbnails removed if clean text-only mode is enabled in admin */}
+                  {!siteSettings.hideBlogThumbnailsOnHome && resolveCustomPhoto(post.coverImageUrl) ? (
                     <LoadingThumbnail
                       src={resolveCustomPhoto(post.coverImageUrl)}
                       alt={post.title}
@@ -948,19 +952,22 @@ export const Home: React.FC = () => {
                       )}
                     />
                   ) : (
-                    <div>
-                      <span className="px-2 py-0.5 rounded-xs border border-[#8b2323] bg-[#8b2323]/5 text-[#8b2323] dark:text-rose-400 font-serif font-bold text-[10px] tracking-wider inline-block">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="px-2.5 py-0.5 rounded-xs border border-[#8b2323] bg-[#8b2323]/5 text-[#8b2323] dark:text-rose-400 font-serif font-bold text-[10px] tracking-wider inline-block">
                         {post.category || (post.tags && post.tags[0]) || 'Architecture'}
+                      </span>
+                      <span className="text-[10px] font-mono text-stone-400 dark:text-stone-500">
+                        {post.readingTimeMinutes || 5} min read
                       </span>
                     </div>
                   )}
 
-                  <div className="space-y-1.5">
-                    <h3 className="text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors line-clamp-2 leading-snug">
+                  <div className="space-y-2">
+                    <h3 className="text-sm sm:text-base font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors line-clamp-2 leading-snug">
                       {post.title}
                     </h3>
-                    <p className="text-xs text-stone-600 dark:text-stone-400 line-clamp-3 leading-relaxed">
-                      {getCleanExcerpt(post.excerpt, post.content, 140)}
+                    <p className={`text-xs text-stone-600 dark:text-stone-400 leading-relaxed ${siteSettings.hideBlogThumbnailsOnHome ? 'line-clamp-4' : 'line-clamp-3'}`}>
+                      {getCleanExcerpt(post.excerpt, post.content, siteSettings.hideBlogThumbnailsOnHome ? 180 : 140)}
                     </p>
                   </div>
                 </div>
