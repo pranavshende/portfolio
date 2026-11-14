@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, Calendar, Clock, User, Share2, Twitter, Linkedin, 
-  Copy, Check, BookOpen, Sparkles, ExternalLink, ChevronRight, Tag
+  Copy, Check, BookOpen, Sparkles, ExternalLink, ChevronRight, Tag, Eye, TrendingUp
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -10,6 +10,7 @@ import { DoodleLayout } from '@/components/DoodleLayout';
 import { PageSeo } from '@/components/PageSeo';
 import { api } from '@/lib/api';
 import useAnalytics from '@/hooks/useAnalytics';
+import useBlogStats from '@/hooks/useBlogStats';
 import profilePhoto from '@/photo/profile_photo_wide.webp';
 
 import { LoadingThumbnail, resolveCustomPhoto } from '@/components/LoadingThumbnail';
@@ -32,6 +33,7 @@ interface BlogPost {
   publishedAt?: string;
   createdAt?: string;
   viewCount?: number;
+  impressionCount?: number;
   seoTitle?: string;
   seoDescription?: string;
 }
@@ -44,6 +46,13 @@ export const BlogPostPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [copied, setCopied] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const { getStats: getBlogStatsItem, recordView: recordBlogViewAction } = useBlogStats();
+
+  useEffect(() => {
+    if (slug) {
+      recordBlogViewAction(slug);
+    }
+  }, [slug, recordBlogViewAction]);
 
   useEffect(() => {
     if (!slug) return;
@@ -236,6 +245,32 @@ export const BlogPostPage: React.FC = () => {
                 <Clock className="w-3.5 h-3.5 text-stone-400" />
                 <span>{post.readingTimeMinutes || 5} min read</span>
               </div>
+
+              {/* Real-time Live Views & Impressions */}
+              {(() => {
+                const stats = getBlogStatsItem(post.slug, post.viewCount || 0, post.impressionCount || 0);
+                return (
+                  <>
+                    <div 
+                      className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700/60 font-semibold text-stone-800 dark:text-stone-200"
+                      title={`${stats.views} total reads`}
+                    >
+                      <Eye className="w-3.5 h-3.5 text-[#8b2323] dark:text-rose-400" />
+                      <span>{stats.views}</span>
+                      <span className="text-[10px] text-stone-400 font-normal">views</span>
+                    </div>
+
+                    <div 
+                      className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700/60 font-semibold text-stone-800 dark:text-stone-200"
+                      title={`${stats.impressions} card impressions`}
+                    >
+                      <TrendingUp className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                      <span>{stats.impressions}</span>
+                      <span className="text-[10px] text-stone-400 font-normal">imp</span>
+                    </div>
+                  </>
+                );
+              })()}
             </div>
 
             {/* Social Share Pills */}

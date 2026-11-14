@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   Plus, Edit2, Trash2, BookOpen, ExternalLink, Loader2, X, Eye, 
   Upload, Image as ImageIcon, Sparkles, CheckCircle2, Clock, Tag, 
-  Search, Filter, FileText, ArrowUpRight, Key, Zap
+  Search, Filter, FileText, ArrowUpRight, Key, Zap, TrendingUp
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -52,6 +52,7 @@ interface BlogPostItem {
   publishedAt?: string;
   createdAt?: string;
   viewCount?: number;
+  impressionCount?: number;
   seoTitle?: string;
   seoDescription?: string;
 }
@@ -796,6 +797,7 @@ Formatting Rules:
   const publishedCount = posts.filter((p) => (p.published ?? p.isPublished) !== false).length;
   const draftCount = totalPosts - publishedCount;
   const totalViews = posts.reduce((sum, p) => sum + (p.viewCount || 0), 0);
+  const totalImpressions = posts.reduce((sum, p) => sum + (p.impressionCount || 0), 0);
 
   const filteredPosts = posts.filter((p) => {
     if (!searchFilter.trim()) return true;
@@ -858,7 +860,7 @@ Formatting Rules:
       </div>
 
       {/* Statistics Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4">
         <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000]">
           <div className="flex items-center justify-between text-stone-500 dark:text-stone-400">
             <span className="text-xs font-bold uppercase tracking-wider">Total Articles</span>
@@ -891,11 +893,21 @@ Formatting Rules:
 
         <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000]">
           <div className="flex items-center justify-between text-purple-600 dark:text-purple-400">
-            <span className="text-xs font-bold uppercase tracking-wider">Article Views</span>
+            <span className="text-xs font-bold uppercase tracking-wider">Total Views</span>
             <Eye className="w-4 h-4" />
           </div>
           <div className="text-2xl font-bold font-mono text-purple-600 dark:text-purple-400 mt-2">
             {totalViews}
+          </div>
+        </div>
+
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000] col-span-2 sm:col-span-1">
+          <div className="flex items-center justify-between text-amber-600 dark:text-amber-400">
+            <span className="text-xs font-bold uppercase tracking-wider">Impressions</span>
+            <TrendingUp className="w-4 h-4" />
+          </div>
+          <div className="text-2xl font-bold font-mono text-amber-600 dark:text-amber-400 mt-2">
+            {totalImpressions}
           </div>
         </div>
       </div>
@@ -989,8 +1001,13 @@ Formatting Rules:
                         <span>By {post.author || 'Pranav Shende'}</span>
                         <span>•</span>
                         <span className="flex items-center gap-1">
-                          <Eye className="w-3 h-3" />
+                          <Eye className="w-3 h-3 text-[#8b2323] dark:text-rose-400" />
                           <span>{post.viewCount || 0} views</span>
+                        </span>
+                        <span>•</span>
+                        <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
+                          <TrendingUp className="w-3 h-3" />
+                          <span>{post.impressionCount || 0} imp</span>
                         </span>
                       </div>
                     </div>

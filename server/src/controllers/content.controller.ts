@@ -280,6 +280,61 @@ export const contentController = {
     }
   },
 
+  async getBlogStats(_req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const items = await prisma.blogPost.findMany({
+        where: { published: true },
+        select: { slug: true, viewCount: true, impressionCount: true },
+      });
+      const stats: Record<string, { views: number; impressions: number }> = {};
+      for (const item of items) {
+        stats[item.slug] = {
+          views: item.viewCount || 0,
+          impressions: item.impressionCount || 0,
+        };
+      }
+      res.status(200).json({ success: true, stats });
+    } catch (e) {
+      next(e);
+    }
+  },
+
+  async recordBlogStats(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { slug, slugs, type } = req.body;
+      if (type === 'view' && slug) {
+        const item = await prisma.blogPost.update({
+          where: { slug },
+          data: { viewCount: { increment: 1 } },
+          select: { slug: true, viewCount: true, impressionCount: true },
+        });
+        res.status(200).json({ success: true, slug, views: item.viewCount, impressions: item.impressionCount });
+        return;
+      }
+      if (type === 'impression') {
+        if (Array.isArray(slugs) && slugs.length > 0) {
+          await prisma.blogPost.updateMany({
+            where: { slug: { in: slugs } },
+            data: { impressionCount: { increment: 1 } },
+          });
+          res.status(200).json({ success: true, updatedCount: slugs.length });
+          return;
+        } else if (slug) {
+          const item = await prisma.blogPost.update({
+            where: { slug },
+            data: { impressionCount: { increment: 1 } },
+            select: { slug: true, viewCount: true, impressionCount: true },
+          });
+          res.status(200).json({ success: true, slug, views: item.viewCount, impressions: item.impressionCount });
+          return;
+        }
+      }
+      res.status(400).json({ success: false, message: 'Invalid payload' });
+    } catch (e) {
+      next(e);
+    }
+  },
+
   async getBlogPostBySlug(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const slug = String(req.params.slug);

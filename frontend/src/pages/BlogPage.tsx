@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, BookOpen, Clock, Calendar, ArrowRight, ArrowUpRight, 
-  Sparkles, Tag, Layers, User, ChevronRight, Filter
+  Sparkles, Tag, Layers, User, ChevronRight, Filter, Eye, TrendingUp
 } from 'lucide-react';
 import { DoodleLayout } from '@/components/DoodleLayout';
 import { PageSeo } from '@/components/PageSeo';
 import { api } from '@/lib/api';
 import useAnalytics from '@/hooks/useAnalytics';
+import useBlogStats from '@/hooks/useBlogStats';
 
 import { LoadingThumbnail, resolveCustomPhoto } from '@/components/LoadingThumbnail';
 
@@ -30,6 +31,7 @@ interface BlogPost {
   publishedAt?: string;
   createdAt?: string;
   viewCount?: number;
+  impressionCount?: number;
 }
 
 const CATEGORIES = [
@@ -49,6 +51,7 @@ export const BlogPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const { getStats: getBlogStatsItem, recordImpressions: recordBlogImpressionsBatch } = useBlogStats();
 
   useEffect(() => {
     // 1. Instant local hydration from manifest
@@ -76,6 +79,14 @@ export const BlogPage: React.FC = () => {
       })
       .finally(() => setLoading(false));
   }, []);
+
+  // Track impressions for visible blog cards
+  useEffect(() => {
+    if (posts && posts.length > 0) {
+      const slugs = posts.map((p) => p.slug).filter(Boolean);
+      recordBlogImpressionsBatch(slugs);
+    }
+  }, [posts, recordBlogImpressionsBatch]);
 
   const filteredPosts = useMemo(() => {
     return posts.filter((post) => {
@@ -212,6 +223,7 @@ export const BlogPage: React.FC = () => {
                     year: 'numeric',
                   })
                 : 'Recent';
+              const stats = getBlogStatsItem(post.slug, post.viewCount || 0, post.impressionCount || 0);
 
               return (
                 <motion.article
@@ -247,7 +259,7 @@ export const BlogPage: React.FC = () => {
                           </span>
                         </div>
                       )}
-                      <div className="flex items-center gap-3 text-[11px] text-stone-500 font-mono">
+                      <div className="flex flex-wrap items-center gap-2.5 text-[11px] text-stone-500 font-mono">
                         <span className="flex items-center gap-1">
                           <Calendar className="w-3 h-3 text-stone-400" />
                           <span>{dateStr}</span>
@@ -256,6 +268,16 @@ export const BlogPage: React.FC = () => {
                         <span className="flex items-center gap-1">
                           <Clock className="w-3 h-3 text-stone-400" />
                           <span>{readTime} min read</span>
+                        </span>
+                        <span>•</span>
+                        <span className="flex items-center gap-1 text-stone-700 dark:text-stone-300 font-semibold" title={`${stats.views} total views`}>
+                          <Eye className="w-3 h-3 text-[#8b2323] dark:text-rose-400" />
+                          <span>{stats.views}</span>
+                        </span>
+                        <span>•</span>
+                        <span className="flex items-center gap-1 text-stone-700 dark:text-stone-300 font-semibold" title={`${stats.impressions} impressions`}>
+                          <TrendingUp className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                          <span>{stats.impressions}</span>
                         </span>
                       </div>
 

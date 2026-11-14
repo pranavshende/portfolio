@@ -4,12 +4,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ExternalLink, Github, Linkedin, ArrowUpRight, ArrowRight, X, Star, BookOpen, 
   Lock, CheckCircle2, Download, Mail, GraduationCap, Layers, Target,
-  ChevronLeft, ChevronRight, GitFork, Sparkles
+  ChevronLeft, ChevronRight, GitFork, Sparkles, Eye, TrendingUp
 } from 'lucide-react';
 import { DoodleLayout } from '@/components/DoodleLayout';
 import { Link } from 'react-router-dom';
 import { api } from '@/lib/api';
 import useAnalytics from '@/hooks/useAnalytics';
+import useBlogStats from '@/hooks/useBlogStats';
 import ContactModal from '@/components/ContactModal';
 import { PageSeo } from '@/components/PageSeo';
 import { GitHubCalendar } from 'react-github-calendar';
@@ -367,6 +368,7 @@ export const Home: React.FC = () => {
   const [gitRepos, setGitRepos] = useState<any[]>(defaultRepos);
   const [loadingRepos, setLoadingRepos] = useState<boolean>(false);
   const [recentBlogs, setRecentBlogs] = useState<any[]>(defaultBlogs);
+  const { getStats: getBlogStatsItem, recordImpressions: recordBlogImpressionsBatch } = useBlogStats();
 
   const projectSlider = useHorizontalSlider(projectList.length);
   const blogSlider = useHorizontalSlider(recentBlogs.length);
@@ -515,6 +517,14 @@ export const Home: React.FC = () => {
       })
       .catch(() => {});
   }, []);
+
+  // Track impressions for blog cards shown in the home page slider
+  useEffect(() => {
+    if (recentBlogs && recentBlogs.length > 0) {
+      const slugs = recentBlogs.map((b: any) => b.slug).filter(Boolean);
+      recordBlogImpressionsBatch(slugs);
+    }
+  }, [recentBlogs, recordBlogImpressionsBatch]);
 
   // Fetch real repositories from Pranav's GitHub account
   useEffect(() => {
@@ -881,51 +891,84 @@ export const Home: React.FC = () => {
           ref={blogSlider.scrollRef}
           className="flex gap-4 overflow-x-auto pb-4 pt-1 snap-x snap-mandatory no-scrollbar scroll-smooth -mx-2 px-2"
         >
-          {recentBlogs.map((post) => (
-            <Link
-              key={post.id || post.slug}
-              to={`/blog/${post.slug}`}
-              className="w-[280px] sm:w-[320px] md:w-[340px] shrink-0 snap-start group p-4 sm:p-5 rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all flex flex-col justify-between space-y-3"
-            >
-              <div className="space-y-3">
-                {/* Small compact thumbnail: only rendered if custom photo from Supabase bucket exists */}
-                {resolveCustomPhoto(post.coverImageUrl) ? (
-                  <LoadingThumbnail
-                    src={resolveCustomPhoto(post.coverImageUrl)}
-                    alt={post.title}
-                    aspectClass="w-full h-28 sm:h-32 rounded-2xl border border-stone-900/15 dark:border-stone-700 shadow-xs"
-                    badge={(
-                      <span className="px-2 py-0.5 rounded-md border border-stone-900/30 dark:border-stone-700 bg-white/95 dark:bg-stone-900/90 text-[#8b2323] dark:text-rose-400 font-serif font-bold text-[10px] tracking-wider shadow-xs backdrop-blur-xs">
+          {recentBlogs.map((post) => {
+            const stats = getBlogStatsItem(post.slug, post.viewCount || 0, post.impressionCount || 0);
+
+            return (
+              <Link
+                key={post.id || post.slug}
+                to={`/blog/${post.slug}`}
+                className="w-[280px] sm:w-[320px] md:w-[340px] shrink-0 snap-start group p-4 sm:p-5 rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all flex flex-col justify-between space-y-3"
+              >
+                <div className="space-y-3">
+                  {/* Small compact thumbnail: only rendered if custom photo from Supabase bucket exists */}
+                  {resolveCustomPhoto(post.coverImageUrl) ? (
+                    <LoadingThumbnail
+                      src={resolveCustomPhoto(post.coverImageUrl)}
+                      alt={post.title}
+                      aspectClass="w-full h-28 sm:h-32 rounded-2xl border border-stone-900/15 dark:border-stone-700 shadow-xs"
+                      badge={(
+                        <span className="px-2 py-0.5 rounded-md border border-stone-900/30 dark:border-stone-700 bg-white/95 dark:bg-stone-900/90 text-[#8b2323] dark:text-rose-400 font-serif font-bold text-[10px] tracking-wider shadow-xs backdrop-blur-xs">
+                          {post.category || (post.tags && post.tags[0]) || 'Architecture'}
+                        </span>
+                      )}
+                    />
+                  ) : (
+                    <div>
+                      <span className="px-2 py-0.5 rounded-xs border border-[#8b2323] bg-[#8b2323]/5 text-[#8b2323] dark:text-rose-400 font-serif font-bold text-[10px] tracking-wider inline-block">
                         {post.category || (post.tags && post.tags[0]) || 'Architecture'}
                       </span>
-                    )}
-                  />
-                ) : (
-                  <div>
-                    <span className="px-2 py-0.5 rounded-xs border border-[#8b2323] bg-[#8b2323]/5 text-[#8b2323] dark:text-rose-400 font-serif font-bold text-[10px] tracking-wider inline-block">
-                      {post.category || (post.tags && post.tags[0]) || 'Architecture'}
+                    </div>
+                  )}
+
+                  <div className="space-y-1.5">
+                    <h3 className="text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors line-clamp-2 leading-snug">
+                      {post.title}
+                    </h3>
+                    <p className="text-xs text-stone-600 dark:text-stone-400 line-clamp-3 leading-relaxed">
+                      {post.excerpt}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pt-3 border-t border-stone-200 dark:border-stone-800 space-y-2">
+                  <div className="flex items-center justify-between text-[11px] font-mono">
+                    {/* Live Real-time Views & Impressions Badge */}
+                    <div className="flex items-center gap-1.5">
+                      <span 
+                        className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800/80 border border-stone-200 dark:border-stone-700/60 font-semibold text-stone-700 dark:text-stone-300"
+                        title={`${stats.views} total views`}
+                      >
+                        <Eye className="w-3 h-3 text-[#8b2323] dark:text-rose-400 shrink-0" />
+                        <span>{stats.views}</span>
+                        <span className="text-[9px] text-stone-400 font-normal">views</span>
+                      </span>
+
+                      <span 
+                        className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800/80 border border-stone-200 dark:border-stone-700/60 font-semibold text-stone-700 dark:text-stone-300"
+                        title={`${stats.impressions} card impressions`}
+                      >
+                        <TrendingUp className="w-3 h-3 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                        <span>{stats.impressions}</span>
+                        <span className="text-[9px] text-stone-400 font-normal">imp</span>
+                      </span>
+                    </div>
+
+                    <span className="text-stone-500 text-[11px]">{post.readingTimeMinutes || 5} min read</span>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-1 text-[11px] font-mono">
+                    <span className="text-[10px] text-stone-400 dark:text-stone-500 uppercase tracking-wider font-semibold">
+                      {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Article'}
+                    </span>
+                    <span className="text-[#8b2323] dark:text-rose-400 font-bold group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5">
+                      Read <ArrowRight className="w-3 h-3" />
                     </span>
                   </div>
-                )}
-
-                <div className="space-y-1.5">
-                  <h3 className="text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors line-clamp-2 leading-snug">
-                    {post.title}
-                  </h3>
-                  <p className="text-xs text-stone-600 dark:text-stone-400 line-clamp-3 leading-relaxed">
-                    {post.excerpt}
-                  </p>
                 </div>
-              </div>
-
-              <div className="flex items-center justify-between text-[11px] text-stone-500 font-mono pt-2.5 border-t border-stone-200 dark:border-stone-800">
-                <span>{post.readingTimeMinutes || 5} min read</span>
-                <span className="text-[#8b2323] dark:text-rose-400 font-bold group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5">
-                  Read <ArrowRight className="w-3 h-3" />
-                </span>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
 
         {/* Dynamic Pagination Pill Dots */}

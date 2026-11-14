@@ -43,6 +43,8 @@ async function main() {
     readingTimeMinutes: b.readingTimeMinutes || 5,
     coverImageUrl: b.coverImageUrl || b.bannerUrl || null,
     tags: Array.isArray(b.tags) ? b.tags : [],
+    viewCount: b.viewCount || 0,
+    impressionCount: b.impressionCount || 0,
     publishedAt: b.publishedAt ? b.publishedAt.toISOString() : b.createdAt.toISOString(),
     updatedAt: b.updatedAt ? b.updatedAt.toISOString() : b.createdAt.toISOString(),
     seoTitle: b.seoTitle || `${b.title} | Technical Blog by Pranav Shende`,

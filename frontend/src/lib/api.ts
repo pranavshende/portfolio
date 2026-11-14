@@ -123,6 +123,75 @@ export const api = {
   getBlogPostBySlug: (slug: string) => 
     apiRequest(`/content/blog/${slug}`),
 
+  getBlogStats: async (): Promise<Record<string, { views: number; impressions: number }>> => {
+    try {
+      const serverlessUrl = typeof window !== 'undefined' && window.location.origin.includes('pranavshende.online')
+        ? '/api/blog-stats'
+        : 'https://pranavshende.online/api/blog-stats';
+      const res = await fetch(serverlessUrl, { cache: 'no-cache' });
+      if (res.ok) {
+        const json = await res.json();
+        if (json.stats) return json.stats;
+      }
+    } catch (_) {}
+
+    try {
+      const res = await apiRequest('/content/blog/stats');
+      if (res?.stats) return res.stats;
+    } catch (_) {}
+
+    return {};
+  },
+
+  recordBlogView: async (slug: string): Promise<{ views: number; impressions: number } | null> => {
+    try {
+      const serverlessUrl = typeof window !== 'undefined' && window.location.origin.includes('pranavshende.online')
+        ? '/api/blog-stats'
+        : 'https://pranavshende.online/api/blog-stats';
+      const res = await fetch(serverlessUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug, type: 'view' }),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        return { views: json.views, impressions: json.impressions };
+      }
+    } catch (_) {}
+
+    try {
+      const res = await apiRequest('/content/blog/stats', {
+        method: 'POST',
+        data: { slug, type: 'view' },
+      });
+      return { views: res.views, impressions: res.impressions };
+    } catch (_) {}
+
+    return null;
+  },
+
+  recordBlogImpressions: async (slugs: string[]): Promise<void> => {
+    if (!slugs || slugs.length === 0) return;
+    try {
+      const serverlessUrl = typeof window !== 'undefined' && window.location.origin.includes('pranavshende.online')
+        ? '/api/blog-stats'
+        : 'https://pranavshende.online/api/blog-stats';
+      await fetch(serverlessUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slugs, type: 'impression' }),
+      });
+      return;
+    } catch (_) {}
+
+    try {
+      await apiRequest('/content/blog/stats', {
+        method: 'POST',
+        data: { slugs, type: 'impression' },
+      });
+    } catch (_) {}
+  },
+
   submitContact: (payload: ContactPayload) => {
     const data = {
       ...payload,

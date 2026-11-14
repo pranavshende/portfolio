@@ -20,8 +20,10 @@
       "Semiconductor",
       "Corporate Leadership"
     ],
+    "viewCount": 12,
+    "impressionCount": 0,
     "publishedAt": "2026-11-13T07:00:00.595Z",
-    "updatedAt": "2026-11-13T07:56:20.666Z",
+    "updatedAt": "2026-11-14T04:17:28.781Z",
     "seoTitle": "Jensen Huang's Sudden Exit from NVIDIA: What It Means for the Future of AI and the Global IT Industry | Pranav Shende",
     "seoDescription": "NVIDIA's Jensen Huang has stepped down as CEO amid a major corporate controversy. Explore the implications for AI infrastructure, semiconductor companies, IT businesses, startups, and the future of the global technology ecosystem."
   },
@@ -44,6 +46,8 @@
       "Community",
       "Engineering"
     ],
+    "viewCount": 3,
+    "impressionCount": 0,
     "publishedAt": "2026-09-15T09:00:00.000Z",
     "updatedAt": "2026-11-08T16:02:51.555Z",
     "seoTitle": "Hackathons & Technical Leadership Journey | Pranav Shende",
@@ -68,6 +72,8 @@
       "IEEE Research",
       "Quantization"
     ],
+    "viewCount": 3,
+    "impressionCount": 0,
     "publishedAt": "2026-09-25T11:00:00.000Z",
     "updatedAt": "2026-11-12T09:44:08.088Z",
     "seoTitle": "PashuRakshak: Edge AI Livestock Diagnostics & IEEE Research | Pranav Shende",
@@ -92,6 +98,8 @@
       "Distributed Systems",
       "React Native"
     ],
+    "viewCount": 2,
+    "impressionCount": 2,
     "publishedAt": "2026-10-05T15:00:00.000Z",
     "updatedAt": "2026-11-08T15:50:00.213Z",
     "seoTitle": "Tastifyy: Distributed Logistics with Kafka & Redis | Pranav Shende",
@@ -117,6 +125,8 @@
       "PostgreSQL",
       "Civic Tech"
     ],
+    "viewCount": 1,
+    "impressionCount": 0,
     "publishedAt": "2026-10-12T10:00:00.000Z",
     "updatedAt": "2026-11-08T16:00:43.065Z",
     "seoTitle": "JanSampark: 25+ Screen Civic Governance Platform | Pranav Shende",
@@ -143,6 +153,8 @@
       "Redis",
       "Docker"
     ],
+    "viewCount": 2,
+    "impressionCount": 1,
     "publishedAt": "2026-10-18T16:00:00.000Z",
     "updatedAt": "2026-11-12T09:11:38.468Z",
     "seoTitle": "Scalable Full-Stack Engineering & System Design | Pranav Shende",
@@ -166,6 +178,8 @@
       "Fastify",
       "LLM Guardrails"
     ],
+    "viewCount": 1,
+    "impressionCount": 0,
     "publishedAt": "2026-10-22T11:00:00.000Z",
     "updatedAt": "2026-11-08T15:56:27.055Z",
     "seoTitle": "Natural Language RAG Database Assistant | Pranav Shende",
@@ -191,6 +205,8 @@
       "Polynomial Regression",
       "Recharts"
     ],
+    "viewCount": 4,
+    "impressionCount": 0,
     "publishedAt": "2026-10-28T09:00:00.000Z",
     "updatedAt": "2026-11-12T04:33:02.653Z",
     "seoTitle": "Solar Intelligence: Big Data & GIS Forecasting to 2030 | Pranav Shende",
@@ -216,6 +232,8 @@
       "SHAP",
       "HR Analytics"
     ],
+    "viewCount": 3,
+    "impressionCount": 0,
     "publishedAt": "2026-11-01T14:30:00.000Z",
     "updatedAt": "2026-11-12T13:44:04.737Z",
     "seoTitle": "Predicting Employee Attrition with ML & Gemini | Pranav Shende",
@@ -240,8 +258,10 @@
       "LLMs",
       "Information Retrieval"
     ],
+    "viewCount": 3,
+    "impressionCount": 0,
     "publishedAt": "2026-11-04T12:00:00.000Z",
-    "updatedAt": "2026-11-11T23:04:03.823Z",
+    "updatedAt": "2026-11-13T20:17:22.923Z",
     "seoTitle": "ForgeRAG: Exploring LLMs and Retrieval-Augmented Generation | Pranav Shende",
     "seoDescription": "Pranav Shende explains production RAG pipelines, chunking strategies, embeddings, cosine similarity vector search, and hallucination guardrails."
   },
@@ -265,6 +285,8 @@
       "Deterministic SQL",
       "Enterprise Architecture"
     ],
+    "viewCount": 13,
+    "impressionCount": 0,
     "publishedAt": "2026-11-06T10:00:00.000Z",
     "updatedAt": "2026-11-13T06:27:44.409Z",
     "seoTitle": "Jarvis AI: Building an Enterprise Intelligence Platform | Pranav Shende",
