@@ -54,14 +54,8 @@ export const LoadingThumbnail: React.FC<LoadingThumbnailProps> = ({
         src={src!}
         alt={alt}
         loading="lazy"
-        decoding="async"
         onLoad={() => setStatus('loaded')}
         onError={() => setStatus('error')}
-        style={{
-          imageRendering: '-webkit-optimize-contrast',
-          transform: 'translateZ(0)',
-          backfaceVisibility: 'hidden',
-        }}
         className={`${className} transition-opacity duration-300 ${
           status === 'loaded' ? 'opacity-100' : 'opacity-0'
         }`}

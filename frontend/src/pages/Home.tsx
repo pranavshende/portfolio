@@ -28,13 +28,13 @@ const ghLightTheme = {
   dark: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
 };
 
-import jansamparkPhoto from '../photo/jansampark.png';
-import solarAnalyticsPhoto from '../photo/solar_analytics.png';
-import pashurakshakPhoto from '../photo/pashurakshak.png';
-import attritionBanner from '../photo/attrition_banner.png';
-import tastifyyBanner from '../photo/tastifyy_banner.png';
-import electropathyBanner from '../photo/electropathy_banner.png';
-import jarvisBanner from '../photo/jarvis_banner.png';
+import jansamparkPhoto from '../photo/jansampark.webp';
+import solarAnalyticsPhoto from '../photo/solar_analytics.webp';
+import pashurakshakPhoto from '../photo/pashurakshak.webp';
+import attritionBanner from '../photo/attrition_banner.webp';
+import tastifyyBanner from '../photo/tastifyy_banner.webp';
+import electropathyBanner from '../photo/electropathy_banner.webp';
+import jarvisBanner from '../photo/jarvis_banner.webp';
 
 interface Project {
   id: string;
@@ -74,7 +74,6 @@ const projects: Project[] = [
     github: 'https://github.com/pranavshende/jarvis-mcp-multipleDBs',
     demo: 'https://jarvis.pranavshende.online/',
     badge: 'Live Enterprise',
-    image: jarvisBanner,
   },
   {
     id: 'electropathy',
@@ -95,7 +94,6 @@ const projects: Project[] = [
     github: 'https://github.com/pranavshende/Electropathy_AI',
     demo: 'https://client-raprax.vercel.app',
     badge: 'Live Production',
-    image: electropathyBanner,
   },
   {
     id: 'tastifyy',
@@ -116,7 +114,6 @@ const projects: Project[] = [
     github: 'https://github.com/pranavshende/tastifyy',
     demo: 'https://www.tastifyy.in',
     badge: 'Production Shipped',
-    image: tastifyyBanner,
   },
   {
     id: 'attrition',
@@ -136,7 +133,6 @@ const projects: Project[] = [
     ],
     github: 'https://github.com/pranavshende/EmployeeAttritionSystem',
     badge: 'Gemini 2.5 Flash',
-    image: attritionBanner,
   },
   {
     id: 'jansampark',
@@ -157,7 +153,6 @@ const projects: Project[] = [
     github: 'private',
     demo: '/arcade?folder=projects_folder',
     badge: 'Civic Enterprise',
-    image: jansamparkPhoto,
   },
   {
     id: 'solar-analytics',
@@ -178,7 +173,6 @@ const projects: Project[] = [
     github: 'https://github.com/pranavshende/SolarSalesAnalysis',
     demo: '/arcade?folder=projects_folder',
     badge: 'CleanTech Big Data',
-    image: solarAnalyticsPhoto,
   },
   {
     id: 'pashurakshak',
@@ -197,7 +191,6 @@ const projects: Project[] = [
       'Presented & published at 2025 IEEE OPJU International Conference (OTCON)',
     ],
     badge: 'IEEE Published',
-    image: pashurakshakPhoto,
     github: 'https://github.com/pranavshende/HackNation_SKB-F17_SKB_P2',
     demo: '/arcade?folder=projects_folder',
   },
@@ -472,30 +465,7 @@ export const Home: React.FC = () => {
 
   // Fetch dynamic projects from backend database with fallback to verified offline data
   useEffect(() => {
-    const projectAssetMap: Record<string, string> = {
-      jarvis: jarvisBanner,
-      'jarvis-ai': jarvisBanner,
-      'jarvis-mcp-multipledbs': jarvisBanner,
-      electropathy: electropathyBanner,
-      'electropathy-ai': electropathyBanner,
-      'electropathy_ai': electropathyBanner,
-      tastifyy: tastifyyBanner,
-      attrition: attritionBanner,
-      'employee-attrition-ai': attritionBanner,
-      'employeeattritionsystem': attritionBanner,
-      solar: solarAnalyticsPhoto,
-      'solar-analytics': solarAnalyticsPhoto,
-      'solar-intelligence': solarAnalyticsPhoto,
-      pashurakshak: pashurakshakPhoto,
-      jansampark: jansamparkPhoto,
-      'jan-sampark': jansamparkPhoto,
-    };
-
     const resolveProjectThumbnail = (p: any): string | undefined => {
-      const slug = String(p.slug || p.id || '').toLowerCase();
-      if (projectAssetMap[slug]) {
-        return projectAssetMap[slug];
-      }
       const raw = p.thumbnailUrl || p.bannerUrl || p.imageUrl || p.coverImageUrl;
       return resolveCustomPhoto(raw) || undefined;
     };
