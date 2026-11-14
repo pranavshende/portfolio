@@ -26,6 +26,8 @@ interface ProjectItem {
   liveDemoUrl?: string;
   bannerUrl?: string;
   thumbnailUrl?: string;
+  featuredThumbnailUrl?: string;
+  projectPageThumbnailUrl?: string;
   badge?: string;
   orderIndex?: number;
   displayOrder?: number;
@@ -45,6 +47,8 @@ export const ProjectsSection: React.FC = () => {
   const [saving, setSaving] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const featuredFileInputRef = useRef<HTMLInputElement>(null);
+  const projectPageFileInputRef = useRef<HTMLInputElement>(null);
 
   // Form states
   const [formData, setFormData] = useState({
@@ -63,6 +67,8 @@ export const ProjectsSection: React.FC = () => {
     githubUrl: '',
     liveDemoUrl: '',
     thumbnailUrl: '',
+    featuredThumbnailUrl: '',
+    projectPageThumbnailUrl: '',
     badge: '',
     displayOrder: 1,
     isFeatured: true,
@@ -127,7 +133,7 @@ export const ProjectsSection: React.FC = () => {
   };
 
   // Image Upload with client-side canvas compression to WebP (<250KB Base64 data URL)
-  const handleImageFile = (file: File) => {
+  const handleImageFile = (file: File, target: 'featured' | 'projectPage' | 'general' = 'general') => {
     if (!file.type.startsWith('image/')) {
       alert('Please upload a valid image file (PNG, JPG, WebP, etc.).');
       return;
@@ -159,7 +165,26 @@ export const ProjectsSection: React.FC = () => {
           ctx.drawImage(img, 0, 0, width, height);
           // Compress to WebP with 0.84 quality
           const compressedDataUrl = canvas.toDataURL('image/webp', 0.84);
-          setFormData((prev) => ({ ...prev, thumbnailUrl: compressedDataUrl }));
+          if (target === 'featured') {
+            setFormData((prev) => ({ 
+              ...prev, 
+              featuredThumbnailUrl: compressedDataUrl,
+              thumbnailUrl: prev.thumbnailUrl || compressedDataUrl,
+            }));
+          } else if (target === 'projectPage') {
+            setFormData((prev) => ({ 
+              ...prev, 
+              projectPageThumbnailUrl: compressedDataUrl,
+              thumbnailUrl: prev.thumbnailUrl || compressedDataUrl,
+            }));
+          } else {
+            setFormData((prev) => ({ 
+              ...prev, 
+              thumbnailUrl: compressedDataUrl,
+              featuredThumbnailUrl: prev.featuredThumbnailUrl || compressedDataUrl,
+              projectPageThumbnailUrl: prev.projectPageThumbnailUrl || compressedDataUrl,
+            }));
+          }
         }
       };
       img.src = readerEvent.target?.result as string;
@@ -189,6 +214,8 @@ export const ProjectsSection: React.FC = () => {
       githubUrl: '',
       liveDemoUrl: '',
       thumbnailUrl: '',
+      featuredThumbnailUrl: '',
+      projectPageThumbnailUrl: '',
       badge: 'Live Enterprise',
       displayOrder: nextOrder,
       isFeatured: true,
@@ -201,6 +228,7 @@ export const ProjectsSection: React.FC = () => {
     setCurrentProject(proj);
     const features = proj.highlights || proj.keyFeatures || [];
     const tech = proj.techStack || [];
+    const generalThumb = proj.bannerUrl || proj.thumbnailUrl || '';
 
     setFormData({
       title: proj.title || '',
@@ -217,7 +245,9 @@ export const ProjectsSection: React.FC = () => {
       keyFeatures: Array.isArray(features) ? features.join('\n') : String(features || ''),
       githubUrl: proj.githubUrl || '',
       liveDemoUrl: proj.demoUrl || proj.liveDemoUrl || '',
-      thumbnailUrl: proj.bannerUrl || proj.thumbnailUrl || '',
+      thumbnailUrl: generalThumb,
+      featuredThumbnailUrl: proj.featuredThumbnailUrl || generalThumb,
+      projectPageThumbnailUrl: proj.projectPageThumbnailUrl || generalThumb,
       badge: proj.badge || '',
       displayOrder: proj.orderIndex ?? proj.displayOrder ?? 1,
       isFeatured: proj.featured ?? proj.isFeatured ?? true,
@@ -235,7 +265,9 @@ export const ProjectsSection: React.FC = () => {
 
     setSaving(true);
     const slug = formData.slug.trim() || generateSlug(formData.title);
-    const bannerUrl = formData.thumbnailUrl.trim() || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80';
+    const featuredThumbnailUrl = formData.featuredThumbnailUrl.trim() || undefined;
+    const projectPageThumbnailUrl = formData.projectPageThumbnailUrl.trim() || undefined;
+    const bannerUrl = formData.thumbnailUrl.trim() || projectPageThumbnailUrl || featuredThumbnailUrl || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80';
     
     const parsedTechStack = formData.techStack
       ? formData.techStack.split(',').map((s) => s.trim()).filter(Boolean)
@@ -269,6 +301,8 @@ export const ProjectsSection: React.FC = () => {
       liveDemoUrl: formData.liveDemoUrl.trim() || undefined,
       bannerUrl,
       thumbnailUrl: bannerUrl,
+      featuredThumbnailUrl,
+      projectPageThumbnailUrl,
       badge: formData.badge.trim() || undefined,
       orderIndex,
       displayOrder: orderIndex,
@@ -440,6 +474,18 @@ export const ProjectsSection: React.FC = () => {
                         <p className="text-[11px] text-stone-500">
                           {proj.client || 'Engineering Platform'} • {proj.year || '2026'}
                         </p>
+                        <div className="flex flex-wrap items-center gap-1.5 mt-1">
+                          {proj.featuredThumbnailUrl && (
+                            <span className="px-1.5 py-0.2 rounded text-[9px] font-mono bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-300">
+                              Home Thumb
+                            </span>
+                          )}
+                          {proj.projectPageThumbnailUrl && (
+                            <span className="px-1.5 py-0.2 rounded text-[9px] font-mono bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-300">
+                              Page Thumb
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
 
@@ -565,8 +611,18 @@ export const ProjectsSection: React.FC = () => {
                               <div className="font-bold text-stone-900 dark:text-stone-100 text-xs sm:text-sm line-clamp-1">
                                 {proj.title}
                               </div>
-                              <div className="text-[11px] text-stone-500 line-clamp-1">
-                                {proj.client || 'Engineering Platform'} • {proj.year || '2026'} {proj.slug ? `(/${proj.slug})` : ''}
+                              <div className="flex flex-wrap items-center gap-1.5 text-[11px] text-stone-500 line-clamp-1">
+                                <span>{proj.client || 'Engineering Platform'} • {proj.year || '2026'} {proj.slug ? `(/${proj.slug})` : ''}</span>
+                                {proj.featuredThumbnailUrl && (
+                                  <span className="px-1.5 py-0.2 rounded text-[9px] font-mono bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-300 shrink-0" title="Has dedicated homepage featured thumbnail">
+                                    Home Thumb
+                                  </span>
+                                )}
+                                {proj.projectPageThumbnailUrl && (
+                                  <span className="px-1.5 py-0.2 rounded text-[9px] font-mono bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-300 shrink-0" title="Has dedicated project page thumbnail">
+                                    Page Thumb
+                                  </span>
+                                )}
                               </div>
                             </div>
                           </div>
@@ -781,73 +837,193 @@ export const ProjectsSection: React.FC = () => {
                 </div>
               </div>
 
-              {/* Row 4: Thumbnail Image Upload & Preview */}
-              <div className="space-y-2 p-3.5 rounded-2xl bg-white dark:bg-[#1b1c24] border-2 border-stone-900/80 dark:border-stone-700 shadow-[2.5px_2.5px_0px_#1c1917] dark:shadow-[2.5px_2.5px_0px_#000000]">
-                <label className="block text-xs font-bold text-stone-800 dark:text-stone-200 flex items-center justify-between">
-                  <span className="flex items-center gap-1.5">
-                    <ImageIcon className="w-3.5 h-3.5 text-[#8b2323]" />
-                    <span>Project Cover / Thumbnail Image</span>
-                  </span>
-                  <span className="text-[10px] text-stone-400 font-normal">Supports PNG, JPG, WebP (auto-optimized)</span>
-                </label>
-
-                <div className="flex flex-col sm:flex-row items-center gap-3">
-                  {/* File Upload trigger */}
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) handleImageFile(file);
-                    }}
-                  />
-
-                  <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-stone-800 border-2 border-stone-900 dark:border-stone-700 text-stone-800 dark:text-stone-200 text-xs font-bold cursor-pointer shadow-[2px_2px_0px_#1c1917] dark:shadow-[2px_2px_0px_#000000] hover:translate-x-0.5 hover:translate-y-0.5 transition-all"
-                  >
-                    <Upload className="w-3.5 h-3.5" />
-                    <span>Upload Image File</span>
-                  </button>
-
-                  <div className="w-full flex-1">
-                    <input
-                      type="text"
-                      value={formData.thumbnailUrl}
-                      onChange={(e) => setFormData({ ...formData, thumbnailUrl: e.target.value })}
-                      placeholder="Or paste direct image URL (https://... or data:image/...)"
-                      className="w-full p-2 rounded-xl border-2 border-stone-900/70 dark:border-stone-700 bg-[#faf7f0] dark:bg-[#16171d] text-xs font-mono"
-                    />
+              {/* Row 4: Dual Project Thumbnails (Homepage Featured vs Project Page) */}
+              <div className="space-y-4 p-4 rounded-2xl bg-white dark:bg-[#1b1c24] border-2 border-stone-900/80 dark:border-stone-700 shadow-[2.5px_2.5px_0px_#1c1917] dark:shadow-[2.5px_2.5px_0px_#000000]">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b pb-2 border-stone-200 dark:border-stone-800">
+                  <div>
+                    <h4 className="text-xs font-bold text-stone-900 dark:text-stone-100 flex items-center gap-1.5">
+                      <ImageIcon className="w-4 h-4 text-[#8b2323]" />
+                      <span>Project Thumbnails & Cover Images</span>
+                    </h4>
+                    <p className="text-[11px] text-stone-500">
+                      Configure separate thumbnails for homepage featured cards and the dedicated projects page.
+                    </p>
                   </div>
-
-                  {formData.thumbnailUrl && (
+                  {/* Quick Sync Action */}
+                  {(formData.featuredThumbnailUrl || formData.projectPageThumbnailUrl) && (
                     <button
                       type="button"
-                      onClick={() => setFormData({ ...formData, thumbnailUrl: '' })}
-                      className="p-2 rounded-xl border-2 border-stone-900 text-stone-600 hover:text-red-600 bg-white hover:bg-red-50 shadow-[2px_2px_0px_#1c1917]"
-                      title="Clear image"
+                      onClick={() => {
+                        const source = formData.featuredThumbnailUrl || formData.projectPageThumbnailUrl || formData.thumbnailUrl;
+                        if (!source) return;
+                        setFormData((prev) => ({
+                          ...prev,
+                          featuredThumbnailUrl: source,
+                          projectPageThumbnailUrl: source,
+                          thumbnailUrl: source,
+                        }));
+                        showToast('Applied same thumbnail to both homepage and project page.');
+                      }}
+                      className="text-[10px] font-bold text-[#8b2323] dark:text-rose-400 hover:underline flex items-center gap-1 cursor-pointer self-start sm:self-center"
                     >
-                      <X className="w-4 h-4" />
+                      <span>Use Same Thumbnail for Both</span>
                     </button>
                   )}
                 </div>
 
-                {/* Image Preview Box */}
-                {formData.thumbnailUrl && (
-                  <div className="mt-2 relative rounded-xl overflow-hidden border-2 border-stone-900 dark:border-stone-700 max-h-48 bg-stone-900/5 flex items-center justify-center">
-                    <img
-                      src={formData.thumbnailUrl}
-                      alt="Thumbnail preview"
-                      className="max-h-44 w-auto object-contain rounded-lg"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80';
-                      }}
-                    />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Option 1: Homepage Featured Projects Thumbnail */}
+                  <div className="space-y-2.5 p-3 rounded-xl border-2 border-stone-900/40 dark:border-stone-700 bg-stone-50/70 dark:bg-stone-900/40">
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-bold text-stone-800 dark:text-stone-200 flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-amber-500" />
+                        <span>1. Featured Projects Thumbnail</span>
+                      </label>
+                      <span className="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700">
+                        Homepage Showcase
+                      </span>
+                    </div>
+                    <p className="text-[10px] text-stone-500 leading-snug">
+                      Displayed specifically on the homepage Featured Projects showcase.
+                    </p>
+
+                    <div className="space-y-2">
+                      <input
+                        ref={featuredFileInputRef}
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) handleImageFile(file, 'featured');
+                        }}
+                      />
+
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => featuredFileInputRef.current?.click()}
+                          className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-stone-800 dark:text-stone-200 text-xs font-semibold hover:bg-stone-100 dark:hover:bg-stone-700 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-xs"
+                        >
+                          <Upload className="w-3.5 h-3.5" />
+                          <span>Upload</span>
+                        </button>
+                        <input
+                          type="text"
+                          value={formData.featuredThumbnailUrl}
+                          onChange={(e) => setFormData({ ...formData, featuredThumbnailUrl: e.target.value })}
+                          placeholder="Or paste image URL (https://...)"
+                          className="w-full p-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-white dark:bg-[#16171d] text-xs font-mono"
+                        />
+                        {formData.featuredThumbnailUrl && (
+                          <button
+                            type="button"
+                            onClick={() => setFormData({ ...formData, featuredThumbnailUrl: '' })}
+                            className="p-1.5 rounded-lg border border-stone-300 dark:border-stone-700 text-stone-500 hover:text-red-600 bg-white dark:bg-stone-800 cursor-pointer shrink-0"
+                            title="Clear image"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
+
+                      {/* Image Preview */}
+                      {formData.featuredThumbnailUrl ? (
+                        <div className="relative rounded-lg overflow-hidden border border-stone-300 dark:border-stone-700 max-h-36 bg-stone-900/5 dark:bg-stone-800 flex items-center justify-center p-1">
+                          <img
+                            src={formData.featuredThumbnailUrl}
+                            alt="Featured thumbnail preview"
+                            className="max-h-32 w-auto object-contain rounded"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80';
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div className="h-20 rounded-lg border border-dashed border-stone-300 dark:border-stone-700 flex flex-col items-center justify-center text-stone-400 text-[10px] gap-1">
+                          <ImageIcon className="w-4 h-4 opacity-50" />
+                          <span>No homepage thumbnail set (falls back to default)</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                )}
+
+                  {/* Option 2: Project Page Thumbnail */}
+                  <div className="space-y-2.5 p-3 rounded-xl border-2 border-stone-900/40 dark:border-stone-700 bg-stone-50/70 dark:bg-stone-900/40">
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-bold text-stone-800 dark:text-stone-200 flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-blue-500" />
+                        <span>2. Project Page Thumbnail</span>
+                      </label>
+                      <span className="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-700">
+                        /projects Catalog
+                      </span>
+                    </div>
+                    <p className="text-[10px] text-stone-500 leading-snug">
+                      Displayed on the dedicated /projects catalog, case study page, and modal.
+                    </p>
+
+                    <div className="space-y-2">
+                      <input
+                        ref={projectPageFileInputRef}
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) handleImageFile(file, 'projectPage');
+                        }}
+                      />
+
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => projectPageFileInputRef.current?.click()}
+                          className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-stone-800 dark:text-stone-200 text-xs font-semibold hover:bg-stone-100 dark:hover:bg-stone-700 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-xs"
+                        >
+                          <Upload className="w-3.5 h-3.5" />
+                          <span>Upload</span>
+                        </button>
+                        <input
+                          type="text"
+                          value={formData.projectPageThumbnailUrl}
+                          onChange={(e) => setFormData({ ...formData, projectPageThumbnailUrl: e.target.value })}
+                          placeholder="Or paste image URL (https://...)"
+                          className="w-full p-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-white dark:bg-[#16171d] text-xs font-mono"
+                        />
+                        {formData.projectPageThumbnailUrl && (
+                          <button
+                            type="button"
+                            onClick={() => setFormData({ ...formData, projectPageThumbnailUrl: '' })}
+                            className="p-1.5 rounded-lg border border-stone-300 dark:border-stone-700 text-stone-500 hover:text-red-600 bg-white dark:bg-stone-800 cursor-pointer shrink-0"
+                            title="Clear image"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
+
+                      {/* Image Preview */}
+                      {formData.projectPageThumbnailUrl ? (
+                        <div className="relative rounded-lg overflow-hidden border border-stone-300 dark:border-stone-700 max-h-36 bg-stone-900/5 dark:bg-stone-800 flex items-center justify-center p-1">
+                          <img
+                            src={formData.projectPageThumbnailUrl}
+                            alt="Project page thumbnail preview"
+                            className="max-h-32 w-auto object-contain rounded"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80';
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div className="h-20 rounded-lg border border-dashed border-stone-300 dark:border-stone-700 flex flex-col items-center justify-center text-stone-400 text-[10px] gap-1">
+                          <ImageIcon className="w-4 h-4 opacity-50" />
+                          <span>No project page thumbnail set (falls back to default)</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Row 5: Detailed Description */}

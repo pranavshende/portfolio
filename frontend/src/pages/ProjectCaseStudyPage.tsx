@@ -426,7 +426,7 @@ export const ProjectCaseStudyPage: React.FC = () => {
       .then((res: any) => {
         const p = res?.data;
         if (p) {
-          const raw = p.bannerUrl || p.thumbnailUrl || p.imageUrl;
+          const raw = p.projectPageThumbnailUrl || p.bannerUrl || p.thumbnailUrl || p.imageUrl;
           if (raw && typeof raw === 'string' && raw.trim() !== '' && !raw.includes('photo-1555066931-4365d14bab8c')) {
             setCustomCover(raw.trim());
           }

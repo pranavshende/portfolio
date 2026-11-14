@@ -130,7 +130,7 @@ export const ProjectsScreen = () => {
 
   useEffect(() => {
     const resolveProjectThumbnail = (p: any): string | undefined => {
-      const raw = p.thumbnailUrl || p.bannerUrl || p.imageUrl || p.coverImageUrl;
+      const raw = p.projectPageThumbnailUrl || p.thumbnailUrl || p.bannerUrl || p.imageUrl || p.coverImageUrl;
       return resolveCustomPhoto(raw) || undefined;
     };
 

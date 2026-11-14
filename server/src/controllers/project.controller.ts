@@ -23,6 +23,8 @@ export const createProjectSchema = z.object({
   liveDemoUrl: z.string().optional().or(z.literal('')).nullable(),
   bannerUrl: z.string().optional().nullable(),
   thumbnailUrl: z.string().optional().nullable(),
+  featuredThumbnailUrl: z.string().optional().nullable().or(z.literal('')),
+  projectPageThumbnailUrl: z.string().optional().nullable().or(z.literal('')),
   badge: z.string().optional().nullable(),
   featured: z.boolean().optional(),
   isFeatured: z.boolean().optional(),
@@ -58,7 +60,9 @@ function normalizeProjectData(body: any) {
     highlights = rawHighlights.split('\n').map((s: string) => s.trim()).filter(Boolean);
   }
 
-  const bannerUrl = (body.bannerUrl || body.thumbnailUrl || '/src/photo/jarvis_banner.webp').trim();
+  const featuredThumbnailUrl = (body.featuredThumbnailUrl || '').trim() || null;
+  const projectPageThumbnailUrl = (body.projectPageThumbnailUrl || '').trim() || null;
+  const bannerUrl = (body.bannerUrl || body.thumbnailUrl || projectPageThumbnailUrl || featuredThumbnailUrl || '/src/photo/jarvis_banner.webp').trim();
   const demoUrl = (body.demoUrl || body.liveDemoUrl || '').trim() || null;
   const githubUrl = (body.githubUrl || '').trim() || null;
   const problemStatement = (body.problemStatement || body.problem || '').trim() || null;
@@ -85,6 +89,8 @@ function normalizeProjectData(body: any) {
     githubUrl,
     demoUrl,
     bannerUrl,
+    featuredThumbnailUrl,
+    projectPageThumbnailUrl,
     badge,
     featured,
     orderIndex,

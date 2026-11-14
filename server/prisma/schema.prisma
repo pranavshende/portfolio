@@ -92,10 +92,12 @@ model Project {
   architecture     String?             @db.Text
   techStack        String[]            // Array of technologies
   highlights       String[]            // Key bullet points
-  githubUrl        String?
-  demoUrl          String?
-  bannerUrl        String
-  badge            String?             // e.g. "Live Production"
+  githubUrl               String?
+  demoUrl                 String?
+  bannerUrl               String
+  featuredThumbnailUrl    String?             // Homepage Featured Project thumbnail
+  projectPageThumbnailUrl String?             // Dedicated Project Page (/projects) thumbnail
+  badge                   String?             // e.g. "Live Production"
   featured         Boolean             @default(false)
   orderIndex       Int                 @default(0)
   published        Boolean             @default(true)

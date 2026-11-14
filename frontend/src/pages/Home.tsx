@@ -466,7 +466,7 @@ export const Home: React.FC = () => {
   // Fetch dynamic projects from backend database with fallback to verified offline data
   useEffect(() => {
     const resolveProjectThumbnail = (p: any): string | undefined => {
-      const raw = p.thumbnailUrl || p.bannerUrl || p.imageUrl || p.coverImageUrl;
+      const raw = p.featuredThumbnailUrl || p.thumbnailUrl || p.bannerUrl || p.imageUrl || p.coverImageUrl;
       return resolveCustomPhoto(raw) || undefined;
     };
 
