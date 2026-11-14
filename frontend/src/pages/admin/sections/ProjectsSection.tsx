@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { 
   Plus, Edit2, Trash2, ExternalLink, Github, Eye, EyeOff, 
   Star, Image as ImageIcon, Upload, X, Loader2, Sparkles, CheckCircle2,
-  FolderGit2, Layers, AlertCircle, ArrowUpDown
+  FolderGit2, Layers, AlertCircle, ArrowUpDown,
+  GripVertical, ChevronUp, ChevronDown, ChevronsUp, ChevronsDown, RotateCcw, Save
 } from 'lucide-react';
 import { api } from '@/lib/api';
 
@@ -46,6 +47,15 @@ export const ProjectsSection: React.FC = () => {
   const [currentProject, setCurrentProject] = useState<ProjectItem | null>(null);
   const [saving, setSaving] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [viewTab, setViewTab] = useState<'all' | 'featured' | 'published' | 'drafts' | 'order'>('all');
+
+  // Custom Featured Projects Ordering state
+  const [orderedProjects, setOrderedProjects] = useState<ProjectItem[]>([]);
+  const [initialOrderedIds, setInitialOrderedIds] = useState<string[]>([]);
+  const [savingOrder, setSavingOrder] = useState(false);
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const featuredFileInputRef = useRef<HTMLInputElement>(null);
   const projectPageFileInputRef = useRef<HTMLInputElement>(null);
@@ -114,6 +124,119 @@ export const ProjectsSection: React.FC = () => {
   useEffect(() => {
     fetchProjects();
   }, []);
+
+  // Synchronize orderedProjects when projects are loaded
+  useEffect(() => {
+    const featured = projects.filter((p) => (p.featured ?? p.isFeatured) === true);
+    const sorted = [...featured].sort((a, b) => {
+      const orderA = a.orderIndex ?? a.displayOrder ?? 999;
+      const orderB = b.orderIndex ?? b.displayOrder ?? 999;
+      if (orderA !== orderB) return orderA - orderB;
+      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return dateB - dateA;
+    });
+    setOrderedProjects(sorted);
+    setInitialOrderedIds(sorted.map((p) => p.id));
+  }, [projects]);
+
+  const hasUnsavedOrderChanges = useMemo(() => {
+    if (orderedProjects.length === 0 && initialOrderedIds.length === 0) return false;
+    if (orderedProjects.length !== initialOrderedIds.length) return true;
+    return JSON.stringify(orderedProjects.map((p) => p.id)) !== JSON.stringify(initialOrderedIds);
+  }, [orderedProjects, initialOrderedIds]);
+
+  // Warn if navigating away with unsaved order changes
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedOrderChanges) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [hasUnsavedOrderChanges]);
+
+  const moveOrderItem = (fromIndex: number, toIndex: number) => {
+    if (fromIndex === toIndex || toIndex < 0 || toIndex >= orderedProjects.length) return;
+    setOrderedProjects((prev) => {
+      const list = [...prev];
+      const [moved] = list.splice(fromIndex, 1);
+      list.splice(toIndex, 0, moved);
+      return list;
+    });
+  };
+
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    setDraggedIndex(index);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', String(index));
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    if (dragOverIndex !== index) {
+      setDragOverIndex(index);
+    }
+  };
+
+  const handleDragEnd = () => {
+    setDraggedIndex(null);
+    setDragOverIndex(null);
+  };
+
+  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault();
+    if (draggedIndex === null || draggedIndex === dropIndex) {
+      setDraggedIndex(null);
+      setDragOverIndex(null);
+      return;
+    }
+    moveOrderItem(draggedIndex, dropIndex);
+    setDraggedIndex(null);
+    setDragOverIndex(null);
+  };
+
+  const handleSaveOrder = async () => {
+    setSavingOrder(true);
+    try {
+      const ids = orderedProjects.map((p) => p.id);
+      const res = await api.reorderProjects(ids);
+      if (res && (res.success || res.status === 200 || res.count !== undefined)) {
+        setInitialOrderedIds(ids);
+        showToast('Featured project display order saved successfully!');
+        // Update projects in memory to reflect new orderIndex
+        setProjects((prev) => {
+          const orderMap = new Map(ids.map((id, idx) => [id, idx + 1]));
+          return [...prev].map((p) => ({
+            ...p,
+            orderIndex: orderMap.has(p.id) ? orderMap.get(p.id) : (p.orderIndex ?? p.displayOrder),
+            displayOrder: orderMap.has(p.id) ? orderMap.get(p.id) : p.displayOrder,
+          }));
+        });
+      } else {
+        throw new Error(res?.message || 'Failed to save project order');
+      }
+    } catch (err: any) {
+      alert(err.message || 'Error saving project order.');
+    } finally {
+      setSavingOrder(false);
+    }
+  };
+
+  const handleResetOrder = () => {
+    if (window.confirm('Are you sure you want to discard unsaved order changes?')) {
+      const initialMap = new Map(initialOrderedIds.map((id, idx) => [id, idx]));
+      const restored = [...orderedProjects].sort((a, b) => {
+        const idxA = initialMap.get(a.id) ?? 999;
+        const idxB = initialMap.get(b.id) ?? 999;
+        return idxA - idxB;
+      });
+      setOrderedProjects(restored);
+    }
+  };
 
   const generateSlug = (text: string) => {
     return text
@@ -347,6 +470,17 @@ export const ProjectsSection: React.FC = () => {
   const draftCount = totalProjects - publishedCount;
   const featuredCount = projects.filter((p) => (p.featured ?? p.isFeatured) === true).length;
 
+  const filteredProjects = useMemo(() => {
+    return projects.filter((p) => {
+      const isPub = (p.published ?? p.isPublished) !== false;
+      const isFeat = (p.featured ?? p.isFeatured) === true;
+      if (viewTab === 'featured') return isFeat;
+      if (viewTab === 'published') return isPub;
+      if (viewTab === 'drafts') return !isPub;
+      return true;
+    });
+  }, [projects, viewTab]);
+
   return (
     <div className="space-y-6">
       {/* Toast Alert */}
@@ -429,27 +563,311 @@ export const ProjectsSection: React.FC = () => {
         </div>
       </div>
 
-      {/* Projects Table */}
-      <div className="rounded-3xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] overflow-hidden">
-        {loading ? (
-          <div className="py-16 text-center space-y-2">
-            <Loader2 className="w-6 h-6 animate-spin mx-auto text-[#8b2323]" />
-            <p className="text-xs text-stone-500">Loading projects from database...</p>
+      {/* Tabs Navigation Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 p-1.5 rounded-2xl bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800">
+        <div className="flex flex-wrap items-center gap-1.5">
+          <button
+            type="button"
+            onClick={() => setViewTab('all')}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              viewTab === 'all'
+                ? 'bg-[#8b2323] text-white shadow-[2px_2px_0px_#1c1917]'
+                : 'bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 border border-stone-300 dark:border-stone-700'
+            }`}
+          >
+            <span>All Projects</span>
+            <span className="ml-1.5 text-[10px] opacity-80 font-mono">({totalProjects})</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setViewTab('featured')}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              viewTab === 'featured'
+                ? 'bg-[#8b2323] text-white shadow-[2px_2px_0px_#1c1917]'
+                : 'bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 border border-stone-300 dark:border-stone-700'
+            }`}
+          >
+            <span className="flex items-center gap-1">
+              <Star className="w-3 h-3 fill-current text-amber-400" />
+              <span>Featured (Home)</span>
+            </span>
+            <span className="ml-1.5 text-[10px] opacity-80 font-mono">({featuredCount})</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setViewTab('published')}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              viewTab === 'published'
+                ? 'bg-[#8b2323] text-white shadow-[2px_2px_0px_#1c1917]'
+                : 'bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 border border-stone-300 dark:border-stone-700'
+            }`}
+          >
+            <span>Live Published</span>
+            <span className="ml-1.5 text-[10px] opacity-80 font-mono">({publishedCount})</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setViewTab('drafts')}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              viewTab === 'drafts'
+                ? 'bg-[#8b2323] text-white shadow-[2px_2px_0px_#1c1917]'
+                : 'bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 border border-stone-300 dark:border-stone-700'
+            }`}
+          >
+            <span>Drafts</span>
+            <span className="ml-1.5 text-[10px] opacity-80 font-mono">({draftCount})</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setViewTab('order')}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              viewTab === 'order'
+                ? 'bg-[#8b2323] text-white shadow-[2px_2px_0px_#1c1917]'
+                : 'bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 border border-stone-300 dark:border-stone-700'
+            }`}
+          >
+            <ArrowUpDown className="w-3.5 h-3.5" />
+            <span>Manage Order</span>
+            <span className="text-[10px] opacity-80 font-mono">({orderedProjects.length})</span>
+            {hasUnsavedOrderChanges && (
+              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse ml-0.5" title="Unsaved order changes" />
+            )}
+          </button>
+        </div>
+      </div>
+
+      {viewTab === 'order' ? (
+        /* ════════════════════════════════════════════════════════════════
+           MANAGE FEATURED PROJECTS ORDER INTERFACE
+        ════════════════════════════════════════════════════════════════ */
+        <div className="space-y-4">
+          {/* Header Bar with Action Buttons */}
+          <div className="p-4 sm:p-5 rounded-3xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <h3 className="text-base font-bold font-serif text-stone-900 dark:text-stone-100 flex items-center gap-2">
+                  <ArrowUpDown className="w-4 h-4 text-[#8b2323] dark:text-rose-400" />
+                  <span>Homepage Featured Projects Ordering</span>
+                </h3>
+                {hasUnsavedOrderChanges && (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-300 dark:border-amber-700 text-[10px] font-bold uppercase tracking-wider animate-pulse">
+                    ● Unsaved Changes
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-stone-500">
+                Drag cards or use position arrows. The project at <strong>Position #1</strong> appears first in the Featured Projects carousel on the homepage.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
+              <button
+                type="button"
+                onClick={handleResetOrder}
+                disabled={!hasUnsavedOrderChanges || savingOrder}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-stone-800 border-2 border-stone-900 dark:border-stone-700 shadow-[1.5px_1.5px_0px_#1c1917] text-stone-700 dark:text-stone-300 text-xs font-bold transition-all disabled:opacity-40 disabled:cursor-not-allowed hover:bg-stone-100 dark:hover:bg-stone-700 cursor-pointer"
+                title="Discard unsaved changes and reset to current database order"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Reset Order</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleSaveOrder}
+                disabled={!hasUnsavedOrderChanges || savingOrder}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+              >
+                {savingOrder ? (
+                  <>
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    <span>Saving Order...</span>
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-3.5 h-3.5" />
+                    <span>Save Order</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
-        ) : projects.length === 0 ? (
-          <div className="py-16 text-center space-y-2">
-            <p className="text-sm font-bold text-stone-700 dark:text-stone-300">No Projects Configured</p>
-            <p className="text-xs text-stone-400">Click "Add New Project" to create your first portfolio entry.</p>
-          </div>
-        ) : (
-          <>
-            {/* Mobile Cards View (<640px) */}
-            <div className="sm:hidden divide-y divide-stone-100 dark:divide-stone-800">
-              {projects.map((proj, idx) => {
-                const isPub = (proj.published ?? proj.isPublished) !== false;
-                const isFeat = (proj.featured ?? proj.isFeatured) === true;
-                const rank = proj.orderIndex ?? proj.displayOrder ?? idx + 1;
-                const banner = proj.bannerUrl || proj.thumbnailUrl;
+
+          {/* Sortable List */}
+          {orderedProjects.length === 0 ? (
+            <div className="py-16 text-center space-y-2 rounded-3xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 p-6">
+              <Star className="w-8 h-8 mx-auto text-amber-500 opacity-60" />
+              <h4 className="text-sm font-bold text-stone-700 dark:text-stone-300">No Featured Projects</h4>
+              <p className="text-xs text-stone-400">Mark projects as "Featured on Homepage" in their edit modal to manage their display order.</p>
+            </div>
+          ) : (
+            <div className="space-y-2.5">
+              {orderedProjects.map((proj, index) => {
+                const isFirst = index === 0;
+                const isLast = index === orderedProjects.length - 1;
+                const isDragging = draggedIndex === index;
+                const isDragOver = dragOverIndex === index;
+                const thumb = proj.featuredThumbnailUrl || proj.bannerUrl || proj.thumbnailUrl;
+
+                return (
+                  <div
+                    key={proj.id}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, index)}
+                    onDragOver={(e) => handleDragOver(e, index)}
+                    onDragEnd={handleDragEnd}
+                    onDrop={(e) => handleDrop(e, index)}
+                    className={`p-3.5 sm:p-4 rounded-2xl border-2 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
+                      isDragging
+                        ? 'opacity-40 border-dashed border-[#8b2323] bg-stone-100 dark:bg-stone-800'
+                        : isDragOver
+                        ? 'border-[#8b2323] bg-rose-50/50 dark:bg-rose-950/20 translate-y-0.5'
+                        : 'border-stone-900 dark:border-stone-700 bg-white dark:bg-[#16171d] shadow-[2.5px_2.5px_0px_#1c1917] dark:shadow-[2.5px_2.5px_0px_#000000]'
+                    }`}
+                  >
+                    {/* Left: Drag Handle, Position Badge, Thumbnail & Details */}
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                      {/* Drag Handle */}
+                      <div
+                        className="cursor-grab active:cursor-grabbing text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 p-1 shrink-0 select-none"
+                        title="Drag to reorder"
+                      >
+                        <GripVertical className="w-5 h-5" />
+                      </div>
+
+                      {/* Position Badge */}
+                      <span className={`w-8 h-8 rounded-xl font-mono font-bold text-xs flex items-center justify-center shrink-0 border ${
+                        index === 0
+                          ? 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-400'
+                          : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border-stone-300 dark:border-stone-700'
+                      }`}>
+                        #{index + 1}
+                      </span>
+
+                      {/* Thumbnail */}
+                      {thumb ? (
+                        <img
+                          src={thumb}
+                          alt={proj.title}
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=400&q=80';
+                          }}
+                          className="w-16 h-11 sm:w-20 sm:h-12 rounded-lg object-cover bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 shrink-0"
+                        />
+                      ) : (
+                        <div className="w-16 h-11 sm:w-20 sm:h-12 rounded-lg bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 flex items-center justify-center text-stone-400 shrink-0">
+                          <ImageIcon className="w-4 h-4" />
+                        </div>
+                      )}
+
+                      {/* Meta */}
+                      <div className="min-w-0 flex-1 space-y-0.5">
+                        <div className="flex items-center gap-2">
+                          <h4 className="text-xs sm:text-sm font-bold text-stone-900 dark:text-stone-100 truncate">
+                            {proj.title}
+                          </h4>
+                          {index === 0 && (
+                            <span className="hidden sm:inline-flex px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 text-[9px] font-bold uppercase tracking-wider border border-amber-300">
+                              First on Carousel
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex flex-wrap items-center gap-2 text-[10px] text-stone-500 font-mono">
+                          <span className="px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 font-bold flex items-center gap-0.5">
+                            <Star className="w-2.5 h-2.5 fill-current" /> Featured
+                          </span>
+                          {proj.category && (
+                            <span className="hidden sm:inline-block text-stone-400">
+                              • {proj.category}
+                            </span>
+                          )}
+                          {proj.featuredThumbnailUrl && (
+                            <span className="text-amber-600 dark:text-amber-400 font-medium">
+                              • Custom Home Thumb
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right: Quick Positioning Buttons */}
+                    <div className="flex items-center gap-1.5 self-end sm:self-center shrink-0 border-t sm:border-t-0 pt-2 sm:pt-0 border-stone-100 dark:border-stone-800">
+                      <button
+                        type="button"
+                        onClick={() => moveOrderItem(index, 0)}
+                        disabled={isFirst}
+                        className="p-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer"
+                        title="Move to Top (#1)"
+                      >
+                        <ChevronsUp className="w-3.5 h-3.5" />
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => moveOrderItem(index, index - 1)}
+                        disabled={isFirst}
+                        className="p-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer"
+                        title="Move Up"
+                      >
+                        <ChevronUp className="w-3.5 h-3.5" />
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => moveOrderItem(index, index + 1)}
+                        disabled={isLast}
+                        className="p-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer"
+                        title="Move Down"
+                      >
+                        <ChevronDown className="w-3.5 h-3.5" />
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => moveOrderItem(index, orderedProjects.length - 1)}
+                        disabled={isLast}
+                        className="p-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer"
+                        title="Move to Bottom"
+                      >
+                        <ChevronsDown className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      ) : (
+        /* Projects Table */
+        <div className="rounded-3xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] overflow-hidden">
+          {loading ? (
+            <div className="py-16 text-center space-y-2">
+              <Loader2 className="w-6 h-6 animate-spin mx-auto text-[#8b2323]" />
+              <p className="text-xs text-stone-500">Loading projects from database...</p>
+            </div>
+          ) : filteredProjects.length === 0 ? (
+            <div className="py-16 text-center space-y-2">
+              <p className="text-sm font-bold text-stone-700 dark:text-stone-300">
+                {viewTab === 'featured' ? 'No Featured Projects' : viewTab === 'published' ? 'No Published Projects' : viewTab === 'drafts' ? 'No Drafts' : 'No Projects Configured'}
+              </p>
+              <p className="text-xs text-stone-400">
+                {viewTab === 'all' ? 'Click "Add New Project" to create your first portfolio entry.' : 'No entries found matching this tab filter.'}
+              </p>
+            </div>
+          ) : (
+            <>
+              {/* Mobile Cards View (<640px) */}
+              <div className="sm:hidden divide-y divide-stone-100 dark:divide-stone-800">
+                {filteredProjects.map((proj, idx) => {
+                  const isPub = (proj.published ?? proj.isPublished) !== false;
+                  const isFeat = (proj.featured ?? proj.isFeatured) === true;
+                  const rank = proj.orderIndex ?? proj.displayOrder ?? idx + 1;
+                  const banner = proj.bannerUrl || proj.thumbnailUrl;
 
                 return (
                   <div key={proj.id} className="p-4 space-y-3">
@@ -578,7 +996,7 @@ export const ProjectsSection: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-stone-100 dark:divide-stone-800/60">
-                  {projects.map((proj, idx) => {
+                  {filteredProjects.map((proj, idx) => {
                     const isPub = (proj.published ?? proj.isPublished) !== false;
                     const isFeat = (proj.featured ?? proj.isFeatured) === true;
                     const rank = proj.orderIndex ?? proj.displayOrder ?? idx + 1;
@@ -722,6 +1140,7 @@ export const ProjectsSection: React.FC = () => {
           </>
         )}
       </div>
+      )}
 
       {/* Project Form Modal */}
       {isEditing && (

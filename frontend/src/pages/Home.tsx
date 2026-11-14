@@ -479,7 +479,13 @@ export const Home: React.FC = () => {
     api.getProjects()
       .then((res: any) => {
         if (res && res.data && Array.isArray(res.data) && res.data.length > 0) {
-          const mapped: Project[] = res.data.map((p: any) => ({
+          const sorted = [...res.data].sort((a: any, b: any) => {
+            const orderA = a.orderIndex ?? a.displayOrder ?? 999;
+            const orderB = b.orderIndex ?? b.displayOrder ?? 999;
+            return orderA - orderB;
+          });
+
+          const mapped: Project[] = sorted.map((p: any) => ({
             id: p.slug || p.id,
             client: p.client || 'Engineering Platform',
             category: p.category || 'Software Engineering',

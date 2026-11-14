@@ -315,14 +315,29 @@ export const projectController = {
    */
   async reorder(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { items } = req.body as { items: { id: string; orderIndex: number }[] };
+      const { items, orderedIds } = req.body as { 
+        items?: { id: string; orderIndex: number }[];
+        orderedIds?: string[];
+      };
 
-      if (!Array.isArray(items)) {
-        throw new AppError('Invalid items array', 400);
+      let normalizedItems: { id: string; orderIndex: number }[] = [];
+
+      if (Array.isArray(orderedIds) && orderedIds.length > 0) {
+        normalizedItems = orderedIds
+          .filter((id) => typeof id === 'string' && id.trim().length > 0)
+          .map((id, index) => ({ id: id.trim(), orderIndex: index + 1 }));
+      } else if (Array.isArray(items) && items.length > 0) {
+        normalizedItems = items
+          .filter((item) => item && typeof item.id === 'string' && typeof item.orderIndex === 'number')
+          .map((item) => ({ id: item.id.trim(), orderIndex: item.orderIndex }));
+      }
+
+      if (normalizedItems.length === 0) {
+        throw new AppError('Invalid items or orderedIds array', 400);
       }
 
       await prisma.$transaction(
-        items.map((item) =>
+        normalizedItems.map((item) =>
           prisma.project.update({
             where: { id: item.id },
             data: { orderIndex: item.orderIndex },
@@ -333,6 +348,7 @@ export const projectController = {
       res.status(200).json({
         success: true,
         message: 'Project order updated successfully',
+        updatedCount: normalizedItems.length,
       });
     } catch (error) {
       next(error);

@@ -349,6 +349,39 @@ export const api = {
   deleteProject: (id: string) => 
     apiRequest(`/projects/${id}`, { method: 'DELETE' }),
 
+  reorderProjects: async (itemsOrIds: Array<{ id: string; orderIndex: number }> | string[]) => {
+    let orderedIds: string[] = [];
+    let items: { id: string; orderIndex: number }[] = [];
+
+    if (itemsOrIds.length > 0 && typeof itemsOrIds[0] === 'string') {
+      orderedIds = itemsOrIds as string[];
+      items = orderedIds.map((id, idx) => ({ id, orderIndex: idx + 1 }));
+    } else {
+      items = itemsOrIds as { id: string; orderIndex: number }[];
+      orderedIds = items.map((i) => i.id);
+    }
+
+    const token = getStoredToken();
+    try {
+      const serverlessUrl = typeof window !== 'undefined' && window.location.origin.includes('pranavshende.online')
+        ? '/api/project-order'
+        : 'https://pranavshende.online/api/project-order';
+      const res = await fetch(serverlessUrl, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ orderedIds, items }),
+      });
+      if (res.ok) {
+        return await res.json();
+      }
+    } catch (_) {}
+
+    return apiRequest('/projects/admin/reorder', { method: 'PATCH', data: { items, orderedIds } });
+  },
+
   // Experiences
   createExperience: (data: any) => 
     apiRequest('/content/experience', { method: 'POST', data }),
