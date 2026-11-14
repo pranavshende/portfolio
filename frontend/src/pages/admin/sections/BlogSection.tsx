@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { 
   Plus, Edit2, Trash2, BookOpen, ExternalLink, Loader2, X, Eye, 
   Upload, Image as ImageIcon, Sparkles, CheckCircle2, Clock, Tag, 
-  Search, Filter, FileText, ArrowUpRight, Key, Zap, TrendingUp
+  Search, Filter, FileText, ArrowUpRight, Key, Zap, TrendingUp,
+  GripVertical, ChevronUp, ChevronDown, ChevronsUp, ChevronsDown, RotateCcw, Save, ArrowUpDown, Layers, AlertCircle
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -77,6 +78,15 @@ export const BlogSection: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'write' | 'preview'>('write');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [searchFilter, setSearchFilter] = useState('');
+  const [viewTab, setViewTab] = useState<'all' | 'published' | 'drafts' | 'order'>('all');
+
+  // Custom Blog Ordering state
+  const [orderedPosts, setOrderedPosts] = useState<BlogPostItem[]>([]);
+  const [initialOrderedIds, setInitialOrderedIds] = useState<string[]>([]);
+  const [savingOrder, setSavingOrder] = useState(false);
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isAiStructuring, setIsAiStructuring] = useState(false);
@@ -139,6 +149,115 @@ export const BlogSection: React.FC = () => {
   useEffect(() => {
     fetchPosts();
   }, []);
+
+  // Synchronize orderedPosts when posts are loaded
+  useEffect(() => {
+    const published = posts.filter((p) => (p.published ?? p.isPublished) !== false);
+    const sorted = [...published].sort((a, b) => {
+      const orderA = a.displayOrder ?? 999;
+      const orderB = b.displayOrder ?? 999;
+      if (orderA !== orderB) return orderA - orderB;
+      const dateA = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+      const dateB = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+      return dateB - dateA;
+    });
+    setOrderedPosts(sorted);
+    setInitialOrderedIds(sorted.map((p) => p.id));
+  }, [posts]);
+
+  const hasUnsavedOrderChanges = useMemo(() => {
+    if (orderedPosts.length === 0 && initialOrderedIds.length === 0) return false;
+    if (orderedPosts.length !== initialOrderedIds.length) return true;
+    return JSON.stringify(orderedPosts.map((p) => p.id)) !== JSON.stringify(initialOrderedIds);
+  }, [orderedPosts, initialOrderedIds]);
+
+  // Warn if navigating away with unsaved order changes
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedOrderChanges) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [hasUnsavedOrderChanges]);
+
+  const moveOrderItem = (fromIndex: number, toIndex: number) => {
+    if (fromIndex === toIndex || toIndex < 0 || toIndex >= orderedPosts.length) return;
+    setOrderedPosts((prev) => {
+      const list = [...prev];
+      const [moved] = list.splice(fromIndex, 1);
+      list.splice(toIndex, 0, moved);
+      return list;
+    });
+  };
+
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    setDraggedIndex(index);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', String(index));
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    if (dragOverIndex !== index) {
+      setDragOverIndex(index);
+    }
+  };
+
+  const handleDragEnd = () => {
+    setDraggedIndex(null);
+    setDragOverIndex(null);
+  };
+
+  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault();
+    if (draggedIndex === null || draggedIndex === dropIndex) {
+      setDraggedIndex(null);
+      setDragOverIndex(null);
+      return;
+    }
+    moveOrderItem(draggedIndex, dropIndex);
+    setDraggedIndex(null);
+    setDragOverIndex(null);
+  };
+
+  const handleSaveOrder = async () => {
+    setSavingOrder(true);
+    try {
+      const ids = orderedPosts.map((p) => p.id);
+      const res = await api.saveBlogOrder(ids);
+      if (res && (res.success || res.status === 200)) {
+        setInitialOrderedIds(ids);
+        showToast('Blog display order saved successfully!');
+        // Update posts in memory to reflect new displayOrder
+        setPosts((prev) => {
+          const orderMap = new Map(ids.map((id, idx) => [id, idx + 1]));
+          return [...prev].map((p) => ({
+            ...p,
+            displayOrder: orderMap.get(p.id) ?? p.displayOrder,
+          }));
+        });
+      } else {
+        throw new Error(res?.message || 'Failed to save blog order');
+      }
+    } catch (err: any) {
+      alert(err.message || 'Error saving blog order.');
+    } finally {
+      setSavingOrder(false);
+    }
+  };
+
+  const handleResetOrder = () => {
+    if (window.confirm('Are you sure you want to discard unsaved changes and reset blog order?')) {
+      const postMap = new Map(posts.map((p) => [p.id, p]));
+      const restored = initialOrderedIds.map((id) => postMap.get(id)).filter(Boolean) as BlogPostItem[];
+      setOrderedPosts(restored);
+      showToast('Blog ordering reset.');
+    }
+  };
 
   const generateSlug = (text: string) => {
     return text
@@ -799,15 +918,22 @@ Formatting Rules:
   const totalViews = posts.reduce((sum, p) => sum + (p.viewCount || 0), 0);
   const totalImpressions = posts.reduce((sum, p) => sum + (p.impressionCount || 0), 0);
 
-  const filteredPosts = posts.filter((p) => {
-    if (!searchFilter.trim()) return true;
+  const filteredPosts = useMemo(() => {
+    let list = posts;
+    if (viewTab === 'published') {
+      list = posts.filter((p) => (p.published ?? p.isPublished) !== false);
+    } else if (viewTab === 'drafts') {
+      list = posts.filter((p) => (p.published ?? p.isPublished) === false);
+    }
+
+    if (!searchFilter.trim()) return list;
     const q = searchFilter.toLowerCase();
-    return (
+    return list.filter((p) =>
       p.title?.toLowerCase().includes(q) ||
       p.category?.toLowerCase().includes(q) ||
       p.tags?.some((t) => t.toLowerCase().includes(q))
     );
-  });
+  }, [posts, viewTab, searchFilter]);
 
   return (
     <div className="space-y-6">
@@ -912,7 +1038,256 @@ Formatting Rules:
         </div>
       </div>
 
-      {/* Search Filter */}
+      {/* Blog Management Navigation Tabs */}
+      <div className="flex flex-wrap items-center gap-2 border-b-2 border-stone-200 dark:border-stone-800 pb-2">
+        <button
+          type="button"
+          onClick={() => setViewTab('all')}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+            viewTab === 'all'
+              ? 'bg-[#8b2323] text-white shadow-[2px_2px_0px_#1c1917]'
+              : 'bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 border border-stone-300 dark:border-stone-700'
+          }`}
+        >
+          <span>All Blogs</span>
+          <span className="text-[10px] opacity-80 font-mono">({totalPosts})</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setViewTab('published')}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+            viewTab === 'published'
+              ? 'bg-[#8b2323] text-white shadow-[2px_2px_0px_#1c1917]'
+              : 'bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 border border-stone-300 dark:border-stone-700'
+          }`}
+        >
+          <span>Published</span>
+          <span className="text-[10px] opacity-80 font-mono">({publishedCount})</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setViewTab('drafts')}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+            viewTab === 'drafts'
+              ? 'bg-[#8b2323] text-white shadow-[2px_2px_0px_#1c1917]'
+              : 'bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 border border-stone-300 dark:border-stone-700'
+          }`}
+        >
+          <span>Drafts</span>
+          <span className="text-[10px] opacity-80 font-mono">({draftCount})</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setViewTab('order')}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+            viewTab === 'order'
+              ? 'bg-[#8b2323] text-white shadow-[2px_2px_0px_#1c1917]'
+              : 'bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 border border-stone-300 dark:border-stone-700'
+          }`}
+        >
+          <ArrowUpDown className="w-3.5 h-3.5" />
+          <span>Manage Order</span>
+          <span className="text-[10px] opacity-80 font-mono">({orderedPosts.length})</span>
+          {hasUnsavedOrderChanges && (
+            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse ml-0.5" title="Unsaved order changes" />
+          )}
+        </button>
+      </div>
+
+      {viewTab === 'order' ? (
+        /* ════════════════════════════════════════════════════════════════
+           MANAGE BLOG ORDER INTERFACE
+        ════════════════════════════════════════════════════════════════ */
+        <div className="space-y-4">
+          {/* Header Bar with Action Buttons */}
+          <div className="p-4 sm:p-5 rounded-3xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <h3 className="text-base font-bold font-serif text-stone-900 dark:text-stone-100 flex items-center gap-2">
+                  <ArrowUpDown className="w-4 h-4 text-[#8b2323] dark:text-rose-400" />
+                  <span>Public Blog Ordering</span>
+                </h3>
+                {hasUnsavedOrderChanges && (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-300 dark:border-amber-700 text-[10px] font-bold uppercase tracking-wider animate-pulse">
+                    ● Unsaved Changes
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-stone-500">
+                Drag cards or use position arrows. The article at <strong>Position #1</strong> appears first on the public blog and homepage showcase.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
+              <button
+                type="button"
+                onClick={handleResetOrder}
+                disabled={!hasUnsavedOrderChanges || savingOrder}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-stone-800 border-2 border-stone-900 dark:border-stone-700 shadow-[1.5px_1.5px_0px_#1c1917] text-stone-700 dark:text-stone-300 text-xs font-bold transition-all disabled:opacity-40 disabled:cursor-not-allowed hover:bg-stone-100 dark:hover:bg-stone-700 cursor-pointer"
+                title="Discard unsaved changes and reset to current database order"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Reset Order</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleSaveOrder}
+                disabled={!hasUnsavedOrderChanges || savingOrder}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+              >
+                {savingOrder ? (
+                  <>
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    <span>Saving Order...</span>
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-3.5 h-3.5" />
+                    <span>Save Order</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Sortable List */}
+          {orderedPosts.length === 0 ? (
+            <div className="py-16 text-center space-y-2 rounded-3xl bg-white dark:bg-[#16171d] border-2 border-stone-900 dark:border-stone-700 p-6">
+              <BookOpen className="w-8 h-8 mx-auto text-stone-400 opacity-60" />
+              <h4 className="text-sm font-bold text-stone-700 dark:text-stone-300">No Published Articles</h4>
+              <p className="text-xs text-stone-400">Publish articles first to manage their display order.</p>
+            </div>
+          ) : (
+            <div className="space-y-2.5">
+              {orderedPosts.map((post, index) => {
+                const isFirst = index === 0;
+                const isLast = index === orderedPosts.length - 1;
+                const isDragging = draggedIndex === index;
+                const isDragOver = dragOverIndex === index;
+
+                return (
+                  <div
+                    key={post.id}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, index)}
+                    onDragOver={(e) => handleDragOver(e, index)}
+                    onDragEnd={handleDragEnd}
+                    onDrop={(e) => handleDrop(e, index)}
+                    className={`p-3.5 sm:p-4 rounded-2xl border-2 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
+                      isDragging
+                        ? 'opacity-40 border-dashed border-[#8b2323] bg-stone-100 dark:bg-stone-800'
+                        : isDragOver
+                        ? 'border-[#8b2323] bg-rose-50/50 dark:bg-rose-950/20 translate-y-0.5'
+                        : 'border-stone-900 dark:border-stone-700 bg-white dark:bg-[#16171d] shadow-[2.5px_2.5px_0px_#1c1917] dark:shadow-[2.5px_2.5px_0px_#000000]'
+                    }`}
+                  >
+                    {/* Left: Drag Handle, Position Badge, Thumbnail & Details */}
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                      {/* Drag Handle */}
+                      <div
+                        className="cursor-grab active:cursor-grabbing text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 p-1 shrink-0 select-none"
+                        title="Drag to reorder"
+                      >
+                        <GripVertical className="w-5 h-5" />
+                      </div>
+
+                      {/* Position Badge */}
+                      <span className={`w-8 h-8 rounded-xl font-mono font-bold text-xs flex items-center justify-center shrink-0 border ${
+                        index === 0
+                          ? 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-400'
+                          : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border-stone-300 dark:border-stone-700'
+                      }`}>
+                        #{index + 1}
+                      </span>
+
+                      {/* Thumbnail */}
+                      <img
+                        src={resolveBlogCover(post.coverImageUrl, post.slug)}
+                        alt={post.title}
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = jarvisBanner;
+                        }}
+                        className="w-14 h-11 sm:w-16 sm:h-12 rounded-lg object-cover bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 shrink-0"
+                      />
+
+                      {/* Meta */}
+                      <div className="min-w-0 flex-1 space-y-0.5">
+                        <h4 className="text-xs sm:text-sm font-bold text-stone-900 dark:text-stone-100 truncate">
+                          {post.title}
+                        </h4>
+                        <div className="flex flex-wrap items-center gap-2 text-[10px] text-stone-500 font-mono">
+                          <span className="px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 font-bold">
+                            Published
+                          </span>
+                          {post.category && (
+                            <span className="hidden sm:inline-block text-stone-400">
+                              • {post.category}
+                            </span>
+                          )}
+                          {post.publishedAt && (
+                            <span className="text-stone-400">
+                              • {new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right: Quick Positioning Buttons */}
+                    <div className="flex items-center gap-1.5 self-end sm:self-center shrink-0 border-t sm:border-t-0 pt-2 sm:pt-0 border-stone-100 dark:border-stone-800">
+                      <button
+                        type="button"
+                        onClick={() => moveOrderItem(index, 0)}
+                        disabled={isFirst}
+                        className="p-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer"
+                        title="Move to Top"
+                      >
+                        <ChevronsUp className="w-3.5 h-3.5" />
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => moveOrderItem(index, index - 1)}
+                        disabled={isFirst}
+                        className="p-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer"
+                        title="Move Up"
+                      >
+                        <ChevronUp className="w-3.5 h-3.5" />
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => moveOrderItem(index, index + 1)}
+                        disabled={isLast}
+                        className="p-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer"
+                        title="Move Down"
+                      >
+                        <ChevronDown className="w-3.5 h-3.5" />
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => moveOrderItem(index, orderedPosts.length - 1)}
+                        disabled={isLast}
+                        className="p-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer"
+                        title="Move to Bottom"
+                      >
+                        <ChevronsDown className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      ) : (
+        <>
+          {/* Search Filter */}
       <div className="relative">
         <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400" />
         <input
@@ -1046,6 +1421,8 @@ Formatting Rules:
           </div>
         )}
       </div>
+        </>
+      )}
 
       {/* Blog Post Create / Edit Modal */}
       {isEditing && (

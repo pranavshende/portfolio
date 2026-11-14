@@ -21,7 +21,10 @@ async function main() {
   console.log('[Sync] Connecting to Supabase database...');
   const blogs = await prisma.blogPost.findMany({
     where: { published: true },
-    orderBy: { createdAt: 'desc' }
+    orderBy: [
+      { displayOrder: 'asc' },
+      { publishedAt: 'desc' }
+    ]
   });
   console.log(`[Sync] Retrieved ${blogs.length} published blog posts.`);
 
@@ -45,6 +48,7 @@ async function main() {
     tags: Array.isArray(b.tags) ? b.tags : [],
     viewCount: b.viewCount || 0,
     impressionCount: b.impressionCount || 0,
+    displayOrder: b.displayOrder || 0,
     publishedAt: b.publishedAt ? b.publishedAt.toISOString() : b.createdAt.toISOString(),
     updatedAt: b.updatedAt ? b.updatedAt.toISOString() : b.createdAt.toISOString(),
     seoTitle: b.seoTitle || `${b.title} | Technical Blog by Pranav Shende`,

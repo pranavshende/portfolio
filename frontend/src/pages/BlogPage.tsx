@@ -32,7 +32,19 @@ interface BlogPost {
   createdAt?: string;
   viewCount?: number;
   impressionCount?: number;
+  displayOrder?: number;
 }
+
+const sortPostsByDisplayOrder = (list: BlogPost[]): BlogPost[] => {
+  return [...list].sort((a, b) => {
+    const orderA = a.displayOrder && a.displayOrder > 0 ? a.displayOrder : 9999;
+    const orderB = b.displayOrder && b.displayOrder > 0 ? b.displayOrder : 9999;
+    if (orderA !== orderB) return orderA - orderB;
+    const dateA = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+    const dateB = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+    return dateB - dateA;
+  });
+};
 
 const CATEGORIES = [
   'All',
@@ -59,7 +71,7 @@ export const BlogPage: React.FC = () => {
       .then((r) => r.json())
       .then((manifest: BlogPost[]) => {
         if (Array.isArray(manifest) && manifest.length > 0) {
-          setPosts(manifest);
+          setPosts(sortPostsByDisplayOrder(manifest));
           setLoading(false);
         }
       })
@@ -69,9 +81,9 @@ export const BlogPage: React.FC = () => {
     api.getBlogPosts()
       .then((res: any) => {
         if (res && res.data && Array.isArray(res.data) && res.data.length > 0) {
-          setPosts(res.data);
+          setPosts(sortPostsByDisplayOrder(res.data));
         } else if (Array.isArray(res) && res.length > 0) {
-          setPosts(res);
+          setPosts(sortPostsByDisplayOrder(res));
         }
       })
       .catch((err) => {

@@ -39,7 +39,7 @@ export default async function handler(req, res) {
 
     // Query all published blog posts directly from Supabase
     const blogRes = await client.query(
-      'SELECT slug, "publishedAt", "updatedAt" FROM blog_posts WHERE published = true ORDER BY "publishedAt" DESC'
+      'SELECT slug, "publishedAt", "updatedAt" FROM blog_posts WHERE published = true ORDER BY "displayOrder" ASC, "publishedAt" DESC NULLS LAST'
     );
 
     // Query all published projects

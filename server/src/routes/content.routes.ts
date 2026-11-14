@@ -39,6 +39,8 @@ router.delete('/testimonials/:id', authenticateAdmin, contentController.deleteTe
 
 // Blog
 router.get('/blog', contentController.getBlogPosts);
+router.get('/blog/order', authenticateAdmin, contentController.getBlogOrder);
+router.put('/blog/order', authenticateAdmin, contentController.saveBlogOrder);
 router.get('/blog/stats', contentController.getBlogStats);
 router.post('/blog/stats', contentController.recordBlogStats);
 router.get('/blog/admin/all', authenticateAdmin, contentController.adminGetBlogPosts);

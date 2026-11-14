@@ -272,9 +272,77 @@ export const contentController = {
 
       const items = await prisma.blogPost.findMany({
         where,
-        orderBy: { publishedAt: 'desc' },
+        orderBy: [
+          { displayOrder: 'asc' },
+          { publishedAt: 'desc' }
+        ],
       });
       res.status(200).json({ success: true, count: items.length, data: items });
+    } catch (e) {
+      next(e);
+    }
+  },
+
+  async getBlogOrder(_req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const items = await prisma.blogPost.findMany({
+        where: { published: true },
+        orderBy: [
+          { displayOrder: 'asc' },
+          { publishedAt: 'desc' }
+        ],
+        select: {
+          id: true,
+          slug: true,
+          title: true,
+          category: true,
+          coverImageUrl: true,
+          published: true,
+          publishedAt: true,
+          displayOrder: true,
+          viewCount: true,
+          impressionCount: true,
+        },
+      });
+      res.status(200).json({ success: true, count: items.length, data: items });
+    } catch (e) {
+      next(e);
+    }
+  },
+
+  async saveBlogOrder(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { orderedIds, orders } = req.body;
+      let updates: Array<{ id: string; displayOrder: number }> = [];
+
+      if (Array.isArray(orderedIds) && orderedIds.length > 0) {
+        updates = orderedIds
+          .filter((id) => typeof id === 'string' && id.trim().length > 0)
+          .map((id, index) => ({ id: id.trim(), displayOrder: index + 1 }));
+      } else if (Array.isArray(orders) && orders.length > 0) {
+        updates = orders
+          .filter((o) => o && typeof o.id === 'string' && typeof o.displayOrder === 'number')
+          .map((o) => ({ id: o.id.trim(), displayOrder: o.displayOrder }));
+      }
+
+      if (updates.length === 0) {
+        throw new AppError('No valid blog ordering list provided', 400);
+      }
+
+      await prisma.$transaction(
+        updates.map((u) =>
+          prisma.blogPost.update({
+            where: { id: u.id },
+            data: { displayOrder: u.displayOrder },
+          })
+        )
+      );
+
+      res.status(200).json({
+        success: true,
+        message: 'Blog order successfully saved',
+        updatedCount: updates.length,
+      });
     } catch (e) {
       next(e);
     }
@@ -349,7 +417,12 @@ export const contentController = {
 
   async adminGetBlogPosts(_req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const items = await prisma.blogPost.findMany({ orderBy: { createdAt: 'desc' } });
+      const items = await prisma.blogPost.findMany({
+        orderBy: [
+          { displayOrder: 'asc' },
+          { createdAt: 'desc' }
+        ],
+      });
       res.status(200).json({ success: true, count: items.length, data: items });
     } catch (e) {
       next(e);
@@ -392,6 +465,15 @@ export const contentController = {
         finalSlug = `${slug}-${Date.now().toString(36)}`;
       }
 
+      // Calculate displayOrder: append to end if not specified
+      let displayOrder = Number(body.displayOrder);
+      if (!displayOrder || displayOrder <= 0) {
+        const maxOrder = await prisma.blogPost.aggregate({
+          _max: { displayOrder: true },
+        });
+        displayOrder = (maxOrder._max.displayOrder || 0) + 1;
+      }
+
       const data: any = {
         title,
         slug: finalSlug,
@@ -404,6 +486,7 @@ export const contentController = {
         readingTimeMinutes,
         published,
         publishedAt: published ? (body.publishedAt ? new Date(body.publishedAt) : new Date()) : null,
+        displayOrder,
         seoTitle: (body.seoTitle || title).trim() || null,
         seoDescription: (body.seoDescription || body.excerpt || '').trim() || null,
         canonicalUrl: (body.canonicalUrl || `https://pranavshende.online/blog/${finalSlug}`).trim() || null,

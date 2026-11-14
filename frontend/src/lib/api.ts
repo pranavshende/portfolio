@@ -344,6 +344,43 @@ export const api = {
   getAdminBlogPosts: () =>
     apiRequest('/content/blog/admin/all'),
 
+  getBlogOrder: async () => {
+    try {
+      const serverlessUrl = typeof window !== 'undefined' && window.location.origin.includes('pranavshende.online')
+        ? '/api/blog-order'
+        : 'https://pranavshende.online/api/blog-order';
+      const res = await fetch(serverlessUrl, { cache: 'no-cache' });
+      if (res.ok) {
+        const json = await res.json();
+        if (json.data) return json;
+      }
+    } catch (_) {}
+
+    return apiRequest('/content/blog/order');
+  },
+
+  saveBlogOrder: async (orderedIds: string[]) => {
+    const token = getStoredToken();
+    try {
+      const serverlessUrl = typeof window !== 'undefined' && window.location.origin.includes('pranavshende.online')
+        ? '/api/blog-order'
+        : 'https://pranavshende.online/api/blog-order';
+      const res = await fetch(serverlessUrl, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ orderedIds }),
+      });
+      if (res.ok) {
+        return await res.json();
+      }
+    } catch (_) {}
+
+    return apiRequest('/content/blog/order', { method: 'PUT', data: { orderedIds } });
+  },
+
   createBlogPost: (data: any) => 
     apiRequest('/content/blog', { method: 'POST', data }),
 

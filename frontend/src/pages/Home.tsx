@@ -7,7 +7,7 @@ import {
   ChevronLeft, ChevronRight, GitFork, Sparkles, Eye, TrendingUp
 } from 'lucide-react';
 import { DoodleLayout } from '@/components/DoodleLayout';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { api } from '@/lib/api';
 import useAnalytics from '@/hooks/useAnalytics';
 import useBlogStats from '@/hooks/useBlogStats';
@@ -361,6 +361,7 @@ const useHorizontalSlider = (itemCount: number) => {
 
 export const Home: React.FC = () => {
   useAnalytics();
+  const navigate = useNavigate();
   const { isDark } = useMode();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [contactModalOpen, setContactModalOpen] = useState<boolean>(false);
@@ -501,7 +502,13 @@ export const Home: React.FC = () => {
       .then((r) => r.json())
       .then((manifest: any[]) => {
         if (Array.isArray(manifest) && manifest.length > 0) {
-          setRecentBlogs(manifest.slice(0, 10));
+          const sorted = [...manifest].sort((a, b) => {
+            const orderA = a.displayOrder && a.displayOrder > 0 ? a.displayOrder : 9999;
+            const orderB = b.displayOrder && b.displayOrder > 0 ? b.displayOrder : 9999;
+            if (orderA !== orderB) return orderA - orderB;
+            return (new Date(b.publishedAt || 0).getTime()) - (new Date(a.publishedAt || 0).getTime());
+          });
+          setRecentBlogs(sorted.slice(0, 10));
         }
       })
       .catch(() => {});
@@ -509,10 +516,15 @@ export const Home: React.FC = () => {
     // 2. Fetch fresh posts from API
     api.getBlogPosts()
       .then((res: any) => {
-        if (res && res.data && Array.isArray(res.data) && res.data.length > 0) {
-          setRecentBlogs(res.data.slice(0, 10));
-        } else if (Array.isArray(res) && res.length > 0) {
-          setRecentBlogs(res.slice(0, 10));
+        const raw = res?.data || (Array.isArray(res) ? res : []);
+        if (Array.isArray(raw) && raw.length > 0) {
+          const sorted = [...raw].sort((a, b) => {
+            const orderA = a.displayOrder && a.displayOrder > 0 ? a.displayOrder : 9999;
+            const orderB = b.displayOrder && b.displayOrder > 0 ? b.displayOrder : 9999;
+            if (orderA !== orderB) return orderA - orderB;
+            return (new Date(b.publishedAt || 0).getTime()) - (new Date(a.publishedAt || 0).getTime());
+          });
+          setRecentBlogs(sorted.slice(0, 10));
         }
       })
       .catch(() => {});
@@ -1003,48 +1015,108 @@ export const Home: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-1">
-          {/* Publication 1 */}
-          <div className="p-5 rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all space-y-2">
-            <span className="px-2.5 py-0.5 rounded-xs border border-emerald-800 text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 text-[10px] font-bold uppercase font-mono">
-              IEEE Conference
-            </span>
-            <h3 className="text-base font-bold text-stone-900 dark:text-stone-100 leading-snug">
-              CNN Based Classification of Lumpy Skin Disease
-            </h3>
-            <p className="text-xs text-stone-600 dark:text-stone-300 leading-relaxed">
-              Presented at the 2025 4th OPJU International Conference on Technology and Management (IEEE). Explores quantized lightweight convolutional networks for rural veterinary disease diagnostics.
-            </p>
-            <a
-              href="https://doi.org/10.1109/OTCON65728.2025.11070341"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-xs text-[#8b2323] dark:text-rose-400 hover:underline font-bold pt-1 font-mono"
-            >
-              <span>doi: 10.1109/OTCON65728.2025.11070341</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </a>
+          {/* Research Paper 1 – Alumni–Student Networking Ecosystem */}
+          <div
+            onClick={() => navigate('/blog/beyond-alumni-directories-building-an-intelligent-ai-powered-alumni-student-networking-ecosystem')}
+            className="group relative p-5 sm:p-6 rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer flex flex-col justify-between space-y-4"
+          >
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between gap-2">
+                <span className="px-2.5 py-0.5 rounded-xs border border-teal-800 text-teal-800 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/40 text-[10px] font-bold uppercase font-mono tracking-wider">
+                  IJACTE Journal • Peer-Reviewed
+                </span>
+                <span className="text-[10px] font-mono text-stone-400">May 2025</span>
+              </div>
+
+              <h3 className="text-base sm:text-lg font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors leading-snug">
+                <Link
+                  to="/blog/beyond-alumni-directories-building-an-intelligent-ai-powered-alumni-student-networking-ecosystem"
+                  onClick={(e) => e.stopPropagation()}
+                  className="hover:underline"
+                >
+                  Beyond Alumni Directories: Building an Intelligent AI-Powered Alumni–Student Networking Ecosystem
+                </Link>
+              </h3>
+
+              <p className="text-xs text-stone-600 dark:text-stone-300 leading-relaxed">
+                Published in the International Journal on Advanced Computer Theory and Engineering, 14(1): 193–197, May 2025. Mentorship and career matchmaking platform connecting alumni with undergraduate students.
+              </p>
+            </div>
+
+            <div className="pt-3 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between gap-3 text-xs">
+              <a
+                href="https://doi.org/10.65521/ijacte.v14i1.388"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="inline-flex items-center gap-1 text-[11px] text-stone-500 hover:text-[#8b2323] dark:hover:text-rose-400 hover:underline font-mono"
+                title="View original publication on IJACTE"
+              >
+                <span>doi: 10.65521/ijacte.v14i1.388</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
+
+              <Link
+                to="/blog/beyond-alumni-directories-building-an-intelligent-ai-powered-alumni-student-networking-ecosystem"
+                onClick={(e) => e.stopPropagation()}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[1.5px_1.5px_0px_#1c1917] group-hover:translate-x-0.5 transition-all shrink-0"
+              >
+                <span>Read Publication</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
           </div>
 
-          {/* Publication 2 */}
-          <div className="p-5 rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all space-y-2">
-            <span className="px-2.5 py-0.5 rounded-xs border border-teal-800 text-teal-800 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/40 text-[10px] font-bold uppercase font-mono">
-              IJACTE Journal
-            </span>
-            <h3 className="text-base font-bold text-stone-900 dark:text-stone-100 leading-snug">
-              Intelligent Platform to Interconnect Alumni and Student for Educational Institutes
-            </h3>
-            <p className="text-xs text-stone-600 dark:text-stone-300 leading-relaxed">
-              Published in the International Journal on Advanced Computer Theory and Engineering, 14(1): 193–197, May 2025. Mentorship and career matchmaking platform connecting alumni with undergraduate students.
-            </p>
-            <a
-              href="https://doi.org/10.65521/ijacte.v14i1.388"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-xs text-[#8b2323] dark:text-rose-400 hover:underline font-bold pt-1 font-mono"
-            >
-              <span>doi: 10.65521/ijacte.v14i1.388</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </a>
+          {/* Research Paper 2 – Lumpy Skin Disease Detection */}
+          <div
+            onClick={() => navigate('/blog/ai-veterinary-healthcare-lumpy-skin-disease-detection')}
+            className="group relative p-5 sm:p-6 rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer flex flex-col justify-between space-y-4"
+          >
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between gap-2">
+                <span className="px-2.5 py-0.5 rounded-xs border border-emerald-800 text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 text-[10px] font-bold uppercase font-mono tracking-wider">
+                  IEEE Conference • OTCON 2025
+                </span>
+                <span className="text-[10px] font-mono text-stone-400">Feb 2025</span>
+              </div>
+
+              <h3 className="text-base sm:text-lg font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors leading-snug">
+                <Link
+                  to="/blog/ai-veterinary-healthcare-lumpy-skin-disease-detection"
+                  onClick={(e) => e.stopPropagation()}
+                  className="hover:underline"
+                >
+                  How AI Can Transform Veterinary Healthcare: Detecting Lumpy Skin Disease
+                </Link>
+              </h3>
+
+              <p className="text-xs text-stone-600 dark:text-stone-300 leading-relaxed">
+                Presented at the 2025 4th OPJU International Conference on Technology and Management (IEEE). Explores quantized lightweight convolutional networks for rural veterinary disease diagnostics.
+              </p>
+            </div>
+
+            <div className="pt-3 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between gap-3 text-xs">
+              <a
+                href="https://doi.org/10.1109/OTCON65728.2025.11070341"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="inline-flex items-center gap-1 text-[11px] text-stone-500 hover:text-[#8b2323] dark:hover:text-rose-400 hover:underline font-mono"
+                title="View original publication on IEEE Xplore"
+              >
+                <span>doi: 10.1109/OTCON65728.2025.11070341</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
+
+              <Link
+                to="/blog/ai-veterinary-healthcare-lumpy-skin-disease-detection"
+                onClick={(e) => e.stopPropagation()}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[1.5px_1.5px_0px_#1c1917] group-hover:translate-x-0.5 transition-all shrink-0"
+              >
+                <span>Read Publication</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>

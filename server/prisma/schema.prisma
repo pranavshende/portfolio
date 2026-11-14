@@ -274,6 +274,7 @@ model BlogPost {
   publishedAt        DateTime?
   viewCount          Int       @default(0)
   impressionCount    Int       @default(0)
+  displayOrder       Int       @default(0)
   seoTitle           String?
   seoDescription     String?
   canonicalUrl       String?
@@ -282,6 +283,7 @@ model BlogPost {
 
   @@index([slug])
   @@index([published])
+  @@index([displayOrder])
   @@map("blog_posts")
 }
 
