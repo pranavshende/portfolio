@@ -12,6 +12,14 @@ import useProjectStats from '@/hooks/useProjectStats';
 import { api } from '@/lib/api';
 import { LoadingThumbnail, resolveCustomPhoto } from '@/components/LoadingThumbnail';
 
+import jansamparkPhoto from '../photo/jansampark.png';
+import solarAnalyticsPhoto from '../photo/solar_analytics.png';
+import pashurakshakPhoto from '../photo/pashurakshak.png';
+import attritionBanner from '../photo/attrition_banner.png';
+import tastifyyBanner from '../photo/tastifyy_banner.png';
+import electropathyBanner from '../photo/electropathy_banner.png';
+import jarvisBanner from '../photo/jarvis_banner.png';
+
 
 interface RepoMeta {
   title?: string;
@@ -254,7 +262,30 @@ export const ProjectsPage: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'flagship' | 'ai' | 'algorithms'>('all');
 
   useEffect(() => {
+    const projectAssetMap: Record<string, string> = {
+      jarvis: jarvisBanner,
+      'jarvis-ai': jarvisBanner,
+      'jarvis-mcp-multipledbs': jarvisBanner,
+      electropathy: electropathyBanner,
+      'electropathy-ai': electropathyBanner,
+      'electropathy_ai': electropathyBanner,
+      tastifyy: tastifyyBanner,
+      attrition: attritionBanner,
+      'employee-attrition-ai': attritionBanner,
+      'employeeattritionsystem': attritionBanner,
+      solar: solarAnalyticsPhoto,
+      'solar-analytics': solarAnalyticsPhoto,
+      'solar-intelligence': solarAnalyticsPhoto,
+      pashurakshak: pashurakshakPhoto,
+      jansampark: jansamparkPhoto,
+      'jan-sampark': jansamparkPhoto,
+    };
+
     const resolveProjectThumbnail = (p: any): string | undefined => {
+      const slug = String(p.slug || p.id || '').toLowerCase();
+      if (projectAssetMap[slug]) {
+        return projectAssetMap[slug];
+      }
       const raw = p.thumbnailUrl || p.bannerUrl || p.imageUrl || p.coverImageUrl;
       return resolveCustomPhoto(raw) || undefined;
     };
