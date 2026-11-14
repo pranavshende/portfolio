@@ -12,6 +12,7 @@ import useAnalytics from '@/hooks/useAnalytics';
 import useBlogStats from '@/hooks/useBlogStats';
 
 import { LoadingThumbnail, resolveCustomPhoto } from '@/components/LoadingThumbnail';
+import { getCleanExcerpt } from '@/lib/excerpt';
 
 const resolveBlogCover = (url?: string): string | null => {
   return resolveCustomPhoto(url);
@@ -107,10 +108,11 @@ export const BlogPage: React.FC = () => {
         post.category?.toLowerCase() === selectedCategory.toLowerCase();
 
       const q = searchQuery.toLowerCase().trim();
+      const cleanDesc = getCleanExcerpt(post.excerpt, post.content);
       const matchesSearch = 
         !q ||
         post.title?.toLowerCase().includes(q) ||
-        post.excerpt?.toLowerCase().includes(q) ||
+        cleanDesc.toLowerCase().includes(q) ||
         post.tags?.some((t) => t.toLowerCase().includes(q)) ||
         post.category?.toLowerCase().includes(q);
 
@@ -300,7 +302,7 @@ export const BlogPage: React.FC = () => {
                       </h2>
 
                       <p className="text-xs text-stone-600 dark:text-stone-300 line-clamp-3 leading-relaxed">
-                        {post.excerpt}
+                        {getCleanExcerpt(post.excerpt, post.content, 180)}
                       </p>
                     </div>
 

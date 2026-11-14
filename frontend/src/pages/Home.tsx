@@ -17,6 +17,7 @@ import { PageSeo } from '@/components/PageSeo';
 import { GitHubCalendar } from 'react-github-calendar';
 import { useMode } from '@/contexts/ModeContext';
 import { LoadingThumbnail, resolveCustomPhoto } from '@/components/LoadingThumbnail';
+import { getCleanExcerpt } from '@/lib/excerpt';
 
 const ghDarkTheme = {
   light: ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'],
@@ -959,7 +960,7 @@ export const Home: React.FC = () => {
                       {post.title}
                     </h3>
                     <p className="text-xs text-stone-600 dark:text-stone-400 line-clamp-3 leading-relaxed">
-                      {post.excerpt}
+                      {getCleanExcerpt(post.excerpt, post.content, 140)}
                     </p>
                   </div>
                 </div>
@@ -1014,7 +1015,7 @@ export const Home: React.FC = () => {
       {/* ─────────────────────────────────────────────────────────────
           RESEARCH PUBLICATIONS SECTION
       ────────────────────────────────────────────────────────────── */}
-      <section className="space-y-4 mb-16 pt-2">
+      <section id="research" className="space-y-4 mb-16 pt-2">
         <div className="border-b-2 border-stone-900/20 dark:border-stone-800 pb-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <BookOpen className="w-4 h-4 text-[#8b2323] dark:text-rose-400" />
@@ -1022,6 +1023,9 @@ export const Home: React.FC = () => {
               Research Publications
             </h2>
           </div>
+          <span className="text-[11px] font-mono text-stone-500 dark:text-stone-400 hidden sm:inline">
+            Peer-Reviewed &amp; Conference Papers
+          </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-1">
@@ -1053,27 +1057,37 @@ export const Home: React.FC = () => {
               </p>
             </div>
 
-            <div className="pt-3 border-t border-stone-200 dark:border-stone-800 flex flex-wrap items-center justify-between gap-y-2.5 gap-x-3 text-xs">
-              <a
-                href="https://doi.org/10.65521/ijacte.v14i1.388"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-1 text-[11px] text-stone-500 hover:text-[#8b2323] dark:hover:text-rose-400 hover:underline font-mono whitespace-nowrap min-w-0"
-                title="View original publication on IJACTE: 10.65521/ijacte.v14i1.388"
-              >
-                <span>doi: 10.65521/ijacte.v14i1.388</span>
-                <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
-              </a>
+            <div className="pt-3 border-t border-stone-200 dark:border-stone-800 space-y-3">
+              <div className="flex items-center">
+                <a
+                  href="https://doi.org/10.65521/ijacte.v14i1.388"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="group/doi inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800/80 hover:bg-stone-200/90 dark:hover:bg-stone-700/80 border border-stone-200 dark:border-stone-700 text-[11px] font-mono text-stone-600 dark:text-stone-300 hover:text-[#8b2323] dark:hover:text-rose-400 transition-all max-w-full"
+                  title="View original publication on IJACTE: 10.65521/ijacte.v14i1.388"
+                >
+                  <span className="font-bold text-stone-900 dark:text-stone-100">doi:</span>
+                  <span className="truncate underline decoration-stone-300 dark:decoration-stone-600 underline-offset-2">10.65521/ijacte.v14i1.388</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-stone-400 group-hover/doi:text-[#8b2323] dark:group-hover/doi:text-rose-400 transition-colors" />
+                </a>
+              </div>
 
-              <Link
-                to="/blog/beyond-alumni-directories-building-an-intelligent-ai-powered-alumni-student-networking-ecosystem"
-                onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[1.5px_1.5px_0px_#1c1917] group-hover:translate-x-0.5 transition-all shrink-0 ml-auto"
-              >
-                <span>Read Publication</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+              <div className="flex items-center justify-between gap-3 pt-0.5">
+                <span className="text-[11px] font-mono text-stone-500 dark:text-stone-400 flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                  <span className="truncate">Open Access Journal</span>
+                </span>
+
+                <Link
+                  to="/blog/beyond-alumni-directories-building-an-intelligent-ai-powered-alumni-student-networking-ecosystem"
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[1.5px_1.5px_0px_#1c1917] hover:shadow-[0.5px_0.5px_0px_#1c1917] hover:translate-x-[0.5px] hover:translate-y-[0.5px] transition-all shrink-0 cursor-pointer"
+                >
+                  <span>Read Publication</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
             </div>
           </div>
 
@@ -1105,27 +1119,37 @@ export const Home: React.FC = () => {
               </p>
             </div>
 
-            <div className="pt-3 border-t border-stone-200 dark:border-stone-800 flex flex-wrap items-center justify-between gap-y-2.5 gap-x-3 text-xs">
-              <a
-                href="https://doi.org/10.1109/OTCON65728.2025.11070341"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-1 text-[11px] text-stone-500 hover:text-[#8b2323] dark:hover:text-rose-400 hover:underline font-mono whitespace-nowrap min-w-0"
-                title="View original publication on IEEE Xplore: 10.1109/OTCON65728.2025.11070341"
-              >
-                <span>doi: 10.1109/OTCON65728.2025.11070341</span>
-                <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
-              </a>
+            <div className="pt-3 border-t border-stone-200 dark:border-stone-800 space-y-3">
+              <div className="flex items-center">
+                <a
+                  href="https://doi.org/10.1109/OTCON65728.2025.11070341"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="group/doi inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800/80 hover:bg-stone-200/90 dark:hover:bg-stone-700/80 border border-stone-200 dark:border-stone-700 text-[11px] font-mono text-stone-600 dark:text-stone-300 hover:text-[#8b2323] dark:hover:text-rose-400 transition-all max-w-full"
+                  title="View original publication on IEEE Xplore: 10.1109/OTCON65728.2025.11070341"
+                >
+                  <span className="font-bold text-stone-900 dark:text-stone-100">doi:</span>
+                  <span className="truncate underline decoration-stone-300 dark:decoration-stone-600 underline-offset-2">10.1109/OTCON65728.2025.11070341</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-stone-400 group-hover/doi:text-[#8b2323] dark:group-hover/doi:text-rose-400 transition-colors" />
+                </a>
+              </div>
 
-              <Link
-                to="/blog/ai-veterinary-healthcare-lumpy-skin-disease-detection"
-                onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[1.5px_1.5px_0px_#1c1917] group-hover:translate-x-0.5 transition-all shrink-0 ml-auto"
-              >
-                <span>Read Publication</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+              <div className="flex items-center justify-between gap-3 pt-0.5">
+                <span className="text-[11px] font-mono text-stone-500 dark:text-stone-400 flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                  <span className="truncate">IEEE Xplore Indexed</span>
+                </span>
+
+                <Link
+                  to="/blog/ai-veterinary-healthcare-lumpy-skin-disease-detection"
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[1.5px_1.5px_0px_#1c1917] hover:shadow-[0.5px_0.5px_0px_#1c1917] hover:translate-x-[0.5px] hover:translate-y-[0.5px] transition-all shrink-0 cursor-pointer"
+                >
+                  <span>Read Publication</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>

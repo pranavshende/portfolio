@@ -17,6 +17,51 @@ const prisma = new PrismaClient({
   }
 });
 
+function cleanExcerpt(excerpt, content, maxLength = 175) {
+  if (
+    excerpt &&
+    typeof excerpt === 'string' &&
+    excerpt.trim().length > 0 &&
+    excerpt.trim().toLowerCase() !== 'undefined' &&
+    excerpt.trim().toLowerCase() !== 'null'
+  ) {
+    const trimmed = excerpt.trim();
+    if (trimmed.length <= maxLength) return trimmed;
+    const truncated = trimmed.slice(0, maxLength);
+    const lastSpace = truncated.lastIndexOf(' ');
+    return (lastSpace > 80 ? truncated.slice(0, lastSpace) : truncated).trim() + '...';
+  }
+
+  if (!content || typeof content !== 'string') {
+    return 'Technical engineering deep-dive, system architecture breakdown, and implementation insights by Pranav Shende.';
+  }
+
+  const text = content
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/<[^>]*>/g, '')
+    .replace(/!\[.*?\]\(.*?\)/g, '')
+    .replace(/\[([^\]]+)\]\(.*?\)/g, '$1')
+    .replace(/^#+\s+/gm, '')
+    .replace(/^>\s+/gm, '')
+    .replace(/^[-*+]\s+/gm, '')
+    .replace(/^\d+\.\s+/gm, '')
+    .replace(/(\*\*|__)(.*?)\1/g, '$2')
+    .replace(/(\*|_)(.*?)\1/g, '$2')
+    .replace(/^(?:---|\*\*\*|___)\s*$/gm, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (!text) {
+    return 'Technical engineering deep-dive, system architecture breakdown, and implementation insights by Pranav Shende.';
+  }
+
+  if (text.length <= maxLength) return text;
+  const truncated = text.slice(0, maxLength);
+  const lastSpace = truncated.lastIndexOf(' ');
+  return (lastSpace > 100 ? truncated.slice(0, lastSpace) : truncated).trim() + '...';
+}
+
 async function main() {
   console.log('[Sync] Connecting to Supabase database...');
   const blogs = await prisma.blogPost.findMany({
@@ -34,26 +79,30 @@ async function main() {
   console.log(`[Sync] Retrieved ${projects.length} projects.`);
 
   // Write blogs manifest for frontend instant hydration
-  const manifestData = blogs.map(b => ({
-    id: b.id,
-    slug: b.slug,
-    title: b.title,
-    subtitle: b.subtitle || '',
-    category: b.category || 'Engineering',
-    excerpt: b.excerpt || b.summary || '',
-    content: b.content,
-    author: b.author || 'Pranav Shende',
-    readingTimeMinutes: b.readingTimeMinutes || 5,
-    coverImageUrl: b.coverImageUrl || b.bannerUrl || null,
-    tags: Array.isArray(b.tags) ? b.tags : [],
-    viewCount: b.viewCount || 0,
-    impressionCount: b.impressionCount || 0,
-    displayOrder: b.displayOrder || 0,
-    publishedAt: b.publishedAt ? b.publishedAt.toISOString() : b.createdAt.toISOString(),
-    updatedAt: b.updatedAt ? b.updatedAt.toISOString() : b.createdAt.toISOString(),
-    seoTitle: b.seoTitle || `${b.title} | Technical Blog by Pranav Shende`,
-    seoDescription: b.seoDescription || b.excerpt || ''
-  }));
+  const manifestData = blogs.map(b => {
+    const postExcerpt = cleanExcerpt(b.excerpt || b.summary, b.content, 180);
+    return {
+      id: b.id,
+      slug: b.slug,
+      title: b.title,
+      subtitle: b.subtitle || '',
+      category: b.category || 'Engineering',
+      excerpt: postExcerpt,
+      description: postExcerpt,
+      content: b.content,
+      author: b.author || 'Pranav Shende',
+      readingTimeMinutes: b.readingTimeMinutes || 5,
+      coverImageUrl: b.coverImageUrl || b.bannerUrl || null,
+      tags: Array.isArray(b.tags) ? b.tags : [],
+      viewCount: b.viewCount || 0,
+      impressionCount: b.impressionCount || 0,
+      displayOrder: b.displayOrder || 0,
+      publishedAt: b.publishedAt ? b.publishedAt.toISOString() : b.createdAt.toISOString(),
+      updatedAt: b.updatedAt ? b.updatedAt.toISOString() : b.createdAt.toISOString(),
+      seoTitle: b.seoTitle || `${b.title} | Technical Blog by Pranav Shende`,
+      seoDescription: b.seoDescription || postExcerpt
+    };
+  });
 
   const publicManifestPath = path.join(__dirname, '../frontend/public/blogs-manifest.json');
   fs.writeFileSync(publicManifestPath, JSON.stringify(manifestData, null, 2), 'utf-8');

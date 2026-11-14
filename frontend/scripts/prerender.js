@@ -369,7 +369,7 @@ const blogHtml = injectMetadata(baseHtml, {
           <article style="padding: 1.5rem; border: 2px solid #1c1917; border-radius: 12px; background: #ffffff;">
             <span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 800; color: #8b2323;">${bp.category}</span>
             <h2 style="font-size: 1.3rem; margin: 0.25rem 0 0.5rem 0;"><a href="/blog/${bp.slug}" style="color: #1c1917; text-decoration: none;">${bp.title}</a></h2>
-            <p style="font-size: 0.95rem; line-height: 1.6; color: #44403c;">${bp.description}</p>
+            <p style="font-size: 0.95rem; line-height: 1.6; color: #44403c;">${bp.excerpt || bp.description || ''}</p>
             <a href="/blog/${bp.slug}" style="font-weight: 700; color: #8b2323;">Read Article →</a>
           </article>
         `).join('')}
@@ -492,11 +492,135 @@ for (const cs of CASE_STUDIES) {
 }
 
 // ─────────────────────────────────────────────────────────────
+// Markdown to Semantic HTML Converter for Blog Posts Prerendering
+// ─────────────────────────────────────────────────────────────
+function renderMarkdownToHtml(md) {
+  if (!md || typeof md !== 'string') return '';
+  let content = md;
+
+  // Code blocks extraction & placeholder replacement
+  const codeBlocks = [];
+  content = content.replace(/```([a-z0-9_-]*)\n([\s\S]*?)```/g, (match, lang, code) => {
+    const placeholder = `___CODEBLOCK_${codeBlocks.length}___`;
+    const escapedCode = code
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+    codeBlocks.push(`<pre style="background:#181920;color:#f8f8f2;padding:1.25rem;border-radius:8px;overflow-x:auto;font-family:monospace;font-size:0.95rem;margin:1.5rem 0;line-height:1.5;"><code class="language-${lang || 'text'}">${escapedCode}</code></pre>`);
+    return placeholder;
+  });
+
+  // Images
+  content = content.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<figure style="margin:2rem 0;text-align:center;"><img src="$2" alt="$1" style="max-width:100%;height:auto;border-radius:12px;border:1px solid #e7e5e4;" /><figcaption style="font-size:0.875rem;color:#78716c;margin-top:0.5rem;font-style:italic;">$1</figcaption></figure>');
+
+  // Links
+  content = content.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" style="color:#8b2323;text-decoration:underline;font-weight:600;">$1</a>');
+
+  // Headings
+  content = content.replace(/^### (.*$)/gm, '<h3 style="font-size:1.35rem;font-weight:700;color:#1c1917;margin:2rem 0 0.75rem 0;letter-spacing:-0.01em;">$1</h3>');
+  content = content.replace(/^## (.*$)/gm, '<h2 style="font-size:1.75rem;font-weight:700;color:#1c1917;margin:2.5rem 0 1rem 0;letter-spacing:-0.02em;">$1</h2>');
+  content = content.replace(/^# (.*$)/gm, '<h1 style="font-size:2.2rem;font-weight:800;color:#1c1917;margin:2.5rem 0 1.25rem 0;letter-spacing:-0.02em;">$1</h1>');
+
+  // Blockquotes
+  content = content.replace(/^> (.*$)/gm, '<blockquote style="border-left:4px solid #8b2323;padding:0.75rem 1.25rem;margin:1.5rem 0;background:#fafaf9;border-radius:0 8px 8px 0;color:#44403c;font-style:italic;">$1</blockquote>');
+
+  // Horizontal rules
+  content = content.replace(/^(?:---|\*\*\*|___)\s*$/gm, '<hr style="border:none;border-top:2px solid #e7e5e4;margin:2.5rem 0;" />');
+
+  // Inline formatting
+  content = content.replace(/`([^`]+)`/g, '<code style="background:#f5f5f4;color:#8b2323;padding:0.2rem 0.4rem;border-radius:4px;font-family:monospace;font-size:0.9em;font-weight:600;">$1</code>');
+  content = content.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  content = content.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+
+  // Split into paragraphs / lists
+  const lines = content.split('\n');
+  const result = [];
+  let inUl = false;
+  let inOl = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) {
+      if (inUl) { result.push('</ul>'); inUl = false; }
+      if (inOl) { result.push('</ol>'); inOl = false; }
+      continue;
+    }
+
+    if (line.startsWith('___CODEBLOCK_')) {
+      if (inUl) { result.push('</ul>'); inUl = false; }
+      if (inOl) { result.push('</ol>'); inOl = false; }
+      const idx = parseInt(line.replace('___CODEBLOCK_', '').replace('___', ''), 10);
+      result.push(codeBlocks[idx] || '');
+      continue;
+    }
+
+    if (line.startsWith('<h') || line.startsWith('<figure') || line.startsWith('<blockquote') || line.startsWith('<hr')) {
+      if (inUl) { result.push('</ul>'); inUl = false; }
+      if (inOl) { result.push('</ol>'); inOl = false; }
+      result.push(line);
+      continue;
+    }
+
+    if (/^[-*+]\s+/.test(line)) {
+      if (inOl) { result.push('</ol>'); inOl = false; }
+      if (!inUl) { result.push('<ul style="margin:1rem 0 1.5rem 1.5rem;list-style-type:disc;color:#292524;line-height:1.75;">'); inUl = true; }
+      result.push(`<li style="margin-bottom:0.5rem;">${line.replace(/^[-*+]\s+/, '')}</li>`);
+      continue;
+    }
+
+    if (/^\d+\.\s+/.test(line)) {
+      if (inUl) { result.push('</ul>'); inUl = false; }
+      if (!inOl) { result.push('<ol style="margin:1rem 0 1.5rem 1.5rem;list-style-type:decimal;color:#292524;line-height:1.75;">'); inOl = true; }
+      result.push(`<li style="margin-bottom:0.5rem;">${line.replace(/^\d+\.\s+/, '')}</li>`);
+      continue;
+    }
+
+    if (inUl) { result.push('</ul>'); inUl = false; }
+    if (inOl) { result.push('</ol>'); inOl = false; }
+    result.push(`<p style="font-size:1.05rem;line-height:1.8;color:#292524;margin-bottom:1.25rem;">${line}</p>`);
+  }
+
+  if (inUl) result.push('</ul>');
+  if (inOl) result.push('</ol>');
+
+  return result.join('\n');
+}
+
+// ─────────────────────────────────────────────────────────────
 // 6. Individual Blog Posts (/blog/:slug)
 // ─────────────────────────────────────────────────────────────
 for (const bp of BLOG_POSTS) {
   const desc = bp.seoDescription || bp.description || bp.excerpt || 'Technical architecture breakdown and engineering insights by Pranav Shende.';
   const postTitle = bp.seoTitle || `${bp.title} | Pranav Shende`;
+  const renderedArticleBody = renderMarkdownToHtml(bp.content);
+
+  const isResearchAlumni = bp.slug === 'beyond-alumni-directories-building-an-intelligent-ai-powered-alumni-student-networking-ecosystem';
+  const isResearchLumpy = bp.slug === 'ai-veterinary-healthcare-lumpy-skin-disease-detection';
+
+  const researchBannerHtml = isResearchAlumni ? `
+    <div style="background:#f0fdfa;border:2px solid #0f766e;border-radius:12px;padding:1.25rem;margin:1.5rem 0 2rem 0;font-family:system-ui,sans-serif;">
+      <div style="display:flex;align-items:center;gap:0.5rem;font-weight:700;color:#0f766e;font-size:0.9rem;text-transform:uppercase;letter-spacing:0.05em;">
+        <span>🎓 Peer-Reviewed Academic Research Paper</span>
+      </div>
+      <p style="margin:0.5rem 0;color:#134e4a;font-size:0.95rem;line-height:1.5;">
+        <strong>Published In:</strong> International Journal on Advanced Computer Theory and Engineering (IJACTE), Vol. 14, Issue 1, pp. 193–197, May 2025.<br/>
+        <strong>Authors:</strong> Pranav Shende, Dr. Ashish Wandhare<br/>
+        <strong>DOI:</strong> <a href="https://doi.org/10.65521/ijacte.v14i1.388" target="_blank" rel="noopener noreferrer" style="color:#0f766e;text-decoration:underline;font-family:monospace;">10.65521/ijacte.v14i1.388</a>
+      </p>
+    </div>
+  ` : isResearchLumpy ? `
+    <div style="background:#ecfdf5;border:2px solid #047857;border-radius:12px;padding:1.25rem;margin:1.5rem 0 2rem 0;font-family:system-ui,sans-serif;">
+      <div style="display:flex;align-items:center;gap:0.5rem;font-weight:700;color:#047857;font-size:0.9rem;text-transform:uppercase;letter-spacing:0.05em;">
+        <span>🔬 IEEE Conference Research Paper</span>
+      </div>
+      <p style="margin:0.5rem 0;color:#064e3b;font-size:0.95rem;line-height:1.5;">
+        <strong>Presented At:</strong> 2025 4th OPJU International Technology Conference (OTCON), IEEE, Feb 2025.<br/>
+        <strong>Authors:</strong> Pranav Shende, et al.<br/>
+        <strong>DOI:</strong> <a href="https://doi.org/10.1109/OTCON65728.2025.11070341" target="_blank" rel="noopener noreferrer" style="color:#047857;text-decoration:underline;font-family:monospace;">10.1109/OTCON65728.2025.11070341</a>
+      </p>
+    </div>
+  ` : '';
+
   const postHtml = injectMetadata(baseHtml, {
     skipLoader: true,
     title: postTitle,
@@ -528,16 +652,53 @@ for (const bp of BLOG_POSTS) {
       'keywords': Array.isArray(bp.tags) ? bp.tags.join(', ') : ''
     },
     bodyContent: `
-      <div style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem; font-family: system-ui, -apple-system, sans-serif;">
-        <nav style="margin-bottom: 1.5rem;"><a href="/blog" style="color: #8b2323;">← Back to Technical Blog</a></nav>
-        <span style="font-size: 0.8rem; text-transform: uppercase; font-weight: 800; color: #8b2323; background: #fff0f0; padding: 0.2rem 0.6rem; border-radius: 4px; border: 1px solid #ffcccc;">${bp.category || 'Engineering'}</span>
-        <h1 style="font-size: 2.2rem; font-weight: 800; color: #1c1917; margin: 0.75rem 0 1rem 0;">${bp.title}</h1>
-        <p style="font-size: 1.1rem; line-height: 1.6; color: #44403c; margin-bottom: 2rem;">${desc}</p>
-        <div style="margin-top: 2rem; border-top: 2px solid #1c1917; padding-top: 1rem;">
-          <a href="/blog" style="color: #8b2323; font-weight: 700; margin-right: 1.5rem;">← All Articles</a>
-          <a href="/projects" style="color: #8b2323; font-weight: 700;">Explore Projects →</a>
+      <article style="max-width: 860px; margin: 0 auto; padding: 2.5rem 1rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+        <!-- Breadcrumbs -->
+        <nav aria-label="Breadcrumb" style="font-size: 0.85rem; color: #78716c; margin-bottom: 1.5rem;">
+          <a href="/" style="color: #8b2323; text-decoration: none;">Home</a>
+          <span style="margin: 0 0.5rem;">/</span>
+          <a href="/blog" style="color: #8b2323; text-decoration: none;">Blog</a>
+          <span style="margin: 0 0.5rem;">/</span>
+          <span style="color: #1c1917;">${bp.title}</span>
+        </nav>
+
+        <!-- Category & Read time -->
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+          <span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 800; color: #8b2323; background: #fff0f0; padding: 0.25rem 0.65rem; border-radius: 4px; border: 1px solid #ffcccc; letter-spacing: 0.05em;">
+            ${bp.category || 'Engineering'}
+          </span>
+          <span style="font-size: 0.85rem; color: #78716c;">
+            ${bp.readingTimeMinutes || 6} min read • By ${bp.author || 'Pranav Shende'}
+          </span>
         </div>
-      </div>
+
+        <!-- Article Headline -->
+        <h1 style="font-size: 2.3rem; font-weight: 800; color: #1c1917; margin: 0.5rem 0 1.25rem 0; line-height: 1.25; letter-spacing: -0.02em;">
+          ${bp.title}
+        </h1>
+
+        <!-- Executive Summary -->
+        <p style="font-size: 1.15rem; line-height: 1.65; color: #44403c; margin-bottom: 2rem; font-weight: 400; border-left: 3px solid #8b2323; padding-left: 1rem;">
+          ${desc}
+        </p>
+
+        ${researchBannerHtml}
+
+        <!-- Full Rendered Article Content for Crawlers & Readers -->
+        <div class="article-markdown-body" style="border-top: 1px solid #e7e5e4; padding-top: 2rem; font-size: 1.05rem; line-height: 1.8; color: #292524;">
+          ${renderedArticleBody}
+        </div>
+
+        <!-- Bottom Navigation Footer -->
+        <div style="margin-top: 3.5rem; border-top: 2px solid #1c1917; padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <a href="/blog" style="color: #8b2323; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+            ← All Technical Articles
+          </a>
+          <a href="/projects" style="color: #8b2323; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+            Explore Engineering Projects →
+          </a>
+        </div>
+      </article>
     `
   });
   writeStaticPage(`blog/${bp.slug}`, postHtml);

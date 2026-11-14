@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
-  ArrowLeft, Calendar, Clock, User, Share2, Twitter, Linkedin, 
-  Copy, Check, BookOpen, Sparkles, ExternalLink, ChevronRight, Tag, Eye, TrendingUp
+  ArrowLeft, ArrowRight, ArrowUpRight, Calendar, Clock, User, Share2, Twitter, Linkedin, 
+  Copy, Check, BookOpen, Sparkles, ExternalLink, ChevronRight, Tag, Eye, TrendingUp,
+  GraduationCap, List, Bookmark, FileText
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -12,8 +13,8 @@ import { api } from '@/lib/api';
 import useAnalytics from '@/hooks/useAnalytics';
 import useBlogStats from '@/hooks/useBlogStats';
 import profilePhoto from '@/photo/profile_photo_wide.webp';
-
 import { LoadingThumbnail, resolveCustomPhoto } from '@/components/LoadingThumbnail';
+import { getCleanExcerpt } from '@/lib/excerpt';
 
 const resolveBlogCover = (url?: string): string | null => {
   return resolveCustomPhoto(url);
@@ -36,7 +37,51 @@ interface BlogPost {
   impressionCount?: number;
   seoTitle?: string;
   seoDescription?: string;
+  displayOrder?: number;
 }
+
+const CodeBlock: React.FC<{ language?: string; value: string }> = ({ language, value }) => {
+  const [copied, setCopied] = useState(false);
+
+  const onCopy = () => {
+    if (typeof window !== 'undefined') {
+      navigator.clipboard.writeText(value);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  return (
+    <div className="relative my-5 rounded-2xl bg-stone-900 dark:bg-[#121318] border-2 border-stone-900 dark:border-stone-700 overflow-hidden shadow-[2px_2px_0px_#1c1917]">
+      <div className="flex items-center justify-between px-4 py-2 border-b border-stone-800 bg-stone-950/70 text-xs font-mono text-stone-400">
+        <span className="uppercase font-bold tracking-wider text-[11px] text-stone-300">
+          {language || 'code'}
+        </span>
+        <button
+          type="button"
+          onClick={onCopy}
+          className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-stone-800 hover:bg-stone-700 text-stone-200 text-[11px] font-mono transition-colors cursor-pointer"
+          title="Copy code to clipboard"
+        >
+          {copied ? (
+            <>
+              <Check className="w-3 h-3 text-emerald-400" />
+              <span className="text-emerald-400 font-semibold">Copied!</span>
+            </>
+          ) : (
+            <>
+              <Copy className="w-3 h-3 text-stone-300" />
+              <span>Copy</span>
+            </>
+          )}
+        </button>
+      </div>
+      <pre className="p-4 overflow-x-auto text-xs font-mono text-stone-100 leading-relaxed scrollbar-thin">
+        <code>{value}</code>
+      </pre>
+    </div>
+  );
+};
 
 export const BlogPostPage: React.FC = () => {
   useAnalytics();
@@ -47,6 +92,9 @@ export const BlogPostPage: React.FC = () => {
   const [copied, setCopied] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const { getStats: getBlogStatsItem, recordView: recordBlogViewAction } = useBlogStats();
+
+  const [allPosts, setAllPosts] = useState<BlogPost[]>([]);
+  const [citationCopied, setCitationCopied] = useState(false);
 
   useEffect(() => {
     if (slug) {
@@ -64,6 +112,7 @@ export const BlogPostPage: React.FC = () => {
       .then((r) => r.json())
       .then((manifest: BlogPost[]) => {
         if (Array.isArray(manifest)) {
+          setAllPosts(manifest);
           const found = manifest.find((b) => b.slug === slug);
           if (found) {
             setPost(found);
@@ -94,6 +143,38 @@ export const BlogPostPage: React.FC = () => {
       })
       .finally(() => setLoading(false));
   }, [slug]);
+
+  const currentIndex = useMemo(() => {
+    return allPosts.findIndex((p) => p.slug === slug);
+  }, [allPosts, slug]);
+
+  const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
+  const nextPost = currentIndex >= 0 && currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
+
+  // Extract Table of Contents
+  const tocItems = useMemo(() => {
+    if (!post?.content) return [];
+    const lines = post.content.split('\n');
+    const items: { id: string; text: string; level: number }[] = [];
+    for (const line of lines) {
+      const match = line.match(/^(#{2,3})\s+(.+)$/);
+      if (match) {
+        const level = match[1].length;
+        const rawText = match[2].replace(/[*`_]/g, '').trim();
+        const id = rawText.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        items.push({ id, text: rawText, level });
+      }
+    }
+    return items;
+  }, [post?.content]);
+
+  const copyCitation = (citation: string) => {
+    if (typeof window !== 'undefined') {
+      navigator.clipboard.writeText(citation);
+      setCitationCopied(true);
+      setTimeout(() => setCitationCopied(false), 2500);
+    }
+  };
 
   const handleCopyLink = () => {
     if (typeof window !== 'undefined') {
@@ -164,39 +245,69 @@ export const BlogPostPage: React.FC = () => {
       })
     : 'Recent Publication';
 
+  const cleanDescription = getCleanExcerpt(post.seoDescription || post.excerpt, post.content, 160);
+  const isResearchAlumni = post.slug === 'beyond-alumni-directories-building-an-intelligent-ai-powered-alumni-student-networking-ecosystem';
+  const isResearchLumpy = post.slug === 'ai-veterinary-healthcare-lumpy-skin-disease-detection';
+
   return (
     <DoodleLayout>
       <PageSeo
         title={post.seoTitle || `${post.title} | Pranav Shende`}
-        description={post.seoDescription || post.excerpt}
+        description={cleanDescription}
         canonicalPath={`/blog/${post.slug}`}
         keywords={post.tags && post.tags.length > 0 ? post.tags : [post.category || 'Engineering', 'System Design', 'Pranav Shende']}
         ogType="article"
         ogImage={resolveBlogCover(post.coverImageUrl, post.slug)}
         publishedTime={post.publishedAt || post.createdAt}
         author={post.author || 'Pranav Shende'}
-        jsonLd={{
-          '@context': 'https://schema.org',
-          '@type': 'TechArticle',
-          'headline': post.title,
-          'description': post.seoDescription || post.excerpt,
-          'image': resolveBlogCover(post.coverImageUrl, post.slug),
-          'author': {
-            '@type': 'Person',
-            'name': post.author || 'Pranav Shende',
-            'url': 'https://pranavshende.online/',
+        jsonLd={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'TechArticle',
+            'headline': post.title,
+            'description': cleanDescription,
+            'image': resolveBlogCover(post.coverImageUrl, post.slug),
+            'author': {
+              '@type': 'Person',
+              'name': post.author || 'Pranav Shende',
+              'url': 'https://pranavshende.online/',
+            },
+            'publisher': {
+              '@type': 'Person',
+              'name': 'Pranav Shende',
+              'url': 'https://pranavshende.online/',
+            },
+            'datePublished': post.publishedAt || post.createdAt || new Date().toISOString(),
+            'dateModified': post.publishedAt || post.createdAt || new Date().toISOString(),
+            'mainEntityOfPage': `https://pranavshende.online/blog/${post.slug}`,
+            'articleSection': post.category || 'Software Engineering',
+            'keywords': (post.tags || []).join(', '),
           },
-          'publisher': {
-            '@type': 'Person',
-            'name': 'Pranav Shende',
-            'url': 'https://pranavshende.online/',
-          },
-          'datePublished': post.publishedAt || post.createdAt || new Date().toISOString(),
-          'dateModified': post.publishedAt || post.createdAt || new Date().toISOString(),
-          'mainEntityOfPage': `https://pranavshende.online/blog/${post.slug}`,
-          'articleSection': post.category || 'Software Engineering',
-          'keywords': (post.tags || []).join(', '),
-        }}
+          {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+              {
+                '@type': 'ListItem',
+                'position': 1,
+                'name': 'Home',
+                'item': 'https://pranavshende.online/'
+              },
+              {
+                '@type': 'ListItem',
+                'position': 2,
+                'name': 'Blog',
+                'item': 'https://pranavshende.online/blog'
+              },
+              {
+                '@type': 'ListItem',
+                'position': 3,
+                'name': post.title,
+                'item': `https://pranavshende.online/blog/${post.slug}`
+              }
+            ]
+          }
+        ]}
       />
       <div className="max-w-3xl mx-auto space-y-8 py-4 sm:py-8">
         {/* Navigation Breadcrumb */}
@@ -226,8 +337,8 @@ export const BlogPostPage: React.FC = () => {
             {post.title}
           </h1>
 
-          <p className="text-sm sm:text-base text-stone-700 dark:text-stone-300 leading-relaxed italic">
-            {post.excerpt}
+          <p className="text-sm sm:text-base text-stone-700 dark:text-stone-300 leading-relaxed italic border-l-3 border-[#8b2323] pl-3 py-0.5">
+            {getCleanExcerpt(post.excerpt, post.content, 220)}
           </p>
 
           {/* Meta & Share bar */}
@@ -324,6 +435,122 @@ export const BlogPostPage: React.FC = () => {
           </div>
         )}
 
+        {/* Academic Research Citation Callout */}
+        {isResearchAlumni && (
+          <div className="p-5 sm:p-6 rounded-2xl bg-teal-50/90 dark:bg-teal-950/40 border-2 border-teal-800 dark:border-teal-700 shadow-[3.5px_3.5px_0px_#0f766e] space-y-3">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div className="flex items-center gap-2">
+                <GraduationCap className="w-5 h-5 text-teal-800 dark:text-teal-300" />
+                <span className="font-bold text-xs uppercase font-mono tracking-wider text-teal-900 dark:text-teal-200">
+                  Peer-Reviewed Academic Publication
+                </span>
+              </div>
+              <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-full bg-teal-100 dark:bg-teal-900 text-teal-800 dark:text-teal-300 border border-teal-800/30">
+                IJACTE Journal • Vol. 14, Issue 1
+              </span>
+            </div>
+            <p className="text-xs text-teal-950 dark:text-teal-100 leading-relaxed font-sans">
+              <strong>Paper Title:</strong> Intelligent Platform to Interconnect Alumni and Student for Educational Institutes<br />
+              <strong>Authors:</strong> Pranav Shende, Dr. Ashish Wandhare<br />
+              <strong>Journal:</strong> International Journal on Advanced Computer Theory and Engineering (IJACTE), May 2025
+            </p>
+            <div className="p-3 rounded-xl bg-white/95 dark:bg-stone-900/95 border border-teal-800/30 text-xs font-mono text-stone-700 dark:text-stone-300">
+              <div className="text-[10px] uppercase font-bold text-stone-400 mb-1">Official IEEE Citation:</div>
+              <div className="text-[11px] leading-relaxed">
+                P. Shende and A. Wandhare, &ldquo;Intelligent Platform to Interconnect Alumni and Student for Educational Institutes,&rdquo; <em>International Journal on Advanced Computer Theory and Engineering (IJACTE)</em>, vol. 14, no. 1, pp. 193&ndash;197, May 2025, doi: 10.65521/ijacte.v14i1.388.
+              </div>
+              <div className="mt-3 flex flex-wrap items-center gap-2 pt-2 border-t border-stone-200 dark:border-stone-800">
+                <a
+                  href="https://doi.org/10.65521/ijacte.v14i1.388"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-teal-800 hover:bg-teal-900 text-white text-xs font-bold transition-colors shadow-xs"
+                >
+                  <span>View Official DOI (10.65521/ijacte.v14i1.388)</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
+                <button
+                  type="button"
+                  onClick={() => copyCitation('P. Shende and A. Wandhare, "Intelligent Platform to Interconnect Alumni and Student for Educational Institutes," International Journal on Advanced Computer Theory and Engineering (IJACTE), vol. 14, no. 1, pp. 193-197, May 2025, doi: 10.65521/ijacte.v14i1.388.')}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700 text-xs font-bold text-stone-800 dark:text-stone-200 transition-colors cursor-pointer"
+                >
+                  {citationCopied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                  <span>{citationCopied ? 'Citation Copied!' : 'Copy Citation'}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {isResearchLumpy && (
+          <div className="p-5 sm:p-6 rounded-2xl bg-emerald-50/90 dark:bg-emerald-950/40 border-2 border-emerald-800 dark:border-emerald-700 shadow-[3.5px_3.5px_0px_#047857] space-y-3">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div className="flex items-center gap-2">
+                <GraduationCap className="w-5 h-5 text-emerald-800 dark:text-emerald-300" />
+                <span className="font-bold text-xs uppercase font-mono tracking-wider text-emerald-900 dark:text-emerald-200">
+                  IEEE Conference Research Paper
+                </span>
+              </div>
+              <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-300 border border-emerald-800/30">
+                IEEE • OTCON 2025
+              </span>
+            </div>
+            <p className="text-xs text-emerald-950 dark:text-emerald-100 leading-relaxed font-sans">
+              <strong>Paper Title:</strong> Enhancing Lumpy Skin Disease Detection Accuracy through CNN-Based Feature Extraction and Multi-Classifier Systems<br />
+              <strong>Presented At:</strong> 2025 4th OPJU International Technology Conference (OTCON), IEEE, Feb 2025<br />
+              <strong>Authors:</strong> Pranav Shende, et al.
+            </p>
+            <div className="p-3 rounded-xl bg-white/95 dark:bg-stone-900/95 border border-emerald-800/30 text-xs font-mono text-stone-700 dark:text-stone-300">
+              <div className="text-[10px] uppercase font-bold text-stone-400 mb-1">Official IEEE Citation:</div>
+              <div className="text-[11px] leading-relaxed">
+                P. Shende et al., &ldquo;Enhancing Lumpy Skin Disease Detection Accuracy through CNN-Based Feature Extraction and Multi-Classifier Systems,&rdquo; in <em>Proc. 2025 4th OPJU International Technology Conference (OTCON)</em>, IEEE, Feb. 2025, doi: 10.1109/OTCON65728.2025.11070341.
+              </div>
+              <div className="mt-3 flex flex-wrap items-center gap-2 pt-2 border-t border-stone-200 dark:border-stone-800">
+                <a
+                  href="https://doi.org/10.1109/OTCON65728.2025.11070341"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-bold transition-colors shadow-xs"
+                >
+                  <span>View on IEEE Xplore (10.1109/OTCON65728.2025.11070341)</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
+                <button
+                  type="button"
+                  onClick={() => copyCitation('P. Shende et al., "Enhancing Lumpy Skin Disease Detection Accuracy through CNN-Based Feature Extraction and Multi-Classifier Systems," in Proc. 2025 4th OPJU International Technology Conference (OTCON), IEEE, Feb. 2025, doi: 10.1109/OTCON65728.2025.11070341.')}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700 text-xs font-bold text-stone-800 dark:text-stone-200 transition-colors cursor-pointer"
+                >
+                  {citationCopied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                  <span>{citationCopied ? 'Citation Copied!' : 'Copy Citation'}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Table of Contents Box */}
+        {tocItems.length >= 3 && (
+          <div className="p-4 sm:p-5 rounded-2xl bg-stone-50 dark:bg-stone-900/60 border-2 border-stone-900/20 dark:border-stone-700 space-y-2.5">
+            <div className="flex items-center gap-2 text-xs font-bold font-mono uppercase tracking-wider text-stone-800 dark:text-stone-200">
+              <List className="w-4 h-4 text-[#8b2323]" />
+              <span>Table of Contents</span>
+            </div>
+            <ul className="space-y-1.5 text-xs text-stone-600 dark:text-stone-300 font-sans">
+              {tocItems.map((item, idx) => (
+                <li key={idx} style={{ paddingLeft: `${(item.level - 2) * 12}px` }}>
+                  <a
+                    href={`#${item.id}`}
+                    className="hover:text-[#8b2323] dark:hover:text-rose-400 hover:underline transition-colors flex items-center gap-1.5"
+                  >
+                    <span className="text-[#8b2323] dark:text-rose-400 font-mono text-[10px]">•</span>
+                    <span>{item.text}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         {/* Article Body Container */}
         <div className="rounded-3xl bg-white/95 dark:bg-[#181920]/95 border-2 border-stone-900 dark:border-stone-700 shadow-[4px_4px_0px_#1c1917] dark:shadow-[4px_4px_0px_#000000] p-6 sm:p-10">
           <main className="prose prose-stone dark:prose-invert max-w-none text-stone-800 dark:text-stone-200 text-sm sm:text-base leading-relaxed py-2">
@@ -331,14 +558,23 @@ export const BlogPostPage: React.FC = () => {
               remarkPlugins={[remarkGfm]}
               components={{
                 h1: ({ node, ...props }) => <h1 className="text-2xl sm:text-3xl font-serif font-bold mt-8 mb-4 text-stone-900 dark:text-stone-100" {...props} />,
-                h2: ({ node, ...props }) => <h2 className="text-xl sm:text-2xl font-serif font-bold mt-7 mb-3 text-stone-900 dark:text-stone-100 border-b-2 border-stone-900/15 dark:border-stone-800 pb-2" {...props} />,
-                h3: ({ node, ...props }) => <h3 className="text-lg sm:text-xl font-serif font-bold mt-6 mb-2 text-stone-900 dark:text-stone-100" {...props} />,
+                h2: ({ node, children, ...props }: any) => {
+                  const text = String(children);
+                  const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                  return <h2 id={id} className="text-xl sm:text-2xl font-serif font-bold mt-8 mb-3 text-stone-900 dark:text-stone-100 border-b-2 border-stone-900/15 dark:border-stone-800 pb-2 scroll-mt-20" {...props}>{children}</h2>;
+                },
+                h3: ({ node, children, ...props }: any) => {
+                  const text = String(children);
+                  const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                  return <h3 id={id} className="text-lg sm:text-xl font-serif font-bold mt-6 mb-2 text-stone-900 dark:text-stone-100 scroll-mt-20" {...props}>{children}</h3>;
+                },
                 p: ({ node, ...props }) => <p className="mb-4 text-stone-700 dark:text-stone-300 leading-relaxed font-sans" {...props} />,
                 ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1 mb-4 text-stone-700 dark:text-stone-300" {...props} />,
                 ol: ({ node, ...props }) => <ol className="list-decimal list-inside space-y-1 mb-4 text-stone-700 dark:text-stone-300" {...props} />,
                 blockquote: ({ node, ...props }) => (
                   <blockquote className="border-l-4 border-[#8b2323] pl-4 italic my-4 text-stone-800 dark:text-stone-300 bg-[#8b2323]/5 p-3 rounded-r-xl border-2 border-stone-900/20" {...props} />
                 ),
+                pre: ({ children }: any) => <>{children}</>,
                 code: ({ node, className, children, ...props }: any) => {
                   const isInline = !className;
                   if (isInline) {
@@ -348,12 +584,19 @@ export const BlogPostPage: React.FC = () => {
                       </code>
                     );
                   }
-                  return (
-                    <pre className="p-4 rounded-2xl bg-stone-900 text-stone-100 dark:bg-[#121318] border-2 border-stone-900 dark:border-stone-700 overflow-x-auto text-xs font-mono my-4 shadow-[2px_2px_0px_#1c1917]">
-                      <code {...props}>{children}</code>
-                    </pre>
-                  );
+                  const match = /language-(\w+)/.exec(className || '');
+                  const lang = match ? match[1] : '';
+                  const textContent = String(children).replace(/\n$/, '');
+                  return <CodeBlock language={lang} value={textContent} />;
                 },
+                table: ({ node, ...props }) => (
+                  <div className="my-6 overflow-x-auto rounded-xl border-2 border-stone-900 dark:border-stone-700 shadow-[2px_2px_0px_#1c1917]">
+                    <table className="w-full text-left text-xs sm:text-sm font-sans" {...props} />
+                  </div>
+                ),
+                thead: ({ node, ...props }) => <thead className="bg-stone-100 dark:bg-stone-800 text-stone-900 dark:text-stone-100 font-bold border-b-2 border-stone-900 dark:border-stone-700" {...props} />,
+                th: ({ node, ...props }) => <th className="p-3 text-xs uppercase tracking-wider font-mono border-r border-stone-200 dark:border-stone-700 last:border-r-0" {...props} />,
+                td: ({ node, ...props }) => <td className="p-3 border-b border-stone-200 dark:border-stone-800 border-r dark:border-stone-800 last:border-r-0 text-stone-700 dark:text-stone-300" {...props} />,
                 a: ({ node, ...props }) => (
                   <a className="text-[#8b2323] dark:text-rose-400 font-bold underline underline-offset-2 hover:opacity-80" target="_blank" rel="noreferrer" {...props} />
                 ),
@@ -421,6 +664,41 @@ export const BlogPostPage: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Previous & Next Article Navigation Bar */}
+        {(prevPost || nextPost) && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            {prevPost ? (
+              <Link
+                to={`/blog/${prevPost.slug}`}
+                className="p-4 rounded-2xl bg-white/95 dark:bg-[#181920]/95 border-2 border-stone-900 dark:border-stone-700 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[0.5px] hover:translate-y-[0.5px] transition-all space-y-1 block group"
+              >
+                <span className="text-[10px] font-mono text-stone-400 dark:text-stone-500 uppercase tracking-wider flex items-center gap-1 font-bold">
+                  <ArrowLeft className="w-3 h-3 text-[#8b2323] group-hover:-translate-x-0.5 transition-transform" />
+                  <span>Previous Article</span>
+                </span>
+                <h4 className="text-xs sm:text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors line-clamp-2">
+                  {prevPost.title}
+                </h4>
+              </Link>
+            ) : <div />}
+
+            {nextPost ? (
+              <Link
+                to={`/blog/${nextPost.slug}`}
+                className="p-4 rounded-2xl bg-white/95 dark:bg-[#181920]/95 border-2 border-stone-900 dark:border-stone-700 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[0.5px] hover:translate-y-[0.5px] transition-all space-y-1 block text-right group sm:ml-auto w-full"
+              >
+                <span className="text-[10px] font-mono text-stone-400 dark:text-stone-500 uppercase tracking-wider flex items-center justify-end gap-1 font-bold">
+                  <span>Next Article</span>
+                  <ArrowRight className="w-3 h-3 text-[#8b2323] group-hover:translate-x-0.5 transition-transform" />
+                </span>
+                <h4 className="text-xs sm:text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors line-clamp-2">
+                  {nextPost.title}
+                </h4>
+              </Link>
+            ) : <div />}
+          </div>
+        )}
 
         {/* Related Projects Showcase */}
         <div className="pt-6 border-t-2 border-stone-900/15 dark:border-stone-800 space-y-4">

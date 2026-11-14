@@ -1,9 +1,10 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
-  ArrowLeft, Github, ExternalLink, Sparkles, CheckCircle2, 
-  Layers, Terminal, Calendar, User, Share2, Copy, Check, ArrowUpRight, BookOpen, Eye
+  ArrowLeft, ArrowRight, Github, ExternalLink, Sparkles, CheckCircle2, 
+  Layers, Terminal, Calendar, User, Share2, Copy, Check, ArrowUpRight, BookOpen, Eye,
+  Server, Database, Smartphone, Cpu, ShieldCheck, List, ChevronRight
 } from 'lucide-react';
 import { DoodleLayout } from '@/components/DoodleLayout';
 import { PageSeo } from '@/components/PageSeo';
@@ -11,6 +12,68 @@ import useAnalytics from '@/hooks/useAnalytics';
 import useProjectStats from '@/hooks/useProjectStats';
 import { api } from '@/lib/api';
 import { LoadingThumbnail, resolveCustomPhoto } from '@/components/LoadingThumbnail';
+
+export interface ArchitectureTier {
+  client: string;
+  gateway: string;
+  compute: string;
+  data: string;
+}
+
+export const CASE_STUDY_SLUGS = [
+  'jarvis-ai',
+  'electropathy-ai',
+  'tastifyy',
+  'pashurakshak',
+  'solar-intelligence',
+  'jan-sampark',
+  'employee-attrition-ai'
+];
+
+export const ARCH_DIAGRAMS: Record<string, ArchitectureTier> = {
+  'jarvis-ai': {
+    client: 'Web App & Claude Desktop (MCP stdio + Streamable HTTP)',
+    gateway: 'Fastify Micro-Gateway (Token Rate-Limiting, Zod & RBAC)',
+    compute: 'Dynamic Router: Gemini 2.5 Pro (Reasoning) + Gemini 2.5 Flash (Classify)',
+    data: 'PostgreSQL 35-Table Star Schema + Supabase pgvector + Redis BullMQ DLQ'
+  },
+  'electropathy-ai': {
+    client: 'React 19 Vite Web App + 5-Step Multilingual Clinical Intake Wizard',
+    gateway: 'Express.js REST API + Request Validation + BlackSMS OTP Rate-Limiter',
+    compute: 'Agentic RAG Engine with Multilingual NLP (English, Hindi, Marathi)',
+    data: 'Supabase pgvector (1536-dim HNSW Index) + PostgreSQL Clinical History'
+  },
+  'tastifyy': {
+    client: 'React 19 Admin Dispatch Web App + React Native Expo Mobile Driver App',
+    gateway: 'High-Concurrency Express Gateway + Socket.io Bi-Directional Order Channels',
+    compute: 'Apache Kafka Event Streams (Event-Driven Order State Transition Pipeline)',
+    data: 'Redis Geospatial (Live Courier Proximity Geohashing) + PostgreSQL Storage'
+  },
+  'pashurakshak': {
+    client: 'React Native Mobile Diagnostics Client (Zero-Connectivity Rural Farms)',
+    gateway: 'Local Caching Queue with Auto-Sync on Network Reconnect',
+    compute: 'Edge Computing: On-Device Quantized TensorFlow Lite INT8 CNN (Sub-120ms)',
+    data: 'Local SQLite / WatermelonDB Cache + Supabase PostgreSQL Central Store'
+  },
+  'solar-intelligence': {
+    client: 'Interactive CleanTech Analytics Dashboard with GIS Heatmaps & Plotly Charts',
+    gateway: 'Automated Python ETL Ingestion Pipelines with Multi-Stage Validation',
+    compute: 'Polynomial Regression Forecasting Engine + 10-Year Trend Decomposition',
+    data: '10+ Years (2014-2024) 81.8+ GW National Renewable Big Data Repository'
+  },
+  'jan-sampark': {
+    client: 'Cross-Platform React Native App with Offline Geo-Tagging & Media Capture',
+    gateway: 'High-Concurrency Node.js Express REST API + JWT & RBAC (4 Admin Roles)',
+    compute: 'Automated Civic Ticket Classification & Municipal Ward Routing Engine',
+    data: 'PostgreSQL Relational DB + Scalable Object Storage Media Bucket'
+  },
+  'employee-attrition-ai': {
+    client: 'Interactive HR Analytics Portal with 11 Chart.js Visualizations & CSV Ingest',
+    gateway: 'Python Flask Microservice with Dynamic Vector Feature Normalization',
+    compute: 'Scikit-Learn Classifier (88.4% Accuracy) + Google Gemini 2.5 Flash Copilot',
+    data: 'Dynamic In-Memory Feature Matrix + Employee Retention Risk Metrics'
+  }
+};
 
 export interface CaseStudyData {
   slug: string;
@@ -390,6 +453,14 @@ export const ProjectCaseStudyPage: React.FC = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const currentSlug = project?.slug || '';
+  const currentIdx = CASE_STUDY_SLUGS.indexOf(currentSlug);
+  const prevSlug = currentIdx > 0 ? CASE_STUDY_SLUGS[currentIdx - 1] : null;
+  const nextSlug = currentIdx >= 0 && currentIdx < CASE_STUDY_SLUGS.length - 1 ? CASE_STUDY_SLUGS[currentIdx + 1] : null;
+  const prevProj = prevSlug ? CASE_STUDIES[prevSlug] : null;
+  const nextProj = nextSlug ? CASE_STUDIES[nextSlug] : null;
+  const archTier = ARCH_DIAGRAMS[currentSlug] || null;
+
   if (!project) {
     return (
       <DoodleLayout>
@@ -601,6 +672,79 @@ export const ProjectCaseStudyPage: React.FC = () => {
           </div>
         </section>
 
+        {/* Visual Architecture Pipeline Flow Diagram */}
+        {archTier && (
+          <section className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-stone-800/90 border-2 border-stone-900 dark:border-stone-700 shadow-[3px_3px_0px_#1c1917] mb-8 space-y-4">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100 flex items-center gap-2">
+                <Cpu className="w-5 h-5 text-[#8b2323]" />
+                <span>System Architecture Flow Diagram</span>
+              </h2>
+              <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-800/30">
+                Production Topology
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
+              {/* Tier 1: Client */}
+              <div className="p-4 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-stone-50 dark:bg-stone-900/60 shadow-[2px_2px_0px_#1c1917] flex flex-col justify-between space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono font-bold uppercase text-stone-500">Tier 1 • Client</span>
+                  <Smartphone className="w-4 h-4 text-[#8b2323]" />
+                </div>
+                <h4 className="text-xs font-bold text-stone-900 dark:text-stone-100 leading-snug">
+                  Interface Layer
+                </h4>
+                <p className="text-[11px] text-stone-600 dark:text-stone-300 font-mono leading-relaxed">
+                  {archTier.client}
+                </p>
+              </div>
+
+              {/* Tier 2: Gateway */}
+              <div className="p-4 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-stone-50 dark:bg-stone-900/60 shadow-[2px_2px_0px_#1c1917] flex flex-col justify-between space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono font-bold uppercase text-stone-500">Tier 2 • Gateway</span>
+                  <Server className="w-4 h-4 text-amber-600" />
+                </div>
+                <h4 className="text-xs font-bold text-stone-900 dark:text-stone-100 leading-snug">
+                  API &amp; Ingestion Layer
+                </h4>
+                <p className="text-[11px] text-stone-600 dark:text-stone-300 font-mono leading-relaxed">
+                  {archTier.gateway}
+                </p>
+              </div>
+
+              {/* Tier 3: Compute */}
+              <div className="p-4 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-stone-50 dark:bg-stone-900/60 shadow-[2px_2px_0px_#1c1917] flex flex-col justify-between space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono font-bold uppercase text-stone-500">Tier 3 • Intelligence</span>
+                  <Cpu className="w-4 h-4 text-rose-600" />
+                </div>
+                <h4 className="text-xs font-bold text-stone-900 dark:text-stone-100 leading-snug">
+                  AI &amp; Compute Engine
+                </h4>
+                <p className="text-[11px] text-stone-600 dark:text-stone-300 font-mono leading-relaxed">
+                  {archTier.compute}
+                </p>
+              </div>
+
+              {/* Tier 4: Storage */}
+              <div className="p-4 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-stone-50 dark:bg-stone-900/60 shadow-[2px_2px_0px_#1c1917] flex flex-col justify-between space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono font-bold uppercase text-stone-500">Tier 4 • Storage</span>
+                  <Database className="w-4 h-4 text-teal-600" />
+                </div>
+                <h4 className="text-xs font-bold text-stone-900 dark:text-stone-100 leading-snug">
+                  Data &amp; Persistence Store
+                </h4>
+                <p className="text-[11px] text-stone-600 dark:text-stone-300 font-mono leading-relaxed">
+                  {archTier.data}
+                </p>
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* AI & RAG Workflow (if present) */}
         {project.aiWorkflow && project.aiWorkflow.length > 0 && (
           <section className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-stone-800/90 border-2 border-stone-900 dark:border-stone-700 shadow-[3px_3px_0px_#1c1917] mb-8">
@@ -675,6 +819,47 @@ export const ProjectCaseStudyPage: React.FC = () => {
             ))}
           </ul>
         </section>
+
+        {/* Previous & Next Case Study Navigation */}
+        {(prevProj || nextProj) && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+            {prevProj ? (
+              <Link
+                to={`/projects/${prevProj.slug}`}
+                className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-stone-800/90 border-2 border-stone-900 dark:border-stone-700 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[0.5px] hover:translate-y-[0.5px] transition-all space-y-1 block group"
+              >
+                <span className="text-[10px] font-mono text-stone-400 dark:text-stone-500 uppercase tracking-wider flex items-center gap-1 font-bold">
+                  <ArrowLeft className="w-3 h-3 text-[#8b2323] group-hover:-translate-x-0.5 transition-transform" />
+                  <span>Previous Case Study</span>
+                </span>
+                <h4 className="text-xs sm:text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors line-clamp-1">
+                  {prevProj.title}
+                </h4>
+                <p className="text-[11px] text-stone-500 font-mono truncate">
+                  {prevProj.category}
+                </p>
+              </Link>
+            ) : <div />}
+
+            {nextProj ? (
+              <Link
+                to={`/projects/${nextProj.slug}`}
+                className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-stone-800/90 border-2 border-stone-900 dark:border-stone-700 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[0.5px] hover:translate-y-[0.5px] transition-all space-y-1 block text-right group sm:ml-auto w-full"
+              >
+                <span className="text-[10px] font-mono text-stone-400 dark:text-stone-500 uppercase tracking-wider flex items-center justify-end gap-1 font-bold">
+                  <span>Next Case Study</span>
+                  <ArrowRight className="w-3 h-3 text-[#8b2323] group-hover:translate-x-0.5 transition-transform" />
+                </span>
+                <h4 className="text-xs sm:text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors line-clamp-1">
+                  {nextProj.title}
+                </h4>
+                <p className="text-[11px] text-stone-500 font-mono truncate">
+                  {nextProj.category}
+                </p>
+              </Link>
+            ) : <div />}
+          </div>
+        )}
 
         {/* Footer Navigation */}
         <div className="pt-4 flex flex-wrap items-center justify-between gap-4 border-t border-stone-200 dark:border-stone-700">

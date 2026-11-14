@@ -85,18 +85,6 @@
 
   <!-- Published Technical Articles & Deep-Dives -->
   <url>
-    <loc>https://pranavshende.online/blog/beyond-alumni-directories-building-an-intelligent-ai-powered-alumni-student-networking-ecosystem</loc>
-    <lastmod>2026-11-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://pranavshende.online/blog/ai-veterinary-healthcare-lumpy-skin-disease-detection</loc>
-    <lastmod>2026-11-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
     <loc>https://pranavshende.online/blog/jensen-huang-s-sudden-exit-from-nvidia-what-it-means-for-the-future-of-ai-and-the-global-it-industry</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>monthly</changefreq>
@@ -110,55 +98,67 @@
   </url>
   <url>
     <loc>https://pranavshende.online/blog/forgerag-exploring-llms-and-retrieval-augmented-generation</loc>
-    <lastmod>2026-11-13</lastmod>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://pranavshende.online/blog/ai-powered-employee-attrition-analysis</loc>
-    <lastmod>2026-11-12</lastmod>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://pranavshende.online/blog/solar-intelligence-renewable-energy-big-data-forecasting</loc>
-    <lastmod>2026-11-12</lastmod>
+    <loc>https://pranavshende.online/blog/beyond-alumni-directories-building-an-intelligent-ai-powered-alumni-student-networking-ecosystem</loc>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://pranavshende.online/blog/natural-language-rag-database-assistant</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://pranavshende.online/blog/scalable-fullstack-architecture-system-design</loc>
-    <lastmod>2026-11-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://pranavshende.online/blog/jansampark-civic-governance-platform-react-native</loc>
-    <lastmod>2026-11-08</lastmod>
+    <loc>https://pranavshende.online/blog/ai-veterinary-healthcare-lumpy-skin-disease-detection</loc>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://pranavshende.online/blog/tastifyy-distributed-logistics-kafka-redis-geospatial</loc>
-    <lastmod>2026-11-08</lastmod>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://pranavshende.online/blog/jansampark-civic-governance-platform-react-native</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://pranavshende.online/blog/solar-intelligence-renewable-energy-big-data-forecasting</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://pranavshende.online/blog/natural-language-rag-database-assistant</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://pranavshende.online/blog/scalable-fullstack-architecture-system-design</loc>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://pranavshende.online/blog/ai-in-agriculture-pashurakshak-edge-cnn-ieee</loc>
-    <lastmod>2026-11-12</lastmod>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://pranavshende.online/blog/hackathons-technical-leadership-gssoc-achievements</loc>
-    <lastmod>2026-11-08</lastmod>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>

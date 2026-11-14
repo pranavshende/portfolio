@@ -246,6 +246,25 @@ export const DoodleSidebar: React.FC = () => {
                 );
               })}
 
+              {/* Research Link */}
+              <Link
+                to="/#research"
+                onClick={() => {
+                  const el = document.getElementById('research');
+                  if (el) {
+                    el.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="relative flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-xs font-bold text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-all duration-150 group cursor-pointer"
+                title="View Academic Research & Publications"
+              >
+                <span className="shrink-0"><GraduationCap className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /></span>
+                <span className="leading-none pt-0.5">Research</span>
+                <span className="ml-auto text-[9px] font-mono px-1.5 py-0.5 rounded-xs border border-emerald-800/30 text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 font-bold uppercase">
+                  IEEE
+                </span>
+              </Link>
+
               {/* Resume Navigation Item */}
               <a
                 href={resumeUrl}
@@ -511,6 +530,25 @@ export const DoodleSidebar: React.FC = () => {
                     </NavLink>
                   );
                 })}
+
+                {/* Research Link in Mobile Menu */}
+                <Link
+                  to="/#research"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    const el = document.getElementById('research');
+                    if (el) {
+                      setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 100);
+                    }
+                  }}
+                  className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-bold text-stone-700 dark:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/60 transition-all cursor-pointer"
+                >
+                  <span className="shrink-0"><GraduationCap className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /></span>
+                  <span>Research &amp; Publications</span>
+                  <span className="ml-auto text-[9px] font-mono px-1.5 py-0.5 rounded-xs border border-emerald-800/30 text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 font-bold uppercase">
+                    IEEE
+                  </span>
+                </Link>
               </nav>
             </div>
 
