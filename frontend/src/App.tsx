@@ -12,7 +12,7 @@ import NotFound from "@/pages/NotFound";
 import PlayGames from "@/pages/PlayGames";
 import AdminLogin from "@/pages/admin/AdminLogin";
 import AdminLayout from "@/pages/admin/AdminLayout";
-import { ModeProvider } from "@/contexts/ModeContext";
+import { ModeProvider, useMode } from "@/contexts/ModeContext";
 
 import React, { useState, useEffect, useRef } from "react";
 import InitialLoader from "./components/InitialLoader";
@@ -23,15 +23,14 @@ const queryClient = new QueryClient();
 
 const GlobalBackground = () => {
   const { pathname } = useLocation();
-  const { isDark } = useMode();
   if (pathname.startsWith('/admin')) {
     return null;
   }
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
-      {/* CSS Media-Query driven responsive background: browser fetches ONLY 1 matching image */}
-      <div className={`absolute inset-0 global-site-bg ${isDark ? 'is-dark' : 'is-light'}`} />
+      {/* Pure CSS media-query & theme-driven responsive background: browser fetches ONLY 1 matching image */}
+      <div className="absolute inset-0 global-site-bg" />
       <div className="absolute inset-0 bg-gradient-to-b from-stone-900/[0.02] via-transparent to-stone-900/[0.04] dark:from-black/40 dark:to-black/60" />
     </div>
   );

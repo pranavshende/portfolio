@@ -769,15 +769,12 @@ html, body, *, button, a, input, select, textarea, [role="button"], .cursor-poin
   inset: 0;
   background-size: cover;
   background-attachment: fixed;
-  transition: opacity 0.3s ease-in-out;
-}
-
-.global-site-bg.is-light {
   background-position: center;
   background-image: url('@/photo/cherry_blossom_mist.webp');
+  transition: opacity 0.3s ease-in-out;
 }
 @media (max-width: 767px) {
-  .global-site-bg.is-light {
+  .global-site-bg {
     background-position: top;
     background-image: url('@/photo/cherry_blossom_mist_mobile.webp');
   }
@@ -785,14 +782,16 @@ html, body, *, button, a, input, select, textarea, [role="button"], .cursor-poin
 
 .global-site-bg.is-dark,
 .dark .global-site-bg,
-html.dark .global-site-bg {
+html.dark .global-site-bg,
+body.dark .global-site-bg {
   background-position: center;
   background-image: url('@/photo/cherry_blossom_mist_dark.webp');
 }
 @media (max-width: 767px) {
   .global-site-bg.is-dark,
   .dark .global-site-bg,
-  html.dark .global-site-bg {
+  html.dark .global-site-bg,
+  body.dark .global-site-bg {
     background-position: top;
     background-image: url('@/photo/cherry_blossom_mist_mobile_dark.webp');
   }
