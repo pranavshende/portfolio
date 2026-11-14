@@ -462,6 +462,10 @@ export const ProjectsSection: React.FC = () => {
                           {proj.category}
                         </span>
                       )}
+                      <span className="inline-flex items-center gap-1 font-mono text-[10px] font-semibold text-stone-700 dark:text-stone-300 px-1.5 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 ml-auto">
+                        <Eye className="w-2.5 h-2.5 text-[#8b2323] dark:text-rose-400 shrink-0" />
+                        <span>{proj.viewCount || 0}</span>
+                      </span>
                     </div>
 
                     <div className="flex items-center justify-between pt-1 border-t border-stone-100 dark:border-stone-800/60">
@@ -522,6 +526,7 @@ export const ProjectsSection: React.FC = () => {
                     <th className="py-3 px-4">Project Title & Details</th>
                     <th className="py-3 px-4">Category</th>
                     <th className="py-3 px-4">Tech Stack</th>
+                    <th className="py-3 px-4 text-center">Views</th>
                     <th className="py-3 px-4">Status</th>
                     <th className="py-3 px-4 text-right">Actions</th>
                   </tr>
@@ -584,6 +589,13 @@ export const ProjectsSection: React.FC = () => {
                               <span className="text-[10px] text-stone-400 font-mono">+{tech.length - 3}</span>
                             )}
                           </div>
+                        </td>
+
+                        <td className="py-3 px-4 text-center whitespace-nowrap">
+                          <span className="inline-flex items-center gap-1 font-mono text-xs font-semibold text-stone-700 dark:text-stone-300 px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700">
+                            <Eye className="w-3 h-3 text-[#8b2323] dark:text-rose-400 shrink-0" />
+                            <span>{proj.viewCount || 0}</span>
+                          </span>
                         </td>
 
                         <td className="py-3 px-4 whitespace-nowrap">

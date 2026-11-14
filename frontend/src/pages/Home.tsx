@@ -11,6 +11,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { api } from '@/lib/api';
 import useAnalytics from '@/hooks/useAnalytics';
 import useBlogStats from '@/hooks/useBlogStats';
+import useProjectStats from '@/hooks/useProjectStats';
 import ContactModal from '@/components/ContactModal';
 import { PageSeo } from '@/components/PageSeo';
 import { GitHubCalendar } from 'react-github-calendar';
@@ -48,6 +49,7 @@ interface Project {
   demo?: string;
   badge?: string;
   image: string;
+  viewCount?: number;
 }
 
 const projects: Project[] = [
@@ -370,6 +372,7 @@ export const Home: React.FC = () => {
   const [loadingRepos, setLoadingRepos] = useState<boolean>(false);
   const [recentBlogs, setRecentBlogs] = useState<any[]>(defaultBlogs);
   const { getStats: getBlogStatsItem, recordImpressions: recordBlogImpressionsBatch } = useBlogStats();
+  const { getProjectViews, recordView: recordProjectView } = useProjectStats();
 
   const projectSlider = useHorizontalSlider(projectList.length);
   const blogSlider = useHorizontalSlider(recentBlogs.length);
@@ -481,6 +484,7 @@ export const Home: React.FC = () => {
             demo: p.demoUrl || p.liveDemoUrl,
             badge: p.badge || (p.featured || p.isFeatured ? 'Featured' : undefined),
             image: resolveProjectThumbnail(p),
+            viewCount: typeof p.viewCount === 'number' ? p.viewCount : (Number(p.viewCount) || 0),
           }));
 
           setProjectList(mapped);
@@ -786,7 +790,10 @@ export const Home: React.FC = () => {
               key={proj.id}
               whileHover={{ y: -3 }}
               transition={{ duration: 0.15 }}
-              onClick={() => setSelectedProject(proj)}
+              onClick={() => {
+                recordProjectView(proj.id);
+                setSelectedProject(proj);
+              }}
               className="w-[280px] sm:w-[320px] md:w-[360px] shrink-0 snap-start group cursor-pointer rounded-2xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all overflow-hidden flex flex-col justify-between p-2.5 sm:p-3"
             >
               {/* Banner with badge: only rendered if custom photo from Supabase exists */}
@@ -816,9 +823,23 @@ export const Home: React.FC = () => {
                   <h3 className="text-xs sm:text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] transition-colors truncate">
                     {proj.title}
                   </h3>
-                  <p className="text-[10px] sm:text-[11px] text-stone-500 dark:text-stone-400 truncate mt-0.5">
-                    {proj.client} • {proj.category} • {proj.year}
-                  </p>
+                  <div className="flex items-center justify-between gap-2 mt-0.5">
+                    <p className="text-[10px] sm:text-[11px] text-stone-500 dark:text-stone-400 truncate">
+                      {proj.client} • {proj.category} • {proj.year}
+                    </p>
+                    {(() => {
+                      const pViews = getProjectViews(proj.id, proj.viewCount || 0);
+                      return (
+                        <span 
+                          className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800/80 border border-stone-200 dark:border-stone-700/60 font-mono text-[9px] font-semibold text-stone-700 dark:text-stone-300 shrink-0"
+                          title={`${pViews} project views`}
+                        >
+                          <Eye className="w-2.5 h-2.5 text-[#8b2323] dark:text-rose-400 shrink-0" />
+                          <span>{pViews}</span>
+                        </span>
+                      );
+                    })()}
+                  </div>
                 </div>
 
                 {/* Circular arrow button */}
@@ -945,26 +966,15 @@ export const Home: React.FC = () => {
 
                 <div className="pt-3 border-t border-stone-200 dark:border-stone-800 space-y-2">
                   <div className="flex items-center justify-between text-[11px] font-mono">
-                    {/* Live Real-time Views & Impressions Badge */}
-                    <div className="flex items-center gap-1.5">
-                      <span 
-                        className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800/80 border border-stone-200 dark:border-stone-700/60 font-semibold text-stone-700 dark:text-stone-300"
-                        title={`${stats.views} total views`}
-                      >
-                        <Eye className="w-3 h-3 text-[#8b2323] dark:text-rose-400 shrink-0" />
-                        <span>{stats.views}</span>
-                        <span className="text-[9px] text-stone-400 font-normal">views</span>
-                      </span>
-
-                      <span 
-                        className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800/80 border border-stone-200 dark:border-stone-700/60 font-semibold text-stone-700 dark:text-stone-300"
-                        title={`${stats.impressions} card impressions`}
-                      >
-                        <TrendingUp className="w-3 h-3 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                        <span>{stats.impressions}</span>
-                        <span className="text-[9px] text-stone-400 font-normal">imp</span>
-                      </span>
-                    </div>
+                    {/* Live Real-time Views Badge */}
+                    <span 
+                      className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800/80 border border-stone-200 dark:border-stone-700/60 font-semibold text-stone-700 dark:text-stone-300"
+                      title={`${stats.views} total views`}
+                    >
+                      <Eye className="w-3 h-3 text-[#8b2323] dark:text-rose-400 shrink-0" />
+                      <span>{stats.views}</span>
+                      <span className="text-[9px] text-stone-400 font-normal">views</span>
+                    </span>
 
                     <span className="text-stone-500 text-[11px]">{post.readingTimeMinutes || 5} min read</span>
                   </div>
@@ -1043,23 +1053,23 @@ export const Home: React.FC = () => {
               </p>
             </div>
 
-            <div className="pt-3 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between gap-3 text-xs">
+            <div className="pt-3 border-t border-stone-200 dark:border-stone-800 flex flex-wrap items-center justify-between gap-y-2.5 gap-x-3 text-xs">
               <a
                 href="https://doi.org/10.65521/ijacte.v14i1.388"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-1 text-[11px] text-stone-500 hover:text-[#8b2323] dark:hover:text-rose-400 hover:underline font-mono"
-                title="View original publication on IJACTE"
+                className="inline-flex items-center gap-1 text-[11px] text-stone-500 hover:text-[#8b2323] dark:hover:text-rose-400 hover:underline font-mono whitespace-nowrap min-w-0"
+                title="View original publication on IJACTE: 10.65521/ijacte.v14i1.388"
               >
                 <span>doi: 10.65521/ijacte.v14i1.388</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
+                <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
               </a>
 
               <Link
                 to="/blog/beyond-alumni-directories-building-an-intelligent-ai-powered-alumni-student-networking-ecosystem"
                 onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[1.5px_1.5px_0px_#1c1917] group-hover:translate-x-0.5 transition-all shrink-0"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[1.5px_1.5px_0px_#1c1917] group-hover:translate-x-0.5 transition-all shrink-0 ml-auto"
               >
                 <span>Read Publication</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -1095,23 +1105,23 @@ export const Home: React.FC = () => {
               </p>
             </div>
 
-            <div className="pt-3 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between gap-3 text-xs">
+            <div className="pt-3 border-t border-stone-200 dark:border-stone-800 flex flex-wrap items-center justify-between gap-y-2.5 gap-x-3 text-xs">
               <a
                 href="https://doi.org/10.1109/OTCON65728.2025.11070341"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-1 text-[11px] text-stone-500 hover:text-[#8b2323] dark:hover:text-rose-400 hover:underline font-mono"
-                title="View original publication on IEEE Xplore"
+                className="inline-flex items-center gap-1 text-[11px] text-stone-500 hover:text-[#8b2323] dark:hover:text-rose-400 hover:underline font-mono whitespace-nowrap min-w-0"
+                title="View original publication on IEEE Xplore: 10.1109/OTCON65728.2025.11070341"
               >
                 <span>doi: 10.1109/OTCON65728.2025.11070341</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
+                <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
               </a>
 
               <Link
                 to="/blog/ai-veterinary-healthcare-lumpy-skin-disease-detection"
                 onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[1.5px_1.5px_0px_#1c1917] group-hover:translate-x-0.5 transition-all shrink-0"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[1.5px_1.5px_0px_#1c1917] group-hover:translate-x-0.5 transition-all shrink-0 ml-auto"
               >
                 <span>Read Publication</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -1325,9 +1335,23 @@ export const Home: React.FC = () => {
                 {/* Pinned Modal Header */}
                 <div className="p-4 sm:p-6 pb-3 sm:pb-3 flex items-start justify-between border-b-2 border-stone-900/15 dark:border-stone-800 shrink-0 bg-[#faf7f0]/95 dark:bg-[#16171b]/95 backdrop-blur-xs">
                   <div className="space-y-0.5 pr-3">
-                    <span className="font-mono text-[11px] font-bold uppercase text-[#8b2323] dark:text-rose-400 tracking-wider">
-                      {selectedProject.client} • {selectedProject.category}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-[11px] font-bold uppercase text-[#8b2323] dark:text-rose-400 tracking-wider">
+                        {selectedProject.client} • {selectedProject.category}
+                      </span>
+                      {(() => {
+                        const mViews = getProjectViews(selectedProject.id, selectedProject.viewCount || 0);
+                        return (
+                          <span 
+                            className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700/60 font-mono text-[10px] font-semibold text-stone-700 dark:text-stone-300"
+                            title={`${mViews} project views`}
+                          >
+                            <Eye className="w-2.5 h-2.5 text-[#8b2323] dark:text-rose-400 shrink-0" />
+                            <span>{mViews} views</span>
+                          </span>
+                        );
+                      })()}
+                    </div>
                     <h2 className="text-lg sm:text-xl font-bold text-stone-900 dark:text-stone-100 leading-snug">
                       {selectedProject.subtitle}
                     </h2>

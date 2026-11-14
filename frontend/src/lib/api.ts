@@ -192,6 +192,53 @@ export const api = {
     } catch (_) {}
   },
 
+  getProjectStats: async (): Promise<Record<string, { views: number }>> => {
+    try {
+      const serverlessUrl = typeof window !== 'undefined' && window.location.origin.includes('pranavshende.online')
+        ? '/api/project-stats'
+        : 'https://pranavshende.online/api/project-stats';
+      const res = await fetch(serverlessUrl, { cache: 'no-cache' });
+      if (res.ok) {
+        const json = await res.json();
+        if (json.stats) return json.stats;
+      }
+    } catch (_) {}
+
+    try {
+      const res = await apiRequest('/projects/stats');
+      if (res?.stats) return res.stats;
+    } catch (_) {}
+
+    return {};
+  },
+
+  recordProjectView: async (slug: string): Promise<{ views: number } | null> => {
+    try {
+      const serverlessUrl = typeof window !== 'undefined' && window.location.origin.includes('pranavshende.online')
+        ? '/api/project-stats'
+        : 'https://pranavshende.online/api/project-stats';
+      const res = await fetch(serverlessUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug, type: 'view' }),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        return { views: json.views };
+      }
+    } catch (_) {}
+
+    try {
+      const res = await apiRequest('/projects/stats', {
+        method: 'POST',
+        data: { slug, type: 'view' },
+      });
+      return { views: res.views };
+    } catch (_) {}
+
+    return null;
+  },
+
   submitContact: (payload: ContactPayload) => {
     const data = {
       ...payload,

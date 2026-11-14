@@ -3,11 +3,12 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   ArrowLeft, Github, ExternalLink, Sparkles, CheckCircle2, 
-  Layers, Terminal, Calendar, User, Share2, Copy, Check, ArrowUpRight, BookOpen
+  Layers, Terminal, Calendar, User, Share2, Copy, Check, ArrowUpRight, BookOpen, Eye
 } from 'lucide-react';
 import { DoodleLayout } from '@/components/DoodleLayout';
 import { PageSeo } from '@/components/PageSeo';
 import useAnalytics from '@/hooks/useAnalytics';
+import useProjectStats from '@/hooks/useProjectStats';
 import { api } from '@/lib/api';
 import { LoadingThumbnail, resolveCustomPhoto } from '@/components/LoadingThumbnail';
 
@@ -345,8 +346,15 @@ export const ProjectCaseStudyPage: React.FC = () => {
   useAnalytics();
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
+  const { getProjectViews, recordView } = useProjectStats();
   const [copied, setCopied] = React.useState(false);
   const [customCover, setCustomCover] = React.useState<string | null>(null);
+
+  useEffect(() => {
+    if (slug) {
+      recordView(slug);
+    }
+  }, [slug, recordView]);
 
   // Fetch dynamic CMS thumbnail if updated in admin
   useEffect(() => {
@@ -471,6 +479,18 @@ export const ProjectCaseStudyPage: React.FC = () => {
             <span className="text-xs font-bold text-stone-500 dark:text-stone-400">
               {project.client} • {project.category} • {project.year}
             </span>
+            {(() => {
+              const v = getProjectViews(slug || project.slug, 0);
+              return (
+                <span 
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700/60 font-mono text-[10px] font-semibold text-stone-700 dark:text-stone-300 ml-auto"
+                  title={`${v} project views`}
+                >
+                  <Eye className="w-3 h-3 text-[#8b2323] dark:text-rose-400 shrink-0" />
+                  <span>{v} views</span>
+                </span>
+              );
+            })()}
           </div>
 
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-stone-900 dark:text-stone-100 leading-tight mb-4">

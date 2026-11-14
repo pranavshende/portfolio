@@ -7,6 +7,8 @@ const router = Router();
 
 // Public
 router.get('/', projectController.getAll);
+router.get('/stats', projectController.getStats);
+router.post('/stats', projectController.recordStats);
 router.get('/:slug', projectController.getBySlug);
 
 // Admin Only

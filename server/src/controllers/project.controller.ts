@@ -121,6 +121,55 @@ export const projectController = {
   },
 
   /**
+   * Public: Get project stats
+   */
+  async getStats(_req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const items = await prisma.project.findMany({
+        where: { published: true },
+        select: { slug: true, id: true, viewCount: true },
+      });
+      const stats: Record<string, { views: number }> = {};
+      for (const item of items) {
+        stats[item.slug] = { views: item.viewCount || 0 };
+        if (item.id) {
+          stats[item.id] = { views: item.viewCount || 0 };
+        }
+      }
+      res.status(200).json({ success: true, stats });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  /**
+   * Public: Record project view
+   */
+  async recordStats(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { slug, id, type } = req.body;
+      const target = slug || id;
+      if (type === 'view' && target) {
+        const item = await prisma.project.findFirst({
+          where: { OR: [{ slug: target }, { id: target }] },
+        });
+        if (item) {
+          const updated = await prisma.project.update({
+            where: { id: item.id },
+            data: { viewCount: { increment: 1 } },
+            select: { slug: true, id: true, viewCount: true },
+          });
+          res.status(200).json({ success: true, slug: updated.slug, views: updated.viewCount });
+          return;
+        }
+      }
+      res.status(400).json({ success: false, message: 'Invalid payload' });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  /**
    * Public: Get single project by slug
    */
   async getBySlug(req: Request, res: Response, next: NextFunction): Promise<void> {

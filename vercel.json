@@ -33,6 +33,10 @@
       "destination": "/api/blog-stats"
     },
     {
+      "source": "/api/project-stats",
+      "destination": "/api/project-stats"
+    },
+    {
       "source": "/api/blog-order",
       "destination": "/api/blog-order"
     },

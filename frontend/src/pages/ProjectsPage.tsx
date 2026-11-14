@@ -2,12 +2,13 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Github, ExternalLink, Star, GitFork, ArrowUpRight, Search, 
-  Layers, Sparkles, Code2, Terminal, Filter, CheckCircle2, Lock, Smartphone
+  Layers, Sparkles, Code2, Terminal, Filter, CheckCircle2, Lock, Smartphone, Eye
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { DoodleLayout } from '@/components/DoodleLayout';
 import { PageSeo } from '@/components/PageSeo';
 import useAnalytics from '@/hooks/useAnalytics';
+import useProjectStats from '@/hooks/useProjectStats';
 import { api } from '@/lib/api';
 import { LoadingThumbnail, resolveCustomPhoto } from '@/components/LoadingThumbnail';
 
@@ -241,10 +242,12 @@ interface ProjectItem {
   language: string;
   updatedAt: string;
   isFork: boolean;
+  viewCount?: number;
 }
 
 export const ProjectsPage: React.FC = () => {
   useAnalytics();
+  const { getProjectViews, recordView: recordProjectView } = useProjectStats();
   const [repos, setRepos] = useState<ProjectItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -291,6 +294,7 @@ export const ProjectsPage: React.FC = () => {
             language: Array.isArray(p.techStack) && p.techStack[0] ? p.techStack[0] : 'TypeScript',
             updatedAt: p.updatedAt || '2026-11-08',
             isFork: false,
+            viewCount: typeof p.viewCount === 'number' ? p.viewCount : (Number(p.viewCount) || 0),
           });
         });
       }
@@ -579,6 +583,18 @@ export const ProjectsPage: React.FC = () => {
                     {/* Action buttons */}
                     <div className="pt-4 mt-4 border-t-2 border-stone-900/15 dark:border-stone-800 flex items-center justify-between">
                       <div className="flex items-center gap-3 text-xs text-stone-600 dark:text-stone-400">
+                        {(() => {
+                          const pViews = getProjectViews(p.name, p.viewCount || 0);
+                          return (
+                            <span 
+                              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800/80 border border-stone-200 dark:border-stone-700/60 font-mono text-[10px] font-semibold text-stone-700 dark:text-stone-300"
+                              title={`${pViews} project views`}
+                            >
+                              <Eye className="w-3 h-3 text-[#8b2323] dark:text-rose-400 shrink-0" />
+                              <span>{pViews}</span>
+                            </span>
+                          );
+                        })()}
                         {p.stars > 0 && (
                           <span className="flex items-center gap-1 font-mono font-bold">
                             <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
@@ -602,6 +618,7 @@ export const ProjectsPage: React.FC = () => {
                           return (
                             <Link
                               to={`/projects/${csSlug}`}
+                              onClick={() => recordProjectView(p.name)}
                               className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl border-2 border-stone-900 dark:border-stone-700 bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/50 text-amber-950 dark:text-amber-200 text-xs font-bold shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
                             >
                               <ArrowUpRight className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400" />
@@ -614,6 +631,7 @@ export const ProjectsPage: React.FC = () => {
                             href={p.demoUrl}
                             target="_blank"
                             rel="noopener noreferrer"
+                            onClick={() => recordProjectView(p.name)}
                             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[2px_2px_0px_#1c1917] hover:shadow-[1px_1px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
                           >
                             <ExternalLink className="w-3 h-3" />
