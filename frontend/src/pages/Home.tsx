@@ -637,17 +637,17 @@ export const Home: React.FC = () => {
         </p>
 
         {/* Hero Tag Pills - Paper Theme */}
-        <div className="flex flex-wrap items-center gap-2.5 mt-5">
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-white dark:bg-stone-800 border-2 border-stone-900 dark:border-stone-700 text-stone-900 dark:text-stone-100 shadow-[2px_2px_0px_#1c1917]">
-            <GraduationCap className="w-4 h-4 text-[#8b2323]" />
+        <div className="flex flex-wrap items-center gap-2 mt-3.5">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-white dark:bg-stone-800 border-2 border-stone-900 dark:border-stone-700 text-stone-900 dark:text-stone-100 shadow-[1.5px_1.5px_0px_#1c1917] dark:shadow-[1.5px_1.5px_0px_#000000]">
+            <GraduationCap className="w-3.5 h-3.5 text-[#8b2323] shrink-0" />
             <span>B.Tech IT @ SVPCET</span>
           </span>
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-white dark:bg-stone-800 border-2 border-stone-900 dark:border-stone-700 text-stone-900 dark:text-stone-100 shadow-[2px_2px_0px_#1c1917]">
-            <Layers className="w-4 h-4 text-[#8b2323]" />
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-white dark:bg-stone-800 border-2 border-stone-900 dark:border-stone-700 text-stone-900 dark:text-stone-100 shadow-[1.5px_1.5px_0px_#1c1917] dark:shadow-[1.5px_1.5px_0px_#000000]">
+            <Layers className="w-3.5 h-3.5 text-[#8b2323] shrink-0" />
             <span>Backend & AI</span>
           </span>
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-white dark:bg-stone-800 border-2 border-stone-900 dark:border-stone-700 text-stone-900 dark:text-stone-100 shadow-[2px_2px_0px_#1c1917]">
-            <Target className="w-4 h-4 text-[#8b2323]" />
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-white dark:bg-stone-800 border-2 border-stone-900 dark:border-stone-700 text-stone-900 dark:text-stone-100 shadow-[1.5px_1.5px_0px_#1c1917] dark:shadow-[1.5px_1.5px_0px_#000000]">
+            <Target className="w-3.5 h-3.5 text-[#8b2323] shrink-0" />
             <span>Building for Impact</span>
           </span>
         </div>
