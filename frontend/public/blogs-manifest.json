@@ -100,11 +100,11 @@
       "Deterministic SQL",
       "Enterprise Architecture"
     ],
-    "viewCount": 15,
+    "viewCount": 16,
     "impressionCount": 0,
     "displayOrder": 4,
     "publishedAt": "2026-11-06T10:00:00.000Z",
-    "updatedAt": "2026-11-14T04:58:07.833Z",
+    "updatedAt": "2026-11-14T05:11:06.346Z",
     "seoTitle": "Jarvis AI: Building an Enterprise Intelligence Platform | Pranav Shende",
     "seoDescription": "Pranav Shende breaks down the architecture of Jarvis AI: combining official MCP protocol, Fastify gateway, pgvector RAG, and deterministic star-schema SQL calculations."
   },

@@ -125,19 +125,16 @@ export const api = {
 
   getBlogStats: async (): Promise<Record<string, { views: number; impressions: number }>> => {
     try {
-      const serverlessUrl = typeof window !== 'undefined' && window.location.origin.includes('pranavshende.online')
-        ? '/api/blog-stats'
-        : 'https://pranavshende.online/api/blog-stats';
-      const res = await fetch(serverlessUrl, { cache: 'no-cache' });
+      const res = await apiRequest('/content/blog/stats');
+      if (res?.stats) return res.stats;
+    } catch (_) {}
+
+    try {
+      const res = await fetch('/api/blog-stats', { cache: 'no-cache' });
       if (res.ok) {
         const json = await res.json();
         if (json.stats) return json.stats;
       }
-    } catch (_) {}
-
-    try {
-      const res = await apiRequest('/content/blog/stats');
-      if (res?.stats) return res.stats;
     } catch (_) {}
 
     return {};
@@ -145,10 +142,17 @@ export const api = {
 
   recordBlogView: async (slug: string): Promise<{ views: number; impressions: number } | null> => {
     try {
-      const serverlessUrl = typeof window !== 'undefined' && window.location.origin.includes('pranavshende.online')
-        ? '/api/blog-stats'
-        : 'https://pranavshende.online/api/blog-stats';
-      const res = await fetch(serverlessUrl, {
+      const res = await apiRequest('/content/blog/stats', {
+        method: 'POST',
+        data: { slug, type: 'view' },
+      });
+      if (res && typeof res.views === 'number') {
+        return { views: res.views, impressions: res.impressions || 0 };
+      }
+    } catch (_) {}
+
+    try {
+      const res = await fetch('/api/blog-stats', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ slug, type: 'view' }),
@@ -159,54 +163,40 @@ export const api = {
       }
     } catch (_) {}
 
-    try {
-      const res = await apiRequest('/content/blog/stats', {
-        method: 'POST',
-        data: { slug, type: 'view' },
-      });
-      return { views: res.views, impressions: res.impressions };
-    } catch (_) {}
-
     return null;
   },
 
   recordBlogImpressions: async (slugs: string[]): Promise<void> => {
     if (!slugs || slugs.length === 0) return;
     try {
-      const serverlessUrl = typeof window !== 'undefined' && window.location.origin.includes('pranavshende.online')
-        ? '/api/blog-stats'
-        : 'https://pranavshende.online/api/blog-stats';
-      await fetch(serverlessUrl, {
+      await apiRequest('/content/blog/stats', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ slugs, type: 'impression' }),
+        data: { slugs, type: 'impression' },
       });
       return;
     } catch (_) {}
 
     try {
-      await apiRequest('/content/blog/stats', {
+      await fetch('/api/blog-stats', {
         method: 'POST',
-        data: { slugs, type: 'impression' },
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slugs, type: 'impression' }),
       });
     } catch (_) {}
   },
 
   getProjectStats: async (): Promise<Record<string, { views: number }>> => {
     try {
-      const serverlessUrl = typeof window !== 'undefined' && window.location.origin.includes('pranavshende.online')
-        ? '/api/project-stats'
-        : 'https://pranavshende.online/api/project-stats';
-      const res = await fetch(serverlessUrl, { cache: 'no-cache' });
+      const res = await apiRequest('/projects/stats');
+      if (res?.stats) return res.stats;
+    } catch (_) {}
+
+    try {
+      const res = await fetch('/api/project-stats', { cache: 'no-cache' });
       if (res.ok) {
         const json = await res.json();
         if (json.stats) return json.stats;
       }
-    } catch (_) {}
-
-    try {
-      const res = await apiRequest('/projects/stats');
-      if (res?.stats) return res.stats;
     } catch (_) {}
 
     return {};
@@ -214,10 +204,17 @@ export const api = {
 
   recordProjectView: async (slug: string): Promise<{ views: number } | null> => {
     try {
-      const serverlessUrl = typeof window !== 'undefined' && window.location.origin.includes('pranavshende.online')
-        ? '/api/project-stats'
-        : 'https://pranavshende.online/api/project-stats';
-      const res = await fetch(serverlessUrl, {
+      const res = await apiRequest('/projects/stats', {
+        method: 'POST',
+        data: { slug, type: 'view' },
+      });
+      if (res && typeof res.views === 'number') {
+        return { views: res.views };
+      }
+    } catch (_) {}
+
+    try {
+      const res = await fetch('/api/project-stats', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ slug, type: 'view' }),
@@ -226,14 +223,6 @@ export const api = {
         const json = await res.json();
         return { views: json.views };
       }
-    } catch (_) {}
-
-    try {
-      const res = await apiRequest('/projects/stats', {
-        method: 'POST',
-        data: { slug, type: 'view' },
-      });
-      return { views: res.views };
     } catch (_) {}
 
     return null;
