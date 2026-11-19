@@ -294,6 +294,49 @@ const defaultRepos = [
   },
 ];
 
+interface ResearchPaper {
+  id: string;
+  title: string;
+  venue: string;
+  date: string;
+  citation: string;
+  description: string;
+  badgeColor: string;
+  doi: string;
+  doiUrl: string;
+  status: string;
+  blogSlug: string;
+}
+
+const researchPapers: ResearchPaper[] = [
+  {
+    id: 'alumni-networking',
+    title: 'Beyond Alumni Directories: Building an Intelligent AI-Powered Alumni–Student Networking Ecosystem',
+    venue: 'IJACTE Journal • Peer-Reviewed',
+    date: 'May 2025',
+    citation: 'IJACTE, 14(1): 193–197, May 2025.',
+    description: 'Mentorship and matchmaking platform interconnecting undergraduate students with industry alumni.',
+    badgeColor: 'border-teal-800 text-teal-800 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/40',
+    doi: '10.65521/ijacte.v14i1.388',
+    doiUrl: 'https://doi.org/10.65521/ijacte.v14i1.388',
+    status: 'Open Access Journal',
+    blogSlug: '/blog/beyond-alumni-directories-building-an-intelligent-ai-powered-alumni-student-networking-ecosystem',
+  },
+  {
+    id: 'lumpy-skin-disease',
+    title: 'How AI Can Transform Veterinary Healthcare: Detecting Lumpy Skin Disease',
+    venue: 'IEEE Conference • OTCON 2025',
+    date: 'Feb 2025',
+    citation: '2025 4th OPJU International Conference on Technology and Management (IEEE).',
+    description: 'Quantized convolutional neural networks (INT8) for offline edge veterinary disease diagnostics.',
+    badgeColor: 'border-emerald-800 text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40',
+    doi: '10.1109/OTCON65728.2025.11070341',
+    doiUrl: 'https://doi.org/10.1109/OTCON65728.2025.11070341',
+    status: 'IEEE Xplore Indexed',
+    blogSlug: '/blog/ai-veterinary-healthcare-lumpy-skin-disease-detection',
+  },
+];
+
 // Reusable hook for responsive, touch-friendly horizontal card sliders
 const useHorizontalSlider = (itemCount: number) => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -456,6 +499,7 @@ export const Home: React.FC = () => {
   const projectSlider = useHorizontalSlider(projectList.length);
   const blogSlider = useHorizontalSlider(recentBlogs.length);
   const repoSlider = useHorizontalSlider(gitRepos.length);
+  const researchSlider = useHorizontalSlider(researchPapers.length);
 
   // Lock body scroll and close on Escape key when project modal is active
   useEffect(() => {
@@ -1068,145 +1112,129 @@ export const Home: React.FC = () => {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          RESEARCH PUBLICATIONS SECTION
+          RESEARCH PUBLICATIONS SECTION (Compact Horizontal Slider)
       ────────────────────────────────────────────────────────────── */}
-      <section id="research" className="space-y-4 mb-16 pt-2">
-        <div className="border-b-2 border-stone-900/20 dark:border-stone-800 pb-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+      <section id="research" className="space-y-4 mb-14 pt-2">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b-2 border-stone-900/20 dark:border-stone-800 pb-3">
+          <div className="flex items-center gap-2.5">
             <BookOpen className="w-4 h-4 text-[#8b2323] dark:text-rose-400" />
             <h2 className="text-xs sm:text-sm font-bold text-stone-900 dark:text-stone-100 uppercase tracking-wider font-sans">
               Research Publications
             </h2>
+            <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border border-stone-900/20 dark:border-stone-700 bg-white/60 dark:bg-stone-800/60 text-[10px] font-mono font-bold text-stone-600 dark:text-stone-400">
+              <span>Peer-Reviewed &amp; IEEE</span>
+            </span>
           </div>
-          <span className="text-[11px] font-mono text-stone-500 dark:text-stone-400 hidden sm:inline">
-            Peer-Reviewed &amp; Conference Papers
-          </span>
+
+          <div className="flex items-center gap-2 sm:gap-3">
+            <span className="text-[10px] sm:text-[11px] font-mono text-stone-500 dark:text-stone-400 hidden xs:inline">
+              Slide to explore
+            </span>
+            {/* Slider Navigation Chevrons */}
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={() => researchSlider.scroll('left')}
+                disabled={!researchSlider.canScrollLeft}
+                className="w-7 h-7 rounded-lg border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 flex items-center justify-center shadow-[1px_1px_0px_#1c1917] dark:shadow-[1px_1px_0px_#000000] hover:translate-x-[0.5px] hover:translate-y-[0.5px] disabled:opacity-25 disabled:pointer-events-none transition-all cursor-pointer"
+                aria-label="Previous research slide"
+              >
+                <ChevronLeft className="w-3.5 h-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => researchSlider.scroll('right')}
+                disabled={!researchSlider.canScrollRight}
+                className="w-7 h-7 rounded-lg border-2 border-stone-900 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 flex items-center justify-center shadow-[1px_1px_0px_#1c1917] dark:shadow-[1px_1px_0px_#000000] hover:translate-x-[0.5px] hover:translate-y-[0.5px] disabled:opacity-25 disabled:pointer-events-none transition-all cursor-pointer"
+                aria-label="Next research slide"
+              >
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-1">
-          {/* Research Paper 1 – Alumni–Student Networking Ecosystem */}
-          <div
-            onClick={() => navigate('/blog/beyond-alumni-directories-building-an-intelligent-ai-powered-alumni-student-networking-ecosystem')}
-            className="group relative p-5 sm:p-6 rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer flex flex-col justify-between space-y-4"
-          >
-            <div className="space-y-2.5">
-              <div className="flex items-center justify-between gap-2">
-                <span className="px-2.5 py-0.5 rounded-xs border border-teal-800 text-teal-800 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/40 text-[10px] font-bold uppercase font-mono tracking-wider">
-                  IJACTE Journal • Peer-Reviewed
-                </span>
-                <span className="text-[10px] font-mono text-stone-400">May 2025</span>
+        {/* Sliding Track (Small, compact cards scrollable in both phone and desktop) */}
+        <div
+          ref={researchSlider.scrollRef}
+          className="flex gap-4 overflow-x-auto pb-4 pt-1 snap-x snap-mandatory no-scrollbar scroll-smooth -mx-2 px-2"
+        >
+          {researchPapers.map((paper) => (
+            <div
+              key={paper.id}
+              onClick={() => navigate(paper.blogSlug)}
+              className="w-[280px] sm:w-[320px] md:w-[350px] shrink-0 snap-start group relative p-3.5 sm:p-4 rounded-2xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer flex flex-col justify-between space-y-3"
+            >
+              <div className="space-y-2">
+                <div className="flex items-center justify-between gap-2">
+                  <span className={`px-2 py-0.5 rounded-xs border text-[9px] sm:text-[10px] font-bold uppercase font-mono tracking-wider ${paper.badgeColor}`}>
+                    {paper.venue}
+                  </span>
+                  <span className="text-[10px] font-mono text-stone-400 dark:text-stone-500 shrink-0">
+                    {paper.date}
+                  </span>
+                </div>
+
+                <h3 className="text-xs sm:text-sm font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors line-clamp-2 leading-snug">
+                  {paper.title}
+                </h3>
+
+                <p className="text-[11px] sm:text-xs text-stone-600 dark:text-stone-400 line-clamp-2 leading-relaxed">
+                  {paper.description}
+                </p>
               </div>
 
-              <h3 className="text-base sm:text-lg font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors leading-snug">
-                <Link
-                  to="/blog/beyond-alumni-directories-building-an-intelligent-ai-powered-alumni-student-networking-ecosystem"
-                  onClick={(e) => e.stopPropagation()}
-                  className="hover:underline"
-                >
-                  Beyond Alumni Directories: Building an Intelligent AI-Powered Alumni–Student Networking Ecosystem
-                </Link>
-              </h3>
+              <div className="pt-2.5 border-t border-stone-200 dark:border-stone-800/80 space-y-2.5">
+                <div className="flex items-center">
+                  <a
+                    href={paper.doiUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="group/doi inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800/80 hover:bg-stone-200/90 dark:hover:bg-stone-700/80 border border-stone-200 dark:border-stone-700 text-[10px] font-mono text-stone-600 dark:text-stone-300 hover:text-[#8b2323] dark:hover:text-rose-400 transition-all max-w-full"
+                    title={`View official publication: ${paper.doi}`}
+                  >
+                    <span className="font-bold text-stone-900 dark:text-stone-100">doi:</span>
+                    <span className="truncate underline decoration-stone-300 dark:decoration-stone-600 underline-offset-2">{paper.doi}</span>
+                    <ArrowUpRight className="w-3 h-3 shrink-0 text-stone-400 group-hover/doi:text-[#8b2323] dark:group-hover/doi:text-rose-400 transition-colors" />
+                  </a>
+                </div>
 
-              <p className="text-xs text-stone-600 dark:text-stone-300 leading-relaxed">
-                Published in the International Journal on Advanced Computer Theory and Engineering, 14(1): 193–197, May 2025. Mentorship and career matchmaking platform connecting alumni with undergraduate students.
-              </p>
-            </div>
+                <div className="flex items-center justify-between gap-2 pt-0.5">
+                  <span className="text-[10px] font-mono text-stone-500 dark:text-stone-400 flex items-center gap-1 truncate">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                    <span className="truncate">{paper.status}</span>
+                  </span>
 
-            <div className="pt-3 border-t border-stone-200 dark:border-stone-800 space-y-3">
-              <div className="flex items-center">
-                <a
-                  href="https://doi.org/10.65521/ijacte.v14i1.388"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="group/doi inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800/80 hover:bg-stone-200/90 dark:hover:bg-stone-700/80 border border-stone-200 dark:border-stone-700 text-[11px] font-mono text-stone-600 dark:text-stone-300 hover:text-[#8b2323] dark:hover:text-rose-400 transition-all max-w-full"
-                  title="View original publication on IJACTE: 10.65521/ijacte.v14i1.388"
-                >
-                  <span className="font-bold text-stone-900 dark:text-stone-100">doi:</span>
-                  <span className="truncate underline decoration-stone-300 dark:decoration-stone-600 underline-offset-2">10.65521/ijacte.v14i1.388</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-stone-400 group-hover/doi:text-[#8b2323] dark:group-hover/doi:text-rose-400 transition-colors" />
-                </a>
-              </div>
-
-              <div className="flex items-center justify-between gap-3 pt-0.5">
-                <span className="text-[11px] font-mono text-stone-500 dark:text-stone-400 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
-                  <span className="truncate">Open Access Journal</span>
-                </span>
-
-                <Link
-                  to="/blog/beyond-alumni-directories-building-an-intelligent-ai-powered-alumni-student-networking-ecosystem"
-                  onClick={(e) => e.stopPropagation()}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[1.5px_1.5px_0px_#1c1917] hover:shadow-[0.5px_0.5px_0px_#1c1917] hover:translate-x-[0.5px] hover:translate-y-[0.5px] transition-all shrink-0 cursor-pointer"
-                >
-                  <span>Read Publication</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* Research Paper 2 – Lumpy Skin Disease Detection */}
-          <div
-            onClick={() => navigate('/blog/ai-veterinary-healthcare-lumpy-skin-disease-detection')}
-            className="group relative p-5 sm:p-6 rounded-3xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3.5px_3.5px_0px_#1c1917] dark:shadow-[3.5px_3.5px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer flex flex-col justify-between space-y-4"
-          >
-            <div className="space-y-2.5">
-              <div className="flex items-center justify-between gap-2">
-                <span className="px-2.5 py-0.5 rounded-xs border border-emerald-800 text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 text-[10px] font-bold uppercase font-mono tracking-wider">
-                  IEEE Conference • OTCON 2025
-                </span>
-                <span className="text-[10px] font-mono text-stone-400">Feb 2025</span>
-              </div>
-
-              <h3 className="text-base sm:text-lg font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#8b2323] dark:group-hover:text-rose-400 transition-colors leading-snug">
-                <Link
-                  to="/blog/ai-veterinary-healthcare-lumpy-skin-disease-detection"
-                  onClick={(e) => e.stopPropagation()}
-                  className="hover:underline"
-                >
-                  How AI Can Transform Veterinary Healthcare: Detecting Lumpy Skin Disease
-                </Link>
-              </h3>
-
-              <p className="text-xs text-stone-600 dark:text-stone-300 leading-relaxed">
-                Presented at the 2025 4th OPJU International Conference on Technology and Management (IEEE). Explores quantized lightweight convolutional networks for rural veterinary disease diagnostics.
-              </p>
-            </div>
-
-            <div className="pt-3 border-t border-stone-200 dark:border-stone-800 space-y-3">
-              <div className="flex items-center">
-                <a
-                  href="https://doi.org/10.1109/OTCON65728.2025.11070341"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="group/doi inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800/80 hover:bg-stone-200/90 dark:hover:bg-stone-700/80 border border-stone-200 dark:border-stone-700 text-[11px] font-mono text-stone-600 dark:text-stone-300 hover:text-[#8b2323] dark:hover:text-rose-400 transition-all max-w-full"
-                  title="View original publication on IEEE Xplore: 10.1109/OTCON65728.2025.11070341"
-                >
-                  <span className="font-bold text-stone-900 dark:text-stone-100">doi:</span>
-                  <span className="truncate underline decoration-stone-300 dark:decoration-stone-600 underline-offset-2">10.1109/OTCON65728.2025.11070341</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-stone-400 group-hover/doi:text-[#8b2323] dark:group-hover/doi:text-rose-400 transition-colors" />
-                </a>
-              </div>
-
-              <div className="flex items-center justify-between gap-3 pt-0.5">
-                <span className="text-[11px] font-mono text-stone-500 dark:text-stone-400 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
-                  <span className="truncate">IEEE Xplore Indexed</span>
-                </span>
-
-                <Link
-                  to="/blog/ai-veterinary-healthcare-lumpy-skin-disease-detection"
-                  onClick={(e) => e.stopPropagation()}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#8b2323] hover:bg-[#721c1c] text-white text-xs font-bold border-2 border-stone-900 shadow-[1.5px_1.5px_0px_#1c1917] hover:shadow-[0.5px_0.5px_0px_#1c1917] hover:translate-x-[0.5px] hover:translate-y-[0.5px] transition-all shrink-0 cursor-pointer"
-                >
-                  <span>Read Publication</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
+                  <Link
+                    to={paper.blogSlug}
+                    onClick={(e) => e.stopPropagation()}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#8b2323] hover:bg-[#721c1c] text-white text-[11px] font-bold border-2 border-stone-900 shadow-[1.5px_1.5px_0px_#1c1917] hover:shadow-[0.5px_0.5px_0px_#1c1917] hover:translate-x-[0.5px] hover:translate-y-[0.5px] transition-all shrink-0 cursor-pointer"
+                  >
+                    <span>Read Paper</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
+          ))}
+        </div>
+
+        {/* Dynamic Pagination Pill Dots */}
+        <div className="flex justify-center items-center gap-1.5 pt-1">
+          {researchPapers.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => researchSlider.scrollToIndex(i)}
+              aria-label={`Go to research slide ${i + 1}`}
+              className={`transition-all duration-200 rounded-full cursor-pointer ${
+                researchSlider.activeIndex === i
+                  ? 'w-6 h-2 bg-[#8b2323]'
+                  : 'w-2 h-2 bg-stone-300 dark:bg-stone-700 hover:bg-stone-400'
+              }`}
+            />
+          ))}
         </div>
       </section>
 
