@@ -299,7 +299,7 @@ export const About: React.FC = () => {
               <h3 className="text-sm font-bold text-stone-900 dark:text-stone-100">NK SkillEdge Pvt. Ltd.</h3>
               <span className="font-mono text-[10px] font-bold text-stone-500">May 2026 – Present</span>
             </div>
-            <p className="text-xs text-[#8b2323] dark:text-rose-400 font-bold">Android Developer Intern (Full Stack)</p>
+            <p className="text-xs text-[#8b2323] dark:text-rose-400 font-bold">Android Development Intern &amp; Full Stack Developer</p>
             <ul className="text-xs text-stone-600 dark:text-stone-400 space-y-1 font-sans pt-1">
               <li>• Spearheaded core development of JanSampark, building 25+ React Native modules.</li>
               <li>• Architected Node.js backend secured with JWT & RBAC for 4 user roles.</li>

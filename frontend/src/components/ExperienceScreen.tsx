@@ -14,7 +14,7 @@ interface Experience {
 const experiences: Experience[] = [
   {
     company: "NK SkillEdge Pvt. Ltd.",
-    role: "Android Application Developer Intern (Full Stack)",
+    role: "Android Development Intern & Full Stack Developer",
     period: "May 2026 – Present",
     location: "Nagpur, India",
     bullets: [

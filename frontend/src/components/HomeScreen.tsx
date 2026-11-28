@@ -113,7 +113,7 @@ export const HomeScreen = () => {
           <div className="flex flex-col gap-2.5 pt-1 text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 font-mono sm:font-sans w-full max-w-md items-start sm:items-start text-left pl-2 sm:pl-0">
             <div className="flex items-center gap-2.5">
               <Code className="w-4 h-4 shrink-0 text-zinc-500 dark:text-zinc-400 mt-0.5" />
-              <span>Full Stack Developer @ NkSkillEdge Pvt. Ltd</span>
+              <span>Android Development Intern &amp; Full Stack Developer @ NK SkillEdge Pvt. Ltd</span>
             </div>
             <div className="flex items-center gap-2.5">
               <MapPin className="w-4 h-4 shrink-0 text-zinc-500 dark:text-zinc-400 mt-0.5" />
