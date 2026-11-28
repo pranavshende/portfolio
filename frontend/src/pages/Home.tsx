@@ -413,36 +413,67 @@ const FeaturedProjectCard: React.FC<FeaturedProjectCardProps> = ({
   const [imageLoaded, setImageLoaded] = useState(false);
   const validImage = resolveCustomPhoto(proj.image);
 
+  useEffect(() => {
+    if (!validImage) return;
+    const img = new Image();
+    img.src = validImage;
+    if (img.complete && img.naturalWidth > 0) {
+      setImageLoaded(true);
+    } else {
+      img.onload = () => setImageLoaded(true);
+      img.onerror = () => setImageLoaded(false);
+    }
+  }, [validImage]);
+
   return (
     <motion.div
       key={proj.id}
+      layout="position"
       whileHover={{ y: -3 }}
-      transition={{ duration: 0.15 }}
+      transition={{ duration: 0.2 }}
       onClick={onClick}
       className="w-[280px] sm:w-[320px] md:w-[360px] shrink-0 snap-start group cursor-pointer rounded-2xl border-2 border-stone-900 dark:border-stone-700 bg-white/95 dark:bg-[#181920]/95 shadow-[3px_3px_0px_#1c1917] dark:shadow-[3px_3px_0px_#000000] hover:shadow-[1.5px_1.5px_0px_#1c1917] hover:translate-x-[1px] hover:translate-y-[1px] transition-all overflow-hidden flex flex-col justify-between p-2.5 sm:p-3"
     >
-      {/* Thumbnail Banner: Only revealed once custom image has fully loaded over network */}
-      {validImage && (
-        <div className={imageLoaded ? 'mb-2' : 'hidden'}>
-          <LoadingThumbnail
-            src={validImage}
-            alt={proj.title}
-            priority={idx === 0}
-            width={640}
-            height={360}
-            hideUntilLoaded={true}
-            onLoadStatusChange={(status) => {
-              if (status === 'loaded') setImageLoaded(true);
-            }}
-            aspectClass="aspect-video w-full rounded-xl border-2 border-stone-900 dark:border-stone-700 shadow-[1.5px_1.5px_0px_#1c1917]"
-            badge={proj.badge && (
-              <div className="bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 border-2 border-stone-900 font-mono font-bold text-[9px] px-2 py-0.5 rounded-full shadow-[1px_1px_0px_#1c1917]">
-                {proj.badge}
-              </div>
-            )}
-          />
-        </div>
+      {/* Background preloader if image not yet loaded */}
+      {validImage && !imageLoaded && (
+        <LoadingThumbnail
+          src={validImage}
+          alt={proj.title}
+          priority={idx === 0}
+          width={640}
+          height={360}
+          hideUntilLoaded={true}
+          onLoadStatusChange={(status) => {
+            if (status === 'loaded') setImageLoaded(true);
+          }}
+        />
       )}
+
+      {/* Thumbnail Banner: Slides down & fades in smoothly with motion effect when loaded */}
+      <AnimatePresence>
+        {validImage && imageLoaded && (
+          <motion.div
+            initial={{ opacity: 0, y: -16, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            className="mb-2 overflow-hidden"
+          >
+            <LoadingThumbnail
+              src={validImage}
+              alt={proj.title}
+              priority={idx === 0}
+              width={640}
+              height={360}
+              aspectClass="aspect-video w-full rounded-xl border-2 border-stone-900 dark:border-stone-700 shadow-[1.5px_1.5px_0px_#1c1917]"
+              badge={proj.badge && (
+                <div className="bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 border-2 border-stone-900 font-mono font-bold text-[9px] px-2 py-0.5 rounded-full shadow-[1px_1px_0px_#1c1917]">
+                  {proj.badge}
+                </div>
+              )}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Card Content & Details */}
       <div className="flex items-center justify-between gap-2.5 pt-1">

@@ -107,8 +107,8 @@ export const LoadingThumbnail: React.FC<LoadingThumbnailProps> = ({
         decoding={priority ? 'auto' : 'async'}
         onLoad={() => setStatus('loaded')}
         onError={() => setStatus('error')}
-        className={`${className} transition-opacity duration-200 ${
-          priority || status === 'loaded' ? 'opacity-100' : 'opacity-0'
+        className={`${className} transition-all duration-500 ease-out ${
+          priority || status === 'loaded' ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
         }`}
       />
 
